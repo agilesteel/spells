@@ -1,0 +1,77 @@
+# SBT
+boot/
+target/
+.history
+target
+lib_managed
+src_managed
+*/project/boot
+*/*/project/boot
+
+# Eclipse
+.cache
+.classpath
+.project
+.manager
+.scala_dependencies
+.settings
+.target/
+
+# IntelliJ
+.idea/
+*.iml
+*.ipr
+*.iws
+.idea
+out/
+
+# TextMate
+*.tmproj
+
+# Mac
+.DS_Store
+
+# Dropbox
+.dropbox
+desktop.ini
+
+# use glob syntax.
+syntax: glob
+*.ser
+*.class
+*~
+*.bak
+*.off
+*.old
+.DS_Store
+
+# logs
+derby.log
+
+
+# building
+target
+build
+null
+tmp*
+dist
+test-output
+
+# sbt
+target
+lib_managed
+src_managed
+*/project/boot
+*/*/project/boot
+
+# db
+lift_proto*
+
+# other scm
+.svn
+.CVS
+.hg*
+
+# Pax Runner (for easy OSGi launching)
+runner
+
