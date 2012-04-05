@@ -1,11 +1,11 @@
 [Java 7]: http://www.oracle.com/technetwork/java/javase/downloads/index.html
-[SBT 0.11]: https://github.com/harrah/xsbt/wiki
+[SBT 0.11.2]: https://github.com/harrah/xsbt/wiki
 
 # spells 1.0
 
 This is a small scala "util" library, which will hopefully grow over time.
 
-### Features:
+## Features:
 
 * AnsiPrint - ansi styled outputs for your strings
 
@@ -14,21 +14,46 @@ This is a small scala "util" library, which will hopefully grow over time.
 ### Requirements 
 
 * [Java 7]
-* [SBT 0.11] or greater
+* [SBT 0.11.2]
 * Internet connection (in order for SBT to be able to download the necessary dependencies)
 
-### Build
+### Configuring your project's dependencies
 
-1. Get the source code:
+SBT allows you to pull dependencies directly from github. Unfortunately the light build configuration is not sufficient for this. You have to use the full build configuration which might look like this:
 
-		$ git clone https://github.com/agilesteel/spells.git
-		$ cd spells
+	import sbt._
+	import Keys._
 
-2. Launch SBT:
+	object MyBuild extends Build {
+	   lazy val myProject = Project("My Project", file(".")) dependsOn spells
+	   lazy val spells = RootProject(uri("git://github.com/agilesteel/spells.git"))
+	}
 
-		$ sbt
+### Usage
 
-3. Compile/Test:
+Here is an example of ``AnsiPrint`` in action:
 
-		$ compile
-		$ test
+	package myproject
+
+	import spells._
+	import Spells._
+ 
+	object Ansi extends App {
+	   println("white")
+	   println("green")(Green)
+	   println("green".green)
+	   println("green".magenta)(Green)
+	   println("yellow".yellow + "green".green + "yellow".yellow)(Yellow)
+	   println("yellow" + "green".green)(Yellow)
+	   println("yellow".yellow + "green")(Green)
+	   println("yellow" + "green".green + "yellow")(Yellow)
+	   println("yellow".yellow + "green" + "yellow".yellow)(Green)
+	   println("yellow" + "green".green + "yellow".yellow)(Yellow)
+	   println("yellow".yellow + "green".green + "yellow")(Yellow)
+	   println("yellow" + "red".red + "yellow" + "green".green + "yellow")(Yellow)
+	}
+
+	object OberridingDefaultStyle extends App {
+	   implicit val defaultStyle = Yellow
+	   println("yellow" + "red".red + "yellow" + "green".green + "yellow")
+	}
