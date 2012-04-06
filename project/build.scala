@@ -14,7 +14,7 @@ object SpellsBuild extends Build {
   lazy val spellsSettings = Project.defaultSettings ++ Seq(
 	name := spells,
 
-	version := "1.0",
+	version := "1.0.1",
 
 	libraryDependencies ++= Seq(
 		scalaTest % "test",

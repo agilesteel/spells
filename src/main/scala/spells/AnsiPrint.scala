@@ -4,19 +4,19 @@ trait AnsiPrint {
   implicit final def stringToAnsiString(s: String): AnsiString = new AnsiString(s)
 
   final class AnsiString(input: String) {
-    final def in(style: String): String = style + noStyles(input) + Reset
-    final def black: String = this in Black
-    final def red: String = this in Red
-    final def green: String = this in Green
-    final def yellow: String = this in Yellow
-    final def blue: String = this in Blue
-    final def magenta: String = this in Magenta;
-    final def cyan: String = this in Cyan
-    final def white: String = this in White
-    final def bold: String = this in Bold
-    final def blink: String = this in Blink
-    final def reversed: String = this in Reversed
-    final def invisible: String = this in Invisible
+    def in(style: String): String = style + noStyles(input) + Reset
+    def black: String = this in Black
+    def red: String = this in Red
+    def green: String = this in Green
+    def yellow: String = this in Yellow
+    def blue: String = this in Blue
+    def magenta: String = this in Magenta;
+    def cyan: String = this in Cyan
+    def white: String = this in White
+    def bold: String = this in Bold
+    def blink: String = this in Blink
+    def reversed: String = this in Reversed
+    def invisible: String = this in Invisible
   }
 
   private def noStyles(input: String) = input.replaceAll(styleOrReset, "")
@@ -56,10 +56,9 @@ trait AnsiPrint {
   private def restyle(input: String, style: String): String = input match {
     case AnsiPattern() => input.replaceAll(styleOnly, style)
     case AnsiPatterns(_) => input
-    case StuffFollowedByAnsiPatterns(stuff, _) => restyle(stuff, style) + input.drop(stuff.size)
+    case StuffFollowedByAnsiPatterns(stuff, ansi) => restyle(stuff, style) + ansi
     case AnsiPatternsFollowedByStuff(_, stuff) => input.dropRight(stuff.size) + restyle(stuff, style)
     case StuffFollowedByAnsiPatternsFollowedByStuff(start, ansi, end) => restyle(start, style) + ansi + restyle(end, style)
-    case AnsiPatternsFollowedByStuffFollowedByAnsiPatterns(ansiStart, stuff, ansiEnd) => ansiStart + restyle(stuff, style) + ansiEnd
     case _ => style + input + Reset
   }
 
@@ -68,8 +67,6 @@ trait AnsiPrint {
 
   private lazy val StuffFollowedByAnsiPatterns = ("(" + stuff + ")" + AnsiPatterns).r
   private lazy val AnsiPatternsFollowedByStuff = (AnsiPatterns + "(" + stuff + ")").r
-
-  private lazy val AnsiPatternsFollowedByStuffFollowedByAnsiPatterns = (AnsiPatternsFollowedByStuff + AnsiPatterns.toString).r
   private lazy val StuffFollowedByAnsiPatternsFollowedByStuff = (StuffFollowedByAnsiPatterns + "(" + stuff + ")").r
 
   private lazy val word = """\w*"""
