@@ -27,7 +27,7 @@ object SpellsBuild extends Build {
 	),
 
 	testOptions in Test ++= Seq(
-	  	Tests.Argument(TestFrameworks.ScalaTest, "-oS")
+	  	Tests.Argument(TestFrameworks.ScalaTest, "stdout")
      	)
    )
 }
