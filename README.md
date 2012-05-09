@@ -1,5 +1,5 @@
-[Java 7]: http://www.oracle.com/technetwork/java/javase/downloads/index.html
-[SBT 0.11.2]: https://github.com/harrah/xsbt/wiki
+[Java 1.6]: http://java.com/en/download/index.jsp
+[SBT 0.11.3]: https://github.com/harrah/xsbt/wiki
 
 # spells 1.0
 
@@ -13,8 +13,9 @@ This is a small scala "util" library, which will hopefully grow over time.
 
 ### Requirements 
 
-* [Java 7]
-* [SBT 0.11.2]
+* [Java 1.6] or greater
+* [SBT 0.11.3]
+* Scala 2.9.2
 * Internet connection (in order for SBT to be able to download the necessary dependencies)
 
 ### Configuring your project's dependencies
@@ -53,7 +54,7 @@ Here is an example of ``AnsiPrint`` in action:
 	   println("yellow" + "red".red + "yellow" + "green".green + "yellow")(Yellow)
 	}
 
-	object OberridingDefaultStyle extends App {
+	object OverridingDefaultStyle extends App {
 	   implicit val defaultStyle = Yellow
 	   println("yellow" + "red".red + "yellow" + "green".green + "yellow")
 	}
