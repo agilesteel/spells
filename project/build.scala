@@ -18,6 +18,8 @@ object SpellsBuild extends Build {
 
 	scalaVersion := "2.9.2",
 
+	crossScalaVersions := Seq("2.9.1", "2.9.2"),
+
 	libraryDependencies ++= Seq(
 		scalaTest % "test",
 		scalaz
