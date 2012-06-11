@@ -1,7 +1,7 @@
 [Java 1.6]: http://java.com/en/download/index.jsp
 [SBT 0.11.3]: https://github.com/harrah/xsbt/wiki
 
-# spells 1.0
+# spells
 
 This is a small scala "util" library, which will hopefully grow over time.
 
