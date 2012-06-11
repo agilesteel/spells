@@ -60,4 +60,9 @@ object OverridingDefaultStyle extends App {
    implicit val defaultStyle = Yellow
    println("yellow" + "red".red + "yellow" + "green".green + "yellow")
 }
+
+object OverridingDefaultStyleWithAnything extends App {
+   implicit val defaultStyle = "someStyle".s // <- converts Strings to AnsiStyles
+   println("styled")
+}
 ```

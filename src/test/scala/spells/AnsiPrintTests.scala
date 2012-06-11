@@ -1,10 +1,15 @@
 package spells
 
 import Spells._
+import Predef.{ any2stringadd => _ }
 
 class AnsiPrintTests extends UnitTestConfiguration {
+  test(""""style".s should be (AnsiStyle("style"))""") {
+    "style".s should be(AnsiStyle("style"))
+  }
+
   test(""""green".green should be(Green + "green" + Reset)""") {
-    "green".green should be(Green + "green" + Reset)
+    "green".green should be(Green.value + "green" + Reset.value)
   }
 
   test(""""green".yellow.red.green should be("green".green)""") {
@@ -72,7 +77,7 @@ class AnsiPrintTests extends UnitTestConfiguration {
   }
 
   test("""styled("yellow" + "red".red + "yellow" + "green".green + "yellow") with implicit DefaultStyle = Yellow should be("yellow".yellow + "red".red + "yellow".yellow + "green".green + "yellow".yellow)""") {
-    implicit val DefaultStyle = Yellow
+    implicit val DefaultStyle: AnsiStyle = Yellow
     styled("yellow" + "red".red + "yellow" + "green".green + "yellow") should be("yellow".yellow + "red".red + "yellow".yellow + "green".green + "yellow".yellow)
     println("yellow" + "red".red + "yellow" + "green".green + "yellow")
   }
