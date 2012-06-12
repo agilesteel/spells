@@ -1,15 +1,18 @@
 package spells
 
 import Spells._
-import Predef.{ any2stringadd => _ }
 
 class AnsiPrintTests extends UnitTestConfiguration {
   test(""""style".s should be (AnsiStyle("style"))""") {
     "style".s should be(AnsiStyle("style"))
   }
 
+  test("""""style".s.toString should be("style")""") {
+    "style".s.toString should be("style")
+  }
+
   test(""""green".green should be(Green + "green" + Reset)""") {
-    "green".green should be(Green.value + "green" + Reset.value)
+    "green".green should be(Green + "green" + Reset)
   }
 
   test(""""green".yellow.red.green should be("green".green)""") {

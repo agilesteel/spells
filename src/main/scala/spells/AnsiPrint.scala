@@ -22,7 +22,7 @@ trait AnsiPrint {
   implicit final def stringToAnsiString(s: String): AnsiString = new AnsiString(s)
 
   final class AnsiString(input: String) {
-    def in(style: AnsiStyle): String = style.value + noStyles(input) + Reset.value
+    def in(style: AnsiStyle): String = style + noStyles(input) + Reset
     def black: String = this in Black
     def red: String = this in Red
     def green: String = this in Green
@@ -45,7 +45,9 @@ trait AnsiPrint {
     def s: AnsiStyle = AnsiStyle(style)
   }
 
-  case class AnsiStyle(value: String)
+  case class AnsiStyle(value: String) {
+    override def toString = value
+  }
 
   final lazy val Reset: AnsiStyle = Console.RESET.s
   final lazy val Black: AnsiStyle = Console.BLACK.s
@@ -80,11 +82,11 @@ trait AnsiPrint {
   }
 
   private def restyle(input: String, style: AnsiStyle): String = input match {
-    case AnsiPattern() => input.replaceAll(styleOnly, style.value)
+    case AnsiPattern() => input.replaceAll(styleOnly, style.toString)
     case AnsiPatterns(_) => input
     case StuffFollowedByAnsiPatterns(stuff, ansi) => restyle(stuff, style) + ansi
     case AnsiPatternsFollowedByStuff(_, stuff) => input.dropRight(stuff.size) + restyle(stuff, style)
     case StuffFollowedByAnsiPatternsFollowedByStuff(start, ansi, end) => restyle(start, style) + ansi + restyle(end, style)
-    case _ => style.value + input + Reset.value
+    case _ => style + input + Reset
   }
 }
