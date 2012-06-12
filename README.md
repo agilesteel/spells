@@ -62,7 +62,7 @@ object OverridingDefaultStyle extends App {
 }
 
 object OverridingDefaultStyleWithAnything extends App {
-   implicit val defaultStyle = "someStyle".s // <- converts Strings to AnsiStyles
+   implicit val defaultStyle = "someStyle".s
    println("styled")
 }
 ```
