@@ -15,6 +15,10 @@ class AnsiPrintTests extends UnitTestConfiguration {
     "green".green should be(Green + "green" + Reset)
   }
 
+  test("""73.green should be(Green + "73" + Reset)""") {
+    73.green should be(Green + "73" + Reset)
+  }
+
   test(""""green".yellow.red.green should be("green".green)""") {
     "green".yellow.red.green should be("green".green)
   }

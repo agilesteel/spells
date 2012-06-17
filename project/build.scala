@@ -7,8 +7,7 @@ object SpellsBuild extends Build {
   lazy val buildSettings = Seq(
     organization := "com.github.agilesteel",
     version := "1.1",
-    scalaVersion := "2.9.2",
-    crossScalaVersions := Seq("2.9.1", "2.9.2"))
+    scalaVersion := "2.9.2")
 
   override lazy val settings = super.settings ++ buildSettings
 
@@ -30,5 +29,5 @@ object SpellsBuild extends Build {
 }
 
 object Dependency {
-  lazy val scalaTest = "org.scalatest" % "scalatest_2.9.2" % "latest.release" % "test"
+  lazy val scalaTest = "org.scalatest" %% "scalatest" % "latest.release" % "test"
 }

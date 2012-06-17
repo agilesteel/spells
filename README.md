@@ -45,6 +45,7 @@ object Ansi extends App {
    println("white")
    println("green")(Green)
    println("green".green)
+   println(1337.cyan)
    println("green".magenta)(Green)
    println("yellow".yellow + "green".green + "yellow".yellow)(Yellow)
    println("yellow" + "green".green)(Yellow)

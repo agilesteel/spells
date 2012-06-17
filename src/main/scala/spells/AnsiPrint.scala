@@ -19,7 +19,7 @@ object AnsiPrint {
 }
 
 trait AnsiPrint {
-  implicit final def stringToAnsiString(s: String): AnsiString = new AnsiString(s)
+  implicit final def anyToAnsiString(a: Any): AnsiString = new AnsiString(a.toString)
 
   final class AnsiString(input: String) {
     def in(style: AnsiStyle): String = style + noStyles(input) + Reset
