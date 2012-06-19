@@ -1,5 +1,6 @@
 [Java 1.6]: http://java.com/en/download/index.jsp
 [SBT 0.11.3]: https://github.com/harrah/xsbt/wiki
+[here]: http://earlofsteel.de/trunk/spells/spells_2.9.2-1.1.jar
 
 # spells
 
@@ -9,29 +10,18 @@ This is a small scala "util" library, which will hopefully grow over time.
 
 * AnsiPrint - ansi styled outputs for your strings
 
-## Setup
+## Buliding from source
 
 ### Requirements 
 
 * [Java 1.6] or greater
 * [SBT 0.11.3]
-* Internet connection (in order for SBT to be able to download the necessary dependencies)
 
 ### Configuring your project's dependencies
 
-SBT allows you to pull dependencies directly from github. Unfortunately the light build configuration is not sufficient for this. You have to use the full build configuration which might look like this:
+Since ``spells`` currently has zero external dependencies except for the scala standard library no fancy build configuration is required. Therefore you can simply download the jar from [here].
 
-```scala
-import sbt._
-import Keys._
-
-object MyBuild extends Build {
-   lazy val myProject = Project("My Project", file(".")) dependsOn spells
-   lazy val spells = RootProject(uri("git://github.com/agilesteel/spells.git"))
-}
-```
-
-### Usage
+## Usage
 
 Here is an example of ``AnsiPrint`` in action:
 
