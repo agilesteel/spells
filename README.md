@@ -10,18 +10,18 @@ This is a small scala "util" library, which will hopefully grow over time.
 
 * AnsiPrint - ansi styled outputs for your strings
 
-## Buliding from source
+## Usage
 
 ### Requirements 
 
 * [Java 1.6] or greater
-* [SBT 0.11.3]
+* [SBT 0.11.3] if you want to build from source
 
 ### Configuring your project's dependencies
 
 Since ``spells`` currently has zero external dependencies except for the scala standard library no fancy build configuration is required. Therefore you can simply download the jar from [here].
 
-## Usage
+### Examples
 
 Here is an example of ``AnsiPrint`` in action:
 
