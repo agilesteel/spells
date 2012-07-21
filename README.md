@@ -40,7 +40,7 @@ object Ansi extends App {
    println("yellow".yellow + "green".green + "yellow".yellow)(Yellow)
    println("yellow" + "green".green)(Yellow)
    println("yellow".yellow + "green")(Green)
-   println("yellow" + "green".green + "yellow")(Yellow)
+   //println("yellow" + "green".green + "yellow")(Yellow)
    println("yellow".yellow + "green" + "yellow".yellow)(Green)
    println("yellow" + "green".green + "yellow".yellow)(Yellow)
    println("yellow".yellow + "green".green + "yellow")(Yellow)
