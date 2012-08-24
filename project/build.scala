@@ -4,32 +4,55 @@ import sbt._
 import Keys._
 
 object SpellsBuild extends Build {
+  lazy val projectName = "spells"
   lazy val buildSettings = Seq(
+    name := projectName,
     organization := "com.github.agilesteel",
     version := "1.1",
     scalaVersion := "2.9.2",
-    homepage := Some(url("http://agilesteel.github.com/spells/")),
+    homepage := Some(url("http://agilesteel.github.com/spells")),
     startYear := some(2012),
     description := """This is a small scala "util" library, which will hopefully grow over time.""",
-    licenses += "Apache 2" -> url("http://www.apache.org/licenses/LICENSE-2.0"))
+    licenses := Seq("Apache 2" -> url("http://www.apache.org/licenses/LICENSE-2.0")))
 
   override lazy val settings = super.settings ++ buildSettings
 
   lazy val root = Project(
-    id = "spells",
+    id = projectName,
     base = file("."),
-    settings = Project.defaultSettings ++ spellsSettings ++ pureScalaProjectSettings)
+    settings = Project.defaultSettings ++ spellsSettings ++ pureScalaProjectSettings ++ publishSettings)
 
   lazy val spellsSettings = Seq(
     libraryDependencies += Dependency.scalaTest,
-
     scalacOptions ++= Seq("-unchecked", "-deprecation"),
-
     testOptions in Test += Tests.Argument(TestFrameworks.ScalaTest, "stdout"))
 
   lazy val pureScalaProjectSettings = Seq(
     unmanagedSourceDirectories in Compile <<= (scalaSource in Compile)(Seq(_)),
     unmanagedSourceDirectories in Test <<= (scalaSource in Test)(Seq(_)))
+
+  lazy val publishSettings = Seq(
+    credentials += Credentials(Path.userHome/".sbt"/"sonatype.sbt"),
+    publishTo <<= (version) { version: String =>
+      if (version.trim.endsWith("SNAPSHOT"))
+        Some("Sonatype Nexus Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots")
+      else
+        Some("Sonatype Nexus Staging" at "https://oss.sonatype.org/service/local/staging/deploy/maven2")
+    },
+    pomExtra <<= (pomExtra, name, description) { (pom, name, desc) =>
+      pom ++ xml.Group(
+        <scm>
+          <url>git@github.com:agilesteel/spells.git</url>
+          <connection>scm:git:git@github.com:agilesteel/spells.git</connection>
+        </scm>
+        <developers>
+          <developer>
+            <id>agilesteel</id>
+            <name>Vladyslav Pekker</name>
+            <url>http://about.me/agilesteel</url>
+          </developer>
+        </developers>)
+    })
 }
 
 object Dependency {
