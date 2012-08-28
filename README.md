@@ -15,11 +15,14 @@ This is a small scala "util" library, which will hopefully grow over time.
 ### Requirements 
 
 * [Java 1.6] or greater
-* [SBT 0.11.3] if you want to build from source
+* [SBT 0.11.3] or greater if you want to build from source
 
 ### Configuring your project's dependencies
 
-Since ``spells`` currently has zero external dependencies except for the scala standard library no fancy build configuration is required. Therefore you can simply download the jar from [here].
+Add this line to your SBT build file (spells is currently built only against Scala 2.9.2):
+```scala
+libraryDependencies += "com.github.agilesteel" %% "spells" % "1.1"
+```
 
 ### Examples
 
