@@ -50,17 +50,19 @@
 <li>
 <a href="http://java.com/en/download/index.jsp">Java 1.6</a> or greater</li>
 <li>
-<a href="https://github.com/harrah/xsbt/wiki">SBT 0.11.3</a> if you want to build from source</li>
+<a href="https://github.com/harrah/xsbt/wiki">SBT 0.11.3</a> or greater if you want to build from source</li>
 </ul><h3>Configuring your project's dependencies</h3>
 
-<p>Since <code>spells</code> currently has zero external dependencies except for the scala standard library no fancy build configuration is required. Therefore you can simply download the jar from <a href="http://earlofsteel.de/trunk/spells/spells_2.9.2-1.1.jar">here</a>.</p>
+<p>Add this line to your SBT build file (spells is currently built only against Scala 2.9.2):</p>
+
+<div class="highlight"><pre><span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">"com.github.agilesteel"</span> <span class="o">%%</span> <span class="s">"spells"</span> <span class="o">%</span> <span class="s">"1.1"</span>
+</pre></div>
 
 <h3>Examples</h3>
 
 <p>Here is an example of <code>AnsiPrint</code> in action:</p>
 
-<div class="highlight">
-<pre><span class="k">package</span> <span class="nn">myproject</span>
+<div class="highlight"><pre><span class="k">package</span> <span class="nn">myproject</span>
 
 <span class="k">import</span> <span class="nn">spells._</span>
 <span class="k">import</span> <span class="nn">Spells._</span>
@@ -90,13 +92,11 @@
    <span class="k">implicit</span> <span class="k">val</span> <span class="n">defaultStyle</span> <span class="k">=</span> <span class="s">"someStyle"</span><span class="o">.</span><span class="n">s</span>
    <span class="n">println</span><span class="o">(</span><span class="s">"styled"</span><span class="o">)</span>
 <span class="o">}</span>
-</pre>
-</div>
-
+</pre></div>
       </section>
 
     </div>
-    <!--[if !IE]><script>fixScale(document);</script><!--<![endif]-->
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
     
   </body>
 </html>
