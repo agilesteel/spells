@@ -25,6 +25,7 @@ object SpellsBuild extends Build {
   lazy val spellsSettings = Seq(
     libraryDependencies += Dependency.scalaTest,
     scalacOptions ++= Seq("-unchecked", "-deprecation"),
+    initialCommands in console := "import spells._, Spells._",
     testOptions in Test += Tests.Argument(TestFrameworks.ScalaTest, "stdout"))
 
   lazy val pureScalaProjectSettings = Seq(
