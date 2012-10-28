@@ -1,6 +1,5 @@
 [Java 1.6]: http://java.com/en/download/index.jsp
-[SBT 0.11.3]: https://github.com/harrah/xsbt/wiki
-[here]: http://earlofsteel.de/trunk/spells/spells_2.9.2-1.1.jar
+[SBT 0.12.1]: http://www.scala-sbt.org/
 
 # spells
 
@@ -15,7 +14,7 @@ This is a small scala "util" library, which will hopefully grow over time.
 ### Requirements 
 
 * [Java 1.6] or greater
-* [SBT 0.11.3] or greater if you want to build from source
+* [SBT 0.12.1] or greater if you want to build from source
 
 ### Configuring your project's dependencies
 

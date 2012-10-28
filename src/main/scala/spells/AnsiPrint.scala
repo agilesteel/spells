@@ -19,10 +19,9 @@ object AnsiPrint {
 }
 
 trait AnsiPrint {
-  implicit final def anyToAnsiString(a: Any): AnsiString = new AnsiString(a.toString)
-
-  final class AnsiString(input: String) {
-    def in(style: AnsiStyle): String = style + noStyles(input) + Reset
+  implicit final class AnsiString(input: Any) {
+    val repr = input.toString
+    def in(style: AnsiStyle): String = style + noStyles(repr) + Reset
     def black: String = this in Black
     def red: String = this in Red
     def green: String = this in Green
@@ -39,9 +38,7 @@ trait AnsiPrint {
 
   private def noStyles(input: String) = input.replaceAll(styleOrReset, "")
 
-  implicit final def stringToAnsiStyleWrapper(s: String) = new AnsiStyleWrapper(s)
-
-  class AnsiStyleWrapper(style: String) {
+  implicit final class AnsiStyleWrapper(style: String) {
     def s: AnsiStyle = AnsiStyle(style)
   }
 
@@ -78,7 +75,7 @@ trait AnsiPrint {
 
   private[spells] def styled(input: String)(implicit style: AnsiStyle = Reset): String = style match {
     case Reset => input
-    case _     => restyle(input, style)
+    case _ => restyle(input, style)
   }
 
   private def restyle(input: String, style: AnsiStyle): String = input match {

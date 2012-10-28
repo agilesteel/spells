@@ -8,8 +8,8 @@ object SpellsBuild extends Build {
   lazy val buildSettings = Seq(
     name := projectName,
     organization := "com.github.agilesteel",
-    version := "1.1",
-    scalaVersion := "2.9.2",
+    version := "1.2",
+    scalaVersion := "2.10.0-RC1",
     homepage := Some(url("http://agilesteel.github.com/spells")),
     startYear := some(2012),
     description := """This is a small scala "util" library, which will hopefully grow over time.""",
@@ -23,9 +23,9 @@ object SpellsBuild extends Build {
     settings = Project.defaultSettings ++ spellsSettings ++ pureScalaProjectSettings ++ publishSettings)
 
   lazy val spellsSettings = Seq(
-    libraryDependencies += Dependency.scalaTest,
-    scalacOptions ++= Seq("-unchecked", "-deprecation"),
-    initialCommands in console := "import spells._, Spells._",
+    libraryDependencies ++= Seq(Dependency.scalaTest, Dependency.scalaActors),
+    scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-language:_"),
+    initialCommands in console := "import spells._",
     testOptions in Test += Tests.Argument(TestFrameworks.ScalaTest, "stdout"))
 
   lazy val pureScalaProjectSettings = Seq(
@@ -57,5 +57,6 @@ object SpellsBuild extends Build {
 }
 
 object Dependency {
-  lazy val scalaTest = "org.scalatest" %% "scalatest" % "latest.release" % "test"
+  lazy val scalaTest = "org.scalatest" % "scalatest_2.10.0-RC1" % "latest.release" % "test"
+  lazy val scalaActors = "org.scala-lang" % "scala-actors" % "latest.release" % "test"
 }
