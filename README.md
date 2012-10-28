@@ -18,9 +18,11 @@ This is a small scala "util" library, which will hopefully grow over time.
 
 ### Configuring your project's dependencies
 
-Add this line to your SBT build file (spells is currently built only against Scala 2.9.2 and Scala 2.10.0-RC1):
+Add these lines to your SBT build file (spells is currently built only against Scala 2.10.0-RC1):
 ```scala
-libraryDependencies += "com.github.agilesteel" %% "spells" % "1.1"
+resolvers += Resolver.sonatypeRepo("releases") // optional, but quicker
+
+libraryDependencies += "com.github.agilesteel" %% "spells" % "1.2"
 ```
 
 ### Examples
