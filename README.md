@@ -22,7 +22,7 @@ Add these lines to your SBT build file (spells is currently built only against S
 ```scala
 resolvers += Resolver.sonatypeRepo("releases") // optional, but quicker
 
-libraryDependencies += "com.github.agilesteel" %% "spells" % "1.2"
+libraryDependencies += "com.github.agilesteel" % "spells_2.10" % "1.2"
 ```
 
 ### Examples
