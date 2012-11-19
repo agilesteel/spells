@@ -18,7 +18,7 @@ This is a small scala "util" library, which will hopefully grow over time.
 
 ### Configuring your project's dependencies
 
-Add these lines to your SBT build file (spells is currently built only against Scala 2.10.0-RC1):
+Add these lines to your SBT build file (spells is currently built only against Scala 2.10.0-RC2):
 ```scala
 resolvers += Resolver.sonatypeRepo("releases") // optional, but quicker
 
