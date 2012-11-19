@@ -3,13 +3,18 @@ package spells
 import sbt._
 import Keys._
 
+object Dependency {
+  lazy val scalaTest = "org.scalatest" % "scalatest_2.10.0-RC2" % "latest.release" % "test"
+  lazy val scalaActors = "org.scala-lang" % "scala-actors" % "latest.release" % "test"
+}
+
 object SpellsBuild extends Build {
   lazy val projectName = "spells"
   lazy val buildSettings = Seq(
     name := projectName,
     organization := "com.github.agilesteel",
     version := "1.2",
-    scalaVersion := "2.10.0-RC1",
+    scalaVersion := "2.10.0-RC2",
     homepage := Some(url("http://agilesteel.github.com/spells")),
     startYear := some(2012),
     description := """This is a small scala "util" library, which will hopefully grow over time.""",
@@ -54,9 +59,4 @@ object SpellsBuild extends Build {
           </developer>
         </developers>)
     })
-}
-
-object Dependency {
-  lazy val scalaTest = "org.scalatest" % "scalatest_2.10.0-RC1" % "latest.release" % "test"
-  lazy val scalaActors = "org.scala-lang" % "scala-actors" % "latest.release" % "test"
 }
