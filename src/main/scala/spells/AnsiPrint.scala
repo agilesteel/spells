@@ -2,7 +2,7 @@ package spells
 
 import AnsiPrint._
 
-object AnsiPrint {
+object AnsiPrint extends AnsiPrint {
   private lazy val AnsiPatterns = ("(" + AnsiPattern + ")+").r
   private lazy val AnsiPattern = (styleOrReset + word + reset).r
 
@@ -16,12 +16,9 @@ object AnsiPrint {
   private lazy val styleOnly = """\033\[\d{2}m"""
   private lazy val styleOrReset = """\033\[\d{1,2}m"""
   private lazy val reset = """\033\[0m"""
-}
-
-trait AnsiPrint {
-  implicit final class AnsiString(input: Any) {
-    val repr = input.toString
-    def in(style: AnsiStyle): String = style + noStyles(repr) + Reset
+  
+  final class AnsiString(val input: Any) extends AnyVal {
+    def in(style: AnsiStyle): String = style + noStyles(input.toString) + Reset
     def black: String = this in Black
     def red: String = this in Red
     def green: String = this in Green
@@ -35,9 +32,13 @@ trait AnsiPrint {
     def reversed: String = this in Reversed
     def invisible: String = this in Invisible
   }
-
+  
   private def noStyles(input: String) = input.replaceAll(styleOrReset, "")
+}
 
+trait AnsiPrint {
+  implicit def anyToAnsiString(input: Any) = new AnsiString(input)
+  
   implicit final class AnsiStyleWrapper(style: String) {
     def s: AnsiStyle = AnsiStyle(style)
   }
