@@ -1,0 +1,1 @@
+package object spells extends AnsiPrint

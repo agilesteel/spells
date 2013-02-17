@@ -1,7 +1,5 @@
 package spells
 
-import Spells._
-
 class AnsiPrintTests extends UnitTestConfiguration {
   test(""""style".s should be (AnsiStyle("style"))""") {
     "style".s should be(AnsiStyle("style"))

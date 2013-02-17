@@ -4,8 +4,7 @@ import sbt._
 import Keys._
 
 object Dependency {
-  lazy val scalaTest = "org.scalatest" % "scalatest_2.10.0-RC5" % "latest.release" % "test"
-  lazy val scalaActors = "org.scala-lang" % "scala-actors" % "latest.release" % "test"
+  lazy val scalaTest = "org.scalatest" % "scalatest_2.10" % "latest.release" % "test"
 }
 
 object SpellsBuild extends Build {
@@ -14,7 +13,7 @@ object SpellsBuild extends Build {
     name := projectName,
     organization := "com.github.agilesteel",
     version := "1.2",
-    scalaVersion := "2.10.0-RC5",
+    scalaVersion := "2.10.0",
     homepage := Some(url("http://agilesteel.github.com/spells")),
     startYear := some(2012),
     description := """This is a small scala "util" library, which will hopefully grow over time.""",
@@ -28,7 +27,7 @@ object SpellsBuild extends Build {
     settings = Project.defaultSettings ++ spellsSettings ++ pureScalaProjectSettings ++ publishSettings)
 
   lazy val spellsSettings = Seq(
-    libraryDependencies ++= Seq(Dependency.scalaTest, Dependency.scalaActors),
+    libraryDependencies ++= Seq(Dependency.scalaTest),
     scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-language:_"),
     initialCommands in console := "import spells._; import Spells._",
     testOptions in Test += Tests.Argument(TestFrameworks.ScalaTest, "stdout"))
@@ -38,7 +37,8 @@ object SpellsBuild extends Build {
     unmanagedSourceDirectories in Test <<= (scalaSource in Test)(Seq(_)))
 
   lazy val publishSettings = Seq(
-    credentials += Credentials(Path.userHome/".sbt"/"sonatype.sbt"),
+    publishMavenStyle := true,
+    credentials += Credentials(Path.userHome/".sbt"/"sonatype.credentials"),
     publishTo <<= (version) { version: String =>
       if (version.trim.endsWith("SNAPSHOT"))
         Some("Sonatype Nexus Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots")
