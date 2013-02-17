@@ -33,7 +33,6 @@ Here is an example of ``AnsiPrint`` in action:
 package myproject
 
 import spells._
-import Spells._
  
 object Ansi extends App {
    println("white")
