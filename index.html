@@ -53,7 +53,7 @@
 <a href="http://www.scala-sbt.org/">SBT 0.12.1</a> or greater if you want to build from source</li>
 </ul><h3>Configuring your project's dependencies</h3>
 
-<p>Add these lines to your SBT build file (spells is currently built only against Scala 2.10.0-RCX series):</p>
+<p>Add these lines to your SBT build file</p>
 
 <div class="highlight"><pre><span class="n">resolvers</span> <span class="o">+=</span> <span class="nc">Resolver</span><span class="o">.</span><span class="n">sonatypeRepo</span><span class="o">(</span><span class="s">"releases"</span><span class="o">)</span> <span class="c1">// optional, but quicker</span>
 
@@ -67,7 +67,6 @@
 <div class="highlight"><pre><span class="k">package</span> <span class="nn">myproject</span>
 
 <span class="k">import</span> <span class="nn">spells._</span>
-<span class="k">import</span> <span class="nn">Spells._</span>
 
 <span class="k">object</span> <span class="nc">Ansi</span> <span class="k">extends</span> <span class="nc">App</span> <span class="o">{</span>
    <span class="n">println</span><span class="o">(</span><span class="s">"white"</span><span class="o">)</span>
