@@ -16,7 +16,7 @@ object AnsiPrint extends AnsiPrint {
   private lazy val styleOnly = """\033\[\d{2}m"""
   private lazy val styleOrReset = """\033\[\d{1,2}m"""
   private lazy val reset = """\033\[0m"""
-  
+
   final class AnsiString(val input: Any) extends AnyVal {
     def in(style: AnsiStyle): String = style + noStyles(input.toString) + Reset
     def black: String = this in Black
@@ -32,13 +32,13 @@ object AnsiPrint extends AnsiPrint {
     def reversed: String = this in Reversed
     def invisible: String = this in Invisible
   }
-  
+
   private def noStyles(input: String) = input.replaceAll(styleOrReset, "")
 }
 
 trait AnsiPrint {
   implicit def anyToAnsiString(input: Any) = new AnsiString(input)
-  
+
   implicit final class AnsiStyleWrapper(style: String) {
     def s: AnsiStyle = AnsiStyle(style)
   }
@@ -74,10 +74,9 @@ trait AnsiPrint {
     Console.print(styled(input.toString)(style))
   }
 
-  private[spells] def styled(input: String)(implicit style: AnsiStyle = Reset): String = style match {
-    case Reset => input
-    case _ => restyle(input, style)
-  }
+  private[spells] def styled(input: String)(implicit style: AnsiStyle = Reset): String =
+    if (style == Reset || input.matches(AnsiPattern.toString)) input
+    else restyle(input, style)
 
   private def restyle(input: String, style: AnsiStyle): String = input match {
     case AnsiPattern() => input.replaceAll(styleOnly, style.toString)

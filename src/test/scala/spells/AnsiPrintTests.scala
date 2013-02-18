@@ -36,9 +36,9 @@ class AnsiPrintTests extends UnitTestConfiguration {
     println("green".green)
   }
 
-  test("""styled("green".magenta)(Green) should be("green".green)""") {
-    styled("green".magenta)(Green) should be("green".green)
-    println("green".magenta)(Green)
+  test("""styled("magenta".magenta)(Green) should be("magenta".magenta)""") {
+    println("magenta".magenta)(Green)
+    styled("magenta".magenta)(Green) should be("magenta".magenta)
   }
 
   test("""styled("yellow".yellow + "green".green + "yellow".yellow)(Yellow) should be("yellow".yellow + "green".green + "yellow".yellow)""") {

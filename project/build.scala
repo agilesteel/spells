@@ -2,6 +2,7 @@ package spells
 
 import sbt._
 import Keys._
+import com.typesafe.sbt.SbtScalariform._
 
 object Dependency {
   lazy val scalaTest = "org.scalatest" % "scalatest_2.10" % "latest.release" % "test"
@@ -12,7 +13,7 @@ object SpellsBuild extends Build {
   lazy val buildSettings = Seq(
     name := projectName,
     organization := "com.github.agilesteel",
-    version := "1.2",
+    version := "1.3",
     scalaVersion := "2.10.0",
     homepage := Some(url("http://agilesteel.github.com/spells")),
     startYear := some(2012),
@@ -24,12 +25,12 @@ object SpellsBuild extends Build {
   lazy val root = Project(
     id = projectName,
     base = file("."),
-    settings = Project.defaultSettings ++ spellsSettings ++ pureScalaProjectSettings ++ publishSettings)
+    settings = Project.defaultSettings ++ spellsSettings ++ pureScalaProjectSettings ++ publishSettings ++ scalariformSettings)
 
   lazy val spellsSettings = Seq(
     libraryDependencies ++= Seq(Dependency.scalaTest),
     scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-language:_"),
-    initialCommands in console := "import spells._; import Spells._",
+    initialCommands in console := "import spells._",
     testOptions in Test += Tests.Argument(TestFrameworks.ScalaTest, "stdout"))
 
   lazy val pureScalaProjectSettings = Seq(

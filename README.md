@@ -22,7 +22,7 @@ Add these lines to your SBT build file
 ```scala
 resolvers += Resolver.sonatypeRepo("releases") // optional, but quicker
 
-libraryDependencies += "com.github.agilesteel" % "spells_2.10" % "1.2"
+libraryDependencies += "com.github.agilesteel" % "spells_2.10" % "1.3"
 ```
 
 ### Examples
@@ -40,7 +40,7 @@ object Ansi extends App {
    println("green")(Green)
    println("green".green)
    println(1337.cyan)
-   println("green".magenta)(Green)
+   println("magenta".magenta)(Green)
    println("yellow".yellow + "green".green + "yellow".yellow)(Yellow)
    println("yellow" + "green".green)(Yellow)
    println("yellow".yellow + "green")(Green)
