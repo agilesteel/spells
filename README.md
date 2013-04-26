@@ -1,5 +1,5 @@
 [Java 1.6]: http://java.com/en/download/index.jsp
-[SBT 0.12.1]: http://www.scala-sbt.org/
+[SBT 0.12.2]: http://www.scala-sbt.org/
 
 # spells
 
@@ -14,7 +14,7 @@ This is a small scala "util" library, which will hopefully grow over time.
 ### Requirements 
 
 * [Java 1.6] or greater
-* [SBT 0.12.1] or greater if you want to build from source
+* [SBT 0.12.2] or greater if you want to build from source
 
 ### Configuring your project's dependencies
 
@@ -22,7 +22,7 @@ Add these lines to your SBT build file
 ```scala
 resolvers += Resolver.sonatypeRepo("releases") // optional, but quicker
 
-libraryDependencies += "com.github.agilesteel" % "spells_2.10" % "1.3"
+libraryDependencies += "com.github.agilesteel" % "spells_2.10" % "1.4"
 ```
 
 ### Examples
@@ -50,13 +50,19 @@ object Ansi extends App {
    println("yellow" + "red".red + "yellow" + "green".green + "yellow")(Yellow)
 }
 
+object UsingCustomStyles extends App {
+   val customStyle = "someStyle".toAnsiStyle
+   println("styled" in customStyle)
+}
+
 object OverridingDefaultStyle extends App {
    implicit val defaultStyle = Yellow
    println("yellow" + "red".red + "yellow" + "green".green + "yellow")
 }
 
-object OverridingDefaultStyleWithAnything extends App {
-   implicit val defaultStyle = "someStyle".s
+object OverridingDefaultStyleWithCustomStyle extends App {
+   implicit val defaultStyle = "someStyle".toAnsiStyle
    println("styled")
 }
+
 ```

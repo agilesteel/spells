@@ -4,38 +4,40 @@ import sbt._
 import Keys._
 import com.typesafe.sbt.SbtScalariform._
 
-object Dependency {
-  lazy val scalaTest = "org.scalatest" % "scalatest_2.10" % "latest.release" % "test"
-}
-
 object SpellsBuild extends Build {
   lazy val projectName = "spells"
-  lazy val buildSettings = Seq(
+
+  lazy val buildSettings = Project.defaultSettings ++ Seq(
     name := projectName,
     organization := "com.github.agilesteel",
-    version := "1.3",
-    scalaVersion := "2.10.0",
+    version := "1.4",
+    scalaVersion := "2.10.1",
     homepage := Some(url("http://agilesteel.github.com/spells")),
     startYear := some(2012),
     description := """This is a small scala "util" library, which will hopefully grow over time.""",
     licenses := Seq("Apache 2" -> url("http://www.apache.org/licenses/LICENSE-2.0")))
 
-  override lazy val settings = super.settings ++ buildSettings
-
   lazy val root = Project(
     id = projectName,
     base = file("."),
-    settings = Project.defaultSettings ++ spellsSettings ++ pureScalaProjectSettings ++ publishSettings ++ scalariformSettings)
+    settings = buildSettings
+            ++ spellsSettings
+            ++ pureScalaProjectSettings
+            ++ publishSettings
+            ++ scalariformSettings
+  )
 
   lazy val spellsSettings = Seq(
-    libraryDependencies ++= Seq(Dependency.scalaTest),
+    libraryDependencies ++= Seq(Dependencies.scalaTest),
     scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-language:_"),
     initialCommands in console := "import spells._",
-    testOptions in Test += Tests.Argument(TestFrameworks.ScalaTest, "stdout"))
+    testOptions in Test += Tests.Argument(TestFrameworks.ScalaTest, "stdout")
+  )
 
   lazy val pureScalaProjectSettings = Seq(
     unmanagedSourceDirectories in Compile <<= (scalaSource in Compile)(Seq(_)),
-    unmanagedSourceDirectories in Test <<= (scalaSource in Test)(Seq(_)))
+    unmanagedSourceDirectories in Test <<= (scalaSource in Test)(Seq(_))
+  )
 
   lazy val publishSettings = Seq(
     publishMavenStyle := true,
@@ -59,5 +61,10 @@ object SpellsBuild extends Build {
             <url>http://about.me/agilesteel</url>
           </developer>
         </developers>)
-    })
+    }
+  )
+}
+
+object Dependencies {
+  lazy val scalaTest = "org.scalatest" % "scalatest_2.10" % "2.0.M5b" % "test"
 }

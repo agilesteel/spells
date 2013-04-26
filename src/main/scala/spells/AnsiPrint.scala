@@ -18,7 +18,7 @@ object AnsiPrint extends AnsiPrint {
   private lazy val reset = """\033\[0m"""
 
   final class AnsiString(val input: Any) extends AnyVal {
-    def in(style: AnsiStyle): String = style + noStyles(input.toString) + Reset
+    def in(style: AnsiPrint#AnsiStyle): String = style + noStyles(input.toString) + Reset
     def black: String = this in Black
     def red: String = this in Red
     def green: String = this in Green
@@ -40,27 +40,27 @@ trait AnsiPrint {
   implicit def anyToAnsiString(input: Any) = new AnsiString(input)
 
   implicit final class AnsiStyleWrapper(style: String) {
-    def s: AnsiStyle = AnsiStyle(style)
+    def toAnsiStyle: AnsiStyle = AnsiStyle(style)
   }
 
   case class AnsiStyle(value: String) {
     override def toString = value
   }
 
-  final lazy val Reset: AnsiStyle = Console.RESET.s
-  final lazy val Black: AnsiStyle = Console.BLACK.s
-  final lazy val Red: AnsiStyle = Console.RED.s
-  final lazy val Green: AnsiStyle = Console.GREEN.s
-  final lazy val Yellow: AnsiStyle = Console.YELLOW.s
-  final lazy val Blue: AnsiStyle = Console.BLUE.s
-  final lazy val Magenta: AnsiStyle = Console.MAGENTA.s
-  final lazy val Cyan: AnsiStyle = Console.CYAN.s
-  final lazy val White: AnsiStyle = Console.WHITE.s
+  final lazy val Reset: AnsiStyle = Console.RESET.toAnsiStyle
+  final lazy val Black: AnsiStyle = Console.BLACK.toAnsiStyle
+  final lazy val Red: AnsiStyle = Console.RED.toAnsiStyle
+  final lazy val Green: AnsiStyle = Console.GREEN.toAnsiStyle
+  final lazy val Yellow: AnsiStyle = Console.YELLOW.toAnsiStyle
+  final lazy val Blue: AnsiStyle = Console.BLUE.toAnsiStyle
+  final lazy val Magenta: AnsiStyle = Console.MAGENTA.toAnsiStyle
+  final lazy val Cyan: AnsiStyle = Console.CYAN.toAnsiStyle
+  final lazy val White: AnsiStyle = Console.WHITE.toAnsiStyle
 
-  final lazy val Bold: AnsiStyle = Console.BOLD.s
-  final lazy val Blink: AnsiStyle = Console.BLINK.s
-  final lazy val Reversed: AnsiStyle = Console.REVERSED.s
-  final lazy val Invisible: AnsiStyle = Console.INVISIBLE.s
+  final lazy val Bold: AnsiStyle = Console.BOLD.toAnsiStyle
+  final lazy val Blink: AnsiStyle = Console.BLINK.toAnsiStyle
+  final lazy val Reversed: AnsiStyle = Console.REVERSED.toAnsiStyle
+  final lazy val Invisible: AnsiStyle = Console.INVISIBLE.toAnsiStyle
 
   final def printerr(error: Any): Unit = {
     println(error)(Red)

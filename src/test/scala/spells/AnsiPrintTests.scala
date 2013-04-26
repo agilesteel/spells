@@ -1,12 +1,17 @@
 package spells
 
 class AnsiPrintTests extends UnitTestConfiguration {
+  test(""""green" in customStyle should be(customStyle + "green" + Reset)""") {
+    val customStyle = "style".toAnsiStyle
+    "green" in customStyle should be(customStyle + "green" + Reset)
+  }
+
   test(""""style".s should be (AnsiStyle("style"))""") {
-    "style".s should be(AnsiStyle("style"))
+    "style".toAnsiStyle should be(AnsiStyle("style"))
   }
 
   test("""""style".s.toString should be("style")""") {
-    "style".s.toString should be("style")
+    "style".toAnsiStyle.toString should be("style")
   }
 
   test(""""green".green should be(Green + "green" + Reset)""") {
@@ -37,8 +42,8 @@ class AnsiPrintTests extends UnitTestConfiguration {
   }
 
   test("""styled("magenta".magenta)(Green) should be("magenta".magenta)""") {
-    println("magenta".magenta)(Green)
     styled("magenta".magenta)(Green) should be("magenta".magenta)
+    println("magenta".magenta)(Green)
   }
 
   test("""styled("yellow".yellow + "green".green + "yellow".yellow)(Yellow) should be("yellow".yellow + "green".green + "yellow".yellow)""") {
