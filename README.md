@@ -18,7 +18,7 @@ This is a small scala "util" library, which will hopefully grow over time.
 
 ### Configuring your project's dependencies
 
-Add these lines to your SBT build file
+Add these lines to your SBT build file:
 ```scala
 resolvers += Resolver.sonatypeRepo("releases") // optional, but quicker
 
