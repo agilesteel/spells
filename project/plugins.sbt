@@ -3,4 +3,4 @@ resolvers ++= Seq(
 	"Typesafe repository" at "http://repo.typesafe.com/typesafe/releases/"
 )
 
-addSbtPlugin("com.typesafe.sbt" % "sbt-scalariform" % "1.0.0")
+addSbtPlugin("com.typesafe.sbt" % "sbt-scalariform" % "1.2.1")
