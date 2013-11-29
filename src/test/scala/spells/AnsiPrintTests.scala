@@ -91,4 +91,17 @@ class AnsiPrintTests extends UnitTestConfiguration {
     styled("yellow" + "red".red + "yellow" + "green".green + "yellow") should be("yellow".yellow + "red".red + "yellow".yellow + "green".green + "yellow".yellow)
     println("yellow" + "red".red + "yellow" + "green".green + "yellow")
   }
+
+  test("""styled(null) should be("null")""") {
+    styled(null) should be("null")
+    val noStr: String = null
+    println(noStr)
+  }
+
+  test("""styled null value: styled(null.red) should be("null.red")""") {
+    val noStr: String = null
+    styled(noStr.red) should be("null".red)
+    println(noStr.red)
+  }
+
 }
