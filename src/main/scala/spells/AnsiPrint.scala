@@ -19,18 +19,18 @@ object AnsiPrint extends AnsiPrint {
 
   final class AnsiString(val input: Any) extends AnyVal {
     def in(style: AnsiPrint#AnsiStyle): String = style + noStyles(String.valueOf(input)) + Reset
-    def black: String = this in Black
-    def red: String = this in Red
-    def green: String = this in Green
-    def yellow: String = this in Yellow
-    def blue: String = this in Blue
-    def magenta: String = this in Magenta;
-    def cyan: String = this in Cyan
-    def white: String = this in White
-    def bold: String = this in Bold
-    def blink: String = this in Blink
-    def reversed: String = this in Reversed
-    def invisible: String = this in Invisible
+    @inline def black: String = this in Black
+    @inline def red: String = this in Red
+    @inline def green: String = this in Green
+    @inline def yellow: String = this in Yellow
+    @inline def blue: String = this in Blue
+    @inline def magenta: String = this in Magenta;
+    @inline def cyan: String = this in Cyan
+    @inline def white: String = this in White
+    @inline def bold: String = this in Bold
+    @inline def blink: String = this in Blink
+    @inline def reversed: String = this in Reversed
+    @inline def invisible: String = this in Invisible
   }
 
   private def noStyles(input: String) = input.replaceAll(styleOrReset, "")
@@ -47,20 +47,20 @@ trait AnsiPrint {
     override def toString = value
   }
 
-  final lazy val Reset: AnsiStyle = Console.RESET.toAnsiStyle
-  final lazy val Black: AnsiStyle = Console.BLACK.toAnsiStyle
-  final lazy val Red: AnsiStyle = Console.RED.toAnsiStyle
-  final lazy val Green: AnsiStyle = Console.GREEN.toAnsiStyle
-  final lazy val Yellow: AnsiStyle = Console.YELLOW.toAnsiStyle
-  final lazy val Blue: AnsiStyle = Console.BLUE.toAnsiStyle
-  final lazy val Magenta: AnsiStyle = Console.MAGENTA.toAnsiStyle
-  final lazy val Cyan: AnsiStyle = Console.CYAN.toAnsiStyle
-  final lazy val White: AnsiStyle = Console.WHITE.toAnsiStyle
+  @inline final lazy val Reset: AnsiStyle = Console.RESET.toAnsiStyle
+  @inline final lazy val Black: AnsiStyle = Console.BLACK.toAnsiStyle
+  @inline final lazy val Red: AnsiStyle = Console.RED.toAnsiStyle
+  @inline final lazy val Green: AnsiStyle = Console.GREEN.toAnsiStyle
+  @inline final lazy val Yellow: AnsiStyle = Console.YELLOW.toAnsiStyle
+  @inline final lazy val Blue: AnsiStyle = Console.BLUE.toAnsiStyle
+  @inline final lazy val Magenta: AnsiStyle = Console.MAGENTA.toAnsiStyle
+  @inline final lazy val Cyan: AnsiStyle = Console.CYAN.toAnsiStyle
+  @inline final lazy val White: AnsiStyle = Console.WHITE.toAnsiStyle
 
-  final lazy val Bold: AnsiStyle = Console.BOLD.toAnsiStyle
-  final lazy val Blink: AnsiStyle = Console.BLINK.toAnsiStyle
-  final lazy val Reversed: AnsiStyle = Console.REVERSED.toAnsiStyle
-  final lazy val Invisible: AnsiStyle = Console.INVISIBLE.toAnsiStyle
+  @inline final lazy val Bold: AnsiStyle = Console.BOLD.toAnsiStyle
+  @inline final lazy val Blink: AnsiStyle = Console.BLINK.toAnsiStyle
+  @inline final lazy val Reversed: AnsiStyle = Console.REVERSED.toAnsiStyle
+  @inline final lazy val Invisible: AnsiStyle = Console.INVISIBLE.toAnsiStyle
 
   @inline
   final def printerr(error: Any): Unit = {
