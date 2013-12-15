@@ -1,1 +1,1 @@
-package object spells extends AnsiPrint
+package object spells extends Spells

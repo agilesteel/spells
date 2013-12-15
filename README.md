@@ -1,5 +1,5 @@
 [Java 1.6]: http://java.com/en/download/index.jsp
-[SBT 0.12.2]: http://www.scala-sbt.org/
+[SBT 0.13.1]: http://www.scala-sbt.org/
 
 # spells
 
@@ -11,10 +11,10 @@ This is a small scala "util" library, which will hopefully grow over time.
 
 ## Usage
 
-### Requirements 
+### Requirements
 
 * [Java 1.6] or greater
-* [SBT 0.12.2] or greater if you want to build from source
+* [SBT 0.13.1] or greater if you want to build from source
 
 ### Configuring your project's dependencies
 
@@ -22,7 +22,7 @@ Add these lines to your SBT build file:
 ```scala
 resolvers += Resolver.sonatypeRepo("releases") // optional, but quicker
 
-libraryDependencies += "com.github.agilesteel" % "spells_2.10" % "1.4"
+libraryDependencies += "com.github.agilesteel" %% "spells" % "1.4.2"
 ```
 
 ### Examples
@@ -33,7 +33,7 @@ Here is an example of ``AnsiPrint`` in action:
 package myproject
 
 import spells._
- 
+
 object Ansi extends App {
    println("white")
    println("green")(Green)

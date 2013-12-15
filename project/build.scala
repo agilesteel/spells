@@ -10,7 +10,7 @@ object SpellsBuild extends Build {
   lazy val buildSettings = Project.defaultSettings ++ Seq(
     name := projectName,
     organization := "com.github.agilesteel",
-    version := "1.4",
+    version := "1.4.2",
     scalaVersion := "2.10.3",
     homepage := Some(url("http://agilesteel.github.com/spells")),
     startYear := some(2012),
@@ -48,6 +48,8 @@ object SpellsBuild extends Build {
       else
         Some("Sonatype Nexus Staging" at "https://oss.sonatype.org/service/local/staging/deploy/maven2")
     },
+    publishArtifact in Test := false,
+    pomIncludeRepository := { _ => false },
     pomExtra <<= (pomExtra, name, description) { (pom, name, desc) =>
       pom ++ xml.Group(
         <scm>
@@ -66,5 +68,5 @@ object SpellsBuild extends Build {
 }
 
 object Dependencies {
-  lazy val scalaTest = "org.scalatest" % "scalatest_2.10" % "2.0" % "test"
+  lazy val scalaTest = "org.scalatest" %% "scalatest" % "2.0" % "test"
 }

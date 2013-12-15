@@ -62,14 +62,17 @@ trait AnsiPrint {
   final lazy val Reversed: AnsiStyle = Console.REVERSED.toAnsiStyle
   final lazy val Invisible: AnsiStyle = Console.INVISIBLE.toAnsiStyle
 
+  @inline
   final def printerr(error: Any): Unit = {
-    println(error)(Red)
+    Console.err.println(error.red)
   }
 
+  @inline
   final def println(input: Any = "")(implicit style: AnsiStyle = Reset): Unit = {
     Console.println(styled(input)(style))
   }
 
+  @inline
   final def print(input: Any = "")(implicit style: AnsiStyle = Reset): Unit = {
     Console.print(styled(input)(style))
   }
