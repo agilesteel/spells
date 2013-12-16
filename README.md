@@ -22,7 +22,7 @@ Add these lines to your SBT build file:
 ```scala
 resolvers += Resolver.sonatypeRepo("releases") // optional, but quicker
 
-libraryDependencies += "com.github.agilesteel" %% "spells" % "1.4.2"
+libraryDependencies += "com.github.agilesteel" %% "spells" % "1.4.3"
 ```
 
 ### Examples
