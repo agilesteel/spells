@@ -18,7 +18,7 @@ object AnsiPrint extends AnsiPrint {
   private lazy val reset = """\033\[0m"""
 
   final class AnsiString(val input: Any) extends AnyVal {
-    def in(style: AnsiPrint#AnsiStyle): String = style + noStyles(String.valueOf(input)) + Reset
+    def in(style: AnsiPrint#AnsiStyle): String = style + noStyles(String valueOf input) + Reset
     @inline def black: String = this in Black
     @inline def red: String = this in Red
     @inline def green: String = this in Green
@@ -62,23 +62,20 @@ trait AnsiPrint {
   @inline final lazy val Reversed: AnsiStyle = Console.REVERSED.toAnsiStyle
   @inline final lazy val Invisible: AnsiStyle = Console.INVISIBLE.toAnsiStyle
 
-  @inline
-  final def printerr(error: Any): Unit = {
-    Console.err.println(error.red)
+  @inline final def printerr(error: Any): Unit = {
+    Console.err println styled(error)(Red)
   }
 
-  @inline
-  final def println(input: Any = "")(implicit style: AnsiStyle = Reset): Unit = {
-    Console.println(styled(input)(style))
+  @inline final def println(input: Any = "")(implicit style: AnsiStyle = Reset): Unit = {
+    Console println styled(input)(style)
   }
 
-  @inline
-  final def print(input: Any = "")(implicit style: AnsiStyle = Reset): Unit = {
-    Console.print(styled(input)(style))
+  @inline final def print(input: Any = "")(implicit style: AnsiStyle = Reset): Unit = {
+    Console print styled(input)(style)
   }
 
-  private[spells] def styled(anput: Any)(implicit style: AnsiStyle = Reset): String = {
-    val input: String = String.valueOf(anput)
+  final def styled(anput: Any)(implicit style: AnsiStyle = Reset): String = {
+    val input = String valueOf anput
     if (style == Reset || input.matches(AnsiPattern.toString)) input
     else restyle(input, style)
   }

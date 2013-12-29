@@ -10,7 +10,7 @@ object SpellsBuild extends Build {
   lazy val buildSettings = Project.defaultSettings ++ Seq(
     name := projectName,
     organization := "com.github.agilesteel",
-    version := "1.4.3",
+    version := "1.4.4",
     scalaVersion := "2.10.3",
     homepage := Some(url("http://agilesteel.github.com/spells")),
     startYear := some(2012),
@@ -29,7 +29,7 @@ object SpellsBuild extends Build {
 
   lazy val spellsSettings = Seq(
     libraryDependencies ++= Seq(Dependencies.scalaTest),
-    scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-language:_"),
+    scalacOptions ++= Seq("-unchecked", "-deprecation", "-encoding", "utf8", "-feature", "-language:_"),
     initialCommands in console := "import spells._",
     testOptions in Test += Tests.Argument(TestFrameworks.ScalaTest, "-o")
   )

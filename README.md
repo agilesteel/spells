@@ -1,3 +1,4 @@
+[ANSI]: http://ascii-table.com/ansi-escape-sequences.php
 [Java 1.6]: http://java.com/en/download/index.jsp
 [SBT 0.13.1]: http://www.scala-sbt.org/
 
@@ -7,7 +8,7 @@ This is a small scala "util" library, which will hopefully grow over time.
 
 ## Features:
 
-* AnsiPrint - ansi styled outputs for your strings
+* AnsiPrint - [ANSI] styled outputs for your strings
 
 ## Usage
 
@@ -22,7 +23,7 @@ Add these lines to your SBT build file:
 ```scala
 resolvers += Resolver.sonatypeRepo("releases") // optional, but quicker
 
-libraryDependencies += "com.github.agilesteel" %% "spells" % "1.4.3"
+libraryDependencies += "com.github.agilesteel" %% "spells" % "1.4.4"
 ```
 
 ### Examples
