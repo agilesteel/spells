@@ -27,6 +27,7 @@ object AnsiPrint extends AnsiPrint {
     @inline def magenta: String = this in Magenta;
     @inline def cyan: String = this in Cyan
     @inline def white: String = this in White
+
     @inline def bold: String = this in Bold
     @inline def blink: String = this in Blink
     @inline def reversed: String = this in Reversed
