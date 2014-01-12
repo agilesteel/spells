@@ -90,6 +90,6 @@ trait AnsiPrint {
     case StuffFollowedByAnsiPatterns(stuff, ansi) => restyle(stuff, style) + ansi
     case AnsiPatternsFollowedByStuff(_, stuff) => input.dropRight(stuff.size) + restyle(stuff, style)
     case StuffFollowedByAnsiPatternsFollowedByStuff(start, ansi, end) => restyle(start, style) + ansi + restyle(end, style)
-    case _ => input in style
+    case _ => style.value + input + Reset.value
   }
 }
