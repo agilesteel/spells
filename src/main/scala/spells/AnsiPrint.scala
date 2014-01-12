@@ -17,8 +17,11 @@ object AnsiPrint extends AnsiPrint {
   private lazy val styleOrReset = """\033\[\d{1,2}m"""
   private lazy val reset = """\033\[0m"""
 
+  private lazy val Sample = "sample"
+
   final class AnsiString(val input: Any) extends AnyVal {
-    def in(style: AnsiPrint#AnsiStyle): String = style + noStyles(String valueOf input) + Reset
+    def in(style: AnsiPrint#AnsiStyle): String = style.value + noStyles(String valueOf input) + Reset.value
+
     @inline def black: String = this in Black
     @inline def red: String = this in Red
     @inline def green: String = this in Green
@@ -45,7 +48,7 @@ trait AnsiPrint {
   }
 
   case class AnsiStyle(value: String) {
-    override def toString = value
+    override def toString = Sample in this
   }
 
   @inline final lazy val Reset: AnsiStyle = Console.RESET.toAnsiStyle
@@ -82,11 +85,11 @@ trait AnsiPrint {
   }
 
   private def restyle(input: String, style: AnsiStyle): String = input match {
-    case AnsiPattern() => input.replaceAll(styleOnly, style.toString)
+    case AnsiPattern() => input.replaceAll(styleOnly, style.value)
     case AnsiPatterns(_) => input
     case StuffFollowedByAnsiPatterns(stuff, ansi) => restyle(stuff, style) + ansi
     case AnsiPatternsFollowedByStuff(_, stuff) => input.dropRight(stuff.size) + restyle(stuff, style)
     case StuffFollowedByAnsiPatternsFollowedByStuff(start, ansi, end) => restyle(start, style) + ansi + restyle(end, style)
-    case _ => style + input + Reset
+    case _ => style.value + input + Reset.value
   }
 }

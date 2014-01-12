@@ -3,23 +3,24 @@ package spells
 class AnsiPrintTests extends UnitTestConfiguration {
   test(""""green" in customStyle should be(customStyle + "green" + Reset)""") {
     val customStyle = "style".toAnsiStyle
-    "green" in customStyle should be(customStyle + "green" + Reset)
+    "green" in customStyle should be(customStyle.value + "green" + Reset.value)
   }
 
-  test(""""style".s should be (AnsiStyle("style"))""") {
+  test(""""style".toAnsiStyle should be (AnsiStyle("style"))""") {
     "style".toAnsiStyle should be(AnsiStyle("style"))
   }
 
-  test("""""style".s.toString should be("style")""") {
-    "style".toAnsiStyle.toString should be("style")
+  test(""""toString of AnsiStyle should be colored""") {
+    Green.toString should be("sample" in Green)
+    println(Green)
   }
 
   test(""""green".green should be(Green + "green" + Reset)""") {
-    "green".green should be(Green + "green" + Reset)
+    "green".green should be(Green.value + "green" + Reset.value)
   }
 
   test("""73.green should be(Green + "73" + Reset)""") {
-    73.green should be(Green + "73" + Reset)
+    73.green should be(Green.value + "73" + Reset.value)
   }
 
   test(""""green".yellow.red.green should be("green".green)""") {
