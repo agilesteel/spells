@@ -41,7 +41,7 @@ object AnsiPrint extends AnsiPrint {
 }
 
 trait AnsiPrint {
-  implicit def anyToAnsiString(input: Any) = new AnsiString(input)
+  implicit final def anyToAnsiString(input: Any): AnsiString = new AnsiString(input)
 
   implicit final class AnsiStyleWrapper(style: String) {
     def toAnsiStyle: AnsiStyle = AnsiStyle(style)

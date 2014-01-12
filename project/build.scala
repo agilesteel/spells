@@ -10,9 +10,9 @@ object SpellsBuild extends Build {
   lazy val buildSettings = Project.defaultSettings ++ Seq(
     name := projectName,
     organization := "com.github.agilesteel",
-    version := "1.4.4",
+    version := "1.5.0-SNAPSHOT",
     scalaVersion := "2.10.3",
-    crossScalaVersions := Seq("2.10.0", "2.10.1", "2.10.2"),
+    crossScalaVersions := Seq("2.10.0", "2.10.1", "2.10.2", "2.10.3"),
     homepage := Some(url("http://agilesteel.github.com/spells")),
     startYear := some(2012),
     description := """This is a small scala "util" library, which will hopefully grow over time.""",
