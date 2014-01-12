@@ -12,6 +12,7 @@ object SpellsBuild extends Build {
     organization := "com.github.agilesteel",
     version := "1.4.4",
     scalaVersion := "2.10.3",
+    crossScalaVersions := Seq("2.10.0", "2.10.1", "2.10.2"),
     homepage := Some(url("http://agilesteel.github.com/spells")),
     startYear := some(2012),
     description := """This is a small scala "util" library, which will hopefully grow over time.""",
