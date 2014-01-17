@@ -41,6 +41,11 @@ object AnsiPrint extends AnsiPrint {
 }
 
 trait AnsiPrint {
+  import Extras._
+  object Extras {
+    final lazy val Clear = "\033[2K".toAnsiStyle
+  }
+
   implicit final def anyToAnsiString(input: Any): AnsiString = new AnsiString(input)
 
   implicit final class AnsiStyleWrapper(style: String) {
@@ -76,6 +81,14 @@ trait AnsiPrint {
 
   @inline final def print(input: Any = "")(implicit style: AnsiStyle = Reset): Unit = {
     Console print styled(input)(style)
+  }
+
+  @inline final def clearPrintln(input: Any = "")(implicit style: AnsiStyle = Reset): Unit = {
+    println(s"\r$input" in Clear)(style)
+  }
+
+  @inline final def clearPrint(input: Any = "")(implicit style: AnsiStyle = Reset): Unit = {
+    print(s"\r$input" in Clear)(style)
   }
 
   final def styled(anput: Any)(implicit style: AnsiStyle = Reset): String = {
