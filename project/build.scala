@@ -29,10 +29,10 @@ object SpellsBuild extends Build {
   )
 
   lazy val spellsSettings = Seq(
-    libraryDependencies ++= Seq(Dependencies.scalaTest),
+    libraryDependencies ++= Dependencies.all,
     scalacOptions ++= Seq("-unchecked", "-deprecation", "-encoding", "utf8", "-feature", "-language:_"),
     initialCommands in console := "import spells._",
-    testOptions in Test += Tests.Argument(TestFrameworks.ScalaTest, "-o")
+    testOptions in Test += Tests.Argument(TestFrameworks.ScalaTest, "-oSD", "-h", "target/reports")
   )
 
   lazy val pureScalaProjectSettings = Seq(
@@ -69,5 +69,7 @@ object SpellsBuild extends Build {
 }
 
 object Dependencies {
+  lazy val pegdown = "org.pegdown" % "pegdown" % "1.4.2" % "test"
   lazy val scalaTest = "org.scalatest" %% "scalatest" % "2.0" % "test"
+  lazy val all = Seq(pegdown, scalaTest)
 }
