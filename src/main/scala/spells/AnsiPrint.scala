@@ -1,26 +1,26 @@
 package spells
 
-import AnsiPrint._
+import Ansi._
 
-object AnsiPrint extends AnsiPrint {
-  private lazy val AnsiPatterns = ("(" + AnsiPattern + ")+").r
-  private lazy val AnsiPattern = (styleOrReset + word + reset).r
+object Ansi extends Ansi {
+  private[spells] lazy val AnsiPatterns = ("(" + AnsiPattern + ")+").r
+  private[spells] lazy val AnsiPattern = (styleOrReset + word + reset).r
 
-  private lazy val StuffFollowedByAnsiPatterns = ("(" + stuff + ")" + AnsiPatterns).r
-  private lazy val AnsiPatternsFollowedByStuff = (AnsiPatterns + "(" + stuff + ")").r
-  private lazy val StuffFollowedByAnsiPatternsFollowedByStuff = (StuffFollowedByAnsiPatterns + "(" + stuff + ")").r
+  private[spells] lazy val StuffFollowedByAnsiPatterns = ("(" + stuff + ")" + AnsiPatterns).r
+  private[spells] lazy val AnsiPatternsFollowedByStuff = (AnsiPatterns + "(" + stuff + ")").r
+  private[spells] lazy val StuffFollowedByAnsiPatternsFollowedByStuff = (StuffFollowedByAnsiPatterns + "(" + stuff + ")").r
 
-  private lazy val word = """\w*"""
-  private lazy val stuff = """.*"""
+  private[spells] lazy val word = """\w*"""
+  private[spells] lazy val stuff = """.*"""
 
-  private lazy val styleOnly = """\033\[\d{2}m"""
-  private lazy val styleOrReset = """\033\[\d{1,2}m"""
-  private lazy val reset = """\033\[0m"""
+  private[spells] lazy val styleOnly = """\033\[\d{2}m"""
+  private[spells] lazy val styleOrReset = """\033\[\d{1,2}m"""
+  private[spells] lazy val reset = """\033\[0m"""
 
   private lazy val Sample = "sample"
 
   final class AnsiString(val input: Any) extends AnyVal {
-    def in(style: AnsiPrint#AnsiStyle): String = style.value + noStyles(String valueOf input) + Reset.value
+    def in(style: Ansi#AnsiStyle): String = style.value + noStyles(String valueOf input) + Reset.value
 
     @inline def black: String = this in Black
     @inline def red: String = this in Red
@@ -40,12 +40,7 @@ object AnsiPrint extends AnsiPrint {
   private def noStyles(input: String) = input.replaceAll(styleOrReset, "")
 }
 
-trait AnsiPrint {
-  import Extras._
-  object Extras {
-    final lazy val Clear = "\033[2K".toAnsiStyle
-  }
-
+trait Ansi extends AnsiPrint with ErrorPrint with ClearPrint {
   implicit final def anyToAnsiString(input: Any): AnsiString = new AnsiString(input)
 
   implicit final class AnsiStyleWrapper(style: String) {
@@ -70,25 +65,15 @@ trait AnsiPrint {
   @inline final lazy val Blink: AnsiStyle = Console.BLINK.toAnsiStyle
   @inline final lazy val Reversed: AnsiStyle = Console.REVERSED.toAnsiStyle
   @inline final lazy val Invisible: AnsiStyle = Console.INVISIBLE.toAnsiStyle
+}
 
-  @inline final def printerr(error: Any): Unit = {
-    Console.err println styled(error)(Red)
-  }
-
+trait AnsiPrint {
   @inline final def println(input: Any = "")(implicit style: AnsiStyle = Reset): Unit = {
     Console println styled(input)(style)
   }
 
   @inline final def print(input: Any = "")(implicit style: AnsiStyle = Reset): Unit = {
     Console print styled(input)(style)
-  }
-
-  @inline final def clearPrintln(input: Any = "")(implicit style: AnsiStyle = Reset): Unit = {
-    println(s"\r$input" in Clear)(style)
-  }
-
-  @inline final def clearPrint(input: Any = "")(implicit style: AnsiStyle = Reset): Unit = {
-    print(s"\r$input" in Clear)(style)
   }
 
   final def styled(anput: Any)(implicit style: AnsiStyle = Reset): String = {
@@ -105,4 +90,29 @@ trait AnsiPrint {
     case StuffFollowedByAnsiPatternsFollowedByStuff(start, ansi, end) => restyle(start, style) + ansi + restyle(end, style)
     case _ => style.value + input + Reset.value
   }
+}
+
+trait ErrorPrint {
+  @inline final def printerr(error: Any): Unit = {
+    Console.err println erred(error)
+  }
+
+  final def erred(error: Any): String = styled(error)(Red)
+}
+
+trait ClearPrint {
+  object ClearExtras {
+    final lazy val Clear = "\033[2K".toAnsiStyle
+  }
+
+  @inline final def clearPrintln(input: Any = "")(implicit style: AnsiStyle = Reset): Unit = {
+    Console println cleared(input)(style)
+  }
+
+  @inline final def clearPrint(input: Any = "")(implicit style: AnsiStyle = Reset): Unit = {
+    Console print cleared(input)(style)
+  }
+
+  final def cleared(input: Any = "")(implicit style: AnsiStyle = Reset): String =
+    styled(styled(s"\r$input")(ClearExtras.Clear))(style)
 }
