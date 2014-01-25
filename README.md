@@ -19,16 +19,23 @@ This is a small scala "util" library, which will hopefully grow over time.
 
 ### Configuring your project's dependencies
 
-Add these lines to your SBT build file:
+Releases: add these lines to your SBT build file:
 ```scala
 resolvers += Resolver.sonatypeRepo("releases") // optional, but quicker
 
 libraryDependencies += "com.github.agilesteel" %% "spells" % "1.4.4"
 ```
 
+Snapshots: add these lines to your SBT build file:
+```scala
+resolvers += Resolver.sonatypeRepo("snapshots")
+
+libraryDependencies += "com.github.agilesteel" %% "spells" % "1.5.0-SNAPSHOT"
+```
+
 ### Examples
 
-Here is an example of ``AnsiPrint`` in action:
+Here is an example of ``Ansi`` in action:
 
 ```scala
 package myproject
@@ -48,7 +55,6 @@ object Ansi extends App {
    println("yellow".yellow + "green" + "yellow".yellow)(Green)
    println("yellow" + "green".green + "yellow".yellow)(Yellow)
    println("yellow".yellow + "green".green + "yellow")(Yellow)
-   println("yellow" + "red".red + "yellow" + "green".green + "yellow")(Yellow)
 }
 
 object UsingCustomStyles extends App {
@@ -65,5 +71,4 @@ object OverridingDefaultStyleWithCustomStyle extends App {
    implicit val defaultStyle = "someStyle".toAnsiStyle
    println("styled")
 }
-
 ```
