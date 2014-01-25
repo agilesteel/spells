@@ -57,17 +57,24 @@
 </ul><h3>
 <a name="configuring-your-projects-dependencies" class="anchor" href="#configuring-your-projects-dependencies"><span class="octicon octicon-link"></span></a>Configuring your project's dependencies</h3>
 
-<p>Add these lines to your SBT build file:</p>
+<p>Releases: add these lines to your SBT build file:</p>
 
 <div class="highlight highlight-scala"><pre><span class="n">resolvers</span> <span class="o">+=</span> <span class="nc">Resolver</span><span class="o">.</span><span class="n">sonatypeRepo</span><span class="o">(</span><span class="s">"releases"</span><span class="o">)</span> <span class="c1">// optional, but quicker</span>
 
 <span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">"com.github.agilesteel"</span> <span class="o">%%</span> <span class="s">"spells"</span> <span class="o">%</span> <span class="s">"1.4.4"</span>
 </pre></div>
 
+<p>Snapshots: add these lines to your SBT build file:</p>
+
+<div class="highlight highlight-scala"><pre><span class="n">resolvers</span> <span class="o">+=</span> <span class="nc">Resolver</span><span class="o">.</span><span class="n">sonatypeRepo</span><span class="o">(</span><span class="s">"snapshots"</span><span class="o">)</span>
+
+<span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">"com.github.agilesteel"</span> <span class="o">%%</span> <span class="s">"spells"</span> <span class="o">%</span> <span class="s">"1.5.0-SNAPSHOT"</span>
+</pre></div>
+
 <h3>
 <a name="examples" class="anchor" href="#examples"><span class="octicon octicon-link"></span></a>Examples</h3>
 
-<p>Here is an example of <code>AnsiPrint</code> in action:</p>
+<p>Here is an example of <code>Ansi</code> in action:</p>
 
 <div class="highlight highlight-scala"><pre><span class="k">package</span> <span class="nn">myproject</span>
 
@@ -86,7 +93,6 @@
    <span class="n">println</span><span class="o">(</span><span class="s">"yellow"</span><span class="o">.</span><span class="n">yellow</span> <span class="o">+</span> <span class="s">"green"</span> <span class="o">+</span> <span class="s">"yellow"</span><span class="o">.</span><span class="n">yellow</span><span class="o">)(</span><span class="nc">Green</span><span class="o">)</span>
    <span class="n">println</span><span class="o">(</span><span class="s">"yellow"</span> <span class="o">+</span> <span class="s">"green"</span><span class="o">.</span><span class="n">green</span> <span class="o">+</span> <span class="s">"yellow"</span><span class="o">.</span><span class="n">yellow</span><span class="o">)(</span><span class="nc">Yellow</span><span class="o">)</span>
    <span class="n">println</span><span class="o">(</span><span class="s">"yellow"</span><span class="o">.</span><span class="n">yellow</span> <span class="o">+</span> <span class="s">"green"</span><span class="o">.</span><span class="n">green</span> <span class="o">+</span> <span class="s">"yellow"</span><span class="o">)(</span><span class="nc">Yellow</span><span class="o">)</span>
-   <span class="n">println</span><span class="o">(</span><span class="s">"yellow"</span> <span class="o">+</span> <span class="s">"red"</span><span class="o">.</span><span class="n">red</span> <span class="o">+</span> <span class="s">"yellow"</span> <span class="o">+</span> <span class="s">"green"</span><span class="o">.</span><span class="n">green</span> <span class="o">+</span> <span class="s">"yellow"</span><span class="o">)(</span><span class="nc">Yellow</span><span class="o">)</span>
 <span class="o">}</span>
 
 <span class="k">object</span> <span class="nc">UsingCustomStyles</span> <span class="k">extends</span> <span class="nc">App</span> <span class="o">{</span>
@@ -103,7 +109,6 @@
    <span class="k">implicit</span> <span class="k">val</span> <span class="n">defaultStyle</span> <span class="k">=</span> <span class="s">"someStyle"</span><span class="o">.</span><span class="n">toAnsiStyle</span>
    <span class="n">println</span><span class="o">(</span><span class="s">"styled"</span><span class="o">)</span>
 <span class="o">}</span>
-
 </pre></div>
       </section>
 
