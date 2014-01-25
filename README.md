@@ -8,7 +8,7 @@ This is a small scala "util" library, which will hopefully grow over time.
 
 ## Features:
 
-* AnsiPrint - [ANSI] styled outputs for your strings
+* Ansi - [ANSI] styled outputs for your strings
 
 ## Usage
 
