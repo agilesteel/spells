@@ -1,4 +1,5 @@
 [ANSI]: http://ascii-table.com/ansi-escape-sequences.php
+[Ansi]: src/test/scala/spells/AnisTests.scala
 [Java 1.6]: http://java.com/en/download/index.jsp
 [SBT 0.13.1]: http://www.scala-sbt.org/
 
@@ -8,7 +9,7 @@ This is a small scala "util" library, which will hopefully grow over time.
 
 ## Features:
 
-* Ansi - [ANSI] styled outputs for your strings
+* [Ansi] - [ANSI] styled outputs for your strings
 
 ## Usage
 
@@ -23,14 +24,14 @@ Releases: add these lines to your SBT build file:
 ```scala
 resolvers += Resolver.sonatypeRepo("releases") // optional, but quicker
 
-libraryDependencies += "com.github.agilesteel" %% "spells" % "1.4.4"
+libraryDependencies += "com.github.agilesteel" %% "spells" % "1.5.0"
 ```
 
 Snapshots: add these lines to your SBT build file:
 ```scala
 resolvers += Resolver.sonatypeRepo("snapshots")
 
-libraryDependencies += "com.github.agilesteel" %% "spells" % "1.5.0-SNAPSHOT"
+libraryDependencies += "com.github.agilesteel" %% "spells" % "1.6.0-SNAPSHOT"
 ```
 
 ### Examples

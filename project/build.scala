@@ -10,7 +10,7 @@ object SpellsBuild extends Build {
   lazy val buildSettings = Project.defaultSettings ++ Seq(
     name := projectName,
     organization := "com.github.agilesteel",
-    version := "1.5.0-SNAPSHOT",
+    version := "1.5.0",
     scalaVersion := "2.10.3",
     crossScalaVersions := Seq("2.10.0", "2.10.1", "2.10.2", "2.10.3"),
     homepage := Some(url("http://agilesteel.github.com/spells")),
@@ -26,6 +26,7 @@ object SpellsBuild extends Build {
             ++ pureScalaProjectSettings
             ++ publishSettings
             ++ scalariformSettings
+            ++ aliasSettings
   )
 
   lazy val spellsSettings = Seq(
@@ -66,6 +67,16 @@ object SpellsBuild extends Build {
         </developers>)
     }
   )
+
+  lazy val aliasSettings =
+    addCommandAlias("man",  "test:run") ++
+    addCommandAlias("e",    "test:run-main") ++ {
+      val info =  s"""|Type ${"man".magenta} to see the list of examples.
+                      |Type ${"e".magenta} ${"name".cyan} to run a specific example (keep in mind that autocompletion requires prior compilation}.""".stripMargin
+      Seq(
+        onLoadMessage <<= onLoadMessage { msg => msg + "\n" + info }
+      )
+    }
 }
 
 object Dependencies {
