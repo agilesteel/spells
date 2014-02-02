@@ -1,7 +1,10 @@
-[ANSI]: http://ascii-table.com/ansi-escape-sequences.php
-[Ansi]: src/test/scala/spells/AnisTests.scala
 [Java 1.6]: http://java.com/en/download/index.jsp
 [SBT 0.13.1]: http://www.scala-sbt.org/
+
+[Ansi]:       src/test/scala/spells/AnsiTests.scala
+[StylePrint]: src/test/scala/spells/StylePrintTests.scala
+[ErrorPrint]: src/test/scala/spells/ErrorPrintTests.scala
+[ClearPrint]: src/test/scala/spells/ClearPrintTests.scala
 
 # spells
 
@@ -9,7 +12,10 @@ This is a small scala "util" library, which will hopefully grow over time.
 
 ## Features:
 
-* [Ansi] - [ANSI] styled outputs for your strings
+* [Ansi] - Ansi styled outputs for your strings
+* [StylePrint] - println on steroids
+* [ErrorPrint] - printerr (eases styling of errors)
+* [ClearPrint] - clearPrintln (let's you stay on the same line)
 
 ## Usage
 
@@ -35,9 +41,6 @@ libraryDependencies += "com.github.agilesteel" %% "spells" % "1.6.0-SNAPSHOT"
 ```
 
 ### Examples
-
-Here is an example of ``Ansi`` in action:
-
 ```scala
 package myproject
 
@@ -73,3 +76,5 @@ object OverridingDefaultStyleWithCustomStyle extends App {
    println("styled")
 }
 ```
+### Help
+If you clone this repository, SBT will guide you through the man pages!
