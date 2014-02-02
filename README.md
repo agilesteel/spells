@@ -39,6 +39,8 @@ resolvers += Resolver.sonatypeRepo("snapshots")
 
 libraryDependencies += "com.github.agilesteel" %% "spells" % "1.6.0-SNAPSHOT"
 ```
+### Help
+If you clone this repository, SBT will guide you through the man pages!
 
 ### Examples
 ```scala
@@ -76,5 +78,3 @@ object OverridingDefaultStyleWithCustomStyle extends App {
    println("styled")
 }
 ```
-### Help
-If you clone this repository, SBT will guide you through the man pages!
