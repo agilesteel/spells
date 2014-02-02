@@ -42,7 +42,14 @@
 <a name="features" class="anchor" href="#features"><span class="octicon octicon-link"></span></a>Features:</h2>
 
 <ul>
-<li>Ansi - <a href="http://ascii-table.com/ansi-escape-sequences.php">ANSI</a> styled outputs for your strings</li>
+<li>
+<a href="src/test/scala/spells/AnsiTests.scala">Ansi</a> - Ansi styled outputs for your strings</li>
+<li>
+<a href="src/test/scala/spells/StylePrintTests.scala">StylePrint</a> - println on steroids</li>
+<li>
+<a href="src/test/scala/spells/ErrorPrintTests.scala">ErrorPrint</a> - printerr (eases styling of errors)</li>
+<li>
+<a href="src/test/scala/spells/ClearPrintTests.scala">ClearPrint</a> - clearPrintln (let's you stay on the same line)</li>
 </ul><h2>
 <a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
 
@@ -61,20 +68,23 @@
 
 <div class="highlight highlight-scala"><pre><span class="n">resolvers</span> <span class="o">+=</span> <span class="nc">Resolver</span><span class="o">.</span><span class="n">sonatypeRepo</span><span class="o">(</span><span class="s">"releases"</span><span class="o">)</span> <span class="c1">// optional, but quicker</span>
 
-<span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">"com.github.agilesteel"</span> <span class="o">%%</span> <span class="s">"spells"</span> <span class="o">%</span> <span class="s">"1.4.4"</span>
+<span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">"com.github.agilesteel"</span> <span class="o">%%</span> <span class="s">"spells"</span> <span class="o">%</span> <span class="s">"1.5.0"</span>
 </pre></div>
 
 <p>Snapshots: add these lines to your SBT build file:</p>
 
 <div class="highlight highlight-scala"><pre><span class="n">resolvers</span> <span class="o">+=</span> <span class="nc">Resolver</span><span class="o">.</span><span class="n">sonatypeRepo</span><span class="o">(</span><span class="s">"snapshots"</span><span class="o">)</span>
 
-<span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">"com.github.agilesteel"</span> <span class="o">%%</span> <span class="s">"spells"</span> <span class="o">%</span> <span class="s">"1.5.0-SNAPSHOT"</span>
+<span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">"com.github.agilesteel"</span> <span class="o">%%</span> <span class="s">"spells"</span> <span class="o">%</span> <span class="s">"1.6.0-SNAPSHOT"</span>
 </pre></div>
 
 <h3>
-<a name="examples" class="anchor" href="#examples"><span class="octicon octicon-link"></span></a>Examples</h3>
+<a name="help" class="anchor" href="#help"><span class="octicon octicon-link"></span></a>Help</h3>
 
-<p>Here is an example of <code>Ansi</code> in action:</p>
+<p>If you clone this repository, SBT will guide you through the man pages!</p>
+
+<h3>
+<a name="examples" class="anchor" href="#examples"><span class="octicon octicon-link"></span></a>Examples</h3>
 
 <div class="highlight highlight-scala"><pre><span class="k">package</span> <span class="nn">myproject</span>
 
