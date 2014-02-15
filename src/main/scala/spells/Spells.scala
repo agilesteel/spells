@@ -1,3 +1,3 @@
 package spells
 
-trait Spells extends Ansi
+trait Spells extends Ansi with DebugPrint

@@ -18,21 +18,22 @@ object StylePrint {
 
 trait StylePrint {
   import StylePrint._
-  @inline final def println(input: Any = "")(implicit style: AnsiStyle = Reset): Unit = {
+
+  final def println(input: Any = "")(implicit style: Ansi#AnsiStyle = Reset): Unit = {
     Console println styled(input)(style)
   }
 
-  @inline final def print(input: Any = "")(implicit style: AnsiStyle = Reset): Unit = {
+  final def print(input: Any = "")(implicit style: Ansi#AnsiStyle = Reset): Unit = {
     Console print styled(input)(style)
   }
 
-  final def styled(anput: Any)(implicit style: AnsiStyle = Reset): String = {
+  final def styled(anput: Any)(implicit style: Ansi#AnsiStyle = Reset): String = {
     val input = String valueOf anput
     if (style == Reset || input.matches(AnsiPattern.toString)) input
     else restyle(input, style)
   }
 
-  private def restyle(input: String, style: AnsiStyle): String = input match {
+  private def restyle(input: String, style: Ansi#AnsiStyle): String = input match {
     case AnsiPattern() => input.replaceAll(styleOnly, style.value)
     case AnsiPatterns(_) => input
     case StuffFollowedByAnsiPatterns(stuff, ansi) => restyle(stuff, style) + ansi

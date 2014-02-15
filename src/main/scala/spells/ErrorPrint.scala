@@ -1,7 +1,7 @@
 package spells
 
 trait ErrorPrint {
-  @inline final def printerr(error: Any): Unit = {
+  final def printerr(error: Any): Unit = {
     Console.err println erred(error)
   }
 
