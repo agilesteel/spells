@@ -72,15 +72,18 @@ object SpellsBuild extends Build {
     addCommandAlias("man",  "test:run") ++
     addCommandAlias("e",    "test:run-main") ++ {
       val info =  s"""|Type ${"man".magenta} to see the list of examples.
-                      |Type ${"e".magenta} ${"name".cyan} to run a specific example (keep in mind that autocompletion requires prior compilation}.""".stripMargin
+                      |Type ${"e".magenta} ${"name".cyan} to run a specific example (keep in mind that autocompletion requires prior compilation).""".stripMargin
       Seq(
-        onLoadMessage <<= onLoadMessage { msg => msg + "\n" + info }
+        onLoadMessage <<= onLoadMessage { msg => msg + '\n' + info }
       )
     }
 }
 
 object Dependencies {
-  lazy val pegdown = "org.pegdown" % "pegdown" % "1.4.2" % "test"
-  lazy val scalaTest = "org.scalatest" %% "scalatest" % "2.0" % "test"
-  lazy val all = Seq(pegdown, scalaTest)
+  val config = "com.typesafe" % "config" % "1.2.0"
+
+  val pegdown = "org.pegdown" % "pegdown" % "1.4.2" % "test"
+  val scalaTest = "org.scalatest" %% "scalatest" % "2.0" % "test"
+
+  val all = Seq(config, pegdown, scalaTest)
 }

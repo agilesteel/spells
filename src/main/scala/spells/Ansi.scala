@@ -24,7 +24,7 @@ object Ansi extends Ansi {
   private lazy val Sample = "sample"
 }
 
-trait Ansi extends StylePrint with ErrorPrint with ClearPrint {
+trait Ansi {
   import Ansi._
 
   implicit final def anyToAnsiString(input: Any): AnsiString = new AnsiString(input)

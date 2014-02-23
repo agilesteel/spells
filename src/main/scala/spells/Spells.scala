@@ -1,3 +1,8 @@
 package spells
 
-trait Spells extends Ansi with DebugPrint
+trait Spells
+  extends Ansi
+  with StylePrint
+  with ErrorPrint
+  with ClearPrint
+  with DebugPrint
