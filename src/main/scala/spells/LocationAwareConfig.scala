@@ -11,14 +11,23 @@ private[spells] trait LocationAwareConfig {
       load(parseFile(userConfig)).withFallback(load)
     else load
 
-  private def userConfigLocation = s"""${System.getProperty("user.home")}/.spells.conf"""
   private def userConfig = new File(userConfigLocation)
+  private def userConfigLocation = s"""${System.getProperty("user.home")}/.spells.conf"""
 
   config.checkValid(defaultReference(), "spells")
 
-  implicit def porpertyToBoolean(property: LocationAwareProperty) = config getBoolean property.location
-  implicit def porpertyToDouble(property: LocationAwareProperty) = config getDouble property.location
-  implicit def porpertyToInt(property: LocationAwareProperty) = config getInt property.location
-  implicit def porpertyToLong(property: LocationAwareProperty) = config getLong property.location
-  implicit def porpertyToString(property: LocationAwareProperty) = config getString property.location
+  private[spells] implicit def porpertyToBoolean(property: LocationAwareProperty[Boolean]): Boolean =
+    config getBoolean property.location
+
+  private[spells] implicit def porpertyToDouble(property: LocationAwareProperty[Double]): Double =
+    config getDouble property.location
+
+  private[spells] implicit def porpertyToInt(property: LocationAwareProperty[Int]): Int =
+    config getInt property.location
+
+  private[spells] implicit def porpertyToLong(property: LocationAwareProperty[Long]): Long =
+    config getLong property.location
+
+  private[spells] implicit def porpertyToString(property: LocationAwareProperty[String]): String =
+    config getString property.location
 }

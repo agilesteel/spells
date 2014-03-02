@@ -1,6 +1,6 @@
 package spells
 
-private[spells] trait LocationAwareProperty {
+private[spells] trait LocationAwareProperty[T] {
   private[spells] val location: String =
     NameTransformer
       .decode(getClass.getName)
