@@ -83,7 +83,7 @@ object Dependencies {
   val config = "com.typesafe" % "config" % "1.2.0"
 
   val pegdown = "org.pegdown" % "pegdown" % "1.4.2" % "test"
-  val scalaTest = "org.scalatest" %% "scalatest" % "2.0" % "test"
+  val scalaTest = "org.scalatest" %% "scalatest" % "2.1.0" % "test"
 
   val all = Seq(config, pegdown, scalaTest)
 }
