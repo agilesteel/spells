@@ -78,3 +78,6 @@ runner
 # ensime
 .ensime
 
+# sublime
+*.sublime-project
+*.sublime-workspace

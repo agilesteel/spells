@@ -6,7 +6,7 @@ import com.typesafe.config._
 import ConfigFactory._
 
 private[spells] trait LocationAwareConfig {
-  private val config: Config =
+  private lazy val config: Config =
     if (userConfig.exists)
       load(parseFile(userConfig)).withFallback(load)
     else load
@@ -16,18 +16,19 @@ private[spells] trait LocationAwareConfig {
 
   config.checkValid(defaultReference(), "spells")
 
-  private[spells] implicit def porpertyToBoolean(property: LocationAwareProperty[Boolean]): Boolean =
+  private[spells] implicit def propertyToBoolean(property: LocationAwareProperty[Boolean]): Boolean = {
     config getBoolean property.location
+  }
 
-  private[spells] implicit def porpertyToDouble(property: LocationAwareProperty[Double]): Double =
+  private[spells] implicit def propertyToDouble(property: LocationAwareProperty[Double]): Double =
     config getDouble property.location
 
-  private[spells] implicit def porpertyToInt(property: LocationAwareProperty[Int]): Int =
+  private[spells] implicit def propertyToInt(property: LocationAwareProperty[Int]): Int =
     config getInt property.location
 
-  private[spells] implicit def porpertyToLong(property: LocationAwareProperty[Long]): Long =
+  private[spells] implicit def propertyToLong(property: LocationAwareProperty[Long]): Long =
     config getLong property.location
 
-  private[spells] implicit def porpertyToString(property: LocationAwareProperty[String]): String =
+  private[spells] implicit def propertyToString(property: LocationAwareProperty[String]): String =
     config getString property.location
 }
