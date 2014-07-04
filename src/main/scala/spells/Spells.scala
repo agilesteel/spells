@@ -6,3 +6,4 @@ trait Spells
   with ErrorPrint
   with ClearPrint
   with DebugPrint
+  with Misc

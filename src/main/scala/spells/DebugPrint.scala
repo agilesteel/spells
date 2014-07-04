@@ -39,5 +39,5 @@ trait DebugPrint extends DebugPrint.Deps {
     if (isCopyFilePathToClipboardWhenDebugPrintingFeatureEnabled)
       clipboardWriter
     else
-      _ => {}
+      Noop
 }
