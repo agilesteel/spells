@@ -16,9 +16,8 @@ private[spells] trait LocationAwareConfig {
 
   config.checkValid(defaultReference(), "spells")
 
-  private[spells] implicit def propertyToBoolean(property: LocationAwareProperty[Boolean]): Boolean = {
+  private[spells] implicit def propertyToBoolean(property: LocationAwareProperty[Boolean]): Boolean =
     config getBoolean property.location
-  }
 
   private[spells] implicit def propertyToDouble(property: LocationAwareProperty[Double]): Double =
     config getDouble property.location
