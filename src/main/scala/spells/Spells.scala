@@ -6,4 +6,5 @@ trait Spells
   with ErrorPrint
   with ClearPrint
   with DebugPrint
+  with HumanRendering
   with Misc
