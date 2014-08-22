@@ -1,14 +1,5 @@
 package spells
 
-object DebugPrint {
-  private[spells] trait Deps {
-    def isCopyFilePathToClipboardWhenDebugPrintingFeatureEnabled: Boolean =
-      spells.feature.`copy-file-path-to-clipboard-when-debug-printing`
-
-    def clipboardWriter: String => Unit = Clipboard.writeString
-  }
-}
-
 trait DebugPrint extends DebugPrint.Deps {
   final def debugPrintln(input: Any = "")(implicit style: Ansi#AnsiStyle = Reset, increaseStackTraceDepthBy: Int = 0): Unit = {
     Console println stackTraced(style, input, increaseStackTraceDepthBy)
@@ -40,4 +31,13 @@ trait DebugPrint extends DebugPrint.Deps {
       clipboardWriter
     else
       Noop
+}
+
+object DebugPrint {
+  private[spells] trait Deps {
+    def isCopyFilePathToClipboardWhenDebugPrintingFeatureEnabled: Boolean =
+      spells.feature.`copy-file-path-to-clipboard-when-debug-printing`
+
+    def clipboardWriter: String => Unit = Clipboard.writeString
+  }
 }

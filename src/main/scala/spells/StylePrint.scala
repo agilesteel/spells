@@ -1,21 +1,5 @@
 package spells
 
-object StylePrint {
-  private[spells] lazy val AnsiPatterns = ("(" + AnsiPattern + ")+").r
-  private[spells] lazy val AnsiPattern = (styleOrReset + word + reset).r
-
-  private[spells] lazy val StuffFollowedByAnsiPatterns = ("(" + stuff + ")" + AnsiPatterns).r
-  private[spells] lazy val AnsiPatternsFollowedByStuff = (AnsiPatterns + "(" + stuff + ")").r
-  private[spells] lazy val StuffFollowedByAnsiPatternsFollowedByStuff = (StuffFollowedByAnsiPatterns + "(" + stuff + ")").r
-
-  private[spells] lazy val word = """\w*"""
-  private[spells] lazy val stuff = """.*"""
-
-  private[spells] lazy val styleOnly = """\033\[\d{2}m"""
-  private[spells] lazy val styleOrReset = """\033\[\d{1,2}m"""
-  private[spells] lazy val reset = """\033\[0m"""
-}
-
 trait StylePrint {
   import StylePrint._
 
@@ -41,4 +25,20 @@ trait StylePrint {
     case StuffFollowedByAnsiPatternsFollowedByStuff(start, ansi, end) => restyle(start, style) + ansi + restyle(end, style)
     case _ => style.value + input + Reset.value
   }
+}
+
+object StylePrint {
+  private[spells] lazy val AnsiPatterns = ("(" + AnsiPattern + ")+").r
+  private[spells] lazy val AnsiPattern = (styleOrReset + word + reset).r
+
+  private[spells] lazy val StuffFollowedByAnsiPatterns = ("(" + stuff + ")" + AnsiPatterns).r
+  private[spells] lazy val AnsiPatternsFollowedByStuff = (AnsiPatterns + "(" + stuff + ")").r
+  private[spells] lazy val StuffFollowedByAnsiPatternsFollowedByStuff = (StuffFollowedByAnsiPatterns + "(" + stuff + ")").r
+
+  private[spells] lazy val word = """\w*"""
+  private[spells] lazy val stuff = """.*"""
+
+  private[spells] lazy val styleOnly = """\033\[\d{2}m"""
+  private[spells] lazy val styleOrReset = """\033\[\d{1,2}m"""
+  private[spells] lazy val reset = """\033\[0m"""
 }

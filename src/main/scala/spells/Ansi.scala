@@ -1,29 +1,5 @@
 package spells
 
-object Ansi extends Ansi {
-  final class AnsiString(val input: Any) extends AnyVal {
-    def in(style: Ansi#AnsiStyle): String = style.value + noStyles(String valueOf input) + Reset.value
-
-    def black: String = this in Black
-    def red: String = this in Red
-    def green: String = this in Green
-    def yellow: String = this in Yellow
-    def blue: String = this in Blue
-    def magenta: String = this in Magenta;
-    def cyan: String = this in Cyan
-    def white: String = this in White
-
-    def bold: String = this in Bold
-    def blink: String = this in Blink
-    def reversed: String = this in Reversed
-    def invisible: String = this in Invisible
-  }
-
-  private def noStyles(input: String) = input.replaceAll(StylePrint.styleOrReset, "")
-
-  private lazy val Sample = "sample"
-}
-
 trait Ansi {
   import Ansi._
 
@@ -51,4 +27,28 @@ trait Ansi {
   final lazy val Blink: AnsiStyle = Console.BLINK.toAnsiStyle
   final lazy val Reversed: AnsiStyle = Console.REVERSED.toAnsiStyle
   final lazy val Invisible: AnsiStyle = Console.INVISIBLE.toAnsiStyle
+}
+
+object Ansi extends Ansi {
+  final class AnsiString(val input: Any) extends AnyVal {
+    def in(style: Ansi#AnsiStyle): String = style.value + noStyles(String valueOf input) + Reset.value
+
+    def black: String = this in Black
+    def red: String = this in Red
+    def green: String = this in Green
+    def yellow: String = this in Yellow
+    def blue: String = this in Blue
+    def magenta: String = this in Magenta;
+    def cyan: String = this in Cyan
+    def white: String = this in White
+
+    def bold: String = this in Bold
+    def blink: String = this in Blink
+    def reversed: String = this in Reversed
+    def invisible: String = this in Invisible
+  }
+
+  private def noStyles(input: String) = input.replaceAll(StylePrint.styleOrReset, "")
+
+  private lazy val Sample = "sample"
 }
