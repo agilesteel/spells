@@ -1,5 +1,5 @@
 [Java 1.6]:   http://java.com/en/download/index.jsp
-[SBT 0.13.1]: http://www.scala-sbt.org/
+[SBT 0.13.5]: http://www.scala-sbt.org/
 
 [Ansi]:       https://github.com/agilesteel/spells/blob/master/src/test/scala/spells/AnsiTests.scala
 [StylePrint]: https://github.com/agilesteel/spells/blob/master/src/test/scala/spells/StylePrintTests.scala
