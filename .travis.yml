@@ -1,0 +1,19 @@
+# Docs:  http://about.travis-ci.org/docs/user/build-configuration/
+# Scala: http://docs.travis-ci.com/user/languages/scala/
+# Yaml:  http://yaml-online-parser.appspot.com/
+
+language: scala
+scala:
+  - 2.10.4
+  - 2.11.2
+branches:
+  only:
+    - master
+jdk:
+  - openjdk7
+  - openjdk8
+  - oraclejdk7
+  - oraclejdk8
+notifications:
+  email:
+    - agilesteel@gmail.com
