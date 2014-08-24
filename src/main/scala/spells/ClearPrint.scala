@@ -14,5 +14,5 @@ trait ClearPrint {
 }
 
 object ClearPrint {
-  final lazy val Clear = "\033[2K".toAnsiStyle
+  final lazy val Clear = "\u001b[2K".toAnsiStyle
 }

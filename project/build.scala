@@ -12,8 +12,8 @@ object SpellsBuild extends Build {
     name := projectName,
     organization := "com.github.agilesteel",
     version := "1.6.0-SNAPSHOT",
-    scalaVersion := "2.10.4",
-    crossScalaVersions := Seq("2.10.0", "2.10.1", "2.10.2", "2.10.3", "2.10.4"),
+    scalaVersion := "2.11.2",
+    crossScalaVersions := Seq("2.10.0", "2.10.1", "2.10.2", "2.10.3", "2.10.4", "2.11.0", "2.11.1", "2.11.2"),
     homepage := Some(url("http://agilesteel.github.com/spells")),
     startYear := some(2012),
     description := """This is a small scala "util" library, which will hopefully grow over time.""",
@@ -88,10 +88,10 @@ object SpellsBuild extends Build {
 }
 
 object Dependencies {
-  val config = "com.typesafe" % "config" % "1.2.0"
+  val config = "com.typesafe" % "config" % "1.2.1"
 
   val pegdown = "org.pegdown" % "pegdown" % "1.4.2" % "test"
-  val scalaTest = "org.scalatest" %% "scalatest" % "2.1.0" % "test"
+  val scalaTest = "org.scalatest" %% "scalatest" % "2.2.2" % "test"
 
   val all = Seq(config, pegdown, scalaTest)
 }
