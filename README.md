@@ -24,7 +24,7 @@ This is a small scala "util" library, which will hopefully grow over time.
 ### Requirements
 
 * [Java 1.6] or greater
-* [SBT 0.13.1] or greater if you want to build from source
+* [SBT 0.13.5] or greater if you want to build from source
 
 ### Configuring your project's dependencies
 
