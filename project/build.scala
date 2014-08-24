@@ -35,6 +35,10 @@ object SpellsBuild extends Build {
     incOptions := incOptions.value.withNameHashing(true),
     initialCommands in console := "import spells._",
     libraryDependencies ++= Dependencies.all,
+    onLoad in Global := {
+      val checkForDepdendencyUpdates = (state: State) => "dependencyUpdates" :: state
+      checkForDepdendencyUpdates compose (onLoad in Global).value
+    },
     scalacOptions ++= Seq("-unchecked", "-deprecation", "-encoding", "utf8", "-feature", "-language:_"),
     testOptions in Test += Tests.Argument(TestFrameworks.ScalaTest, "-oSD", "-h", "target/reports")
   )
@@ -72,6 +76,7 @@ object SpellsBuild extends Build {
   )
 
   lazy val aliasSettings =
+    addCommandAlias("pluginUpdates", "; reload plugins; dependencyUpdates; reload return") ++
     addCommandAlias("man",  "test:run") ++
     addCommandAlias("e",    "test:run-main") ++ {
       val info =  s"""|Type ${"man".magenta} to see the list of examples.
