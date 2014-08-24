@@ -4,6 +4,7 @@ import sbt._
 import Keys._
 import com.typesafe.sbt.SbtScalariform._
 import com.typesafe.sbt.SbtScalariform.ScalariformKeys._
+import scoverage.ScoverageSbtPlugin._
 
 object SpellsBuild extends Build {
   lazy val projectName = "spells"
@@ -28,6 +29,7 @@ object SpellsBuild extends Build {
             ++ publishSettings
             ++ scalariformSettings
             ++ aliasSettings
+            ++ instrumentSettings
   )
 
   lazy val spellsSettings = Seq(
