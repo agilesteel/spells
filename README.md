@@ -1,14 +1,16 @@
-[Java 1.6]: http://java.com/en/download/index.jsp
+[Java 1.6]:   http://java.com/en/download/index.jsp
 [SBT 0.13.1]: http://www.scala-sbt.org/
 
-[Ansi]:       src/test/scala/spells/AnsiTests.scala
-[StylePrint]: src/test/scala/spells/StylePrintTests.scala
-[ErrorPrint]: src/test/scala/spells/ErrorPrintTests.scala
-[ClearPrint]: src/test/scala/spells/ClearPrintTests.scala
+[Ansi]:       https://github.com/agilesteel/spells/blob/master/src/test/scala/spells/AnsiTests.scala
+[StylePrint]: https://github.com/agilesteel/spells/blob/master/src/test/scala/spells/StylePrintTests.scala
+[ErrorPrint]: https://github.com/agilesteel/spells/blob/master/src/test/scala/spells/ErrorPrintTests.scala
+[ClearPrint]: https://github.com/agilesteel/spells/blob/master/src/test/scala/spells/ClearPrintTests.scala
 
 # spells
 
 This is a small scala "util" library, which will hopefully grow over time.
+
+[![Build Status](https://travis-ci.org/agilesteel/spells.svg?branch=master)](https://travis-ci.org/agilesteel/spells)
 
 ## Features:
 
