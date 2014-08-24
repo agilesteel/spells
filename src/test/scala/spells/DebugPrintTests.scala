@@ -58,9 +58,16 @@ class DebugPrintCopyToClipboardTests3 extends ClipboardEnvironment {
     wasWriteToClipboardCalled = true
   }
 
-  test("If copying feature is disabled the clipboard writer should not be called with the file path") {
-    stackTraced("input")
-    wasWriteToClipboardCalled should be(true)
-    Clipboard.readString().get should include(fileName)
+  test("If copying feature is enabled the clipboard writer should be called with the file path") {
+    isolated {
+      stackTraced("input")
+      wasWriteToClipboardCalled should be(true)
+    }
+  }
+
+  private def isolated(code: => Unit): Unit = {
+    val currentClipboardContent = Clipboard.readString()
+    code
+    currentClipboardContent foreach Clipboard.writeString
   }
 }
