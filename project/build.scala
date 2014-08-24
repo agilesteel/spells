@@ -3,11 +3,12 @@ package spells
 import sbt._
 import Keys._
 import com.typesafe.sbt.SbtScalariform._
+import com.typesafe.sbt.SbtScalariform.ScalariformKeys._
 
 object SpellsBuild extends Build {
   lazy val projectName = "spells"
 
-  lazy val buildSettings = Project.defaultSettings ++ Seq(
+  lazy val buildSettings = Seq(
     name := projectName,
     organization := "com.github.agilesteel",
     version := "1.6.0-SNAPSHOT",
@@ -30,9 +31,11 @@ object SpellsBuild extends Build {
   )
 
   lazy val spellsSettings = Seq(
+    compileInputs in (Test, compile) <<= (compileInputs in (Test, compile)) dependsOn (format in Test),
+    incOptions := incOptions.value.withNameHashing(true),
+    initialCommands in console := "import spells._",
     libraryDependencies ++= Dependencies.all,
     scalacOptions ++= Seq("-unchecked", "-deprecation", "-encoding", "utf8", "-feature", "-language:_"),
-    initialCommands in console := "import spells._",
     testOptions in Test += Tests.Argument(TestFrameworks.ScalaTest, "-oSD", "-h", "target/reports")
   )
 
