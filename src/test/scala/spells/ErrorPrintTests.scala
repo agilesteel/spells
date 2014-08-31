@@ -6,4 +6,10 @@ class ErrorPrintTests extends UnitTestConfiguration {
       erred(error) should be(styled(error)(Red))
     }
   }
+
+  test("""Scoverage should be happy""") {
+    SilentOutputStream err {
+      printerr("")
+    }
+  }
 }

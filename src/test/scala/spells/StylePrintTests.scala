@@ -61,4 +61,11 @@ class StylePrintTests extends UnitTestConfiguration {
     implicit val customStyle = Yellow
     styled("yellow" + "red".red + "yellow" + "green".green + "yellow") should be("yellow".yellow + "red".red + "yellow".yellow + "green".green + "yellow".yellow)
   }
+
+  test("""Scoverage should be happy""") {
+    SilentOutputStream out {
+      print()
+      println()
+    }
+  }
 }

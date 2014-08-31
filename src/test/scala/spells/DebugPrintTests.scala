@@ -14,6 +14,13 @@ class DebugPrintTests extends UnitTestConfiguration {
   }
 
   def staged(input: String) = stackTraced(input)(increaseStackTraceDepthBy = +1)
+
+  test("""Scoverage should be happy""") {
+    SilentOutputStream out {
+      debugPrint()
+      debugPrintln()
+    }
+  }
 }
 
 trait ClipboardEnvironment extends UnitTestConfiguration with DebugPrint {

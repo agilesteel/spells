@@ -6,4 +6,11 @@ class ClearPrintTests extends UnitTestConfiguration {
       cleared(sample)(Blue) should be(styled(styled(s"\r$sample")(ClearPrint.Clear))(Blue))
     }
   }
+
+  test("""Scoverage should be happy""") {
+    SilentOutputStream out {
+      clearPrint()
+      clearPrintln()
+    }
+  }
 }
