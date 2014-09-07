@@ -8,4 +8,5 @@ trait Spells
   with DebugPrint
   with HumanRendering
   with StringOps
+  with AnyOps
   with Misc
