@@ -7,4 +7,5 @@ trait Spells
   with ClearPrint
   with DebugPrint
   with HumanRendering
+  with StringOps
   with Misc
