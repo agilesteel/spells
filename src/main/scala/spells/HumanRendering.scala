@@ -5,6 +5,7 @@ trait HumanRendering {
 
   implicit def intToRendering(value: Int): Rendering = Rendering(value)
   implicit def longToRendering(value: Long): Rendering = Rendering(value)
+  implicit def durationToRendering(value: scala.concurrent.duration.Duration): Rendering = Rendering(value.toNanos)
 
   case class Rendering(value: Long) {
     def render: Rendering = this
@@ -20,7 +21,15 @@ trait HumanRendering {
       def years: String = render(Year)
 
       private def render(unit: String) =
-        if (value == 1 || value == -1) s"$value $unit" else s"$value ${unit}s"
+        if (valueDoesNotEndWithElevenButEndsWithOne) s"$value $unit" else s"$value ${unit}s"
+
+      private val valueDoesNotEndWithElevenButEndsWithOne: Boolean = {
+        val stringValue = value.toString
+        val doesNotEndWithEleven = !(stringValue endsWith "11")
+        val endsWithOne = stringValue endsWith "1"
+
+        doesNotEndWithEleven && endsWithOne
+      }
 
       object from {
         def hours: String = render(duration.hours, Duration(hours = value))

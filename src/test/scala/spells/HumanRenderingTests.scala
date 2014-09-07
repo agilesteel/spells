@@ -1,9 +1,12 @@
 package spells
 
 class HumanRenderingTests extends UnitTestConfiguration {
-  test("""It should be possible to call render on an int, long""") {
+  test("""It should be possible to call render on an int, long, double, scala.concurrent.duration""") {
     1.render should be(Rendering(1))
-    1l.render should be(Rendering(1))
+    1L.render should be(Rendering(1))
+
+    import scala.concurrent.duration._
+    1.day.render should be(Rendering(86400000000000L))
   }
 
   test("""It should be possible to render a single duration""") {
@@ -50,6 +53,32 @@ class HumanRenderingTests extends UnitTestConfiguration {
 
     2.render.duration.years should be("2 years")
     -2.render.duration.years should be("-2 years")
+  }
+
+  test("""The fact that numbers ending in 1, but not in 11 should be respected""") {
+    -11.render.duration.nanoseconds should be("-11 nanoseconds")
+    11.render.duration.nanoseconds should be("11 nanoseconds")
+
+    -21.render.duration.nanoseconds should be("-21 nanosecond")
+    21.render.duration.nanoseconds should be("21 nanosecond")
+
+    // 1.render.duration.milliseconds should be("1 millisecond")
+    // -1.render.duration.milliseconds should be("-1 millisecond")
+
+    // 1.render.duration.seconds should be("1 second")
+    // -1.render.duration.seconds should be("-1 second")
+
+    // 1.render.duration.minutes should be("1 minute")
+    // -1.render.duration.minutes should be("-1 minute")
+
+    // 1.render.duration.hours should be("1 hour")
+    // -1.render.duration.hours should be("-1 hour")
+
+    // 1.render.duration.days should be("1 day")
+    // -1.render.duration.days should be("-1 day")
+
+    // 1.render.duration.years should be("1 year")
+    // -1.render.duration.years should be("-1 year")
   }
 
   test("""It should be possible to render human readble durations from hours""") {
