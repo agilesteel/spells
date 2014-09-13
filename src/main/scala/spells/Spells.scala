@@ -2,11 +2,12 @@ package spells
 
 trait Spells
   extends Ansi
-  with StylePrint
-  with ErrorPrint
+  with AnyOps
   with ClearPrint
   with DebugPrint
+  with ErrorPrint
   with HumanRendering
-  with StringOps
-  with AnyOps
   with Misc
+  with StringOps
+  with StylePrint
+  with XRay

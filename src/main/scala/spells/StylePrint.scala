@@ -36,7 +36,8 @@ object StylePrint {
   private[spells] lazy val StuffFollowedByAnsiPatternsFollowedByStuff = (StuffFollowedByAnsiPatterns + "(" + stuff + ")").r
 
   private[spells] lazy val word = """\w*"""
-  private[spells] lazy val stuff = """.*"""
+  private[spells] lazy val stuff = anyCombinationOfLineBreaks + """.*""" + anyCombinationOfLineBreaks
+  private[spells] lazy val anyCombinationOfLineBreaks = """[\r|\n]*"""
 
   private[spells] lazy val styleOnly = """\033\[\d{2}m"""
   private[spells] lazy val styleOrReset = """\033\[\d{1,2}m"""
