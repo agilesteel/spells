@@ -17,19 +17,19 @@ trait HumanRendering {
     def render: Rendering = this
 
     object duration {
-      def nanoseconds: String = render(Nanosecond)
-      def milliseconds: String = render(Millisecond)
-      def seconds: String = render(Second)
-      def minutes: String = render(Minute)
-      def hours: String = render(Hour)
-      def days: String = render(Day)
-      def months: String = render(Month)
-      def years: String = render(Year)
+      lazy val nanoseconds: String = render(Nanosecond)
+      lazy val milliseconds: String = render(Millisecond)
+      lazy val seconds: String = render(Second)
+      lazy val minutes: String = render(Minute)
+      lazy val hours: String = render(Hour)
+      lazy val days: String = render(Day)
+      lazy val months: String = render(Month)
+      lazy val years: String = render(Year)
 
       private def render(unit: String) =
         if (valueDoesNotEndWithElevenButEndsWithOne) s"$value $unit" else s"$value ${unit}s"
 
-      private val valueDoesNotEndWithElevenButEndsWithOne: Boolean = {
+      private lazy val valueDoesNotEndWithElevenButEndsWithOne: Boolean = {
         val stringValue = value.toString
         val doesNotEndWithEleven = !(stringValue endsWith "11")
         val endsWithOne = stringValue endsWith "1"
@@ -38,14 +38,14 @@ trait HumanRendering {
       }
 
       object from {
-        def months: String = render(duration.months, Duration(months = value))
-        def hours: String = render(duration.hours, Duration(hours = value))
-        def minutes: String = render(duration.minutes, Duration(minutes = value))
-        def seconds: String = render(duration.seconds, Duration(seconds = value))
-        def milliseconds: String = render(duration.milliseconds, Duration(milliseconds = value))
-        def nanoseconds: String = render(duration.nanoseconds, Duration(nanoseconds = value))
+        lazy val months: String = render(duration.months, Duration(months = value))
+        lazy val hours: String = render(duration.hours, Duration(hours = value))
+        lazy val minutes: String = render(duration.minutes, Duration(minutes = value))
+        lazy val seconds: String = render(duration.seconds, Duration(seconds = value))
+        lazy val milliseconds: String = render(duration.milliseconds, Duration(milliseconds = value))
+        lazy val nanoseconds: String = render(duration.nanoseconds, Duration(nanoseconds = value))
 
-        private def render(alreadyRendered: String, toRender: Duration): String =
+        private def render(alreadyRendered: String, toRender: => Duration): String =
           if (value == 0) alreadyRendered else toRender.toString
       }
     }
@@ -71,10 +71,11 @@ object HumanRendering {
       seconds: Long = 0,
       milliseconds: Long = 0,
       nanoseconds: Long = 0) {
-    override val toString = {
-      if (isNegative)
-        s"-${copy(years.abs, months.abs, days.abs, hours.abs, minutes.abs, seconds.abs, milliseconds.abs, nanoseconds.abs)}"
-      else if (years != 0)
+    override val toString =
+      if (calculated contains "-") s"""-${calculated.replaceAll("-", "")}""" else calculated
+
+    private lazy val calculated = {
+      if (years != 0)
         years.render.duration.years
       else if (months != 0) {
         val (quotient, remainder) = division(months, 12)
@@ -127,11 +128,6 @@ object HumanRendering {
           renderedRemainder = remainder.render.duration.nanoseconds
         )
       } else ""
-    }
-
-    private def isNegative: Boolean = productIterator exists {
-      case member: Long => member < 0
-      case _ => false // just in case
     }
 
     private def division(dividend: Long, divisor: Long): (Long, Long) = {

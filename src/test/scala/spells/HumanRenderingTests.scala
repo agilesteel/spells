@@ -216,6 +216,15 @@ class HumanRenderingTests extends UnitTestConfiguration {
     over(upperBoundPower).render.duration.from.nanoseconds should be("1 second 1 millisecond 1 nanosecond")
   }
 
+  test("""Long.MinValue should not cause any problems""") {
+    Long.MinValue.render.duration.from.months should be("-768614336404564650 years 8 months")
+    Long.MinValue.render.duration.from.hours should be("-384307168202282325 days 8 hours")
+    Long.MinValue.render.duration.from.minutes should be("-6405119470038038 days 18 hours 8 minutes")
+    Long.MinValue.render.duration.from.seconds should be("-106751991167300 days 15 hours 30 minutes 8 seconds")
+    Long.MinValue.render.duration.from.milliseconds should be("-106751991167 days 7 hours 12 minutes 55 seconds 808 milliseconds")
+    Long.MinValue.render.duration.from.nanoseconds should be("-106751 day 23 hours 47 minutes 16 seconds 854 milliseconds 775808 nanoseconds")
+  }
+
   private def under(bound: Long): Long = bound - 1
   private def over(bound: Long): Long = bound + 1
 }
