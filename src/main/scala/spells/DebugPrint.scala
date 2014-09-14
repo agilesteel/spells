@@ -14,7 +14,7 @@ trait DebugPrint extends DebugPrint.Deps {
 
   private def stackTraced(style: Ansi#AnsiStyle, input: Any, increaseStackTraceDepthBy: Int): String = {
     val element = currentLineStackTraceElement(increaseStackTraceDepthBy)
-    writeToClipboard(renderLocation(element))
+    swallowException(writeToClipboard(renderLocation(element)))
     styled(s"$input at $element")(style)
   }
 

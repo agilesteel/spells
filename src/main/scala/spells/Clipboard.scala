@@ -29,7 +29,7 @@ object Clipboard extends Clipboard {
 
   lazy val clipboard = Toolkit.getDefaultToolkit.getSystemClipboard
 
-  def writeString(content: String): Unit = {
+  def writeString(content: String): Unit = swallowException {
     val contentAsStringSelection = new StringSelection(content)
     clipboard setContents (contentAsStringSelection, contentAsStringSelection)
   }

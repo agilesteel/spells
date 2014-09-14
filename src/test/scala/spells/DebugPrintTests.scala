@@ -74,7 +74,19 @@ class DebugPrintCopyToClipboardTests3 extends ClipboardEnvironment {
 
   private def isolated(code: => Unit): Unit = {
     val currentClipboardContent = Clipboard.readString()
-    code
-    currentClipboardContent foreach Clipboard.writeString
+    try code finally currentClipboardContent foreach Clipboard.writeString
   }
 }
+
+class DebugPrintCopyToClipboardTests4 extends ClipboardEnvironment {
+  override val isCopyFilePathToClipboardWhenDebugPrintingFeatureEnabled = true
+
+  override val clipboardWriter: String => Unit = input => {
+    throw new Exception
+  }
+
+  test("If copying feature is enabled the clipboard writer should be called with the file path") {
+    noException should be thrownBy stackTraced("input")
+  }
+}
+
