@@ -3,9 +3,15 @@ package spells
 trait HumanRendering {
   import HumanRendering._
 
+  implicit def byteToRendering(value: Byte): Rendering = Rendering(value)
+  implicit def shortToRendering(value: Short): Rendering = Rendering(value)
   implicit def intToRendering(value: Int): Rendering = Rendering(value)
   implicit def longToRendering(value: Long): Rendering = Rendering(value)
-  implicit def durationToRendering(value: scala.concurrent.duration.Duration): Rendering = Rendering(value.toNanos)
+  implicit def durationToRendering(value: scala.concurrent.duration.Duration): DurationRendering = DurationRendering(value)
+
+  case class DurationRendering(value: scala.concurrent.duration.Duration) {
+    def render: String = value.toNanos.render.duration.from.nanoseconds
+  }
 
   case class Rendering(value: Long) {
     def render: Rendering = this
@@ -32,6 +38,7 @@ trait HumanRendering {
       }
 
       object from {
+        def months: String = render(duration.months, Duration(months = value))
         def hours: String = render(duration.hours, Duration(hours = value))
         def minutes: String = render(duration.minutes, Duration(minutes = value))
         def seconds: String = render(duration.seconds, Duration(seconds = value))
@@ -56,6 +63,8 @@ object HumanRendering {
   val Year = "year"
 
   private case class Duration(
+      years: Long = 0,
+      months: Long = 0,
       days: Long = 0,
       hours: Long = 0,
       minutes: Long = 0,
@@ -64,8 +73,18 @@ object HumanRendering {
       nanoseconds: Long = 0) {
     override val toString = {
       if (isNegative)
-        s"-${copy(days.abs, hours.abs, minutes.abs, seconds.abs, milliseconds.abs, nanoseconds.abs)}"
-      else if (days != 0)
+        s"-${copy(years.abs, months.abs, days.abs, hours.abs, minutes.abs, seconds.abs, milliseconds.abs, nanoseconds.abs)}"
+      else if (years != 0)
+        years.render.duration.years
+      else if (months != 0) {
+        val (quotient, remainder) = division(months, 12)
+
+        render(
+          wholeNumber = copy(years = quotient, months = 0),
+          remainder = remainder,
+          renderedRemainder = remainder.render.duration.months
+        )
+      } else if (days != 0)
         days.render.duration.days
       else if (hours != 0) {
         val (quotient, remainder) = division(hours, 24)

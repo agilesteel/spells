@@ -1,12 +1,14 @@
 package spells
 
 class HumanRenderingTests extends UnitTestConfiguration {
-  test("""It should be possible to call render on an int, long, double, scala.concurrent.duration""") {
+  test("""It should be possible to call render on a byte, short, int, long, double, scala.concurrent.duration""") {
+    (1: Byte).render should be(Rendering(1))
+    (1: Short).render should be(Rendering(1))
     1.render should be(Rendering(1))
     1L.render should be(Rendering(1))
 
     import scala.concurrent.duration._
-    1.day.render should be(Rendering(86400000000000L))
+    1.day.render should be(1.render.duration.days)
   }
 
   test("""It should be possible to render a single duration""") {
@@ -55,30 +57,66 @@ class HumanRenderingTests extends UnitTestConfiguration {
     -2.render.duration.years should be("-2 years")
   }
 
-  test("""The fact that numbers ending in 1, but not in 11 should be respected""") {
+  test("""Numbers ending in 1, but not in 11 should be rendered as single durations""") {
     -11.render.duration.nanoseconds should be("-11 nanoseconds")
     11.render.duration.nanoseconds should be("11 nanoseconds")
 
     -21.render.duration.nanoseconds should be("-21 nanosecond")
     21.render.duration.nanoseconds should be("21 nanosecond")
 
-    // 1.render.duration.milliseconds should be("1 millisecond")
-    // -1.render.duration.milliseconds should be("-1 millisecond")
+    -11.render.duration.milliseconds should be("-11 milliseconds")
+    11.render.duration.milliseconds should be("11 milliseconds")
 
-    // 1.render.duration.seconds should be("1 second")
-    // -1.render.duration.seconds should be("-1 second")
+    -21.render.duration.milliseconds should be("-21 millisecond")
+    21.render.duration.milliseconds should be("21 millisecond")
 
-    // 1.render.duration.minutes should be("1 minute")
-    // -1.render.duration.minutes should be("-1 minute")
+    -11.render.duration.seconds should be("-11 seconds")
+    11.render.duration.seconds should be("11 seconds")
 
-    // 1.render.duration.hours should be("1 hour")
-    // -1.render.duration.hours should be("-1 hour")
+    -21.render.duration.seconds should be("-21 second")
+    21.render.duration.seconds should be("21 second")
 
-    // 1.render.duration.days should be("1 day")
-    // -1.render.duration.days should be("-1 day")
+    -11.render.duration.minutes should be("-11 minutes")
+    11.render.duration.minutes should be("11 minutes")
 
-    // 1.render.duration.years should be("1 year")
-    // -1.render.duration.years should be("-1 year")
+    -21.render.duration.minutes should be("-21 minute")
+    21.render.duration.minutes should be("21 minute")
+
+    -11.render.duration.hours should be("-11 hours")
+    11.render.duration.hours should be("11 hours")
+
+    -21.render.duration.hours should be("-21 hour")
+    21.render.duration.hours should be("21 hour")
+
+    -11.render.duration.days should be("-11 days")
+    11.render.duration.days should be("11 days")
+
+    -21.render.duration.days should be("-21 day")
+    21.render.duration.days should be("21 day")
+
+    -11.render.duration.years should be("-11 years")
+    11.render.duration.years should be("11 years")
+
+    -21.render.duration.years should be("-21 year")
+    21.render.duration.years should be("21 year")
+  }
+
+  test("""It should be possible to render human readble durations from months""") {
+    0.render.duration.from.months should be("0 months")
+    1.render.duration.from.months should be("1 month")
+    -1.render.duration.from.months should be("-1 month")
+
+    val upperBound = 12
+
+    (-over(upperBound)).render.duration.from.months should be("-1 year 1 month")
+    (-under(upperBound)).render.duration.from.months should be("-11 months")
+    under(upperBound).render.duration.from.months should be("11 months")
+    upperBound.render.duration.from.months should be("1 year")
+    over(upperBound).render.duration.from.months should be("1 year 1 month")
+
+    under(upperBound * 2).render.duration.from.months should be("1 year 11 months")
+    (upperBound * 2).render.duration.from.months should be("2 years")
+    over(upperBound * 2).render.duration.from.months should be("2 years 1 month")
   }
 
   test("""It should be possible to render human readble durations from hours""") {
