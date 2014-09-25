@@ -27,15 +27,7 @@ trait HumanRendering {
       lazy val years: String = render(Year)
 
       private def render(unit: String) =
-        if (valueDoesNotEndWithElevenButEndsWithOne) s"$value $unit" else s"$value ${unit}s"
-
-      private lazy val valueDoesNotEndWithElevenButEndsWithOne: Boolean = {
-        val stringValue = value.toString
-        val doesNotEndWithEleven = !(stringValue endsWith "11")
-        val endsWithOne = stringValue endsWith "1"
-
-        doesNotEndWithEleven && endsWithOne
-      }
+        if (value == 1) s"$value $unit" else s"$value ${unit}s"
 
       object from {
         lazy val months: String = render(duration.months, Duration(months = value))
@@ -71,8 +63,10 @@ object HumanRendering {
       seconds: Long = 0,
       milliseconds: Long = 0,
       nanoseconds: Long = 0) {
-    override val toString =
-      if (calculated contains "-") s"""-${calculated.replaceAll("-", "")}""" else calculated
+    override val toString = if (isPositiveOrZero) calculated else recalculated
+
+    private lazy val isPositiveOrZero: Boolean =
+      Vector(years, months, days, hours, minutes, seconds, milliseconds, nanoseconds) forall (_ >= 0)
 
     private lazy val calculated = {
       if (years != 0)
@@ -81,7 +75,7 @@ object HumanRendering {
         val (quotient, remainder) = division(months, 12)
 
         render(
-          wholeNumber = copy(years = quotient, months = 0),
+          wholeDuration = copy(years = quotient, months = 0),
           remainder = remainder,
           renderedRemainder = remainder.render.duration.months
         )
@@ -91,7 +85,7 @@ object HumanRendering {
         val (quotient, remainder) = division(hours, 24)
 
         render(
-          wholeNumber = copy(days = quotient, hours = 0),
+          wholeDuration = copy(days = quotient, hours = 0),
           remainder = remainder,
           renderedRemainder = remainder.render.duration.hours
         )
@@ -99,7 +93,7 @@ object HumanRendering {
         val (quotient, remainder) = division(minutes, 60)
 
         render(
-          wholeNumber = copy(hours = quotient, minutes = 0),
+          wholeDuration = copy(hours = quotient, minutes = 0),
           remainder = remainder,
           renderedRemainder = remainder.render.duration.minutes
         )
@@ -107,7 +101,7 @@ object HumanRendering {
         val (quotient, remainder) = division(seconds, 60)
 
         render(
-          wholeNumber = copy(minutes = quotient, seconds = 0),
+          wholeDuration = copy(minutes = quotient, seconds = 0),
           remainder = remainder,
           renderedRemainder = remainder.render.duration.seconds
         )
@@ -115,7 +109,7 @@ object HumanRendering {
         val (quotient, remainder) = division(milliseconds, 1000)
 
         render(
-          wholeNumber = copy(seconds = quotient, milliseconds = 0),
+          wholeDuration = copy(seconds = quotient, milliseconds = 0),
           remainder = remainder,
           renderedRemainder = remainder.render.duration.milliseconds
         )
@@ -123,7 +117,7 @@ object HumanRendering {
         val (quotient, remainder) = division(nanoseconds, 1000000)
 
         render(
-          wholeNumber = copy(milliseconds = quotient, nanoseconds = 0),
+          wholeDuration = copy(milliseconds = quotient, nanoseconds = 0),
           remainder = remainder,
           renderedRemainder = remainder.render.duration.nanoseconds
         )
@@ -137,10 +131,56 @@ object HumanRendering {
       quotient -> remainder
     }
 
-    private def render(wholeNumber: Duration, remainder: Long, renderedRemainder: String): String =
-      if (wholeNumber == Duration()) renderedRemainder else s"$wholeNumber${potentialRest(remainder, renderedRemainder)}"
+    private def render(wholeDuration: Duration, remainder: Long, renderedRemainder: String): String =
+      if (wholeDuration == Duration()) renderedRemainder else s"$wholeDuration${potentialRest(remainder, renderedRemainder)}"
 
     private def potentialRest(remainder: Long, renderedRemainder: String): String =
       if (remainder == 0) "" else s" $renderedRemainder"
+
+    private lazy val recalculated = {
+      val originalCalculationWithASingleMinusSign = s"""-${calculated.replaceAll("-", "")}"""
+
+      val currentMetric = originalCalculationWithASingleMinusSign.split(" ")(1)
+
+      def replace1MetricsWith1Metric(metric: String, appliedTo: String = originalCalculationWithASingleMinusSign): String =
+        appliedTo.replaceAll(s"1 ${metric}s", s"1 $metric")
+
+      if (currentMetric startsWith Millisecond)
+        replace1MetricsWith1Metric(Nanosecond)
+      else if (currentMetric startsWith Second)
+        replace1MetricsWith1Metric(Nanosecond, appliedTo =
+          replace1MetricsWith1Metric(Millisecond))
+      else if (currentMetric startsWith Minute)
+        replace1MetricsWith1Metric(Nanosecond, appliedTo =
+          replace1MetricsWith1Metric(Millisecond, appliedTo =
+            replace1MetricsWith1Metric(Second)))
+      else if (currentMetric startsWith Hour)
+        replace1MetricsWith1Metric(Nanosecond, appliedTo =
+          replace1MetricsWith1Metric(Millisecond, appliedTo =
+            replace1MetricsWith1Metric(Second, appliedTo =
+              replace1MetricsWith1Metric(Minute))))
+      else if (currentMetric startsWith Day)
+        replace1MetricsWith1Metric(Nanosecond, appliedTo =
+          replace1MetricsWith1Metric(Millisecond, appliedTo =
+            replace1MetricsWith1Metric(Second, appliedTo =
+              replace1MetricsWith1Metric(Minute, appliedTo =
+                replace1MetricsWith1Metric(Hour)))))
+      else if (currentMetric startsWith Month)
+        replace1MetricsWith1Metric(Nanosecond, appliedTo =
+          replace1MetricsWith1Metric(Millisecond, appliedTo =
+            replace1MetricsWith1Metric(Second, appliedTo =
+              replace1MetricsWith1Metric(Minute, appliedTo =
+                replace1MetricsWith1Metric(Hour, appliedTo =
+                  replace1MetricsWith1Metric(Day))))))
+      else if (currentMetric startsWith Year)
+        replace1MetricsWith1Metric(Nanosecond, appliedTo =
+          replace1MetricsWith1Metric(Millisecond, appliedTo =
+            replace1MetricsWith1Metric(Second, appliedTo =
+              replace1MetricsWith1Metric(Minute, appliedTo =
+                replace1MetricsWith1Metric(Hour, appliedTo =
+                  replace1MetricsWith1Metric(Day, appliedTo =
+                    replace1MetricsWith1Metric(Month)))))))
+      else originalCalculationWithASingleMinusSign
+    }
   }
 }

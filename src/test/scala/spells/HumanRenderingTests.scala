@@ -12,26 +12,26 @@ class HumanRenderingTests extends UnitTestConfiguration {
   }
 
   test("""It should be possible to render a single duration""") {
-    -1.render.duration.nanoseconds should be("-1 nanosecond")
     1.render.duration.nanoseconds should be("1 nanosecond")
+    -1.render.duration.nanoseconds should be("-1 nanoseconds")
 
     1.render.duration.milliseconds should be("1 millisecond")
-    -1.render.duration.milliseconds should be("-1 millisecond")
+    -1.render.duration.milliseconds should be("-1 milliseconds")
 
     1.render.duration.seconds should be("1 second")
-    -1.render.duration.seconds should be("-1 second")
+    -1.render.duration.seconds should be("-1 seconds")
 
     1.render.duration.minutes should be("1 minute")
-    -1.render.duration.minutes should be("-1 minute")
+    -1.render.duration.minutes should be("-1 minutes")
 
     1.render.duration.hours should be("1 hour")
-    -1.render.duration.hours should be("-1 hour")
+    -1.render.duration.hours should be("-1 hours")
 
     1.render.duration.days should be("1 day")
-    -1.render.duration.days should be("-1 day")
+    -1.render.duration.days should be("-1 days")
 
     1.render.duration.years should be("1 year")
-    -1.render.duration.years should be("-1 year")
+    -1.render.duration.years should be("-1 years")
   }
 
   test("""It should be possible to render multiple durations""") {
@@ -57,58 +57,14 @@ class HumanRenderingTests extends UnitTestConfiguration {
     -2.render.duration.years should be("-2 years")
   }
 
-  test("""Numbers ending in 1, but not in 11 should be rendered as single durations""") {
-    -11.render.duration.nanoseconds should be("-11 nanoseconds")
-    11.render.duration.nanoseconds should be("11 nanoseconds")
-
-    -21.render.duration.nanoseconds should be("-21 nanosecond")
-    21.render.duration.nanoseconds should be("21 nanosecond")
-
-    -11.render.duration.milliseconds should be("-11 milliseconds")
-    11.render.duration.milliseconds should be("11 milliseconds")
-
-    -21.render.duration.milliseconds should be("-21 millisecond")
-    21.render.duration.milliseconds should be("21 millisecond")
-
-    -11.render.duration.seconds should be("-11 seconds")
-    11.render.duration.seconds should be("11 seconds")
-
-    -21.render.duration.seconds should be("-21 second")
-    21.render.duration.seconds should be("21 second")
-
-    -11.render.duration.minutes should be("-11 minutes")
-    11.render.duration.minutes should be("11 minutes")
-
-    -21.render.duration.minutes should be("-21 minute")
-    21.render.duration.minutes should be("21 minute")
-
-    -11.render.duration.hours should be("-11 hours")
-    11.render.duration.hours should be("11 hours")
-
-    -21.render.duration.hours should be("-21 hour")
-    21.render.duration.hours should be("21 hour")
-
-    -11.render.duration.days should be("-11 days")
-    11.render.duration.days should be("11 days")
-
-    -21.render.duration.days should be("-21 day")
-    21.render.duration.days should be("21 day")
-
-    -11.render.duration.years should be("-11 years")
-    11.render.duration.years should be("11 years")
-
-    -21.render.duration.years should be("-21 year")
-    21.render.duration.years should be("21 year")
-  }
-
   test("""It should be possible to render human readble durations from months""") {
     0.render.duration.from.months should be("0 months")
     1.render.duration.from.months should be("1 month")
-    -1.render.duration.from.months should be("-1 month")
+    -1.render.duration.from.months should be("-1 months")
 
     val upperBound = 12
 
-    (-over(upperBound)).render.duration.from.months should be("-1 year 1 month")
+    (-over(upperBound)).render.duration.from.months should be("-1 years 1 month")
     (-under(upperBound)).render.duration.from.months should be("-11 months")
     under(upperBound).render.duration.from.months should be("11 months")
     upperBound.render.duration.from.months should be("1 year")
@@ -122,11 +78,11 @@ class HumanRenderingTests extends UnitTestConfiguration {
   test("""It should be possible to render human readble durations from hours""") {
     0.render.duration.from.hours should be("0 hours")
     1.render.duration.from.hours should be("1 hour")
-    -1.render.duration.from.hours should be("-1 hour")
+    -1.render.duration.from.hours should be("-1 hours")
 
     val upperBound = 24
 
-    (-over(upperBound)).render.duration.from.hours should be("-1 day 1 hour")
+    (-over(upperBound)).render.duration.from.hours should be("-1 days 1 hour")
     (-under(upperBound)).render.duration.from.hours should be("-23 hours")
     under(upperBound).render.duration.from.hours should be("23 hours")
     upperBound.render.duration.from.hours should be("1 day")
@@ -143,7 +99,7 @@ class HumanRenderingTests extends UnitTestConfiguration {
 
     val upperBound = 60
 
-    (-over(upperBound)).render.duration.from.minutes should be("-1 hour 1 minute")
+    (-over(upperBound)).render.duration.from.minutes should be("-1 hours 1 minute")
     (-under(upperBound)).render.duration.from.minutes should be("-59 minutes")
     under(upperBound).render.duration.from.minutes should be("59 minutes")
     upperBound.render.duration.from.minutes should be("1 hour")
@@ -168,7 +124,7 @@ class HumanRenderingTests extends UnitTestConfiguration {
     val upperBound = 60
 
     (-under(upperBound)).render.duration.from.seconds should be("-59 seconds")
-    (-over(upperBound)).render.duration.from.seconds should be("-1 minute 1 second")
+    (-over(upperBound)).render.duration.from.seconds should be("-1 minutes 1 second")
     under(upperBound).render.duration.from.seconds should be("59 seconds")
     upperBound.render.duration.from.seconds should be("1 minute")
     over(upperBound).render.duration.from.seconds should be("1 minute 1 second")
@@ -199,7 +155,7 @@ class HumanRenderingTests extends UnitTestConfiguration {
     val upperBound = 1000000
 
     (-under(upperBound)).render.duration.from.nanoseconds should be("-999999 nanoseconds")
-    (-over(upperBound)).render.duration.from.nanoseconds should be("-1 millisecond 1 nanosecond")
+    (-over(upperBound)).render.duration.from.nanoseconds should be("-1 milliseconds 1 nanosecond")
     under(upperBound).render.duration.from.nanoseconds should be("999999 nanoseconds")
     upperBound.render.duration.from.nanoseconds should be("1 millisecond")
     over(upperBound).render.duration.from.nanoseconds should be("1 millisecond 1 nanosecond")
@@ -222,7 +178,7 @@ class HumanRenderingTests extends UnitTestConfiguration {
     Long.MinValue.render.duration.from.minutes should be("-6405119470038038 days 18 hours 8 minutes")
     Long.MinValue.render.duration.from.seconds should be("-106751991167300 days 15 hours 30 minutes 8 seconds")
     Long.MinValue.render.duration.from.milliseconds should be("-106751991167 days 7 hours 12 minutes 55 seconds 808 milliseconds")
-    Long.MinValue.render.duration.from.nanoseconds should be("-106751 day 23 hours 47 minutes 16 seconds 854 milliseconds 775808 nanoseconds")
+    Long.MinValue.render.duration.from.nanoseconds should be("-106751 days 23 hours 47 minutes 16 seconds 854 milliseconds 775808 nanoseconds")
   }
 
   private def under(bound: Long): Long = bound - 1

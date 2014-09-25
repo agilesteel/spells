@@ -8,7 +8,7 @@ object XRay {
   class XRay[T](value: => T) {
     def xray(): T = {
       val frozenValue = value
-      Console.println(frozenValue)
+      Console.println(frozenValue.magenta)
       frozenValue
     }
   }
