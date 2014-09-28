@@ -6,6 +6,7 @@ trait AnyOps {
 
 object AnyOps {
   class AnyOps(input: Any) {
-    def decodedSimpleName: String = input.getClass.getSimpleName.decodeScalaSymbols
+    def decodedSimpleName: String = input.getClass.getSimpleName.withDecodedScalaSymbols
+    def decodedName: String = input.getClass.getName.withDecodedScalaSymbols
   }
 }

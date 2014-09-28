@@ -1,15 +1,19 @@
 package spells
 
 class AnyOpsTests extends UnitTestConfiguration {
-  test("sample.decodedSimpleName should be(sample.getClass.getSimpleName.decodeScalaSymbols)") {
-    val sample = (new `Encoded + Whatever`)
-
-    sample.decodedSimpleName should be(sample.getClass.getSimpleName.decodeScalaSymbols)
+  test("sample.decodedSimpleName should be(sample.getClass.getSimpleName.withDecodedScalaSymbols)") {
+    forEvery(samples) { sample =>
+      sample.decodedSimpleName should be(sample.getClass.getSimpleName.withDecodedScalaSymbols)
+    }
   }
 
-  test(""""sample".decodedSimpleName should be("String")""") {
-    "sample".decodedSimpleName should be("String")
+  test("sample.decodedName should be(sample.getClass.getName.withDecodedScalaSymbols)") {
+    forEvery(samples) { sample =>
+      sample.decodedName should be(sample.getClass.getName.withDecodedScalaSymbols)
+    }
   }
+
+  private val samples = Vector("sample", (new `Encoded + Whatever`))
 }
 
 class `Encoded + Whatever`

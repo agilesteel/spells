@@ -6,6 +6,6 @@ trait StringOps {
 
 object StringOps {
   class StringOps(input: String) {
-    def decodeScalaSymbols: String = scala.reflect.NameTransformer decode input
+    def withDecodedScalaSymbols: String = scala.reflect.NameTransformer decode input
   }
 }
