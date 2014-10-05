@@ -32,12 +32,14 @@ object Xray {
             ~Duration | ${duration.render}
             ~Location | $stackTraceElement
             ~Type     | ${value.decodedClassName}
-            ~Value    | %s""".stripMargin('~')
+            ~Value    | %s"""
 
-      val header = "X-Ray"
       val numberOfCharsInTheLongestLine = render(content).split("\n").maxBy(_.size).size
+
       val hyphens = "-" * ((numberOfCharsInTheLongestLine - 1).min(80))
+
       val centeredHeader = {
+        val header = "X-Ray"
         val emptySpace = hyphens.size - header.size
         val leftPadding = " " * (emptySpace / 2)
 
