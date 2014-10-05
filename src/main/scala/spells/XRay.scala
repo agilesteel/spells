@@ -4,12 +4,12 @@ import java.text.DateFormat
 import java.util.{ Calendar, Date }
 import scala.concurrent.duration._
 
-trait XRay {
-  implicit def anyToXRay[T](value: => T): XRay.XRay[T] = new XRay.XRay(value)
+trait Xray {
+  implicit def anyToXRay[T](value: => T): Xray.Xray[T] = new Xray.Xray(value)
 }
 
-object XRay {
-  class XRay[T](expression: => T) {
+object Xray {
+  class Xray[T](expression: => T) {
     def xray(): T = {
       val stackTraceElement = currentLineStackTraceElement(increaseStackTraceDepthBy = -2)
 
@@ -27,16 +27,15 @@ object XRay {
 
   case class Result[T](value: T, duration: Duration, stackTraceElement: StackTraceElement, timestamp: Date) {
     override def toString = {
-      val result =
-        s"""~Date     | ${DateFormat.getDateInstance(DateFormat.FULL) format timestamp}
-            ~Time     | ${DateFormat.getTimeInstance(DateFormat.FULL) format timestamp}
+      val content =
+        s"""~DateTime | ${DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL) format timestamp}
             ~Duration | ${duration.render}
             ~Location | $stackTraceElement
-            ~Type     | ${value.decodedName}
-            ~Value    | ${value.magenta}""".stripMargin('~')
+            ~Type     | ${value.decodedClassName}
+            ~Value    | %s""".stripMargin('~')
 
       val header = "X-Ray"
-      val numberOfCharsInTheLongestLine = result.split("\n").maxBy(_.size).size
+      val numberOfCharsInTheLongestLine = render(content).split("\n").maxBy(_.size).size
       val hyphens = "-" * ((numberOfCharsInTheLongestLine - 1).min(80))
       val centeredHeader = {
         val emptySpace = hyphens.size - header.size
@@ -45,15 +44,17 @@ object XRay {
         leftPadding + header
       }
 
-      s"""~$hyphens
-          ~$centeredHeader
-          ~$hyphens
-          ~$result
-          ~$hyphens""".stripMargin('~')
-    }
-  }
-}
+      val result =
+        s"""~$hyphens
+            ~$centeredHeader
+            ~$hyphens
+            ~$content
+            ~$hyphens"""
 
-object Main extends App {
-  (List.fill(80)(0)).xray
+      render(result)
+    }
+
+    private def render(string: String): String =
+      string.stripMargin('~').format(String.valueOf(value).magenta)
+  }
 }

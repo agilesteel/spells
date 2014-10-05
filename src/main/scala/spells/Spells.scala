@@ -10,4 +10,4 @@ trait Spells
   with Misc
   with StringOps
   with StylePrint
-  with XRay
+  with Xray

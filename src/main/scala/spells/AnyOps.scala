@@ -6,7 +6,10 @@ trait AnyOps {
 
 object AnyOps {
   class AnyOps(input: Any) {
-    def decodedSimpleName: String = input.getClass.getSimpleName.withDecodedScalaSymbols
-    def decodedName: String = input.getClass.getName.withDecodedScalaSymbols
+    def decodedSimpleClassName: String = orNull(input.getClass.getSimpleName.withDecodedScalaSymbols)
+    def decodedClassName: String = orNull(input.getClass.getName.withDecodedScalaSymbols)
+
+    private def orNull(name: => String): String =
+      if (input != null) name else "Null"
   }
 }
