@@ -1,25 +1,37 @@
-[Java 1.7]:   http://java.com/en/download/index.jsp
-[SBT 0.13.5]: http://www.scala-sbt.org/
+[Java 1.7]:       http://java.com/en/download/index.jsp
+[SBT 0.13.5]:     http://www.scala-sbt.org/
 
-[Ansi]:       https://github.com/agilesteel/spells/blob/master/src/test/scala/spells/user/AnsiTests.scala
-[StylePrint]: https://github.com/agilesteel/spells/blob/master/src/test/scala/spells/user/StylePrintTests.scala
-[ErrorPrint]: https://github.com/agilesteel/spells/blob/master/src/test/scala/spells/user/ErrorPrintTests.scala
-[ClearPrint]: https://github.com/agilesteel/spells/blob/master/src/test/scala/spells/user/ClearPrintTests.scala
+[Ansi]:           https://github.com/agilesteel/spells/blob/master/src/test/scala/spells/user/AnsiTests.scala
+[AnyOps]:         https://github.com/agilesteel/spells/blob/master/src/test/scala/spells/user/AnyOpsTests.scala
+[ClearPrint]:     https://github.com/agilesteel/spells/blob/master/src/test/scala/spells/user/ClearPrintTests.scala
+[Clipboard]:      https://github.com/agilesteel/spells/blob/master/src/test/scala/spells/user/ClipboardTests.scala
+[ErrorPrint]:     https://github.com/agilesteel/spells/blob/master/src/test/scala/spells/user/ErrorPrintTests.scala
+[HumanRendering]: https://github.com/agilesteel/spells/blob/master/src/test/scala/spells/user/HumanRenderingTests.scala
+[MiscTests]: https://github.com/agilesteel/spells/blob/master/src/test/scala/spells/user/MiscTests.scala
+[StringOps]:      https://github.com/agilesteel/spells/blob/master/src/test/scala/spells/user/StringOpsTests.scala
+[StylePrint]:     https://github.com/agilesteel/spells/blob/master/src/test/scala/spells/user/StylePrintTests.scala
+[Xray]:           https://github.com/agilesteel/spells/blob/master/src/test/scala/spells/user/XrayTests.scala
 
 # spells
 
 This is a small scala "util" library, which will hopefully grow over time.
 
 [![Build Status](https://travis-ci.org/agilesteel/spells.svg?branch=master)](https://travis-ci.org/agilesteel/spells)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.agilesteel/spells_2.11/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.agilesteel/spells_2.11)
 [![Coverage Status](https://img.shields.io/coveralls/agilesteel/spells.svg)](https://coveralls.io/r/agilesteel/spells)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.agilesteel/spells_2.11/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.agilesteel/spells_2.11)
 
 ## Features:
 
 * [Ansi] - Ansi styled outputs for your strings
-* [StylePrint] - println on steroids
-* [ErrorPrint] - printerr (eases styling of errors)
+* [AnyOps] - Additional operations on `Any`
 * [ClearPrint] - clearPrintln (let's you stay on the same line)
+* [Clipboard] - Clipboard.writeString and Clipboard.readString
+* [ErrorPrint] - printerr (eases styling of errors)
+* [HumanRendering] - rendering for things like duration
+* [MiscTests] - noop
+* [StringOps] - Additional operations on `String`
+* [StylePrint] - println on steroids
+* [Xray] - call .xray on any expression to see what's inside of it ;)
 
 ## Usage
 
