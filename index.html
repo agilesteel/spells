@@ -60,7 +60,7 @@
 <li>
 <a href="https://github.com/agilesteel/spells/blob/master/src/test/scala/spells/user/HumanRenderingTests.scala">HumanRendering</a> - rendering for things like duration</li>
 <li>
-<a href="https://github.com/agilesteel/spells/blob/master/src/test/scala/spells/user/MiscTests.scala">MiscTests</a> - noop</li>
+<a href="https://github.com/agilesteel/spells/blob/master/src/test/scala/spells/user/MiscTests.scala">Misc</a> - noop</li>
 <li>
 <a href="https://github.com/agilesteel/spells/blob/master/src/test/scala/spells/user/StringOpsTests.scala">StringOps</a> - Additional operations on <code>String</code>
 </li>
@@ -106,9 +106,11 @@ libraryDependencies <span class="pl-k">+</span><span class="pl-k">=</span> <span
 <h3>
 <a id="examples" class="anchor" href="#examples" aria-hidden="true"><span class="octicon octicon-link"></span></a>Examples</h3>
 
-<div class="highlight highlight-scala"><pre><span class="pl-k">package</span> <span class="pl-en">myproject</span>
+<div class="highlight highlight-scala"><pre><span class="pl-k">package</span> <span class="pl-en">company.project</span>
 
-<span class="pl-k">import</span> <span class="pl-v">spells.</span><span class="pl-v">_</span>
+<span class="pl-k">package object</span> <span class="pl-en">util</span> <span class="pl-k">extends</span> <span class="pl-e">spells.Spells</span>
+
+<span class="pl-k">import</span> <span class="pl-v">company.project.util.</span><span class="pl-v">_</span>
 
 <span class="pl-k">object</span> <span class="pl-en">Ansi</span> <span class="pl-k">extends</span> <span class="pl-e">App</span> {
    println(<span class="pl-s1"><span class="pl-pds">"</span>white<span class="pl-pds">"</span></span>)
