@@ -7,7 +7,7 @@ import scala.concurrent.duration._
 class XrayTests extends UnitTestConfiguration {
   test("The expression inside of xray should be evaluated only once") {
     var timesEvaluated = 0
-    def expression = timesEvaluated += 1
+    def expression() = timesEvaluated += 1
 
     SilentOutputStream out {
       expression.xray
@@ -55,7 +55,7 @@ class XrayTests extends UnitTestConfiguration {
     }
   }
 
-  test("""stackTraced(sample)(Blue) should be(styled(s"$sample at ${currentLineStackTraceElement(increaseStackTraceDepthBy = -3)}")(Blue))""") {
+  test("""Stacktrace test""") {
     forEvery(TestSamples.samples)(assert)
   }
 

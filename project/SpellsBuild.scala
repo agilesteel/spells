@@ -4,6 +4,7 @@ import sbt._
 import Keys._
 import com.typesafe.sbt.SbtScalariform._
 import com.typesafe.sbt.SbtScalariform.ScalariformKeys._
+import org.scoverage.coveralls.CoverallsPlugin.coverallsSettings
 
 object SpellsBuild extends Build {
   lazy val projectName = "spells"
@@ -11,7 +12,7 @@ object SpellsBuild extends Build {
   lazy val buildSettings = Seq(
     name := projectName,
     organization := "com.github.agilesteel",
-    version := "1.6.0-SNAPSHOT",
+    version := "1.6.0",
     scalaVersion := "2.11.4",
     crossScalaVersions := Seq("2.10.4", "2.11.0", "2.11.1", "2.11.2", "2.11.3", "2.11.4"),
     homepage := Some(url("http://agilesteel.github.com/spells")),
@@ -28,6 +29,7 @@ object SpellsBuild extends Build {
       ++ publishSettings
       ++ scalariformSettings
       ++ aliasSettings
+      ++ coverallsSettings
   )
     .configs(Build)
     .settings(testAndLayoutSettings: _*)
@@ -42,7 +44,18 @@ object SpellsBuild extends Build {
       val checkForDepdendencyUpdates = (state: State) => "dependencyUpdates" :: state
       checkForDepdendencyUpdates compose (onLoad in Global).value
     },
-    scalacOptions ++= Seq("-unchecked", "-deprecation", "-encoding", "utf8", "-feature", "-language:_")
+    scalacOptions ++= Seq(
+      "-encoding", "UTF-8",
+      "-deprecation",
+      "-feature",
+      "-language:_",
+      "-unchecked",
+      "-Xlint",
+      "-Ywarn-adapted-args",
+      // "-Ywarn-value-discard",
+      "-Ywarn-inaccessible",
+      "-Ywarn-dead-code"
+    )
   )
 
   lazy val Build = config("build") extend Compile

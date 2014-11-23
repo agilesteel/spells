@@ -12,6 +12,7 @@ This is a small scala "util" library, which will hopefully grow over time.
 
 [![Build Status](https://travis-ci.org/agilesteel/spells.svg?branch=master)](https://travis-ci.org/agilesteel/spells)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.agilesteel/spells_2.11/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.agilesteel/spells_2.11)
+[![Coverage Status](https://img.shields.io/coveralls/agilesteel/spells.svg)](https://coveralls.io/r/agilesteel/spells)
 
 ## Features:
 
