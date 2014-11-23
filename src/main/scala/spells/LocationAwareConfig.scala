@@ -19,13 +19,13 @@ private[spells] trait LocationAwareConfig {
   private[spells] implicit def propertyToBoolean(property: LocationAwareProperty[Boolean]): Boolean =
     config getBoolean property.location
 
-  // Commented out, because it's not used yet... for better scoverage ;)
+  private[spells] implicit def propertyToInt(property: LocationAwareProperty[Int]): Int =
+    config getInt property.location
+
+  // Commented out, because it's not used yet... for better coverage ;)
 
   // private[spells] implicit def propertyToDouble(property: LocationAwareProperty[Double]): Double =
   //   config getDouble property.location
-
-  // private[spells] implicit def propertyToInt(property: LocationAwareProperty[Int]): Int =
-  //   config getInt property.location
 
   // private[spells] implicit def propertyToLong(property: LocationAwareProperty[Long]): Long =
   //   config getLong property.location

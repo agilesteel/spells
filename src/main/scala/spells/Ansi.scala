@@ -31,7 +31,7 @@ trait Ansi {
 
 object Ansi extends Ansi {
   final class AnsiString(val input: Any) extends AnyVal {
-    def in(style: Ansi#AnsiStyle): String = style.value + noStyles(String valueOf input) + Reset.value
+    def in(style: Ansi#AnsiStyle): String = style.value + removeStyles(String valueOf input) + Reset.value
 
     def black: String = this in Black
     def red: String = this in Red
@@ -48,7 +48,7 @@ object Ansi extends Ansi {
     def invisible: String = this in Invisible
   }
 
-  private def noStyles(input: String) = input.replaceAll(StylePrint.styleOrReset, "")
+  def removeStyles(input: String) = input.replaceAll(StylePrint.styleOrReset, "")
 
   private lazy val Sample = "sample"
 }

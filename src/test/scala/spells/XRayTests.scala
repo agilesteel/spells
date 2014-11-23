@@ -15,13 +15,89 @@ class XrayTests extends UnitTestConfiguration {
 
     timesEvaluated should be(1)
   }
+
+  test("Monitor should always be called for .xray") {
+    new MonitoringEnvironement {
+      input.xray
+      wasMonitorCalled should be(true)
+    }
+  }
+
+  test("Monitor should only be called for .xrayIf if condition is true") {
+    new MonitoringEnvironement {
+      val condition = true
+
+      input.xrayIf(condition)
+      wasMonitorCalled should be(condition)
+    }
+
+    new MonitoringEnvironement {
+      val condition = false
+
+      input.xrayIf(condition)
+      wasMonitorCalled should be(condition)
+    }
+  }
+
+  test("Monitor should only be called for .xrayIfResult if condition is true") {
+    new MonitoringEnvironement {
+      val condition: Int => Boolean = _.value == input
+
+      input.xrayIfResult(condition)
+      wasMonitorCalled should be(condition(input))
+    }
+
+    new MonitoringEnvironement {
+      val condition: Int => Boolean = _.value != input
+
+      input.xrayIfResult(condition)
+      wasMonitorCalled should be(condition(input))
+    }
+  }
+
+  test("""stackTraced(sample)(Blue) should be(styled(s"$sample at ${currentLineStackTraceElement(increaseStackTraceDepthBy = -3)}")(Blue))""") {
+    forEvery(TestSamples.samples)(assert)
+  }
+
+  private def assert(sample: String) =
+    xrayed(sample).stackTraceElement should be(currentLineStackTraceElement(increaseStackTraceDepthBy = -3))
+
+  test("""xrayed("").toString should startWith(color.value)""") {
+    implicit val description = "description"
+    val color = Yellow
+
+    xrayed("", style = color).toString should startWith(color.value)
+  }
+}
+
+trait MonitoringEnvironement {
+  val input = 4711
+  var wasMonitorCalled = false
+  implicit val monitor: Xray.Result[Any] => Unit = _ => wasMonitorCalled = true
 }
 
 class XrayResultRenderingTests extends UnitTestConfiguration {
   import XrayResultRenderingTests._
 
-  test("The header should contains the string 'X-Ray'") {
-    result.toString should include("X-Ray")
+  test("The header should contains the string 'X-Ray' if description is empty") {
+    result.copy(description = "").toString should include("X-Ray")
+  }
+
+  test(s"The header should contain the string '$description' if description is nonempty") {
+    result.toString should include(description)
+  }
+
+  test("Should the description contain styles the header should be centered properly") {
+    val descriptionValue = "desc"
+
+    def headerWithDescription(newDescription: String): String = result.copy(description = newDescription).toString.split("\n").tail.head
+
+    val headerWithoutStyle = headerWithDescription(descriptionValue)
+    val headerWithStyle = headerWithDescription(descriptionValue.yellow)
+
+    def sizeOfLeftPadding(header: String): Int = header.takeWhile(_ != descriptionValue.head).filter(_ == ' ').size
+
+    sizeOfLeftPadding(headerWithoutStyle) should be(sizeOfLeftPadding(headerWithStyle))
   }
 
   test("The datetime should be rendered in full format") {
@@ -36,12 +112,30 @@ class XrayResultRenderingTests extends UnitTestConfiguration {
     result.toString should include(s"Location | $stackTraceElement")
   }
 
-  test("Scala encoded literals should be docded when the type is rendered") {
-    result.toString should include(s"Type     | spells.Encoded + Whatever")
+  test("If type and class are equal the class should not be rendered") {
+    result.toString should not include s"Class    | spells.Encoded + Whatever"
+  }
+
+  test("If type and class are different they should both be rendered") {
+    val typedResult = result.copy(value = List(1, 2, 3)).toString
+
+    typedResult should include(s"Class    | scala.collection.immutable.::")
+    typedResult should include(s"Type     | scala.collection.immutable.List[Int]")
   }
 
   test("Simple values should be rendered in magenta") {
     result.toString should include(s"Value    | ${"encoded".magenta}")
+  }
+
+  test("""If value conains \n it should be rendered on the new line""") {
+    val newResult = result.copy(value = "first\nsecond")
+    newResult.toString should include(s"Value    | ${"first".magenta}")
+    newResult.toString should include(s"         | ${"second".magenta}")
+  }
+
+  test("Simple values should be deeply rendered in magenta") {
+    val withStyle = s"enc${"o".green}ded"
+    result.copy(value = withStyle).toString should include(s"Value    | ${styled(withStyle)(Magenta)}")
   }
 
   test("Value of null should not be an issue") {
@@ -49,27 +143,45 @@ class XrayResultRenderingTests extends UnitTestConfiguration {
   }
 
   test("Rendered result should contain maximum 80 hyphens") {
+    val max: Int = spells.terminal.`width-in-characters`
+
     /*assert that*/ forEvery(result.toString split "\n") { line =>
-      line.size should be <= 80
+      line.size should be <= max
     }
 
-    val largeResult = result.copy(value = ("V" * 100))
+    val largeResult = result.copy(value = ("V" * (max + 20)))
     val largeLines = largeResult.toString split "\n"
-    val hyphenLines = largeLines.filter(line => line.filter(_ != '\r').forall(_ == '-'))
+    val hyphenLines = largeLines.filter(_.forall(_ == '-'))
 
     forEvery(hyphenLines) { hyphenLine =>
-      hyphenLine.filter(_ != '\r') should have size 80
+      hyphenLine should have size max
     }
+  }
+}
+
+class TableRenderingTests extends UnitTestConfiguration {
+  test("If values are of the same length all lines should have equal lines") {
+    val renderedTable = Xray.renderTable(Seq("I" -> "foo", "II" -> "bar"))
+    val sizes = renderedTable.map(_.size)
+    sizes.forall(_ == sizes.head) should be(true)
   }
 }
 
 object XrayResultRenderingTests {
   import Xray.Result
 
-  private lazy val result = Result(value, duration, stackTraceElement, timestamp)
+  private lazy val result = Result(
+    value = value,
+    duration = duration,
+    stackTraceElement = stackTraceElement,
+    timestamp = timestamp,
+    description = description,
+    thread = Thread.currentThread)
+
   private lazy val value = new `Encoded + Whatever`
   private lazy val duration = 62.seconds
   private lazy val stackTraceElement = new StackTraceElement("declaringClass", "methodName", "fileName", lineNumber)
   private lazy val lineNumber = 4711
   private lazy val timestamp = new java.util.Date
+  private lazy val description = "description"
 }

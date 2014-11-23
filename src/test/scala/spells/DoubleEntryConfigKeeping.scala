@@ -6,6 +6,7 @@ class DoubleEntryConfigKeeping extends UnitTestConfiguration {
   }
 
   test("reference.conf file should be valid") {
-    (spells.feature.`copy-file-path-to-clipboard-when-debug-printing`: Boolean) should be(false)
+    (spells.coverage.`should-be-happy`: Boolean) should be(true)
+    (spells.terminal.`width-in-characters`: Int) should be(160)
   }
 }

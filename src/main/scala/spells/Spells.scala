@@ -4,7 +4,6 @@ trait Spells
   extends Ansi
   with AnyOps
   with ClearPrint
-  with DebugPrint
   with ErrorPrint
   with HumanRendering
   with Misc
