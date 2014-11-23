@@ -1,16 +1,17 @@
-[Java 1.6]:   http://java.com/en/download/index.jsp
+[Java 1.7]:   http://java.com/en/download/index.jsp
 [SBT 0.13.5]: http://www.scala-sbt.org/
 
-[Ansi]:       https://github.com/agilesteel/spells/blob/master/src/test/scala/spells/AnsiTests.scala
-[StylePrint]: https://github.com/agilesteel/spells/blob/master/src/test/scala/spells/StylePrintTests.scala
-[ErrorPrint]: https://github.com/agilesteel/spells/blob/master/src/test/scala/spells/ErrorPrintTests.scala
-[ClearPrint]: https://github.com/agilesteel/spells/blob/master/src/test/scala/spells/ClearPrintTests.scala
+[Ansi]:       https://github.com/agilesteel/spells/blob/master/src/test/scala/spells/user/AnsiTests.scala
+[StylePrint]: https://github.com/agilesteel/spells/blob/master/src/test/scala/spells/user/StylePrintTests.scala
+[ErrorPrint]: https://github.com/agilesteel/spells/blob/master/src/test/scala/spells/user/ErrorPrintTests.scala
+[ClearPrint]: https://github.com/agilesteel/spells/blob/master/src/test/scala/spells/user/ClearPrintTests.scala
 
 # spells
 
 This is a small scala "util" library, which will hopefully grow over time.
 
 [![Build Status](https://travis-ci.org/agilesteel/spells.svg?branch=master)](https://travis-ci.org/agilesteel/spells)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.agilesteel/spells_2.11/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.agilesteel/spells_2.11)
 
 ## Features:
 
@@ -23,7 +24,7 @@ This is a small scala "util" library, which will hopefully grow over time.
 
 ### Requirements
 
-* [Java 1.6] or greater
+* [Java 1.7] or greater
 * [SBT 0.13.5] or greater if you want to build from source
 
 ### Configuring your project's dependencies
@@ -32,14 +33,14 @@ Releases: add these lines to your SBT build file:
 ```scala
 resolvers += Resolver.sonatypeRepo("releases") // optional, but quicker
 
-libraryDependencies += "com.github.agilesteel" %% "spells" % "1.5.1"
+libraryDependencies += "com.github.agilesteel" %% "spells" % "1.6.0"
 ```
 
 Snapshots: add these lines to your SBT build file:
 ```scala
 resolvers += Resolver.sonatypeRepo("snapshots")
 
-libraryDependencies += "com.github.agilesteel" %% "spells" % "1.6.0-SNAPSHOT"
+libraryDependencies += "com.github.agilesteel" %% "spells" % "1.6.1-SNAPSHOT"
 ```
 ### Help
 If you clone this repository, SBT will guide you through the man pages!
