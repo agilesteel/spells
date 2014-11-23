@@ -7,7 +7,7 @@
 [Clipboard]:      https://github.com/agilesteel/spells/blob/master/src/test/scala/spells/user/ClipboardTests.scala
 [ErrorPrint]:     https://github.com/agilesteel/spells/blob/master/src/test/scala/spells/user/ErrorPrintTests.scala
 [HumanRendering]: https://github.com/agilesteel/spells/blob/master/src/test/scala/spells/user/HumanRenderingTests.scala
-[MiscTests]: https://github.com/agilesteel/spells/blob/master/src/test/scala/spells/user/MiscTests.scala
+[MiscTests]:      https://github.com/agilesteel/spells/blob/master/src/test/scala/spells/user/MiscTests.scala
 [StringOps]:      https://github.com/agilesteel/spells/blob/master/src/test/scala/spells/user/StringOpsTests.scala
 [StylePrint]:     https://github.com/agilesteel/spells/blob/master/src/test/scala/spells/user/StylePrintTests.scala
 [Xray]:           https://github.com/agilesteel/spells/blob/master/src/test/scala/spells/user/XrayTests.scala
