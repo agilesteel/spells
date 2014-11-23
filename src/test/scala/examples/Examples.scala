@@ -3,21 +3,13 @@ package examples
 case object `1_GettingStarted` extends App {
   println {
     s"""|
-        |There are ${"two".magenta} ways to use spells:
+        |The best way to use spells is extending spells.Spells:
         |
-        | 1) Importing spells:
+        |-----------------------------------------
+        |package company.project
         |
-        |    -----------------
-        |    package myproject
-        |
-        |    ${"import spells._".magenta}
-        |    -----------------
-        |
-        | 2) Extending spells.Spells:
-        |
-        |    ----------------------------------------------
-        |    package object myproject ${"extends spells.Spells".magenta}
-        |    ----------------------------------------------
+        |package object util ${"extends spells.Spells".magenta}
+        |-----------------------------------------
         |""".stripMargin
   }
 }
@@ -60,8 +52,8 @@ case object `3_UsingStyles` extends App {
         |res0: String = ${1337.cyan}
         |-------------------
         |
-        |Spells provides convenience methods, which call ${"in".magenta} behind the scenes for every ${"AnsiStyle".magenta},
-        |which comes out of the box. Here is the same example rewritten using one of the convenience methods:
+        |Spells provides convenience methods out of the box, which call ${"in".magenta} behind the scenes for every ${"AnsiStyle".magenta}.
+        |Here is the same example rewritten using one of the convenience methods:
         |
         |-------------------
         |scala> 1337.cyan
@@ -94,7 +86,7 @@ case object `4_ComposingStyles` extends App {
         |scala> val message = s"The id: $${id.green} is very important to me."
         |message: String = The id: ${4711.green} is very important to me.
         |
-        |scala> message.cyan ${"// who would have thought that 'message' already contains an ansi code?".red}
+        |scala> message.cyan ${"// who would have thought that 'message' already contained an ansi code?".red}
         |res1: String = ${"The id: 4711 is very important to me.".cyan}
         |-------------------------------------------------------------------------------------------
         |
