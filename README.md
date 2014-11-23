@@ -7,7 +7,7 @@
 [Clipboard]:      https://github.com/agilesteel/spells/blob/master/src/test/scala/spells/user/ClipboardTests.scala
 [ErrorPrint]:     https://github.com/agilesteel/spells/blob/master/src/test/scala/spells/user/ErrorPrintTests.scala
 [HumanRendering]: https://github.com/agilesteel/spells/blob/master/src/test/scala/spells/user/HumanRenderingTests.scala
-[MiscTests]:      https://github.com/agilesteel/spells/blob/master/src/test/scala/spells/user/MiscTests.scala
+[Misc]:           https://github.com/agilesteel/spells/blob/master/src/test/scala/spells/user/MiscTests.scala
 [StringOps]:      https://github.com/agilesteel/spells/blob/master/src/test/scala/spells/user/StringOpsTests.scala
 [StylePrint]:     https://github.com/agilesteel/spells/blob/master/src/test/scala/spells/user/StylePrintTests.scala
 [Xray]:           https://github.com/agilesteel/spells/blob/master/src/test/scala/spells/user/XrayTests.scala
@@ -28,7 +28,7 @@ This is a small scala "util" library, which will hopefully grow over time.
 * [Clipboard] - Clipboard.writeString and Clipboard.readString
 * [ErrorPrint] - printerr (eases styling of errors)
 * [HumanRendering] - rendering for things like duration
-* [MiscTests] - noop
+* [Misc] - noop
 * [StringOps] - Additional operations on `String`
 * [StylePrint] - println on steroids
 * [Xray] - call .xray on any expression to see what's inside of it ;)
@@ -60,9 +60,11 @@ If you clone this repository, SBT will guide you through the man pages!
 
 ### Examples
 ```scala
-package myproject
+package company.project
 
-import spells._
+package object util extends spells.Spells
+
+import company.project.util._
 
 object Ansi extends App {
    println("white")
