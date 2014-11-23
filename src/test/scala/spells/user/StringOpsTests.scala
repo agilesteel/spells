@@ -1,4 +1,4 @@
-package spells
+package spells.user
 
 class StringOpsTests extends UnitTestConfiguration {
   test("withDecodedScalaSymbols should delegate to scala.reflect.NameTransformer.decode") {

@@ -1,4 +1,4 @@
-package spells
+package spells.user
 
 class AnyOpsTests extends UnitTestConfiguration {
   test("sample.decodedSimpleClassName should be(sample.getClass.getSimpleName.withDecodedScalaSymbols)") {

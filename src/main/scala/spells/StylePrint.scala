@@ -1,6 +1,8 @@
 package spells
 
 trait StylePrint {
+  this: Ansi =>
+
   import StylePrint._
 
   final def println(input: Any = "")(implicit style: Ansi#AnsiStyle = Reset): Unit = {

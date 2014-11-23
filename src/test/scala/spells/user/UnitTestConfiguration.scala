@@ -1,4 +1,4 @@
-package spells
+package spells.user
 
 import org.scalatest._
 

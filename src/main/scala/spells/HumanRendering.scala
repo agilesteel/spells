@@ -1,8 +1,6 @@
 package spells
 
 trait HumanRendering {
-  import HumanRendering._
-
   implicit def byteToRendering(value: Byte): Rendering = Rendering(value)
   implicit def shortToRendering(value: Short): Rendering = Rendering(value)
   implicit def intToRendering(value: Int): Rendering = Rendering(value)
@@ -44,9 +42,7 @@ trait HumanRendering {
       }
     }
   }
-}
 
-object HumanRendering {
   val Nanosecond = "nanosecond"
   val Millisecond = "millisecond"
   val Second = "second"

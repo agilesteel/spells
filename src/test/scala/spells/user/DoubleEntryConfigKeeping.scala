@@ -1,4 +1,4 @@
-package spells
+package spells.user
 
 class DoubleEntryConfigKeeping extends UnitTestConfiguration {
   test("spells should contain a reference.conf file") {

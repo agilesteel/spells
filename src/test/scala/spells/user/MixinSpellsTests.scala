@@ -1,6 +1,6 @@
-package notspells
+package spells.user
 
-class MixinSpellsTests extends spells.UnitTestConfiguration {
+class MixinSpellsTests extends UnitTestConfiguration {
   test("Mixin spells into package object instead of importing it should be possible") {
     "this should compile".green
     cleared("this should compile")(Green)

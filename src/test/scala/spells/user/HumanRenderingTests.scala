@@ -1,4 +1,4 @@
-package spells
+package spells.user
 
 class HumanRenderingTests extends UnitTestConfiguration {
   test("""It should be possible to call render on a byte, short, int, long, double, scala.concurrent.duration""") {

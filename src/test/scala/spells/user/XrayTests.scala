@@ -1,4 +1,4 @@
-package spells
+package spells.user
 
 import java.text.DateFormat
 import java.util.{ Calendar, Date }
@@ -73,7 +73,7 @@ class XrayTests extends UnitTestConfiguration {
 trait MonitoringEnvironement {
   val input = 4711
   var wasMonitorCalled = false
-  implicit val monitor: Xray.Result[Any] => Unit = _ => wasMonitorCalled = true
+  implicit val monitor: XrayResult[Any] => Unit = _ => wasMonitorCalled = true
 }
 
 class XrayResultRenderingTests extends UnitTestConfiguration {
@@ -161,16 +161,14 @@ class XrayResultRenderingTests extends UnitTestConfiguration {
 
 class TableRenderingTests extends UnitTestConfiguration {
   test("If values are of the same length all lines should have equal lines") {
-    val renderedTable = Xray.renderTable(Seq("I" -> "foo", "II" -> "bar"))
+    val renderedTable = renderTable(Seq("I" -> "foo", "II" -> "bar"))
     val sizes = renderedTable.map(_.size)
     sizes.forall(_ == sizes.head) should be(true)
   }
 }
 
 object XrayResultRenderingTests {
-  import Xray.Result
-
-  private lazy val result = Result(
+  private lazy val result = XrayResult(
     value = value,
     duration = duration,
     stackTraceElement = stackTraceElement,

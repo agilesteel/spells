@@ -1,4 +1,4 @@
-package spells
+package spells.user
 
 class StylePrintTests extends UnitTestConfiguration {
   test("""styled("white") should be("white")""") {

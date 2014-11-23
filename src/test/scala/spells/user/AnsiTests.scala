@@ -1,4 +1,4 @@
-package spells
+package spells.user
 
 class AnsiTests extends UnitTestConfiguration {
   test("""73.green should be(Green.value + "73" + Reset.value)""") {

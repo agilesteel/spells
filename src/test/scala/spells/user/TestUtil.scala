@@ -1,4 +1,4 @@
-package spells
+package spells.user
 
 object SilentOutputStream extends java.io.OutputStream {
   override def write(b: Int): Unit = {}

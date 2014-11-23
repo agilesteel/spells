@@ -1,4 +1,4 @@
-package spells
+package spells.user
 
 class ClipboardTests extends UnitTestConfiguration {
   test("Clipboard CRUD") {

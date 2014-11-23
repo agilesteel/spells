@@ -1,4 +1,4 @@
-package spells
+package spells.user
 
 class ErrorPrintTests extends UnitTestConfiguration {
   test("""erred(error) should be(styled(error)(Red))""") {

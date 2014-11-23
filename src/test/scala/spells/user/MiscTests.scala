@@ -1,4 +1,4 @@
-package spells
+package spells.user
 
 class MiscTests extends UnitTestConfiguration {
   test("Coverage should be happy") {

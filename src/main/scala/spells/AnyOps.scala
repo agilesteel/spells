@@ -1,11 +1,9 @@
 package spells
 
 trait AnyOps {
-  implicit final def anyToClassOps(input: Any): AnyOps.AnyOps = new AnyOps.AnyOps(input)
-}
+  this: StringOps =>
 
-object AnyOps {
-  class AnyOps(input: Any) {
+  implicit class AnyOps(input: Any) {
     def decodedSimpleClassName: String = orNull(input.getClass.getSimpleName.withDecodedScalaSymbols)
     def decodedClassName: String = orNull(input.getClass.getName.withDecodedScalaSymbols)
 

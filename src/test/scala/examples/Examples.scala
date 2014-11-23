@@ -1,4 +1,4 @@
-import spells._
+package examples
 
 case object `1_GettingStarted` extends App {
   println {

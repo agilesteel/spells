@@ -5,11 +5,9 @@ import java.util.{ Calendar, Date }
 import scala.concurrent.duration._
 
 trait Xray {
-  import Xray._
+  this: Ansi with StylePrint with StringOps with AnyOps with HumanRendering =>
 
-  implicit def anyToXRay[T](value: => T)(implicit manifest: reflect.Manifest[T]): Xray.Xray[T] = new Xray.Xray(value)
-
-  def xrayed[T](expression: => T, description: String = "", style: Ansi#AnsiStyle = Reset, increaseStackTraceDepthBy: Int = 0)(implicit manifest: reflect.Manifest[T]): Result[T] = {
+  def xrayed[T](expression: => T, description: String = "", style: Ansi#AnsiStyle = Reset, increaseStackTraceDepthBy: Int = 0)(implicit manifest: reflect.Manifest[T]): XrayResult[T] = {
     val stackTraceElement = currentLineStackTraceElement(increaseStackTraceDepthBy - 1)
 
     val now = Calendar.getInstance
@@ -18,16 +16,14 @@ trait Xray {
     val value = expression
     val stop = System.nanoTime - start
 
-    Result(value, stop.nanos, stackTraceElement, now.getTime, description, Thread.currentThread, style)
+    XrayResult(value, stop.nanos, stackTraceElement, now.getTime, description, Thread.currentThread, style)
   }
 
   def currentLineStackTraceElement(implicit increaseStackTraceDepthBy: Int = 0): StackTraceElement =
     Thread.currentThread.getStackTrace apply increaseStackTraceDepthBy + 6
-}
 
-object Xray {
-  class Xray[T](expression: => T)(implicit manifest: reflect.Manifest[T]) {
-    def xray(implicit description: String = "", style: Ansi#AnsiStyle = Reset, monitor: Result[T] => Unit = Console.println): T = {
+  implicit class Xray[T](expression: => T)(implicit manifest: reflect.Manifest[T]) {
+    def xray(implicit description: String = "", style: Ansi#AnsiStyle = Reset, monitor: XrayResult[T] => Unit = Console.println): T = {
       val result = xrayed(expression, description, style, increaseStackTraceDepthBy = +1)
 
       monitor(result)
@@ -35,7 +31,7 @@ object Xray {
       result.value
     }
 
-    def xrayIf(condition: => Boolean)(implicit description: String = "", style: Ansi#AnsiStyle = Reset, monitor: Result[T] => Unit = Console.println): T = {
+    def xrayIf(condition: => Boolean)(implicit description: String = "", style: Ansi#AnsiStyle = Reset, monitor: XrayResult[T] => Unit = Console.println): T = {
       val result = xrayed(expression, description, style, increaseStackTraceDepthBy = +1)
 
       if (condition)
@@ -44,7 +40,7 @@ object Xray {
       result.value
     }
 
-    def xrayIfResult(conditionFunction: T => Boolean)(implicit description: String = "", style: Ansi#AnsiStyle = Reset, monitor: Result[T] => Unit = Console.println): T = {
+    def xrayIfResult(conditionFunction: T => Boolean)(implicit description: String = "", style: Ansi#AnsiStyle = Reset, monitor: XrayResult[T] => Unit = Console.println): T = {
       val result = xrayed(expression, description, style, increaseStackTraceDepthBy = +1)
 
       if (conditionFunction(result.value))
@@ -54,7 +50,7 @@ object Xray {
     }
   }
 
-  case class Result[+T](
+  case class XrayResult[+T](
       value: T,
       duration: Duration,
       stackTraceElement: StackTraceElement,

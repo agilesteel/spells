@@ -1,6 +1,8 @@
 package spells
 
 trait ClearPrint {
+  this: Ansi with StylePrint =>
+
   final def clearPrintln(input: Any = "")(implicit style: Ansi#AnsiStyle = Reset): Unit = {
     Console println cleared(input)(style)
   }
@@ -11,8 +13,8 @@ trait ClearPrint {
 
   final def cleared(input: Any = "")(implicit style: Ansi#AnsiStyle = Reset): String =
     styled(styled(s"\r$input")(ClearPrint.Clear))(style)
-}
 
-object ClearPrint {
-  final lazy val Clear = "\u001b[2K".toAnsiStyle
+  object ClearPrint {
+    final lazy val Clear = "\u001b[2K".toAnsiStyle
+  }
 }
