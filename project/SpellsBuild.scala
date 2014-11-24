@@ -12,7 +12,7 @@ object SpellsBuild extends Build {
   lazy val buildSettings = Seq(
     name := projectName,
     organization := "com.github.agilesteel",
-    version := "1.6.0",
+    version := "1.6.1",
     scalaVersion := "2.11.4",
     crossScalaVersions := Seq("2.10.4", "2.11.0", "2.11.1", "2.11.2", "2.11.3", "2.11.4"),
     homepage := Some(url("http://agilesteel.github.com/spells")),

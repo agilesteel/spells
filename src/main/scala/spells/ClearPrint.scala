@@ -12,7 +12,7 @@ trait ClearPrint {
   }
 
   final def cleared(input: Any = "")(implicit style: Ansi#AnsiStyle = Reset): String =
-    styled(styled(s"\r$input")(ClearPrint.Clear))(style)
+    styled(ClearPrint.Clear.value + s"\r$input" + Reset.value)(style)
 
   object ClearPrint {
     final lazy val Clear = "\u001b[2K".toAnsiStyle

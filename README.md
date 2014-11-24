@@ -46,14 +46,14 @@ Releases: add these lines to your SBT build file:
 ```scala
 resolvers += Resolver.sonatypeRepo("releases") // optional, but quicker
 
-libraryDependencies += "com.github.agilesteel" %% "spells" % "1.6.0"
+libraryDependencies += "com.github.agilesteel" %% "spells" % "1.6.1"
 ```
 
 Snapshots: add these lines to your SBT build file:
 ```scala
 resolvers += Resolver.sonatypeRepo("snapshots")
 
-libraryDependencies += "com.github.agilesteel" %% "spells" % "1.6.1-SNAPSHOT"
+libraryDependencies += "com.github.agilesteel" %% "spells" % "1.6.2-SNAPSHOT"
 ```
 ### Help
 If you clone this repository, SBT will guide you through the man pages!
