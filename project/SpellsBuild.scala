@@ -13,8 +13,8 @@ object SpellsBuild extends Build {
     name := projectName,
     organization := "com.github.agilesteel",
     version := "1.6.1",
-    scalaVersion := "2.11.4",
-    crossScalaVersions := Seq("2.10.4", "2.11.0", "2.11.1", "2.11.2", "2.11.3", "2.11.4"),
+    scalaVersion := "2.11.6",
+    crossScalaVersions := Seq("2.10.4", "2.11.6"),
     homepage := Some(url("http://agilesteel.github.com/spells")),
     startYear := some(2012),
     description := """This is a small scala "util" library, which will hopefully grow over time.""",
@@ -105,22 +105,22 @@ object SpellsBuild extends Build {
 
   lazy val aliasSettings =
     addCommandAlias("pluginUpdates", "; reload plugins; dependencyUpdates; reload return") ++
-      addCommandAlias("man", "test:run") ++
-      addCommandAlias("e", "test:run-main") ++ {
-        val info =
-          s"""|Type ${"man".magenta} to see the list of examples.
-              |Type ${"e".magenta} ${"name".cyan} to run a specific example (keep in mind that autocompletion requires prior compilation).""".stripMargin
-        Seq(
-          onLoadMessage <<= onLoadMessage { msg => msg + '\n' + info }
-        )
-      }
+    addCommandAlias("man", "test:run") ++
+    addCommandAlias("e", "test:run-main") ++ {
+      val info =
+        s"""|Type ${"man".magenta} to see the list of examples.
+            |Type ${"e".magenta} ${"name".cyan} to run a specific example (keep in mind that autocompletion requires prior compilation).""".stripMargin
+      Seq(
+        onLoadMessage <<= onLoadMessage { msg => msg + '\n' + info }
+      )
+    }
 }
 
 object Dependencies {
   val config = "com.typesafe" % "config" % "1.2.1"
 
-  val pegdown = "org.pegdown" % "pegdown" % "1.4.2" % "test"
-  val scalaTest = "org.scalatest" %% "scalatest" % "2.2.2" % "test"
+  val pegdown = "org.pegdown" % "pegdown" % "1.5.0" % "test"
+  val scalaTest = "org.scalatest" %% "scalatest" % "2.2.4" % "test"
 
   val all = Seq(config, pegdown, scalaTest)
 }

@@ -40,10 +40,10 @@ trait Xray {
       result.value
     }
 
-    def xrayIfResult(conditionFunction: T => Boolean)(implicit description: String = "", style: Ansi#AnsiStyle = Reset, monitor: XrayResult[T] => Unit = Console.println): T = {
+    def xrayIfResult(conditionFunction: XrayResult[T] => Boolean)(implicit description: String = "", style: Ansi#AnsiStyle = Reset, monitor: XrayResult[T] => Unit = Console.println): T = {
       val result = xrayed(expression, description, style, increaseStackTraceDepthBy = +1)
 
-      if (conditionFunction(result.value))
+      if (conditionFunction(result))
         monitor(result)
 
       result.value
@@ -59,7 +59,7 @@ trait Xray {
       thread: Thread,
       style: Ansi#AnsiStyle = Reset)(implicit manifest: reflect.Manifest[T]) {
     override def toString = {
-      val lines = {
+      val lines: Seq[(String, String)] = {
         val content = Vector(
           "DateTime" -> (DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL) format timestamp),
           "Duration" -> duration.render,
@@ -77,16 +77,16 @@ trait Xray {
             Vector("Class" -> `class`, "Type" -> `type`)
         }
 
-        content ++ classOrTypeOrBoth :+ "Value" -> (String.valueOf(value).split("\n").map(styled(_)(Magenta)).mkString("\n"))
+        content ++ classOrTypeOrBoth :+ "Value" -> String.valueOf(value) map {
+          case (key, value) => key.toString -> value.toString
+        }
       }
 
       val renderedTable = renderTable(lines)
-      val numberOfCharsInTheLongestLine = renderedTable.maxBy { line =>
-        if (!(line contains "\n"))
-          line.size
-        else
-          line.split("\n").maxBy(_.size).size
-      }.size
+
+      val numberOfCharsInTheLongestLine =
+        renderedTable.map(Ansi.removeStyles).flatMap(_ split "\n").maxBy(_.size).size
+
       lazy val hyphens = "-" * (numberOfCharsInTheLongestLine min spells.terminal.`width-in-characters`)
 
       val centeredHeader = {
@@ -97,30 +97,34 @@ trait Xray {
         leftPadding + header
       }
 
-      // val resultingLines = Vector(hyphens, centeredHeader, hyphens) ++ renderedTable :+ hyphens
       val resultingLines = Vector(hyphens, centeredHeader, hyphens) ++ renderedTable.dropRight(1) ++ Vector(hyphens, renderedTable.last) :+ hyphens
 
       styled(resultingLines mkString "\n")(style)
     }
   }
 
-  private[spells] def renderTable(in: Seq[(_, _)]): Seq[String] = {
-    val stringToString = in map {
-      case (key, value) => key.toString -> value.toString
-    }
+  private[spells] def renderTable(in: Seq[(String, String)], styles: Map[String, Ansi#AnsiStyle] = Map("Value" -> Magenta) withDefaultValue Reset): Seq[String] = {
+    val sizeOfTheBiggestKey =
+      in map {
+        case (key, _) => Ansi.removeStyles(key).size
+      } max
 
-    val sizeOfTheBiggestKey = stringToString.map(_._1.size).max
+    val separator = " | "
 
-    stringToString.foldLeft(Vector.empty[String]) {
+    val max = spells.terminal.`width-in-characters` - separator.size - sizeOfTheBiggestKey
+
+    in.foldLeft(Vector.empty[String]) {
       case (result, (key, value)) =>
         val keyWithPadding = key.padTo(sizeOfTheBiggestKey, ' ')
         val line = {
-          if (!(value contains "\n"))
-            keyWithPadding + " | " + value
+          val actualValue = value wrapOnSpaces max
+
+          if (!(actualValue contains "\n"))
+            keyWithPadding + separator + styled(actualValue)(styles(key))
           else {
-            val subLines = value.split("\n").toList
-            val renderedHead = keyWithPadding + " | " + subLines.head + "\n"
-            val renderedTail = subLines.tail.map((" " * sizeOfTheBiggestKey) + " | " + _).mkString("\n")
+            val subLines = actualValue.split("\n").toList
+            val renderedHead = keyWithPadding + separator + styled(subLines.head)(styles(key)) + "\n"
+            val renderedTail = subLines.tail.map(subLine => (" " * sizeOfTheBiggestKey) + separator + styled(subLine)(styles(key))).mkString("\n")
 
             renderedHead + renderedTail
           }

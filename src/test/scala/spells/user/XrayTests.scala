@@ -41,22 +41,22 @@ class XrayTests extends UnitTestConfiguration {
 
   test("Monitor should only be called for .xrayIfResult if condition is true") {
     new MonitoringEnvironement {
-      val condition: Int => Boolean = _.value == input
+      val condition: XrayResult[Int] => Boolean = _.value == input
 
       input.xrayIfResult(condition)
-      wasMonitorCalled should be(condition(input))
+      wasMonitorCalled should be(condition(XrayResult(value = input, null, null, null, null, null, null)))
     }
 
     new MonitoringEnvironement {
-      val condition: Int => Boolean = _.value != input
+      val condition: XrayResult[Int] => Boolean = _.value != input
 
       input.xrayIfResult(condition)
-      wasMonitorCalled should be(condition(input))
+      wasMonitorCalled should be(condition(XrayResult(value = input, null, null, null, null, null, null)))
     }
   }
 
   test("""Stacktrace test""") {
-    forEvery(TestSamples.samples)(assert)
+    forAll(TestSamples.samples)(assert)
   }
 
   private def assert(sample: String) =
@@ -145,7 +145,7 @@ class XrayResultRenderingTests extends UnitTestConfiguration {
   test("Rendered result should contain maximum 80 hyphens") {
     val max: Int = spells.terminal.`width-in-characters`
 
-    /*assert that*/ forEvery(result.toString split "\n") { line =>
+    forAll(result.toString split "\n") { line =>
       line.size should be <= max
     }
 
@@ -153,7 +153,7 @@ class XrayResultRenderingTests extends UnitTestConfiguration {
     val largeLines = largeResult.toString split "\n"
     val hyphenLines = largeLines.filter(_.forall(_ == '-'))
 
-    forEvery(hyphenLines) { hyphenLine =>
+    forAll(hyphenLines) { hyphenLine =>
       hyphenLine should have size max
     }
   }

@@ -26,7 +26,7 @@ trait StylePrint {
   }
 }
 
-object StylePrint {
+object StylePrint extends Ansi with StylePrint {
   private[spells] val AnsiPattern = s"""($multiline)($anything)($styleOnly$anything$reset)($anything)""".r
 
   private[spells] lazy val multiline = """?s"""
