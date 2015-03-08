@@ -1,7 +1,7 @@
 package spells.user
 
 import java.text.DateFormat
-import java.util.{ Calendar, Date }
+import java.util.Calendar
 import scala.concurrent.duration._
 
 class XrayTests extends UnitTestConfiguration {
@@ -101,7 +101,7 @@ class XrayResultRenderingTests extends UnitTestConfiguration {
   }
 
   test("The datetime should be rendered in full format") {
-    result.toString should include(s"DateTime | ${DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL) format timestamp}")
+    result.toString should include(s"DateTime | ${DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL) format timestamp.getTime}")
   }
 
   test("The duration should be readable by humans") {
@@ -180,6 +180,6 @@ object XrayResultRenderingTests {
   private lazy val duration = 62.seconds
   private lazy val stackTraceElement = new StackTraceElement("declaringClass", "methodName", "fileName", lineNumber)
   private lazy val lineNumber = 4711
-  private lazy val timestamp = new java.util.Date
+  private lazy val timestamp = Calendar.getInstance
   private lazy val description = "description"
 }

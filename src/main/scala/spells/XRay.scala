@@ -16,7 +16,7 @@ trait Xray {
     val value = expression
     val stop = System.nanoTime - start
 
-    XrayResult(value, stop.nanos, stackTraceElement, now.getTime, description, Thread.currentThread, style)
+    XrayResult(value, stop.nanos, stackTraceElement, now, description, Thread.currentThread, style)
   }
 
   def currentLineStackTraceElement(implicit increaseStackTraceDepthBy: Int = 0): StackTraceElement =
@@ -54,14 +54,14 @@ trait Xray {
       value: T,
       duration: Duration,
       stackTraceElement: StackTraceElement,
-      timestamp: Date,
+      timestamp: Calendar,
       description: String,
       thread: Thread,
       style: Ansi#AnsiStyle = Reset)(implicit manifest: reflect.Manifest[T]) {
     override def toString = {
       val lines: Seq[(String, String)] = {
         val content = Vector(
-          "DateTime" -> (DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL) format timestamp),
+          "DateTime" -> (DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL) format timestamp.getTime),
           "Duration" -> duration.render,
           "Location" -> stackTraceElement,
           "Thread" -> thread
@@ -124,7 +124,25 @@ trait Xray {
           else {
             val subLines = actualValue.split("\n").toList
             val renderedHead = keyWithPadding + separator + styled(subLines.head)(styles(key)) + "\n"
-            val renderedTail = subLines.tail.map(subLine => (" " * sizeOfTheBiggestKey) + separator + styled(subLine)(styles(key))).mkString("\n")
+            var previousSubLine = styled(subLines.head)(styles(key))
+            val renderedTail = subLines.tail.map { subLine =>
+              val previousSublineStyle = {
+                var takenSoFar = ""
+                var result = ""
+                previousSubLine.reverse.takeWhile { char =>
+                  takenSoFar += char
+                  val theMatch = StylePrint.styleOnly.r findFirstIn takenSoFar.reverse
+                  theMatch foreach (result = _)
+                  theMatch.isEmpty
+                }
+
+                result.toAnsiStyle
+              }
+              val thisSubLine = styled(subLine)(previousSublineStyle)
+              val result = (" " * sizeOfTheBiggestKey) + separator + thisSubLine
+              previousSubLine = thisSubLine
+              result
+            }.mkString("\n")
 
             renderedHead + renderedTail
           }
