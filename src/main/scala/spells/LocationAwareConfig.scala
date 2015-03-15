@@ -24,12 +24,12 @@ private[spells] trait LocationAwareConfig {
 
   // Commented out, because it's not used yet... for better coverage ;)
 
-  private[spells] implicit def propertyToDouble(property: LocationAwareProperty[Double]): Double =
-    config getDouble property.location
+  // private[spells] implicit def propertyToDouble(property: LocationAwareProperty[Double]): Double =
+  //   config getDouble property.location
 
-  private[spells] implicit def propertyToLong(property: LocationAwareProperty[Long]): Long =
-    config getLong property.location
+  // private[spells] implicit def propertyToLong(property: LocationAwareProperty[Long]): Long =
+  //   config getLong property.location
 
-  private[spells] implicit def propertyToString(property: LocationAwareProperty[String]): String =
-    config getString property.location
+  // private[spells] implicit def propertyToString(property: LocationAwareProperty[String]): String =
+  //   config getString property.location
 }
