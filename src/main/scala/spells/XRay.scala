@@ -82,10 +82,10 @@ trait Xray {
         }
       }
 
-      val renderedTable = renderTable(lines)
+      val table = renderedTable(lines)
 
       val numberOfCharsInTheLongestLine =
-        renderedTable.map(Ansi.removeStyles).flatMap(_ split "\n").maxBy(_.size).size
+        table.map(Ansi.removeStyles).flatMap(_ split "\n").maxBy(_.size).size
 
       lazy val hyphens = "-" * (numberOfCharsInTheLongestLine min spells.terminal.`width-in-characters`)
 
@@ -97,27 +97,27 @@ trait Xray {
         leftPadding + header
       }
 
-      val resultingLines = Vector(hyphens, centeredHeader, hyphens) ++ renderedTable.dropRight(1) ++ Vector(hyphens, renderedTable.last) :+ hyphens
+      val resultingLines = Vector(hyphens, centeredHeader, hyphens) ++ table.dropRight(1) ++ Vector(hyphens, table.last) :+ hyphens
 
       styled(resultingLines mkString "\n")(style)
     }
   }
 
-  private[spells] def renderTable(in: Seq[(String, String)], styles: Map[String, Ansi#AnsiStyle] = Map("Value" -> Magenta) withDefaultValue Reset): Seq[String] = {
-    val sizeOfTheBiggestKey =
-      in map {
-        case (key, _) => Ansi.removeStyles(key).size
-      } max
+  private[spells] def renderedTable(in: Seq[(String, String)], styles: Map[String, Ansi#AnsiStyle] = Map("Value" -> Magenta) withDefaultValue Reset): Seq[String] = {
+    val sizeOfTheBiggestKey = in map {
+      case (key, _) => Ansi.removeStyles(key).size
+    } max
 
     val separator = " | "
 
-    val max = spells.terminal.`width-in-characters` - separator.size - sizeOfTheBiggestKey
+    val maxWidthInCharacters =
+      spells.terminal.`width-in-characters` - separator.size - sizeOfTheBiggestKey
 
     in.foldLeft(Vector.empty[String]) {
       case (result, (key, value)) =>
         val keyWithPadding = key.padTo(sizeOfTheBiggestKey, ' ')
         val line = {
-          val actualValue = value wrapOnSpaces max
+          val actualValue = value wrappedOnSpaces maxWidthInCharacters
 
           if (!(actualValue contains "\n"))
             keyWithPadding + separator + styled(actualValue)(styles(key))

@@ -142,28 +142,60 @@ class XrayResultRenderingTests extends UnitTestConfiguration {
     result.copy(value = null).toString should include(s"Value    | ${"null".magenta}")
   }
 
-  test("Rendered result should contain maximum 80 hyphens") {
-    val max: Int = spells.terminal.`width-in-characters`
+  test(s"Rendered result should contain maximum ${spells.terminal.`width-in-characters`} hyphens") {
+    val maxWidthInCharacters: Int = spells.terminal.`width-in-characters`
 
     forAll(result.toString split "\n") { line =>
-      line.size should be <= max
+      line.size should be <= maxWidthInCharacters
     }
 
-    val largeResult = result.copy(value = ("V" * (max + 20)))
+    val largeResult = result.copy(value = ("V" * (maxWidthInCharacters + 20)))
     val largeLines = largeResult.toString split "\n"
     val hyphenLines = largeLines.filter(_.forall(_ == '-'))
 
     forAll(hyphenLines) { hyphenLine =>
-      hyphenLine should have size max
+      hyphenLine should have size maxWidthInCharacters
     }
   }
 }
 
 class TableRenderingTests extends UnitTestConfiguration {
-  test("If values are of the same length all lines should have equal lines") {
-    val renderedTable = renderTable(Seq("I" -> "foo", "II" -> "bar"))
-    val sizes = renderedTable.map(_.size)
+  test("If values are of the same length all lines should have equal size") {
+    val table = renderedTable(Seq("I" -> "foo", "II" -> "bar"))
+    val sizes = table.map(_.size)
     sizes.forall(_ == sizes.head) should be(true)
+  }
+
+  test("Lines should be wrapped") {
+    val maxWidthInCharacters = spells.terminal.`width-in-characters`
+    val sizeOfKeyWithSeparator = 4
+    def atom(c: Char) = c.toString * (maxWidthInCharacters - sizeOfKeyWithSeparator)
+    val toBeSpliced = atom('x') + " " + atom('y')
+    val table = renderedTable(Seq("I" -> toBeSpliced))
+    table should be {
+      Vector(
+      // format: OFF
+        "I | " + atom('x') + "\n" +
+        "  | " + atom('y') + Reset.value
+      // format: ON
+      )
+    }
+  }
+
+  test("""Lines should be wrapped, but the style should be preserved for the "Value" key""") {
+    val maxWidthInCharacters = spells.terminal.`width-in-characters`
+    val sizeOfKeyWithSeparator = 8
+    def atom(c: Char) = c.toString * (maxWidthInCharacters - sizeOfKeyWithSeparator)
+    val toBeSpliced = atom('x') + " " + atom('y')
+    val table = renderedTable(Seq("Value" -> toBeSpliced))
+    table should be {
+      Vector(
+      // format: OFF
+        "Value | " + atom('x').magenta + "\n" +
+        "      | " + atom('y').magenta
+      // format: ON
+      )
+    }
   }
 }
 
