@@ -5,7 +5,7 @@ import java.util.{ Calendar, Date }
 import scala.concurrent.duration._
 
 trait Xray {
-  this: Ansi with StylePrint with StringOps with AnyOps with HumanRendering =>
+  this: Ansi with StylePrint with StringOps with AnyOps with CalendarOps with HumanRendering =>
 
   def xrayed[T](expression: => T, description: String = "", style: Ansi#AnsiStyle = Reset, increaseStackTraceDepthBy: Int = 0)(implicit manifest: reflect.Manifest[T]): XrayResult[T] = {
     val stackTraceElement = currentLineStackTraceElement(increaseStackTraceDepthBy - 1)
@@ -57,11 +57,11 @@ trait Xray {
       timestamp: Calendar,
       description: String,
       thread: Thread,
-      style: Ansi#AnsiStyle = Reset)(implicit manifest: reflect.Manifest[T]) {
+      style: Ansi#AnsiStyle = Reset)(implicit manifest: reflect.Manifest[T], evidence: T => CustomRendering = new AnyOpsFromSpells(_: T)) {
     override def toString = {
       val lines: Seq[(String, String)] = {
         val content = Vector(
-          "DateTime" -> (DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL) format timestamp.getTime),
+          "DateTime" -> timestamp.rendered,
           "Duration" -> duration.render,
           "Location" -> stackTraceElement,
           "Thread" -> thread
@@ -77,7 +77,7 @@ trait Xray {
             Vector("Class" -> `class`, "Type" -> `type`)
         }
 
-        content ++ classOrTypeOrBoth :+ "Value" -> String.valueOf(value) map {
+        content ++ classOrTypeOrBoth :+ "Value" -> (Option(value).fold("null")(_.rendered)) map {
           case (key, value) => key.toString -> value.toString
         }
       }

@@ -80,7 +80,14 @@ class XrayResultRenderingTests extends UnitTestConfiguration {
   import XrayResultRenderingTests._
 
   test("The header should contains the string 'X-Ray' if description is empty") {
-    result.copy(description = "").toString should include("X-Ray")
+    XrayResult(
+      value = value,
+      duration = duration,
+      stackTraceElement = stackTraceElement,
+      timestamp = timestamp,
+      description = "",
+      thread = Thread.currentThread
+    ).toString should include("X-Ray")
   }
 
   test(s"The header should contain the string '$description' if description is nonempty") {
@@ -90,7 +97,15 @@ class XrayResultRenderingTests extends UnitTestConfiguration {
   test("Should the description contain styles the header should be centered properly") {
     val descriptionValue = "desc"
 
-    def headerWithDescription(newDescription: String): String = result.copy(description = newDescription).toString.split("\n").tail.head
+    def headerWithDescription(newDescription: String): String =
+      XrayResult(
+        value = value,
+        duration = duration,
+        stackTraceElement = stackTraceElement,
+        timestamp = timestamp,
+        description = newDescription,
+        thread = Thread.currentThread
+      ).toString.split("\n").tail.head
 
     val headerWithoutStyle = headerWithDescription(descriptionValue)
     val headerWithStyle = headerWithDescription(descriptionValue.yellow)
@@ -117,7 +132,15 @@ class XrayResultRenderingTests extends UnitTestConfiguration {
   }
 
   test("If type and class are different they should both be rendered") {
-    val typedResult = result.copy(value = List(1, 2, 3)).toString
+    val typedResult =
+      XrayResult(
+        value = List(1, 2, 3),
+        duration = duration,
+        stackTraceElement = stackTraceElement,
+        timestamp = timestamp,
+        description = description,
+        thread = Thread.currentThread
+      ).toString
 
     typedResult should include(s"Class    | scala.collection.immutable.::")
     typedResult should include(s"Type     | scala.collection.immutable.List[Int]")
@@ -128,18 +151,45 @@ class XrayResultRenderingTests extends UnitTestConfiguration {
   }
 
   test("""If value conains \n it should be rendered on the new line""") {
-    val newResult = result.copy(value = "first\nsecond")
-    newResult.toString should include(s"Value    | ${"first".magenta}")
-    newResult.toString should include(s"         | ${"second".magenta}")
+    val newResultString =
+      XrayResult(
+        value = "first\nsecond",
+        duration = duration,
+        stackTraceElement = stackTraceElement,
+        timestamp = timestamp,
+        description = description,
+        thread = Thread.currentThread
+      ).toString
+
+    newResultString should include(s"Value    | ${"first".magenta}")
+    newResultString should include(s"         | ${"second".magenta}")
   }
 
   test("Simple values should be deeply rendered in magenta") {
     val withStyle = s"enc${"o".green}ded"
-    result.copy(value = withStyle).toString should include(s"Value    | ${styled(withStyle)(Magenta)}")
+
+    val resultWithStyle =
+      XrayResult(
+        value = withStyle,
+        duration = duration,
+        stackTraceElement = stackTraceElement,
+        timestamp = timestamp,
+        description = description,
+        thread = Thread.currentThread
+      )
+
+    resultWithStyle.toString should include(s"Value    | ${styled(withStyle)(Magenta)}")
   }
 
   test("Value of null should not be an issue") {
-    result.copy(value = null).toString should include(s"Value    | ${"null".magenta}")
+    XrayResult(
+      value = null,
+      duration = duration,
+      stackTraceElement = stackTraceElement,
+      timestamp = timestamp,
+      description = description,
+      thread = Thread.currentThread
+    ).toString should include(s"Value    | ${"null".magenta}")
   }
 
   test(s"Rendered result should contain maximum ${spells.terminal.`width-in-characters`} hyphens") {
@@ -149,13 +199,39 @@ class XrayResultRenderingTests extends UnitTestConfiguration {
       line.size should be <= maxWidthInCharacters
     }
 
-    val largeResult = result.copy(value = ("V" * (maxWidthInCharacters + 20)))
+    val largeResult =
+      XrayResult(
+        value = ("V" * (maxWidthInCharacters + 20)),
+        duration = duration,
+        stackTraceElement = stackTraceElement,
+        timestamp = timestamp,
+        description = description,
+        thread = Thread.currentThread
+      )
+
     val largeLines = largeResult.toString split "\n"
     val hyphenLines = largeLines.filter(_.forall(_ == '-'))
 
     forAll(hyphenLines) { hyphenLine =>
       hyphenLine should have size maxWidthInCharacters
     }
+  }
+
+  test("Custom rendering for Calendar") {
+    val now = Calendar.getInstance
+
+    assume(now != timestamp)
+
+    XrayResult(
+      value = now,
+      duration = duration,
+      stackTraceElement = stackTraceElement,
+      timestamp = timestamp,
+      description = description,
+      thread = Thread.currentThread
+    ).toString should include {
+        DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL).format(now.getTime).magenta
+      }
   }
 }
 
