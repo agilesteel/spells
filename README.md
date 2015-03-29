@@ -1,4 +1,3 @@
-[![Stories in Ready](https://badge.waffle.io/agilesteel/spells.png?label=ready&title=Ready)](https://waffle.io/agilesteel/spells)
 [Java 1.7]:       http://java.com/en/download/index.jsp
 [SBT 0.13.5]:     http://www.scala-sbt.org/
 
@@ -21,6 +20,7 @@ This is a small scala "util" library, which will hopefully grow over time.
 [![Coverage Status](https://img.shields.io/coveralls/agilesteel/spells.svg)](https://coveralls.io/r/agilesteel/spells)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.agilesteel/spells_2.11/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.agilesteel/spells_2.11)
 [![License](http://img.shields.io/:license-Apache%202-brightgreen.svg)](http://www.apache.org/licenses/LICENSE-2.0.txt)
+[![Stories in Ready](https://badge.waffle.io/agilesteel/spells.png?label=ready&title=Ready)](https://waffle.io/agilesteel/spells)
 
 ## Features:
 
