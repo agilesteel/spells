@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/agilesteel/spells.png?label=ready&title=Ready)](https://waffle.io/agilesteel/spells)
 [Java 1.7]:       http://java.com/en/download/index.jsp
 [SBT 0.13.5]:     http://www.scala-sbt.org/
 
