@@ -21,8 +21,8 @@ trait Xray {
   def currentLineStackTraceElement(implicit increaseStackTraceDepthBy: Int = 0): StackTraceElement =
     Thread.currentThread.getStackTrace apply increaseStackTraceDepthBy + 6
 
-  implicit class XrayFromSpells[T](expression: => T)(implicit manifest: Manifest[T], evidence: T => CustomRendering = new CustomRendering.Default(_: T)) {
-    def xray(implicit description: String = XrayDefault.Description, style: Ansi#AnsiStyle = Reset, monitor: XrayResult[T] => Unit = Console.println): T = {
+  implicit class XrayFromSpells[T](expression: => T)(implicit manifest: Manifest[T]) {
+    def xray(implicit description: String = XrayDefault.Description, style: Ansi#AnsiStyle = Reset, monitor: XrayResult[T] => Unit = Console.println, evidence: T => CustomRendering = new CustomRendering.Default(_: T)): T = {
       val result = xrayed(expression, description, style, increaseStackTraceDepthBy = +1)
 
       monitor(result)
@@ -30,7 +30,7 @@ trait Xray {
       result.value
     }
 
-    def xrayIf(condition: => Boolean)(implicit description: String = XrayDefault.Description, style: Ansi#AnsiStyle = Reset, monitor: XrayResult[T] => Unit = Console.println): T = {
+    def xrayIf(condition: => Boolean)(implicit description: String = XrayDefault.Description, style: Ansi#AnsiStyle = Reset, monitor: XrayResult[T] => Unit = Console.println, evidence: T => CustomRendering = new CustomRendering.Default(_: T)): T = {
       val result = xrayed(expression, description, style, increaseStackTraceDepthBy = +1)
 
       if (condition)
@@ -39,7 +39,7 @@ trait Xray {
       result.value
     }
 
-    def xrayIfResult(conditionFunction: XrayResult[T] => Boolean)(implicit description: String = XrayDefault.Description, style: Ansi#AnsiStyle = Reset, monitor: XrayResult[T] => Unit = Console.println): T = {
+    def xrayIfResult(conditionFunction: XrayResult[T] => Boolean)(implicit description: String = XrayDefault.Description, style: Ansi#AnsiStyle = Reset, monitor: XrayResult[T] => Unit = Console.println, evidence: T => CustomRendering = new CustomRendering.Default(_: T)): T = {
       val result = xrayed(expression, description, style, increaseStackTraceDepthBy = +1)
 
       if (conditionFunction(result))
