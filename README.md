@@ -14,6 +14,8 @@
 
 # spells
 
+[![Join the chat at https://gitter.im/agilesteel/spells](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/agilesteel/spells?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 This is a small scala "util" library, which will hopefully grow over time.
 
 [![Build Status](https://travis-ci.org/agilesteel/spells.svg?branch=master)](https://travis-ci.org/agilesteel/spells)
