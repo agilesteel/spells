@@ -8,7 +8,7 @@ class HumanRenderingTests extends UnitTestConfiguration {
     1L.render should be(Rendering(1))
 
     import scala.concurrent.duration._
-    1.day.render should be(1.render.duration.days)
+    1.day.rendered should be(1.render.duration.days)
   }
 
   test("""It should be possible to render a single duration""") {

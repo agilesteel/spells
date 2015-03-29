@@ -3,9 +3,7 @@ package spells
 trait AnyOps {
   this: StringOps with Ansi with StylePrint =>
 
-  implicit class AnyOpsFromSpells(input: Any) extends CustomRendering {
-    def rendered: String = String valueOf input
-
+  implicit class AnyOpsFromSpells(input: Any) {
     def decodedSimpleClassName: String = orNull(input.getClass.getSimpleName.withDecodedScalaSymbols)
     def decodedClassName: String = orNull(input.getClass.getName.withDecodedScalaSymbols)
 

@@ -1,13 +1,12 @@
 package spells
 
-import java.text.DateFormat
-import java.util.{ Calendar, Date }
+import java.util.Calendar
 import scala.concurrent.duration._
 
 trait Xray {
-  this: Ansi with StylePrint with StringOps with AnyOps with CalendarOps with HumanRendering =>
+  this: Ansi with AnyOps with CalendarOps with DurationOps with HumanRendering with StringOps with StylePrint =>
 
-  def xrayed[T](expression: => T, description: String = "", style: Ansi#AnsiStyle = Reset, increaseStackTraceDepthBy: Int = 0)(implicit manifest: reflect.Manifest[T]): XrayResult[T] = {
+  def xrayed[T](expression: => T, description: String = XrayDefault.Description, style: Ansi#AnsiStyle = Reset, increaseStackTraceDepthBy: Int = 0)(implicit manifest: Manifest[T], evidence: T => CustomRendering = new CustomRendering.Default(_: T)): XrayResult[T] = {
     val stackTraceElement = currentLineStackTraceElement(increaseStackTraceDepthBy - 1)
 
     val now = Calendar.getInstance
@@ -22,8 +21,8 @@ trait Xray {
   def currentLineStackTraceElement(implicit increaseStackTraceDepthBy: Int = 0): StackTraceElement =
     Thread.currentThread.getStackTrace apply increaseStackTraceDepthBy + 6
 
-  implicit class Xray[T](expression: => T)(implicit manifest: reflect.Manifest[T]) {
-    def xray(implicit description: String = "", style: Ansi#AnsiStyle = Reset, monitor: XrayResult[T] => Unit = Console.println): T = {
+  implicit class XrayFromSpells[T](expression: => T)(implicit manifest: Manifest[T], evidence: T => CustomRendering = new CustomRendering.Default(_: T)) {
+    def xray(implicit description: String = XrayDefault.Description, style: Ansi#AnsiStyle = Reset, monitor: XrayResult[T] => Unit = Console.println): T = {
       val result = xrayed(expression, description, style, increaseStackTraceDepthBy = +1)
 
       monitor(result)
@@ -31,7 +30,7 @@ trait Xray {
       result.value
     }
 
-    def xrayIf(condition: => Boolean)(implicit description: String = "", style: Ansi#AnsiStyle = Reset, monitor: XrayResult[T] => Unit = Console.println): T = {
+    def xrayIf(condition: => Boolean)(implicit description: String = XrayDefault.Description, style: Ansi#AnsiStyle = Reset, monitor: XrayResult[T] => Unit = Console.println): T = {
       val result = xrayed(expression, description, style, increaseStackTraceDepthBy = +1)
 
       if (condition)
@@ -40,7 +39,7 @@ trait Xray {
       result.value
     }
 
-    def xrayIfResult(conditionFunction: XrayResult[T] => Boolean)(implicit description: String = "", style: Ansi#AnsiStyle = Reset, monitor: XrayResult[T] => Unit = Console.println): T = {
+    def xrayIfResult(conditionFunction: XrayResult[T] => Boolean)(implicit description: String = XrayDefault.Description, style: Ansi#AnsiStyle = Reset, monitor: XrayResult[T] => Unit = Console.println): T = {
       val result = xrayed(expression, description, style, increaseStackTraceDepthBy = +1)
 
       if (conditionFunction(result))
@@ -50,6 +49,10 @@ trait Xray {
     }
   }
 
+  private[spells] object XrayDefault {
+    val Description: String = "X-Ray"
+  }
+
   case class XrayResult[+T](
       value: T,
       duration: Duration,
@@ -57,12 +60,12 @@ trait Xray {
       timestamp: Calendar,
       description: String,
       thread: Thread,
-      style: Ansi#AnsiStyle = Reset)(implicit manifest: reflect.Manifest[T], evidence: T => CustomRendering = new AnyOpsFromSpells(_: T)) {
+      style: Ansi#AnsiStyle = Reset)(implicit manifest: Manifest[T], evidence: T => CustomRendering = new CustomRendering.Default(_: T)) {
     override def toString = {
       val lines: Seq[(String, String)] = {
         val content = Vector(
           "DateTime" -> timestamp.rendered,
-          "Duration" -> duration.render,
+          "Duration" -> duration.rendered,
           "Location" -> stackTraceElement,
           "Thread" -> thread
         )
@@ -90,7 +93,7 @@ trait Xray {
       lazy val hyphens = "-" * (numberOfCharsInTheLongestLine min spells.terminal.`width-in-characters`)
 
       val centeredHeader = {
-        val header = if (description.isEmpty) "X-Ray" else description
+        val header = if (Ansi.removeStyles(description).isEmpty) "X-Ray".green else styled(description)(Green)
         val emptySpace = hyphens.size - Ansi.removeStyles(header).size
         val leftPadding = " " * (emptySpace / 2)
 

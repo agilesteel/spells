@@ -5,11 +5,6 @@ trait HumanRendering {
   implicit def shortToRendering(value: Short): Rendering = Rendering(value)
   implicit def intToRendering(value: Int): Rendering = Rendering(value)
   implicit def longToRendering(value: Long): Rendering = Rendering(value)
-  implicit def durationToRendering(value: scala.concurrent.duration.Duration): DurationRendering = DurationRendering(value)
-
-  case class DurationRendering(value: scala.concurrent.duration.Duration) {
-    def render: String = value.toNanos.render.duration.nanoseconds
-  }
 
   case class Rendering(value: Long) {
     def render: Rendering = this
