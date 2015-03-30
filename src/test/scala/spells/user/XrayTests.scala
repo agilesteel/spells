@@ -79,7 +79,7 @@ trait MonitoringEnvironement {
 class XrayResultRenderingTests extends UnitTestConfiguration {
   import XrayResultRenderingTests._
 
-  test("The header should contains the string 'X-Ray' if description is empty") {
+  test("The header should contain the string 'X-Ray' if description is empty") {
     XrayResult(
       value = value,
       duration = duration,
@@ -87,7 +87,29 @@ class XrayResultRenderingTests extends UnitTestConfiguration {
       timestamp = timestamp,
       description = "",
       thread = Thread.currentThread
-    ).toString should include("X-Ray")
+    ).toString should include("X-Ray".green)
+  }
+
+  test("Styles only header should result in the default one") {
+    XrayResult(
+      value = value,
+      duration = duration,
+      stackTraceElement = stackTraceElement,
+      timestamp = timestamp,
+      description = "".yellow,
+      thread = Thread.currentThread
+    ).toString should include("X-Ray".green)
+  }
+
+  test("X-Ray header should still be rendered green") {
+    XrayResult(
+      value = value,
+      duration = duration,
+      stackTraceElement = stackTraceElement,
+      timestamp = timestamp,
+      description = "X-Ray",
+      thread = Thread.currentThread
+    ).toString should include("X-Ray".green)
   }
 
   test(s"The header should contain the string '$description' if description is nonempty") {
