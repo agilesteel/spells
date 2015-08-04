@@ -37,4 +37,8 @@ class StringOpsTests extends UnitTestConfiguration {
   test("Wrap on a 'per line' basis") {
     "xxxx \nxxxx".wrappedOnSpaces(4) should be("xxxx\nxxxx")
   }
+
+  test("Wrap on a 'per line' basis2") {
+    "xxxx\n xxxx".wrappedOnSpaces(4) should be("xxxx\n xxxx")
+  }
 }

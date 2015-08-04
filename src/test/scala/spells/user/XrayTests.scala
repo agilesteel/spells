@@ -41,17 +41,17 @@ class XrayTests extends UnitTestConfiguration {
 
   test("Monitor should only be called for .xrayIfResult if condition is true") {
     new MonitoringEnvironement {
-      val condition: XrayResult[Int] => Boolean = _.value == input
+      val condition: XrayReport[Int] => Boolean = _.value == input
 
       input.xrayIfResult(condition)
-      wasMonitorCalled should be(condition(XrayResult(value = input, null, null, null, null, null, null)))
+      wasMonitorCalled should be(condition(XrayReport(value = input, null, null, null, null, null, null)))
     }
 
     new MonitoringEnvironement {
-      val condition: XrayResult[Int] => Boolean = _.value != input
+      val condition: XrayReport[Int] => Boolean = _.value != input
 
       input.xrayIfResult(condition)
-      wasMonitorCalled should be(condition(XrayResult(value = input, null, null, null, null, null, null)))
+      wasMonitorCalled should be(condition(XrayReport(value = input, null, null, null, null, null, null)))
     }
   }
 
@@ -63,24 +63,29 @@ class XrayTests extends UnitTestConfiguration {
     xrayed(sample).stackTraceElement should be(currentLineStackTraceElement(increaseStackTraceDepthBy = -3))
 
   test("""xrayed("").toString should startWith(color.value)""") {
-    implicit val description = "description"
+    implicit val description: String = "description"
     val color = Yellow
 
-    xrayed("", style = color).toString should startWith(color.value)
+    xrayed(10, style = color).toString should startWith(color.value)
+  }
+
+  test("Implicit string descriptions should not be picked up") {
+    implicit val description: String = "description"
+    xrayed("value").description should be(spells.Xray.Defaults.Description.toString)
   }
 }
 
 trait MonitoringEnvironement {
   val input = 4711
   var wasMonitorCalled = false
-  implicit val monitor: XrayResult[Any] => Unit = _ => wasMonitorCalled = true
+  implicit val monitor: XrayReport[Any] => Unit = _ => wasMonitorCalled = true
 }
 
-class XrayResultRenderingTests extends UnitTestConfiguration {
-  import XrayResultRenderingTests._
+class XrayReportRenderingTests extends UnitTestConfiguration {
+  import XrayReportRenderingTests._
 
   test("The header should contain the string 'X-Ray' if description is empty") {
-    XrayResult(
+    XrayReport(
       value = value,
       duration = duration,
       stackTraceElement = stackTraceElement,
@@ -91,7 +96,7 @@ class XrayResultRenderingTests extends UnitTestConfiguration {
   }
 
   test("Styles only header should result in the default one") {
-    XrayResult(
+    XrayReport(
       value = value,
       duration = duration,
       stackTraceElement = stackTraceElement,
@@ -102,7 +107,7 @@ class XrayResultRenderingTests extends UnitTestConfiguration {
   }
 
   test("X-Ray header should still be rendered green") {
-    XrayResult(
+    XrayReport(
       value = value,
       duration = duration,
       stackTraceElement = stackTraceElement,
@@ -120,7 +125,7 @@ class XrayResultRenderingTests extends UnitTestConfiguration {
     val descriptionValue = "desc"
 
     def headerWithDescription(newDescription: String): String =
-      XrayResult(
+      XrayReport(
         value = value,
         duration = duration,
         stackTraceElement = stackTraceElement,
@@ -155,7 +160,7 @@ class XrayResultRenderingTests extends UnitTestConfiguration {
 
   test("If type and class are different they should both be rendered") {
     val typedResult =
-      XrayResult(
+      XrayReport(
         value = List(1, 2, 3),
         duration = duration,
         stackTraceElement = stackTraceElement,
@@ -174,7 +179,7 @@ class XrayResultRenderingTests extends UnitTestConfiguration {
 
   test("""If value conains \n it should be rendered on the new line""") {
     val newResultString =
-      XrayResult(
+      XrayReport(
         value = "first\nsecond",
         duration = duration,
         stackTraceElement = stackTraceElement,
@@ -191,7 +196,7 @@ class XrayResultRenderingTests extends UnitTestConfiguration {
     val withStyle = s"enc${"o".green}ded"
 
     val resultWithStyle =
-      XrayResult(
+      XrayReport(
         value = withStyle,
         duration = duration,
         stackTraceElement = stackTraceElement,
@@ -204,7 +209,7 @@ class XrayResultRenderingTests extends UnitTestConfiguration {
   }
 
   test("Value of null should not be an issue") {
-    XrayResult(
+    XrayReport(
       value = null,
       duration = duration,
       stackTraceElement = stackTraceElement,
@@ -222,7 +227,7 @@ class XrayResultRenderingTests extends UnitTestConfiguration {
     }
 
     val largeResult =
-      XrayResult(
+      XrayReport(
         value = ("V" * (maxWidthInCharacters + 20)),
         duration = duration,
         stackTraceElement = stackTraceElement,
@@ -244,7 +249,7 @@ class XrayResultRenderingTests extends UnitTestConfiguration {
 
     assume(now != timestamp)
 
-    XrayResult(
+    XrayReport(
       value = now,
       duration = duration,
       stackTraceElement = stackTraceElement,
@@ -297,8 +302,8 @@ class TableRenderingTests extends UnitTestConfiguration {
   }
 }
 
-object XrayResultRenderingTests {
-  private lazy val result = XrayResult(
+object XrayReportRenderingTests {
+  private lazy val result = XrayReport(
     value = value,
     duration = duration,
     stackTraceElement = stackTraceElement,

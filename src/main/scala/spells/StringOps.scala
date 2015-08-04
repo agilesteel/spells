@@ -23,7 +23,7 @@ trait StringOps {
       }
 
       def wouldOverflow(line: String, atom: String): Boolean =
-        (line + separator + atom).size > limit
+        (line + separator + atom).trim.size > limit
 
       def brokenCurrentLineWithAtomCarriedOverToNextLine(result: String, line: String, atom: String): (String, String) =
         (result + line + "\n") -> atom
@@ -44,3 +44,4 @@ trait StringOps {
     }
   }
 }
+
