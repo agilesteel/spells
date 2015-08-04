@@ -1,4 +1,4 @@
-[Java 1.7]:       http://java.com/en/download/index.jsp
+[Java 8]:       http://java.com/en/download/index.jsp
 [SBT 0.13.5]:     http://www.scala-sbt.org/
 
 [Ansi]:           https://github.com/agilesteel/spells/blob/master/src/test/scala/spells/user/AnsiTests.scala
@@ -41,7 +41,7 @@ This is a small scala "util" library, which will hopefully grow over time.
 
 ### Requirements
 
-* [Java 1.7] or greater
+* [Java 8] or greater
 * [SBT 0.13.5] or greater if you want to build from source
 
 ### Configuring your project's dependencies

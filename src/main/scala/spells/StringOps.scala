@@ -4,11 +4,11 @@ trait StringOps {
   implicit class StringOpsFromSpells(input: String) {
     def withDecodedScalaSymbols: String = scala.reflect.NameTransformer decode input
 
-    def wrappedOnSpaces(limit: Int): String = {
+    def wrappedOnSpaces(limit: Int): String = { // and tabs?
       val separator = " "
 
-      def wrapped: String = {
-        val atoms = input split separator
+      def wrapped(in: String): String = {
+        val atoms = in split separator
 
         val (result, lastLine) =
           atoms.tail.foldLeft(("", atoms.head)) {
@@ -31,7 +31,16 @@ trait StringOps {
       def justAtomCarriedOverToNextLine(result: String, line: String, atom: String): (String, String) =
         result -> (line + separator + atom)
 
-      if (input.size < limit || !(input contains " ")) input else wrapped
+      if (input.size < limit || !(input contains ' ')) input else {
+        val parts = input split "\n" map wrapped
+
+        parts.tail.foldLeft(parts.head) {
+          case (result, currentPart) =>
+            if (result endsWith "\n")
+              result + currentPart
+            else result + "\n" + currentPart
+        }
+      }
     }
   }
 }

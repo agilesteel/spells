@@ -33,4 +33,8 @@ class StringOpsTests extends UnitTestConfiguration {
   test("Multiple spaces") {
     "Saturday, March 7, 2015 11:06:53 AM CET".wrappedOnSpaces(160) should be("Saturday, March 7, 2015 11:06:53 AM CET")
   }
+
+  test("Wrap on a 'per line' basis") {
+    "xxxx \nxxxx".wrappedOnSpaces(4) should be("xxxx\nxxxx")
+  }
 }
