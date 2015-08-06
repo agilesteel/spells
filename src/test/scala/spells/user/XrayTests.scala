@@ -1,6 +1,6 @@
 package spells.user
 
-import java.text.DateFormat
+import java.text.SimpleDateFormat
 import java.util.Calendar
 import scala.concurrent.duration._
 
@@ -143,7 +143,7 @@ class XrayReportRenderingTests extends UnitTestConfiguration {
   }
 
   test("The datetime should be rendered in full format") {
-    result.toString should include(s"DateTime | ${DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL) format timestamp.getTime}")
+    result.toString should include(s"""DateTime | ${new SimpleDateFormat("EEEE, MMMM d, yyyy HH:mm:ss.SSS z Z") format timestamp.getTime}""")
   }
 
   test("The duration should be readable by humans") {
@@ -257,7 +257,7 @@ class XrayReportRenderingTests extends UnitTestConfiguration {
       description = description,
       thread = Thread.currentThread
     ).toString should include {
-        DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL).format(now.getTime).magenta
+        new SimpleDateFormat("EEEE, MMMM d, yyyy HH:mm:ss.SSS z Z").format(now.getTime).magenta
       }
   }
 }
