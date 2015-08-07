@@ -6,9 +6,9 @@ import scala.concurrent.duration._
 import Xray._
 
 trait Xray {
-  this: Ansi with AnyOps with CalendarOps with DurationOps with HumanRendering with StringOps with StylePrint =>
+  this: Ansi with AnyOps with CalendarOps with DurationOps with HumanRendering with StringOps with StylePrint with TraversableOps =>
 
-  final def xrayed[T](expression: => T, description: Xray.Description = Defaults.Description, style: Ansi#AnsiStyle = Reset, increaseStackTraceDepthBy: Int = 0)(implicit manifest: Manifest[T], evidence: T => CustomRendering = new CustomRendering.Default(_: T)): XrayReport[T] = {
+  final def xrayed[T](expression: => T, description: Xray.Description = Defaults.Description, style: Ansi#AnsiStyle = Reset, increaseStackTraceDepthBy: Int = 0)(implicit manifest: Manifest[T], evidence: T => CustomRendering = CustomRendering.Default.apply(_: T)): XrayReport[T] = {
     val stackTraceElement = currentLineStackTraceElement(increaseStackTraceDepthBy - 1)
 
     val now = Calendar.getInstance
@@ -24,7 +24,7 @@ trait Xray {
     Thread.currentThread.getStackTrace apply increaseStackTraceDepthBy + 6
 
   implicit class XrayFromSpells[T](expression: => T)(implicit manifest: Manifest[T]) {
-    final def xray(implicit description: Description = Defaults.Description, style: Ansi#AnsiStyle = Reset, monitor: XrayReport[T] => Unit = Console.println, evidence: T => CustomRendering = new CustomRendering.Default(_: T)): T = {
+    final def xray(implicit description: Description = Defaults.Description, style: Ansi#AnsiStyle = Reset, monitor: XrayReport[T] => Unit = Console.println, evidence: T => CustomRendering = CustomRendering.Default.apply): T = {
       val result = xrayed(expression, description, style, increaseStackTraceDepthBy = +1)
 
       monitor(result)
@@ -32,7 +32,7 @@ trait Xray {
       result.value
     }
 
-    final def xrayIf(condition: => Boolean)(implicit description: Description = Defaults.Description, style: Ansi#AnsiStyle = Reset, monitor: XrayReport[T] => Unit = Console.println, evidence: T => CustomRendering = new CustomRendering.Default(_: T)): T = {
+    final def xrayIf(condition: => Boolean)(implicit description: Description = Defaults.Description, style: Ansi#AnsiStyle = Reset, monitor: XrayReport[T] => Unit = Console.println, evidence: T => CustomRendering = CustomRendering.Default.apply): T = {
       val result = xrayed(expression, description, style, increaseStackTraceDepthBy = +1)
 
       if (condition)
@@ -41,7 +41,7 @@ trait Xray {
       result.value
     }
 
-    final def xrayIfResult(conditionFunction: XrayReport[T] => Boolean)(implicit description: Description = Defaults.Description, style: Ansi#AnsiStyle = Reset, monitor: XrayReport[T] => Unit = Console.println, evidence: T => CustomRendering = new CustomRendering.Default(_: T)): T = {
+    final def xrayIfResult(conditionFunction: XrayReport[T] => Boolean)(implicit description: Description = Defaults.Description, style: Ansi#AnsiStyle = Reset, monitor: XrayReport[T] => Unit = Console.println, evidence: T => CustomRendering = CustomRendering.Default.apply): T = {
       val result = xrayed(expression, description, style, increaseStackTraceDepthBy = +1)
 
       if (conditionFunction(result))
@@ -58,7 +58,7 @@ trait Xray {
       timestamp: Calendar,
       description: String,
       thread: Thread,
-      style: Ansi#AnsiStyle = Reset)(implicit manifest: Manifest[T], evidence: T => CustomRendering = new CustomRendering.Default(_: T)) {
+      style: Ansi#AnsiStyle = Reset)(implicit manifest: Manifest[T], evidence: T => CustomRendering = CustomRendering.Default.apply(_: T)) {
     override def toString = {
       val lines: Seq[(String, String)] = {
         val content = Vector(
@@ -83,7 +83,7 @@ trait Xray {
         }
       }
 
-      val table = renderedTable(lines)
+      val table = renderedTable(lines, styles = Map("Value" -> Magenta) withDefaultValue Reset)
 
       val numberOfCharsInTheLongestLine =
         table.map(Ansi.removeStyles).flatMap(_ split "\n").maxBy(_.size).size
@@ -101,56 +101,6 @@ trait Xray {
       val resultingLines = Vector(hyphens, centeredHeader, hyphens) ++ table.dropRight(1) ++ Vector(hyphens, table.last) :+ hyphens
 
       styled(resultingLines mkString "\n")(style)
-    }
-  }
-
-  private[spells] def renderedTable(in: Seq[(String, String)], styles: Map[String, Ansi#AnsiStyle] = Map("Value" -> Magenta) withDefaultValue Reset): Seq[String] = {
-    val sizeOfTheBiggestKey = in map {
-      case (key, _) => Ansi.removeStyles(key).size
-    } max
-
-    val separator = " | "
-
-    val maxWidthInCharacters =
-      spells.terminal.`width-in-characters` - separator.size - sizeOfTheBiggestKey
-
-    in.foldLeft(Vector.empty[String]) {
-      case (result, (key, value)) =>
-        val keyWithPadding = key.padTo(sizeOfTheBiggestKey, ' ')
-        val line = {
-          val actualValue = value wrappedOnSpaces maxWidthInCharacters
-
-          if (!(actualValue contains "\n"))
-            keyWithPadding + separator + styled(actualValue)(styles(key))
-          else {
-            val subLines = actualValue.split("\n").toList
-            val renderedHead = keyWithPadding + separator + styled(subLines.head)(styles(key)) + "\n"
-            var previousSubLine = styled(subLines.head)(styles(key))
-            val renderedTail = subLines.tail.map { subLine =>
-              val previousSublineStyle = {
-                var takenSoFar = ""
-                var result = ""
-
-                previousSubLine.reverse.takeWhile { char =>
-                  takenSoFar += char
-                  val theMatch = StylePrint.styleOnly.r findFirstIn takenSoFar.reverse
-                  theMatch foreach (result = _)
-                  theMatch.isEmpty
-                }
-
-                result.toAnsiStyle
-              }
-              val thisSubLine = styled(subLine)(previousSublineStyle)
-              val result = (" " * sizeOfTheBiggestKey) + separator + thisSubLine
-              previousSubLine = thisSubLine
-              result
-            }.mkString("\n")
-
-            renderedHead + renderedTail
-          }
-        }
-
-        result :+ line
     }
   }
 }

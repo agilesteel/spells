@@ -4,8 +4,12 @@ trait CustomRendering {
   implicit def rendered: String
 }
 
-object CustomRendering extends CalendarOps with DateOps {
-  class Default(input: Any) extends CustomRendering {
+object CustomRendering {
+  private[spells] object Default {
+    implicit def apply[T](input: T): Default[T] = new Default(input)
+  }
+
+  class Default[T](input: T) extends CustomRendering {
     def rendered: String = String valueOf input
   }
 }

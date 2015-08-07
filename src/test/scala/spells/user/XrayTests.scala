@@ -285,12 +285,12 @@ class TableRenderingTests extends UnitTestConfiguration {
     }
   }
 
-  test("""Lines should be wrapped, but the style should be preserved for the "Value" key""") {
+  test("""Lines should be wrapped, but the style should be preserved for the "Value" key, assuming custom styles are passed in""") {
     val maxWidthInCharacters = spells.terminal.`width-in-characters`
     val sizeOfKeyWithSeparator = 8
     def atom(c: Char) = c.toString * (maxWidthInCharacters - sizeOfKeyWithSeparator)
     val toBeSpliced = atom('x') + " " + atom('y')
-    val table = renderedTable(Seq("Value" -> toBeSpliced))
+    val table = renderedTable(Seq("Value" -> toBeSpliced), styles = Map("Value" -> Magenta) withDefaultValue Reset)
     table should be {
       Vector(
       // format: OFF

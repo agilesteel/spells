@@ -13,4 +13,5 @@ trait Spells
   with Misc
   with StringOps
   with StylePrint
+  with TraversableOps
   with Xray
