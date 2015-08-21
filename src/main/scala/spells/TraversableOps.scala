@@ -3,7 +3,7 @@ package spells
 trait TraversableOps {
   this: Ansi with AnyOps with CalendarOps with DurationOps with HumanRendering with StringOps with StylePrint =>
 
-  final implicit def TraversableOpsFromSpells[T](value: Traversable[T])(implicit manifest: Manifest[T], evidence: T => CustomRendering = CustomRendering.Default.apply(_: T)): CustomRendering = new CustomRendering {
+  final implicit def TraversableOpsFromSpells[T](value: Traversable[T])(implicit manifest: Manifest[T], evidence: T => CustomRendering = CustomRendering.Default): CustomRendering = new CustomRendering {
     def rendered: String = {
       def nonEmptyRendered: String = {
         val `class` = value.decodedClassName
@@ -31,7 +31,7 @@ trait TraversableOps {
     }
   }
 
-  private[spells] def renderedTable(in: Seq[(String, String)], styles: Map[String, Ansi#AnsiStyle] = Map.empty withDefaultValue Reset): Seq[String] = {
+  private[spells] def renderedTable(in: Seq[(String, String)], styles: Map[String, Ansi.Style] = Map.empty withDefaultValue Reset): Seq[String] = {
     if (in.isEmpty)
       Seq.empty
     else {
@@ -55,7 +55,9 @@ trait TraversableOps {
             else {
               val subLines = actualValue.split("\n").toList
               val renderedHead = keyWithPadding + separator + styled(subLines.head)(styles(key)) + "\n"
+
               var previousSubLine = styled(subLines.head)(styles(key))
+
               val renderedTail = subLines.tail.map { subLine =>
                 val previousSublineStyle = {
                   var takenSoFar = ""
@@ -89,7 +91,90 @@ trait TraversableOps {
     }
   }
 
-  implicit class ArrayOpsFromSpells[T](value: Array[T]) extends CustomRendering {
-    def rendered: String = ""
+  final implicit def ArrayOpsFromSpells[T](value: Array[T])(implicit manifest: Manifest[T], evidence: T => CustomRendering = CustomRendering.Default): CustomRendering = new CustomRendering {
+    def rendered: String = {
+      def nonEmptyRendered: String = {
+        val `type` = manifest.toString.withDecodedScalaSymbols
+
+        val size = value.size
+        val sizeString = if (size == 1) "1 element" else s"$size elements"
+
+        val header = s"Array[${`type`}] with $sizeString"
+        val x = {
+          var result: List[(String, String)] = List.empty[(String, String)]
+          var index = 0
+          value foreach { element =>
+            result ::= (index.toString -> element.rendered)
+            index += 1
+          }
+
+          result.reverse
+        }
+
+        header + ":\n\n" + renderedTable(x).mkString("\n")
+      }
+
+      if (value.isEmpty) value.toString else nonEmptyRendered
+    }
+  }
+
+  final implicit def CollectionOpsFromSpells[T](value: java.util.Collection[T])(implicit manifest: Manifest[T], evidence: T => CustomRendering = CustomRendering.Default): CustomRendering = new CustomRendering {
+    def rendered: String = {
+      def nonEmptyRendered: String = {
+        val `class` = value.decodedClassName
+        val `type` = manifest.toString.withDecodedScalaSymbols
+
+        val size = value.size
+        val sizeString = if (size == 1) "1 element" else s"$size elements"
+
+        val header = s"${`class`}[${`type`}] with $sizeString"
+        val x = {
+          var result: List[(String, String)] = List.empty[(String, String)]
+          var index = 0
+          val iterator = value.iterator
+          while (iterator.hasNext) {
+            val element = iterator.next
+            result ::= (index.toString -> element.rendered)
+            index += 1
+          }
+
+          result.reverse
+        }
+
+        header + ":\n\n" + renderedTable(x).mkString("\n")
+      }
+
+      if (value.isEmpty) value.toString else nonEmptyRendered
+    }
+  }
+
+  final implicit def MapOpsFromSpells[Key, Value](value: java.util.Map[Key, Value])(implicit manifest: Manifest[java.util.Map.Entry[Key, Value]], evidence: java.util.Map.Entry[Key, Value] => CustomRendering = CustomRendering.Default): CustomRendering = new CustomRendering {
+    def rendered: String = {
+      def nonEmptyRendered: String = {
+        val `class` = value.decodedClassName
+        val `type` = manifest.toString.withDecodedScalaSymbols
+
+        val size = value.size
+        val sizeString = if (size == 1) "1 element" else s"$size elements"
+
+        val header = s"${`class`}[${`type`}] with $sizeString"
+        val x = {
+          var result: List[(String, String)] = List.empty[(String, String)]
+          var index = 0
+          val iterator = value.entrySet.iterator
+          while (iterator.hasNext) {
+            val element = iterator.next
+            result ::= (index.toString -> element.rendered)
+            index += 1
+          }
+
+          result.reverse
+        }
+
+        header + ":\n\n" + renderedTable(x).mkString("\n")
+      }
+
+      if (value.isEmpty) value.toString else nonEmptyRendered
+    }
   }
 }

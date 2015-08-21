@@ -47,15 +47,15 @@ class XrayTests extends UnitTestConfiguration {
     xrayed(sample).stackTraceElement should be(currentLineStackTraceElement(increaseStackTraceDepthBy = -3))
 
   test("""xrayed("").toString should startWith(color.value)""") {
-    val color = Yellow
+    implicit val color = Yellow
 
-    xrayed(10, style = color).toString should startWith(color.value)
+    xrayed(10).toString should startWith(color.value)
 
     SilentOutputStream out {
       implicit def monitor(report: spells.Xray.Report[Any]): Unit =
         report.toString should startWith(color.value)
 
-      10.xray(style = color)
+      10.xray
     }
   }
 
@@ -94,7 +94,7 @@ class XrayTests extends UnitTestConfiguration {
     }
   }
 
-  ignore("Explicit string descriptions and implicit style should be picked up") {
+  test("Explicit string descriptions and implicit style should be picked up") {
     implicit val color = Cyan
 
     val description: String = "description"
@@ -292,18 +292,22 @@ class XrayReportRenderingTests extends UnitTestConfiguration {
   }
 
   test("Multiline rendering should not cause style los") {
-    val actual = xrayed(Seq("I", "II", "III"))
-
     // format: OFF
     val expected =
-      "scala.collection.immutable.::[java.lang.String] with 3 elements:" + "\n" +
-      "" + "\n" +
-      "0 | I" + "\n" +
-      "1 | II" + "\n" +
-      "2 | III"
+      "Value    | " + "scala.collection.immutable.::[java.lang.String] with 3 elements:".magenta + "\n" +
+      "         | " + "" + "\n" +
+      "         | " + "0 | I".magenta + "\n" +
+      "         | " + "1 | II".magenta + "\n" +
+      "         | " + "2 | III".magenta
     // format: ON
 
-    actual.value.rendered should be(expected)
+    SilentOutputStream out {
+      implicit def monitor(report: spells.Xray.Report[Any]): Unit = {
+        report.toString should include(expected)
+      }
+
+      Seq("I", "II", "III").xray
+    }
   }
 }
 

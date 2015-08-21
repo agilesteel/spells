@@ -14,4 +14,5 @@ trait Spells
   with StringOps
   with StylePrint
   with TraversableOps
+  with Tuple2Ops
   with Xray

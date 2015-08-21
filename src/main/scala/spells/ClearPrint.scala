@@ -3,15 +3,15 @@ package spells
 trait ClearPrint {
   this: Ansi with StylePrint =>
 
-  final def clearPrintln(input: Any = "")(implicit style: Ansi#AnsiStyle = Reset): Unit = {
+  final def clearPrintln(input: Any = "")(implicit style: Ansi.Style = Reset): Unit = {
     Console println cleared(input)(style)
   }
 
-  final def clearPrint(input: Any = "")(implicit style: Ansi#AnsiStyle = Reset): Unit = {
+  final def clearPrint(input: Any = "")(implicit style: Ansi.Style = Reset): Unit = {
     Console print cleared(input)(style)
   }
 
-  final def cleared(input: Any = "")(implicit style: Ansi#AnsiStyle = Reset): String =
+  final def cleared(input: Any = "")(implicit style: Ansi.Style = Reset): String =
     styled(ClearPrint.Clear.value + s"\r$input" + Reset.value)(style)
 
   object ClearPrint {

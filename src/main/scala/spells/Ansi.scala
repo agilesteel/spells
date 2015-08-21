@@ -6,32 +6,32 @@ trait Ansi {
   implicit final def anyToAnsiString(input: Any): AnsiString = new AnsiString(input)
 
   implicit final class AnsiStyleWrapper(style: String) {
-    def toAnsiStyle: AnsiStyle = AnsiStyle(style)
+    def toAnsiStyle: Ansi.Style = Ansi.Style(style)
   }
 
-  case class AnsiStyle(value: String) {
-    override def toString = Ansi.Sample in this
-  }
+  final lazy val Reset: Ansi.Style = Console.RESET.toAnsiStyle
+  final lazy val Black: Ansi.Style = Console.BLACK.toAnsiStyle
+  final lazy val Red: Ansi.Style = Console.RED.toAnsiStyle
+  final lazy val Green: Ansi.Style = Console.GREEN.toAnsiStyle
+  final lazy val Yellow: Ansi.Style = Console.YELLOW.toAnsiStyle
+  final lazy val Blue: Ansi.Style = Console.BLUE.toAnsiStyle
+  final lazy val Magenta: Ansi.Style = Console.MAGENTA.toAnsiStyle
+  final lazy val Cyan: Ansi.Style = Console.CYAN.toAnsiStyle
+  final lazy val White: Ansi.Style = Console.WHITE.toAnsiStyle
 
-  final lazy val Reset: AnsiStyle = Console.RESET.toAnsiStyle
-  final lazy val Black: AnsiStyle = Console.BLACK.toAnsiStyle
-  final lazy val Red: AnsiStyle = Console.RED.toAnsiStyle
-  final lazy val Green: AnsiStyle = Console.GREEN.toAnsiStyle
-  final lazy val Yellow: AnsiStyle = Console.YELLOW.toAnsiStyle
-  final lazy val Blue: AnsiStyle = Console.BLUE.toAnsiStyle
-  final lazy val Magenta: AnsiStyle = Console.MAGENTA.toAnsiStyle
-  final lazy val Cyan: AnsiStyle = Console.CYAN.toAnsiStyle
-  final lazy val White: AnsiStyle = Console.WHITE.toAnsiStyle
-
-  final lazy val Bold: AnsiStyle = Console.BOLD.toAnsiStyle
-  final lazy val Blink: AnsiStyle = Console.BLINK.toAnsiStyle
-  final lazy val Reversed: AnsiStyle = Console.REVERSED.toAnsiStyle
-  final lazy val Invisible: AnsiStyle = Console.INVISIBLE.toAnsiStyle
+  final lazy val Bold: Ansi.Style = Console.BOLD.toAnsiStyle
+  final lazy val Blink: Ansi.Style = Console.BLINK.toAnsiStyle
+  final lazy val Reversed: Ansi.Style = Console.REVERSED.toAnsiStyle
+  final lazy val Invisible: Ansi.Style = Console.INVISIBLE.toAnsiStyle
 }
 
 object Ansi extends Ansi {
+  case class Style(value: String) {
+    override def toString = Ansi.Sample in this
+  }
+
   final class AnsiString(val input: Any) extends AnyVal {
-    def in(style: Ansi#AnsiStyle): String = style.value + removeStyles(String valueOf input) + Reset.value
+    def in(style: Ansi.Style): String = style.value + removeStyles(String valueOf input) + Reset.value
 
     def black: String = this in Black
     def red: String = this in Red
