@@ -5,11 +5,9 @@ trait CustomRendering {
 }
 
 object CustomRendering {
-  private[spells] object Default {
-    implicit def apply[T](input: T): Default[T] = new Default(input)
-  }
-
-  class Default[T](input: T) extends CustomRendering {
-    def rendered: String = String valueOf input
+  private[spells] object Default extends (Any => CustomRendering) {
+    def apply(any: Any): CustomRendering = new CustomRendering {
+      def rendered: String = String valueOf any
+    }
   }
 }

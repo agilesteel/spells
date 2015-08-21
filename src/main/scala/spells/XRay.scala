@@ -3,12 +3,10 @@ package spells
 import java.util.Calendar
 import scala.concurrent.duration._
 
-import Xray._
-
 trait Xray {
   this: Ansi with AnyOps with CalendarOps with DurationOps with HumanRendering with StringOps with StylePrint with TraversableOps =>
 
-  final def xrayed[T](expression: => T, description: Xray.Description = Defaults.Description, style: Ansi#AnsiStyle = Reset, increaseStackTraceDepthBy: Int = 0)(implicit manifest: Manifest[T], evidence: T => CustomRendering = CustomRendering.Default.apply(_: T)): XrayReport[T] = {
+  final def xrayed[T](expression: => T, description: Xray.Description = Xray.Defaults.Description, style: Ansi#AnsiStyle = Reset, increaseStackTraceDepthBy: Int = 0)(implicit manifest: Manifest[T], evidence: T => CustomRendering = CustomRendering.Default): Xray.Report[T] = {
     val stackTraceElement = currentLineStackTraceElement(increaseStackTraceDepthBy - 1)
 
     val now = Calendar.getInstance
@@ -17,32 +15,23 @@ trait Xray {
     val value = expression
     val stop = System.nanoTime - start
 
-    XrayReport(value, stop.nanos, stackTraceElement, now, description.toString, Thread.currentThread, style)
+    new Xray.Report(value, stop.nanos, stackTraceElement, now, description.toString, Thread.currentThread, style, evidence)
   }
 
   def currentLineStackTraceElement(implicit increaseStackTraceDepthBy: Int = 0): StackTraceElement =
     Thread.currentThread.getStackTrace apply increaseStackTraceDepthBy + 6
 
-  implicit class XrayFromSpells[T](expression: => T)(implicit manifest: Manifest[T]) {
-    final def xray(implicit description: Description = Defaults.Description, style: Ansi#AnsiStyle = Reset, monitor: XrayReport[T] => Unit = Console.println, evidence: T => CustomRendering = CustomRendering.Default.apply): T = {
-      val result = xrayed(expression, description, style, increaseStackTraceDepthBy = +1)
+  implicit class XrayFromSpells[T](expression: => T)(implicit manifest: Manifest[T], evidence: T => CustomRendering = CustomRendering.Default, monitor: Xray.Report[T] => Unit = (x: Xray.Report[T]) => Console.println(x)) {
+    def xray(implicit description: Xray.Description = Xray.Defaults.Description, style: Ansi#AnsiStyle = Reset): T = {
+      val result = xrayed(expression, description, style, increaseStackTraceDepthBy = +1)(manifest, evidence)
 
       monitor(result)
 
       result.value
     }
 
-    final def xrayIf(condition: => Boolean)(implicit description: Description = Defaults.Description, style: Ansi#AnsiStyle = Reset, monitor: XrayReport[T] => Unit = Console.println, evidence: T => CustomRendering = CustomRendering.Default.apply): T = {
-      val result = xrayed(expression, description, style, increaseStackTraceDepthBy = +1)
-
-      if (condition)
-        monitor(result)
-
-      result.value
-    }
-
-    final def xrayIfResult(conditionFunction: XrayReport[T] => Boolean)(implicit description: Description = Defaults.Description, style: Ansi#AnsiStyle = Reset, monitor: XrayReport[T] => Unit = Console.println, evidence: T => CustomRendering = CustomRendering.Default.apply): T = {
-      val result = xrayed(expression, description, style, increaseStackTraceDepthBy = +1)
+    def xrayIf(conditionFunction: Xray.Report[T] => Boolean)(implicit description: Xray.Description = Xray.Defaults.Description, style: Ansi#AnsiStyle = Reset): T = {
+      val result = xrayed(expression, description, style, increaseStackTraceDepthBy = +1)(manifest, evidence)
 
       if (conditionFunction(result))
         monitor(result)
@@ -51,14 +40,26 @@ trait Xray {
     }
   }
 
-  case class XrayReport[+T](
-      value: T,
-      duration: Duration,
-      stackTraceElement: StackTraceElement,
-      timestamp: Calendar,
-      description: String,
-      thread: Thread,
-      style: Ansi#AnsiStyle = Reset)(implicit manifest: Manifest[T], evidence: T => CustomRendering = CustomRendering.Default.apply(_: T)) {
+}
+
+object Xray extends Xray with Ansi with AnyOps with CalendarOps with DateOps with DurationOps with HumanRendering with StringOps with StylePrint with TraversableOps {
+  object Defaults {
+    val Description: Xray.Description = new Xray.Description("X-Ray")
+  }
+
+  implicit class Description(val value: String) {
+    override def toString: String = value
+  }
+
+  class Report[+T: Manifest](
+      val value: T,
+      val duration: Duration,
+      val stackTraceElement: StackTraceElement,
+      val timestamp: Calendar,
+      val description: String,
+      val thread: Thread,
+      val style: Ansi#AnsiStyle = Reset,
+      evidence: T => CustomRendering = CustomRendering.Default) {
     override def toString = {
       val lines: Seq[(String, String)] = {
         val content = Vector(
@@ -78,7 +79,7 @@ trait Xray {
             Vector("Class" -> `class`, "Type" -> `type`)
         }
 
-        content ++ classOrTypeOrBoth :+ "Value" -> (Option(value).fold("null")(_.rendered)) map {
+        content ++ classOrTypeOrBoth :+ "Value" -> (Option(value).fold("null")(evidence(_).rendered)) map {
           case (key, value) => key.toString -> value.toString
         }
       }
@@ -105,12 +106,15 @@ trait Xray {
   }
 }
 
-object Xray {
-  object Defaults {
-    val Description: Xray.Description = new Xray.Description("X-Ray")
-  }
+object Main extends App with Spells {
+  java.util.Calendar.getInstance.xray
+  java.util.Calendar.getInstance.xray(style = Yellow)
+  java.util.Calendar.getInstance.xray(description = "Custom Description")
+  java.util.Calendar.getInstance.xray("Custom Description")
+  java.util.Calendar.getInstance.xray(description = "Custom Description", style = Cyan)
 
-  implicit class Description(val value: String) extends AnyVal {
-    override def toString: String = value
+  {
+    implicit val style = Green
+    java.util.Calendar.getInstance.xray(description = "Custom Description") // maybe because of the #
   }
 }

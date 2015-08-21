@@ -25,33 +25,17 @@ class XrayTests extends UnitTestConfiguration {
 
   test("Monitor should only be called for .xrayIf if condition is true") {
     new MonitoringEnvironement {
-      val condition = true
+      val condition: spells.Xray.Report[Int] => Boolean = _.value == input
 
       input.xrayIf(condition)
-      wasMonitorCalled should be(condition)
+      wasMonitorCalled should be(condition(new spells.Xray.Report(value = input, null, null, null, null, null, null)))
     }
 
     new MonitoringEnvironement {
-      val condition = false
+      val condition: spells.Xray.Report[Int] => Boolean = _.value != input
 
       input.xrayIf(condition)
-      wasMonitorCalled should be(condition)
-    }
-  }
-
-  test("Monitor should only be called for .xrayIfResult if condition is true") {
-    new MonitoringEnvironement {
-      val condition: XrayReport[Int] => Boolean = _.value == input
-
-      input.xrayIfResult(condition)
-      wasMonitorCalled should be(condition(XrayReport(value = input, null, null, null, null, null, null)))
-    }
-
-    new MonitoringEnvironement {
-      val condition: XrayReport[Int] => Boolean = _.value != input
-
-      input.xrayIfResult(condition)
-      wasMonitorCalled should be(condition(XrayReport(value = input, null, null, null, null, null, null)))
+      wasMonitorCalled should be(condition(new spells.Xray.Report(value = input, null, null, null, null, null, null)))
     }
   }
 
@@ -63,29 +47,82 @@ class XrayTests extends UnitTestConfiguration {
     xrayed(sample).stackTraceElement should be(currentLineStackTraceElement(increaseStackTraceDepthBy = -3))
 
   test("""xrayed("").toString should startWith(color.value)""") {
-    implicit val description: String = "description"
     val color = Yellow
 
     xrayed(10, style = color).toString should startWith(color.value)
+
+    SilentOutputStream out {
+      implicit def monitor(report: spells.Xray.Report[Any]): Unit =
+        report.toString should startWith(color.value)
+
+      10.xray(style = color)
+    }
+  }
+
+  test("""Implicit style should be picked up""") {
+    implicit val color = Yellow
+
+    SilentOutputStream out {
+      implicit def monitor(report: spells.Xray.Report[Any]): Unit =
+        report.toString should startWith(color.value)
+
+      10.xray
+    }
   }
 
   test("Implicit string descriptions should not be picked up") {
     implicit val description: String = "description"
     xrayed("value").description should be(spells.Xray.Defaults.Description.toString)
+
+    SilentOutputStream out {
+      implicit def monitor(report: spells.Xray.Report[Any]): Unit =
+        report.description should be(spells.Xray.Defaults.Description.toString)
+
+      "value".xray
+    }
   }
+
+  test("Explicit string descriptions should be picked up") {
+    val description: String = "description"
+    xrayed("value", description).description should be(description)
+
+    SilentOutputStream out {
+      implicit def monitor(report: spells.Xray.Report[Any]): Unit =
+        report.description should be(description)
+
+      "value".xray(description)
+    }
+  }
+
+  ignore("Explicit string descriptions and implicit style should be picked up") {
+    implicit val color = Cyan
+
+    val description: String = "description"
+    xrayed("value", description).description should be(description)
+
+    SilentOutputStream out {
+      implicit def monitor(report: spells.Xray.Report[Any]): Unit = {
+        report.description should be(description)
+        report.toString should startWith(color.value)
+      }
+
+      "value".xray(description)
+    }
+  }
+
 }
 
 trait MonitoringEnvironement {
   val input = 4711
   var wasMonitorCalled = false
-  implicit val monitor: XrayReport[Any] => Unit = _ => wasMonitorCalled = true
+  implicit def monitor[T](report: spells.Xray.Report[T]): Unit = wasMonitorCalled = true
 }
 
 class XrayReportRenderingTests extends UnitTestConfiguration {
   import XrayReportRenderingTests._
 
   test("The header should contain the string 'X-Ray' if description is empty") {
-    XrayReport(
+    new spells.Xray.Report(
       value = value,
       duration = duration,
       stackTraceElement = stackTraceElement,
@@ -96,7 +133,7 @@ class XrayReportRenderingTests extends UnitTestConfiguration {
   }
 
   test("Styles only header should result in the default one") {
-    XrayReport(
+    new spells.Xray.Report(
       value = value,
       duration = duration,
       stackTraceElement = stackTraceElement,
@@ -107,7 +144,7 @@ class XrayReportRenderingTests extends UnitTestConfiguration {
   }
 
   test("X-Ray header should still be rendered green") {
-    XrayReport(
+    new spells.Xray.Report(
       value = value,
       duration = duration,
       stackTraceElement = stackTraceElement,
@@ -125,7 +162,7 @@ class XrayReportRenderingTests extends UnitTestConfiguration {
     val descriptionValue = "desc"
 
     def headerWithDescription(newDescription: String): String =
-      XrayReport(
+      new spells.Xray.Report(
         value = value,
         duration = duration,
         stackTraceElement = stackTraceElement,
@@ -160,7 +197,7 @@ class XrayReportRenderingTests extends UnitTestConfiguration {
 
   test("If type and class are different they should both be rendered") {
     val typedResult =
-      XrayReport(
+      new spells.Xray.Report(
         value = List(1, 2, 3),
         duration = duration,
         stackTraceElement = stackTraceElement,
@@ -179,7 +216,7 @@ class XrayReportRenderingTests extends UnitTestConfiguration {
 
   test("""If value conains \n it should be rendered on the new line""") {
     val newResultString =
-      XrayReport(
+      new spells.Xray.Report(
         value = "first\nsecond",
         duration = duration,
         stackTraceElement = stackTraceElement,
@@ -196,7 +233,7 @@ class XrayReportRenderingTests extends UnitTestConfiguration {
     val withStyle = s"enc${"o".green}ded"
 
     val resultWithStyle =
-      XrayReport(
+      new spells.Xray.Report(
         value = withStyle,
         duration = duration,
         stackTraceElement = stackTraceElement,
@@ -209,7 +246,7 @@ class XrayReportRenderingTests extends UnitTestConfiguration {
   }
 
   test("Value of null should not be an issue") {
-    XrayReport(
+    new spells.Xray.Report(
       value = null,
       duration = duration,
       stackTraceElement = stackTraceElement,
@@ -227,7 +264,7 @@ class XrayReportRenderingTests extends UnitTestConfiguration {
     }
 
     val largeResult =
-      XrayReport(
+      new spells.Xray.Report(
         value = ("V" * (maxWidthInCharacters + 20)),
         duration = duration,
         stackTraceElement = stackTraceElement,
@@ -249,16 +286,24 @@ class XrayReportRenderingTests extends UnitTestConfiguration {
 
     assume(now != timestamp)
 
-    XrayReport(
-      value = now,
-      duration = duration,
-      stackTraceElement = stackTraceElement,
-      timestamp = timestamp,
-      description = description,
-      thread = Thread.currentThread
-    ).toString should include {
-        new SimpleDateFormat("EEEE, MMMM d, yyyy HH:mm:ss.SSS z Z").format(now.getTime).magenta
-      }
+    xrayed(now).toString should include {
+      new SimpleDateFormat("EEEE, MMMM d, yyyy HH:mm:ss.SSS z Z").format(now.getTime).magenta
+    }
+  }
+
+  test("Multiline rendering should not cause style los") {
+    val actual = xrayed(Seq("I", "II", "III"))
+
+    // format: OFF
+    val expected =
+      "scala.collection.immutable.::[java.lang.String] with 3 elements:" + "\n" +
+      "" + "\n" +
+      "0 | I" + "\n" +
+      "1 | II" + "\n" +
+      "2 | III"
+    // format: ON
+
+    actual.value.rendered should be(expected)
   }
 }
 
@@ -303,13 +348,15 @@ class TableRenderingTests extends UnitTestConfiguration {
 }
 
 object XrayReportRenderingTests {
-  private lazy val result = XrayReport(
-    value = value,
-    duration = duration,
-    stackTraceElement = stackTraceElement,
-    timestamp = timestamp,
-    description = description,
-    thread = Thread.currentThread)
+  private lazy val result =
+    new spells.Xray.Report(
+      value = value,
+      duration = duration,
+      stackTraceElement = stackTraceElement,
+      timestamp = timestamp,
+      description = description,
+      thread = Thread.currentThread
+    )
 
   private lazy val value = new `Encoded + Whatever`
   private lazy val duration = 62.seconds

@@ -51,6 +51,7 @@ object SpellsBuild extends Build {
       "-language:_",
       "-unchecked",
       "-Xlint",
+      // "-Ywarn-unused-import", // scala 2.11
       "-Ywarn-adapted-args",
       // "-Ywarn-value-discard",
       "-Ywarn-inaccessible",
