@@ -3,32 +3,92 @@ package spells
 trait TraversableOps {
   this: Ansi with AnyOps with CalendarOps with DurationOps with HumanRendering with StringOps with StylePrint =>
 
-  final implicit def TraversableOpsFromSpells[T](value: Traversable[T])(implicit manifest: Manifest[T], evidence: T => CustomRendering = CustomRendering.Default): CustomRendering = new CustomRendering {
+  final implicit def TraversableOpsFromSpells[T](value: Traversable[T])(implicit manifest: Manifest[T], rendering: T => CustomRendering = CustomRendering.Defaults.Any): CustomRendering = new CustomRendering {
     def rendered: String = {
-      def nonEmptyRendered: String = {
-        val `class` = value.decodedClassName
-        val `type` = manifest.toString.withDecodedScalaSymbols
+      lazy val className = value.decodedClassName
+      lazy val typeName = manifest.toString.withDecodedScalaSymbols
 
-        val size = value.size
-        val sizeString = if (size == 1) "1 element" else s"$size elements"
-
-        val header = s"${`class`}[${`type`}] with $sizeString"
-        val x = {
-          var result: List[(String, String)] = List.empty[(String, String)]
-          var index = 0
-          value foreach { element =>
-            result ::= (index.toString -> element.rendered)
-            index += 1
-          }
-
-          result.reverse
+      render[Traversable[T]](value, _.isEmpty, _.size, value.toString, className, typeName) { in =>
+        var result: Vector[(String, String)] = Vector.empty[(String, String)]
+        var index = 0
+        value foreach { element =>
+          result :+= (index.toString -> element.rendered)
+          index += 1
         }
 
-        header + ":\n\n" + renderedTable(x).mkString("\n")
+        result
       }
-
-      if (value.isEmpty) value.toString else nonEmptyRendered
     }
+  }
+
+  final implicit def ArrayOpsFromSpells[T](value: Array[T])(implicit manifest: Manifest[T], rendering: T => CustomRendering = CustomRendering.Defaults.Any): CustomRendering = new CustomRendering {
+    def rendered: String = {
+      lazy val className = value.decodedClassName
+      lazy val typeName = manifest.toString.withDecodedScalaSymbols
+
+      render[Array[T]](value, _.isEmpty, _.size, s"Array()", className, typeName) { in =>
+        var result: Vector[(String, String)] = Vector.empty[(String, String)]
+        var index = 0
+        value foreach { element =>
+          result :+= (index.toString -> element.rendered)
+          index += 1
+        }
+
+        result
+      }
+    }
+  }
+
+  final implicit def CollectionOpsFromSpells[T](value: java.util.Collection[T])(implicit manifest: Manifest[T], rendering: T => CustomRendering = CustomRendering.Defaults.Any): CustomRendering = new CustomRendering {
+    def rendered: String = {
+      lazy val className = value.decodedClassName
+      lazy val typeName = manifest.toString.withDecodedScalaSymbols
+
+      render[java.util.Collection[T]](value, _.isEmpty, _.size, s"$className()", className, typeName) { in =>
+        var result: Vector[(String, String)] = Vector.empty[(String, String)]
+        var index = 0
+        val iterator = value.iterator
+        while (iterator.hasNext) {
+          val element = iterator.next
+          result :+= (index.toString -> element.rendered)
+          index += 1
+        }
+
+        result
+      }
+    }
+  }
+
+  final implicit def MapOpsFromSpells[Key, Value](value: java.util.Map[Key, Value])(implicit manifest: Manifest[java.util.Map.Entry[Key, Value]], rendering: java.util.Map.Entry[Key, Value] => CustomRendering = CustomRendering.Defaults.Any): CustomRendering = new CustomRendering {
+    def rendered: String = {
+      lazy val className = value.decodedClassName
+      lazy val typeName = manifest.toString.withDecodedScalaSymbols
+
+      render[java.util.Map[Key, Value]](value, _.isEmpty, _.size, s"$className()", className, typeName) { in =>
+        var result: Vector[(String, String)] = Vector.empty[(String, String)]
+        var index = 0
+        val iterator = in.entrySet.iterator
+        while (iterator.hasNext) {
+          val element = iterator.next
+          result :+= (index.toString -> element.rendered)
+          index += 1
+        }
+
+        result
+      }
+    }
+  }
+
+  private def render[T](value: => T, isEmpty: T => Boolean, getSize: T => Int, emptyRendered: => String, className: => String, typeName: => String)(pairs: T => Seq[(String, String)]): String = {
+    def nonEmptyRendered: String = {
+      val size = getSize(value)
+      val sizeString = if (size == 1) "1 element" else s"$size elements"
+
+      val header = s"$className[$typeName] with $sizeString"
+      header + ":\n\n" + renderedTable(pairs(value)).mkString("\n")
+    }
+
+    if (isEmpty(value)) emptyRendered else nonEmptyRendered
   }
 
   private[spells] def renderedTable(in: Seq[(String, String)], styles: Map[String, Ansi.Style] = Map.empty withDefaultValue Reset): Seq[String] = {
@@ -88,93 +148,6 @@ trait TraversableOps {
 
           result :+ line
       }
-    }
-  }
-
-  final implicit def ArrayOpsFromSpells[T](value: Array[T])(implicit manifest: Manifest[T], evidence: T => CustomRendering = CustomRendering.Default): CustomRendering = new CustomRendering {
-    def rendered: String = {
-      def nonEmptyRendered: String = {
-        val `type` = manifest.toString.withDecodedScalaSymbols
-
-        val size = value.size
-        val sizeString = if (size == 1) "1 element" else s"$size elements"
-
-        val header = s"Array[${`type`}] with $sizeString"
-        val x = {
-          var result: List[(String, String)] = List.empty[(String, String)]
-          var index = 0
-          value foreach { element =>
-            result ::= (index.toString -> element.rendered)
-            index += 1
-          }
-
-          result.reverse
-        }
-
-        header + ":\n\n" + renderedTable(x).mkString("\n")
-      }
-
-      if (value.isEmpty) value.toString else nonEmptyRendered
-    }
-  }
-
-  final implicit def CollectionOpsFromSpells[T](value: java.util.Collection[T])(implicit manifest: Manifest[T], evidence: T => CustomRendering = CustomRendering.Default): CustomRendering = new CustomRendering {
-    def rendered: String = {
-      def nonEmptyRendered: String = {
-        val `class` = value.decodedClassName
-        val `type` = manifest.toString.withDecodedScalaSymbols
-
-        val size = value.size
-        val sizeString = if (size == 1) "1 element" else s"$size elements"
-
-        val header = s"${`class`}[${`type`}] with $sizeString"
-        val x = {
-          var result: List[(String, String)] = List.empty[(String, String)]
-          var index = 0
-          val iterator = value.iterator
-          while (iterator.hasNext) {
-            val element = iterator.next
-            result ::= (index.toString -> element.rendered)
-            index += 1
-          }
-
-          result.reverse
-        }
-
-        header + ":\n\n" + renderedTable(x).mkString("\n")
-      }
-
-      if (value.isEmpty) value.toString else nonEmptyRendered
-    }
-  }
-
-  final implicit def MapOpsFromSpells[Key, Value](value: java.util.Map[Key, Value])(implicit manifest: Manifest[java.util.Map.Entry[Key, Value]], evidence: java.util.Map.Entry[Key, Value] => CustomRendering = CustomRendering.Default): CustomRendering = new CustomRendering {
-    def rendered: String = {
-      def nonEmptyRendered: String = {
-        val `class` = value.decodedClassName
-        val `type` = manifest.toString.withDecodedScalaSymbols
-
-        val size = value.size
-        val sizeString = if (size == 1) "1 element" else s"$size elements"
-
-        val header = s"${`class`}[${`type`}] with $sizeString"
-        val x = {
-          var result: List[(String, String)] = List.empty[(String, String)]
-          var index = 0
-          val iterator = value.entrySet.iterator
-          while (iterator.hasNext) {
-            val element = iterator.next
-            result ::= (index.toString -> element.rendered)
-            index += 1
-          }
-
-          result.reverse
-        }
-
-        header + ":\n\n" + renderedTable(x).mkString("\n")
-      }
-
-      if (value.isEmpty) value.toString else nonEmptyRendered
     }
   }
 }

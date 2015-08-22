@@ -6,7 +6,7 @@ import scala.concurrent.duration._
 trait Xray {
   this: Ansi with AnyOps with CalendarOps with DurationOps with HumanRendering with StringOps with StylePrint with TraversableOps =>
 
-  final def xrayed[T](expression: => T, description: Xray.Description = Xray.Defaults.Description, increaseStackTraceDepthBy: Int = 0)(implicit manifest: Manifest[T], style: Ansi.Style = Reset, evidence: T => CustomRendering = CustomRendering.Default): Xray.Report[T] = {
+  final def xrayed[T](expression: => T, description: Xray.Description = Xray.Defaults.Description, increaseStackTraceDepthBy: Int = 0)(implicit manifest: Manifest[T], style: Ansi.Style = Reset, evidence: T => CustomRendering = CustomRendering.Defaults.Any): Xray.Report[T] = {
     val stackTraceElement = currentLineStackTraceElement(increaseStackTraceDepthBy - 1)
 
     val now = Calendar.getInstance
@@ -21,7 +21,7 @@ trait Xray {
   def currentLineStackTraceElement(implicit increaseStackTraceDepthBy: Int = 0): StackTraceElement =
     Thread.currentThread.getStackTrace apply increaseStackTraceDepthBy + 6
 
-  implicit class XrayFromSpells[T](expression: => T)(implicit manifest: Manifest[T], style: Ansi.Style = Reset, evidence: T => CustomRendering = CustomRendering.Default, monitor: Xray.Report[T] => Unit = (x: Xray.Report[T]) => Console.println(x)) {
+  implicit class XrayFromSpells[T](expression: => T)(implicit manifest: Manifest[T], style: Ansi.Style = Reset, evidence: T => CustomRendering = CustomRendering.Defaults.Any, monitor: Xray.Report[T] => Unit = (x: Xray.Report[T]) => Console.println(x)) {
     def xray(implicit description: Xray.Description = Xray.Defaults.Description): T = {
       val result = xrayed(expression, description, increaseStackTraceDepthBy = +1)(manifest, style, evidence)
 
@@ -47,7 +47,7 @@ object Xray extends Xray with Ansi with AnyOps with CalendarOps with DateOps wit
     val Description: Xray.Description = new Xray.Description("X-Ray")
   }
 
-  implicit class Description(val value: String) {
+  implicit class Description(val value: String) extends AnyVal {
     override def toString: String = value
   }
 
@@ -59,7 +59,7 @@ object Xray extends Xray with Ansi with AnyOps with CalendarOps with DateOps wit
       val description: String,
       val thread: Thread,
       val style: Ansi.Style = Reset,
-      evidence: T => CustomRendering = CustomRendering.Default) {
+      evidence: T => CustomRendering = CustomRendering.Defaults.Any) {
     override def toString = {
       val lines: Seq[(String, String)] = {
         val content = Vector(
@@ -104,12 +104,4 @@ object Xray extends Xray with Ansi with AnyOps with CalendarOps with DateOps wit
       styled(resultingLines mkString "\n")(style)
     }
   }
-}
-
-object Main extends App with Spells {
-  val map = new java.util.HashMap[String, Int]
-  map.put("sup1", 1)
-  map.put("sup2", 2)
-  map.put("sup3", 3)
-  map.xray
 }
