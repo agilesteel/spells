@@ -6,7 +6,7 @@ import scala.concurrent.duration._
 trait Xray {
   this: Ansi =>
 
-  final def xrayed[T](expression: => T, description: Xray.Description = Xray.Defaults.Description, increaseStackTraceDepthBy: Int = 0)(implicit manifest: Manifest[T], style: Ansi.Style = Reset, evidence: T => CustomRendering = CustomRendering.Defaults.Any): Xray.Report[T] = {
+  final def xrayed[T](expression: => T, description: Xray.Description = Xray.Defaults.Description, increaseStackTraceDepthBy: Int = 0)(implicit manifest: Manifest[T], style: Ansi.Style = Reset, rendering: T => CustomRendering = CustomRendering.Defaults.Any): Xray.Report[T] = {
     val stackTraceElement = currentLineStackTraceElement(increaseStackTraceDepthBy - 1)
 
     val now = Calendar.getInstance
@@ -15,28 +15,28 @@ trait Xray {
     val value = expression
     val stop = System.nanoTime - start
 
-    new Xray.Report(value, stop.nanos, stackTraceElement, now, description.toString, Thread.currentThread, style, evidence)
+    new Xray.Report(value, stop.nanos, stackTraceElement, now, description.toString, Thread.currentThread, style, rendering)
   }
 
   def currentLineStackTraceElement(implicit increaseStackTraceDepthBy: Int = 0): StackTraceElement =
     Thread.currentThread.getStackTrace apply increaseStackTraceDepthBy + 6
 
-  implicit class XrayFromSpells[T](expression: => T)(implicit manifest: Manifest[T], style: Ansi.Style = Reset, evidence: T => CustomRendering = CustomRendering.Defaults.Any, monitor: Xray.Report[T] => Unit = (x: Xray.Report[T]) => Console.println(x)) {
+  implicit class XrayFromSpells[T](expression: => T)(implicit manifest: Manifest[T], style: Ansi.Style = Reset, rendering: T => CustomRendering = CustomRendering.Defaults.Any, monitor: Xray.Report[T] => Unit = (report: Xray.Report[T]) => Console.println(report.rendered)) {
     def xray(implicit description: Xray.Description = Xray.Defaults.Description): T = {
-      val result = xrayed(expression, description, increaseStackTraceDepthBy = +1)(manifest, style, evidence)
+      val report = xrayed(expression, description, increaseStackTraceDepthBy = +1)(manifest, style, rendering)
 
-      monitor(result)
+      monitor(report)
 
-      result.value
+      report.value
     }
 
     def xrayIf(conditionFunction: Xray.Report[T] => Boolean)(implicit description: Xray.Description = Xray.Defaults.Description): T = {
-      val result = xrayed(expression, description, increaseStackTraceDepthBy = +1)(manifest, style, evidence)
+      val report = xrayed(expression, description, increaseStackTraceDepthBy = +1)(manifest, style, rendering)
 
-      if (conditionFunction(result))
-        monitor(result)
+      if (conditionFunction(report))
+        monitor(report)
 
-      result.value
+      report.value
     }
   }
 
@@ -69,8 +69,8 @@ object Xray
       final val description: String,
       final val thread: Thread,
       final val style: Ansi.Style = Reset,
-      evidence: T => CustomRendering = CustomRendering.Defaults.Any) {
-    override final def toString = {
+      rendering: T => CustomRendering = CustomRendering.Defaults.Any) extends spells.CustomRendering {
+    override final def rendered: String = {
       val lines: Seq[(String, String)] = {
         val content = Vector(
           "DateTime" -> timestamp.rendered,
@@ -89,7 +89,7 @@ object Xray
             Vector("Class" -> `class`, "Type" -> `type`)
         }
 
-        content ++ classOrTypeOrBoth :+ "Value" -> (Option(value).fold("null")(evidence(_).rendered)) map {
+        content ++ classOrTypeOrBoth :+ "Value" -> (Option(value).fold("null")(rendering(_).rendered)) map {
           case (key, value) => key.toString -> value.toString
         }
       }

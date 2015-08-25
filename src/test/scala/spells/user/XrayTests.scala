@@ -42,7 +42,7 @@ class XrayTests extends UnitTestConfiguration {
   test("""It should be possible to implicitly specify styles to xrayed""") {
     implicit val color = Yellow
 
-    xrayed(10).toString should startWith(color.value)
+    xrayed(10).rendered should startWith(color.value)
   }
 
   test("""It should be possible to implicitly specify styles to xray""") {
@@ -50,7 +50,7 @@ class XrayTests extends UnitTestConfiguration {
 
     SilentOutputStream out {
       implicit def monitor(report: spells.Xray.Report[Any]): Unit =
-        report.toString should startWith(color.value)
+        report.rendered should startWith(color.value)
 
       10.xray
     }
@@ -104,7 +104,7 @@ class XrayTests extends UnitTestConfiguration {
     SilentOutputStream out {
       implicit def monitor(report: spells.Xray.Report[Any]): Unit = {
         report.description should be(description)
-        report.toString should startWith(color.value)
+        report.rendered should startWith(color.value)
       }
 
       "value".xray(description)
@@ -122,26 +122,26 @@ class XrayReportRenderingTests extends UnitTestConfiguration {
   import XrayReportRenderingTests._
 
   test("The header should contain the string 'X-Ray' if description is empty") {
-    createReport(description = "").toString should include("X-Ray".green)
+    createReport(description = "").rendered should include("X-Ray".green)
   }
 
   test("Empty styled header should result in the default one") {
-    createReport(description = "".yellow).toString should include("X-Ray".green)
+    createReport(description = "".yellow).rendered should include("X-Ray".green)
   }
 
   test("X-Ray header should still be rendered green") {
-    createReport(description = "X-Ray").toString should include("X-Ray".green)
+    createReport(description = "X-Ray").rendered should include("X-Ray".green)
   }
 
   test(s"The header should contain the string '$description' if description is nonempty") {
-    createReport().toString should include(description)
+    createReport().rendered should include(description)
   }
 
   test("If the description contains styles the header should still be centered properly") {
     val descriptionValue = "desc"
 
     def headerWithDescription(newDescription: String): String =
-      createReport(description = newDescription).toString.split("\n").tail.head
+      createReport(description = newDescription).rendered.split("\n").tail.head
 
     val headerWithoutStyle = headerWithDescription(descriptionValue)
     val headerWithStyle = headerWithDescription(descriptionValue.yellow)
@@ -152,34 +152,34 @@ class XrayReportRenderingTests extends UnitTestConfiguration {
   }
 
   test("The datetime should be rendered in full format") {
-    createReport().toString should include(s"""DateTime | ${new SimpleDateFormat("EEEE, MMMM d, yyyy HH:mm:ss.SSS z Z") format timestamp.getTime}""")
+    createReport().rendered should include(s"""DateTime | ${new SimpleDateFormat("EEEE, MMMM d, yyyy HH:mm:ss.SSS z Z") format timestamp.getTime}""")
   }
 
   test("The duration should be readable by humans") {
-    createReport().toString should include(s"Duration | 1 minute 2 seconds")
+    createReport().rendered should include(s"Duration | 1 minute 2 seconds")
   }
 
   test("Location should be equal to the toString implementation of the StackTraceElement") {
-    createReport().toString should include(s"Location | $stackTraceElement")
+    createReport().rendered should include(s"Location | $stackTraceElement")
   }
 
   test("If type and class are equal the class should not be rendered") {
-    createReport().toString should not include s"Class    | spells.Encoded + Whatever"
+    createReport().rendered should not include s"Class    | spells.Encoded + Whatever"
   }
 
   test("If type and class are different they should both be rendered") {
-    val typedReport = createReport(value = List(1, 2, 3)).toString
+    val typedReport = createReport(value = List(1, 2, 3)).rendered
 
     typedReport should include(s"Class    | scala.collection.immutable.::")
     typedReport should include(s"Type     | scala.collection.immutable.List[Int]")
   }
 
   test("Simple values should be rendered in magenta") {
-    createReport().toString should include(s"Value    | ${"encoded".magenta}")
+    createReport().rendered should include(s"Value    | ${"encoded".magenta}")
   }
 
   test("""If value conains '\n' it should be rendered on the new line""") {
-    val newReportString = createReport(value = "first\nsecond").toString
+    val newReportString = createReport(value = "first\nsecond").rendered
 
     newReportString should include(s"Value    | ${"first".magenta}")
     newReportString should include(s"         | ${"second".magenta}")
@@ -189,22 +189,22 @@ class XrayReportRenderingTests extends UnitTestConfiguration {
     val withStyle = s"enc${"o".green}ded"
     val reportWithStyle = createReport(value = withStyle)
 
-    reportWithStyle.toString should include(s"Value    | ${styled(withStyle)(Magenta)}")
+    reportWithStyle.rendered should include(s"Value    | ${styled(withStyle)(Magenta)}")
   }
 
   test("Nulls should be rendered as values and thus not throw exceptions") {
-    createReport(value = null).toString should include(s"Value    | ${"null".magenta}")
+    createReport(value = null).rendered should include(s"Value    | ${"null".magenta}")
   }
 
   test(s"Rendered report should contain maximum ${spells.terminal.`width-in-characters`} hyphens") {
     val maxWidthInCharacters: Int = spells.terminal.`width-in-characters`
 
-    forAll(createReport().toString split "\n") { line =>
+    forAll(createReport().rendered split "\n") { line =>
       line.size should be <= maxWidthInCharacters
     }
 
     val largeReport = createReport(value = ("V" * (maxWidthInCharacters + 20)))
-    val largeLines = largeReport.toString split "\n"
+    val largeLines = largeReport.rendered split "\n"
     val hyphenLines = largeLines.filter(_.forall(_ == '-'))
 
     forAll(hyphenLines) { hyphenLine =>
@@ -217,7 +217,7 @@ class XrayReportRenderingTests extends UnitTestConfiguration {
 
     assume(now != timestamp)
 
-    xrayed(now).toString should include {
+    xrayed(now).rendered should include {
       new SimpleDateFormat("EEEE, MMMM d, yyyy HH:mm:ss.SSS z Z").format(now.getTime).magenta
     }
   }
@@ -234,7 +234,7 @@ class XrayReportRenderingTests extends UnitTestConfiguration {
 
     SilentOutputStream out {
       implicit def monitor(report: spells.Xray.Report[Any]): Unit = {
-        report.toString should include(expected)
+        report.rendered should include(expected)
       }
 
       Seq("I", "II", "III").xray
@@ -250,7 +250,7 @@ object XrayReportRenderingTests {
     timestamp: Calendar = timestamp,
     description: String = description,
     style: spells.Ansi.Style = Reset,
-    evidence: T => spells.CustomRendering = spells.CustomRendering.Defaults.Any): spells.Xray.Report[T] =
+    rendering: T => spells.CustomRendering = spells.CustomRendering.Defaults.Any): spells.Xray.Report[T] =
     new spells.Xray.Report[T](
       value = value,
       duration = duration,
@@ -258,7 +258,7 @@ object XrayReportRenderingTests {
       timestamp = timestamp,
       description = description,
       thread = Thread.currentThread,
-      evidence = evidence
+      rendering = rendering
     )
 
   private lazy val value = new `Encoded + Whatever`
