@@ -1,5 +1,6 @@
 package spells
 
+import scala.util.control.Exception._
 import scala.util.Try
 
 trait Clipboard {
@@ -11,18 +12,19 @@ trait Clipboard {
   }
 
   object Clipboard extends Clipboard {
-    import java.awt.datatransfer.{ Clipboard, StringSelection, DataFlavor }
+    import java.awt.datatransfer.{ StringSelection, DataFlavor }
     import java.awt.Toolkit
 
-    private val awtLoggers = Vector(
-      "java.awt",
-      "java.awt.event",
-      "java.awt.focus",
-      "java.awt.mixing",
-      "sun.awt",
-      "sun.awt.windows",
-      "sun.awt.X11"
-    )
+    private val awtLoggers =
+      Vector(
+        "java.awt",
+        "java.awt.event",
+        "java.awt.focus",
+        "java.awt.mixing",
+        "sun.awt",
+        "sun.awt.windows",
+        "sun.awt.X11"
+      )
 
     awtLoggers foreach disableLogging
 
@@ -32,7 +34,7 @@ trait Clipboard {
 
     private lazy val clipboard = Toolkit.getDefaultToolkit.getSystemClipboard
 
-    def writeString(content: String): Unit = swallowException {
+    def writeString(content: String): Unit = ignoring(classOf[Throwable]) {
       val contentAsStringSelection = new StringSelection(content)
       clipboard setContents (contentAsStringSelection, contentAsStringSelection)
     }

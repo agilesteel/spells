@@ -5,7 +5,7 @@ class TraversableOpsTests extends UnitTestConfiguration {
     Traversable.empty[Int].rendered should be(Traversable.empty[String].toString)
   }
 
-  test("Empty arrays should be rendered the same way as scala collections") {
+  test("Empty arrays should be rendered the same way as empty scala collections") {
     Array.empty[Int].rendered should be("Array()")
   }
 
@@ -17,12 +17,16 @@ class TraversableOpsTests extends UnitTestConfiguration {
     new java.util.HashMap[String, Int].rendered should be("java.util.HashMap()")
   }
 
+  test("A traversable with 1 element should contain the word 'element'") {
+    Traversable(1).rendered should include("element")
+  }
+
   test("A traversable with 1 element should not contain the word 'elements'") {
     Traversable(1).rendered should not include "elements"
   }
 
-  test("A traversable with 1 element should contain the word 'element'") {
-    Traversable(1).rendered should include("element")
+  test("A traversable with multiple elements should contain the word 'elements'") {
+    Traversable(1, 2).rendered should include("elements")
   }
 
   test("A traversable with 1 element should contain the type") {
@@ -30,7 +34,7 @@ class TraversableOpsTests extends UnitTestConfiguration {
     Traversable("").rendered should include("[java.lang.String]")
   }
 
-  test("A traversable heaeder should contain the class of the traversable parameterised with the type of its elements as well the number of elements") {
+  test("A traversable heaeder should contain the class of the traversable parameterised with the type of its elements as well the number of elements the traversable contains") {
     Traversable(1).rendered should include("scala.collection.immutable.::[Int] with 1 element:\n\n")
   }
 
@@ -64,7 +68,7 @@ class TraversableOpsTests extends UnitTestConfiguration {
     actual should be(expected)
   }
 
-  test("Recursive rendering") {
+  test("Recursive rendering should work out of the box") {
     val now = java.util.Calendar.getInstance
     val actual = List(now).rendered
 
@@ -120,5 +124,43 @@ class TraversableOpsTests extends UnitTestConfiguration {
     // format: ON
 
     actual should be(expected)
+  }
+
+  test("If values are of the same length all lines should have equal size") {
+    val table = renderedTable(Seq("I" -> "foo", "II" -> "bar"))
+    val sizes = table.map(_.size)
+    sizes.forall(_ == sizes.head) should be(true)
+  }
+
+  test("Lines should be wrapped") {
+    val maxWidthInCharacters = spells.terminal.`width-in-characters`
+    val sizeOfKeyWithSeparator = 4
+    def atom(c: Char) = c.toString * (maxWidthInCharacters - sizeOfKeyWithSeparator)
+    val toBeSpliced = atom('x') + " " + atom('y')
+    val table = renderedTable(Seq("I" -> toBeSpliced))
+    table should be {
+      Vector(
+      // format: OFF
+        "I | " + atom('x') + "\n" +
+        "  | " + atom('y') + Reset.value
+      // format: ON
+      )
+    }
+  }
+
+  test("""Lines should be wrapped, but the style should be preserved for the "Value" key, assuming custom styles are passed in""") {
+    val maxWidthInCharacters = spells.terminal.`width-in-characters`
+    val sizeOfKeyWithSeparator = 8
+    def atom(c: Char) = c.toString * (maxWidthInCharacters - sizeOfKeyWithSeparator)
+    val toBeSpliced = atom('x') + " " + atom('y')
+    val table = renderedTable(Seq("Value" -> toBeSpliced), styles = Map("Value" -> Magenta) withDefaultValue Reset)
+    table should be {
+      Vector(
+      // format: OFF
+        "Value | " + atom('x').magenta + "\n" +
+        "      | " + atom('y').magenta
+      // format: ON
+      )
+    }
   }
 }

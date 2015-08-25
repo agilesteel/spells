@@ -20,19 +20,19 @@ trait StylePrint {
     else restyle(input, style)
   }
 
-  private def restyle(input: String, style: Ansi.Style): String = input match {
+  private final def restyle(input: String, style: Ansi.Style): String = input match {
     case AnsiPattern(before, alreadyStyled, after) => restyle(before, style) + alreadyStyled + restyle(after, style)
     case _ => if (input.isEmpty) "" else style.value + input + Reset.value
   }
 }
 
 object StylePrint extends Ansi with StylePrint {
-  private[spells] val AnsiPattern = s"""($multiline)($anything)($styleOnly$anything$reset)($anything)""".r
+  private[spells] final val AnsiPattern = s"""($multiline)($anything)($styleOnly$anything$reset)($anything)""".r
 
-  private[spells] lazy val multiline = """?s"""
-  private[spells] lazy val anything = """.*?"""
+  private[spells] final val multiline = """?s"""
+  private[spells] final val anything = """.*?"""
 
-  private[spells] lazy val styleOnly = """\033\[\d{2}m"""
-  private[spells] lazy val styleOrReset = """\033\[\d{1,2}m"""
-  private[spells] lazy val reset = """\033\[0m"""
+  private[spells] final val styleOnly = """\033\[\d{2}m"""
+  private[spells] final val styleOrReset = """\033\[\d{1,2}m"""
+  private[spells] final val reset = """\033\[0m"""
 }

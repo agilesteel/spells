@@ -79,7 +79,7 @@ trait TraversableOps {
     }
   }
 
-  private def render[T](value: => T, isEmpty: T => Boolean, getSize: T => Int, emptyRendered: => String, className: => String, typeName: => String)(pairs: T => Seq[(String, String)]): String = {
+  private final def render[T](value: => T, isEmpty: T => Boolean, getSize: T => Int, emptyRendered: => String, className: => String, typeName: => String)(pairs: T => Seq[(String, String)]): String = {
     def nonEmptyRendered: String = {
       val size = getSize(value)
       val sizeString = if (size == 1) "1 element" else s"$size elements"
@@ -91,7 +91,7 @@ trait TraversableOps {
     if (isEmpty(value)) emptyRendered else nonEmptyRendered
   }
 
-  private[spells] def renderedTable(in: Seq[(String, String)], styles: Map[String, Ansi.Style] = Map.empty withDefaultValue Reset): Seq[String] = {
+  private[spells] final def renderedTable(in: Seq[(String, String)], styles: Map[String, Ansi.Style] = Map.empty withDefaultValue Reset): Seq[String] = {
     if (in.isEmpty)
       Seq.empty
     else {

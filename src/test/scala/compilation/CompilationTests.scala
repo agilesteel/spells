@@ -1,7 +1,12 @@
 package compilation
 
 class CompilationTests extends spells.user.UnitTestConfiguration {
-  test("Xray.Description implicit should compile") {
+  test("All these examples should compile") {
+    "this should compile".green
+    cleared("this should compile")(Green)
+    erred("this should compile")
+    styled("this should compile")(Green)
+
     spells.user.SilentOutputStream out {
       10.xray("description")
     }
@@ -10,5 +15,7 @@ class CompilationTests extends spells.user.UnitTestConfiguration {
     List.empty[Any].rendered
     Seq.empty[Any].rendered
     Map.empty[Any, Any].rendered
+    new java.util.HashSet[Any].rendered
+    new java.util.HashMap[Any, Any].rendered
   }
 }

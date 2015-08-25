@@ -15,7 +15,7 @@ class AnyOpsTests extends UnitTestConfiguration {
 
   private val samples = Vector("sample", (new `Encoded + Whatever`))
 
-  test("Null should not be an issue") {
+  test("Null should not be an issue when decoding classes") {
     (null: String).decodedSimpleClassName should be("Null")
     (null: String).decodedClassName should be("Null")
   }

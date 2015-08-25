@@ -4,7 +4,7 @@ import java.util.Calendar
 import scala.concurrent.duration._
 
 trait Xray {
-  this: Ansi with AnyOps with CalendarOps with DurationOps with HumanRendering with StringOps with StylePrint with TraversableOps =>
+  this: Ansi =>
 
   final def xrayed[T](expression: => T, description: Xray.Description = Xray.Defaults.Description, increaseStackTraceDepthBy: Int = 0)(implicit manifest: Manifest[T], style: Ansi.Style = Reset, evidence: T => CustomRendering = CustomRendering.Defaults.Any): Xray.Report[T] = {
     val stackTraceElement = currentLineStackTraceElement(increaseStackTraceDepthBy - 1)
@@ -42,25 +42,35 @@ trait Xray {
 
 }
 
-object Xray extends Xray with Ansi with AnyOps with CalendarOps with DateOps with DurationOps with HumanRendering with StringOps with StylePrint with TraversableOps {
+object Xray
+    extends Xray
+    with Ansi
+    with AnyOps
+    with CalendarOps
+    with DateOps
+    with DurationOps
+    with HumanRendering
+    with StringOps
+    with StylePrint
+    with TraversableOps {
   object Defaults {
-    val Description: Xray.Description = new Xray.Description("X-Ray")
+    final val Description: Xray.Description = new Xray.Description("X-Ray")
   }
 
   implicit class Description(val value: String) extends AnyVal {
-    override def toString: String = value
+    override final def toString: String = value
   }
 
-  class Report[+T: Manifest](
-      val value: T,
-      val duration: Duration,
-      val stackTraceElement: StackTraceElement,
-      val timestamp: Calendar,
-      val description: String,
-      val thread: Thread,
-      val style: Ansi.Style = Reset,
+  final class Report[+T: Manifest](
+      final val value: T,
+      final val duration: Duration,
+      final val stackTraceElement: StackTraceElement,
+      final val timestamp: Calendar,
+      final val description: String,
+      final val thread: Thread,
+      final val style: Ansi.Style = Reset,
       evidence: T => CustomRendering = CustomRendering.Defaults.Any) {
-    override def toString = {
+    override final def toString = {
       val lines: Seq[(String, String)] = {
         val content = Vector(
           "DateTime" -> timestamp.rendered,

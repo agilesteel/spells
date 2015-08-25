@@ -51,12 +51,15 @@ object SpellsBuild extends Build {
       "-language:_",
       "-unchecked",
       "-Xlint",
-      // "-Ywarn-unused-import", // scala 2.11
       "-Ywarn-adapted-args",
-      // "-Ywarn-value-discard",
-      "-Ywarn-inaccessible",
-      "-Ywarn-dead-code"
-    )
+      "-Ywarn-inaccessible"
+      // "-Ywarn-value-discard"
+    ) ++ {
+      if(scalaVersion.value.startsWith("2.11"))
+        Seq("-Ywarn-dead-code", "-Ywarn-unused-import")
+      else
+        Seq.empty[String]
+    }
   )
 
   lazy val Build = config("build") extend Compile

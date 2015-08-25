@@ -2,9 +2,9 @@ package spells
 
 trait StringOps {
   implicit class StringOpsFromSpells(input: String) {
-    def withDecodedScalaSymbols: String = scala.reflect.NameTransformer decode input
+    final def withDecodedScalaSymbols: String = scala.reflect.NameTransformer decode input
 
-    def wrappedOnSpaces(limit: Int): String = { // and tabs?
+    final def wrappedOnSpaces(limit: Int): String = { // and tabs?
       val separator = " "
 
       def wrapped(in: String): String = {

@@ -61,7 +61,7 @@ class StylePrintTests extends UnitTestConfiguration {
     styled("yellow" + "red".red + "yellow" + "green".green + "yellow")(Yellow) should be("yellow".yellow + "red".red + "yellow".yellow + "green".green + "yellow".yellow)
   }
 
-  // TODO: Scalacheck
+  // TODO: Test with https://www.scalacheck.org/
   test("""Line breaks of any kind should not cause any trouble""") {
     styled("yellow\r\n" + "green".green)(Yellow) should be("yellow\r\n".yellow + "green".green)
     styled("yellow\n" + "green".green)(Yellow) should be("yellow\n".yellow + "green".green)

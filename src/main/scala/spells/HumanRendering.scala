@@ -1,52 +1,52 @@
 package spells
 
 trait HumanRendering {
-  implicit def byteToRendering(value: Byte): Rendering = Rendering(value)
-  implicit def shortToRendering(value: Short): Rendering = Rendering(value)
-  implicit def intToRendering(value: Int): Rendering = Rendering(value)
-  implicit def longToRendering(value: Long): Rendering = Rendering(value)
+  implicit final def byteToRendering(value: Byte): Rendering = Rendering(value)
+  implicit final def shortToRendering(value: Short): Rendering = Rendering(value)
+  implicit final def intToRendering(value: Int): Rendering = Rendering(value)
+  implicit final def longToRendering(value: Long): Rendering = Rendering(value)
 
   case class Rendering(value: Long) {
-    def render: Rendering = this
+    final def render: Rendering = this
 
     object duration {
-      lazy val months: String = render(duration.just.months, Duration(months = value))
-      lazy val days: String = render(duration.just.days, Duration(days = value))
-      lazy val hours: String = render(duration.just.hours, Duration(hours = value))
-      lazy val minutes: String = render(duration.just.minutes, Duration(minutes = value))
-      lazy val seconds: String = render(duration.just.seconds, Duration(seconds = value))
-      lazy val milliseconds: String = render(duration.just.milliseconds, Duration(milliseconds = value))
-      lazy val nanoseconds: String = render(duration.just.nanoseconds, Duration(nanoseconds = value))
+      final lazy val months: String = render(duration.just.months, Duration(months = value))
+      final lazy val days: String = render(duration.just.days, Duration(days = value))
+      final lazy val hours: String = render(duration.just.hours, Duration(hours = value))
+      final lazy val minutes: String = render(duration.just.minutes, Duration(minutes = value))
+      final lazy val seconds: String = render(duration.just.seconds, Duration(seconds = value))
+      final lazy val milliseconds: String = render(duration.just.milliseconds, Duration(milliseconds = value))
+      final lazy val nanoseconds: String = render(duration.just.nanoseconds, Duration(nanoseconds = value))
 
-      private def render(alreadyRendered: String, toRender: => Duration): String =
+      final private def render(alreadyRendered: String, toRender: => Duration): String =
         if (value == 0) alreadyRendered else toRender.toString
 
       object just {
-        lazy val nanoseconds: String = render(Nanosecond)
-        lazy val milliseconds: String = render(Millisecond)
-        lazy val seconds: String = render(Second)
-        lazy val minutes: String = render(Minute)
-        lazy val hours: String = render(Hour)
-        lazy val days: String = render(Day)
-        lazy val weeks: String = render(Week)
-        lazy val months: String = render(Month)
-        lazy val years: String = render(Year)
+        final lazy val nanoseconds: String = render(Nanosecond)
+        final lazy val milliseconds: String = render(Millisecond)
+        final lazy val seconds: String = render(Second)
+        final lazy val minutes: String = render(Minute)
+        final lazy val hours: String = render(Hour)
+        final lazy val days: String = render(Day)
+        final lazy val weeks: String = render(Week)
+        final lazy val months: String = render(Month)
+        final lazy val years: String = render(Year)
 
-        private def render(unit: String) =
+        final private def render(unit: String) =
           if (value == 1) s"$value $unit" else s"$value ${unit}s"
       }
     }
   }
 
-  val Nanosecond = "nanosecond"
-  val Millisecond = "millisecond"
-  val Second = "second"
-  val Minute = "minute"
-  val Hour = "hour"
-  val Day = "day"
-  val Week = "week"
-  val Month = "month"
-  val Year = "year"
+  final val Nanosecond = "nanosecond"
+  final val Millisecond = "millisecond"
+  final val Second = "second"
+  final val Minute = "minute"
+  final val Hour = "hour"
+  final val Day = "day"
+  final val Week = "week"
+  final val Month = "month"
+  final val Year = "year"
 
   private case class Duration(
       years: Long = 0,
@@ -60,10 +60,10 @@ trait HumanRendering {
       nanoseconds: Long = 0) {
     override val toString = if (isPositiveOrZero) calculated else recalculated
 
-    private lazy val isPositiveOrZero: Boolean =
+    private final lazy val isPositiveOrZero: Boolean =
       Vector(years, months, weeks, days, hours, minutes, seconds, milliseconds, nanoseconds) forall (_ >= 0)
 
-    private lazy val calculated = {
+    private final lazy val calculated = {
       if (years != 0)
         years.render.duration.just.years
       else if (months != 0) {
@@ -128,20 +128,20 @@ trait HumanRendering {
       } else ""
     }
 
-    private def division(dividend: Long, divisor: Long): (Long, Long) = {
+    private final def division(dividend: Long, divisor: Long): (Long, Long) = {
       val quotient = dividend / divisor
       val remainder = dividend % divisor
 
       quotient -> remainder
     }
 
-    private def render(wholeDuration: Duration, remainder: Long, renderedRemainder: String): String =
+    private final def render(wholeDuration: Duration, remainder: Long, renderedRemainder: String): String =
       if (wholeDuration == Duration()) renderedRemainder else s"$wholeDuration${potentialRest(remainder, renderedRemainder)}"
 
-    private def potentialRest(remainder: Long, renderedRemainder: String): String =
+    private final def potentialRest(remainder: Long, renderedRemainder: String): String =
       if (remainder == 0) "" else s" $renderedRemainder"
 
-    private lazy val recalculated = {
+    private final lazy val recalculated = {
       val originalCalculationWithASingleMinusSign = s"""-${calculated.replaceAll("-", "")}"""
 
       val currentMetric = originalCalculationWithASingleMinusSign.split(" ")(1)

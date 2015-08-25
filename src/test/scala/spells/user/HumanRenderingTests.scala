@@ -1,7 +1,7 @@
 package spells.user
 
 class HumanRenderingTests extends UnitTestConfiguration {
-  test("""It should be possible to call render on a byte, short, int, long, double, scala.concurrent.duration""") {
+  test("""It should be possible to call render on a byte, short, int, long, and scala.concurrent.duration""") {
     (1: Byte).render should be(Rendering(1))
     (1: Short).render should be(Rendering(1))
     1.render should be(Rendering(1))
@@ -202,7 +202,7 @@ class HumanRenderingTests extends UnitTestConfiguration {
     over(upperBoundPower).render.duration.nanoseconds should be("1 second 1 millisecond 1 nanosecond")
   }
 
-  test("""Long.MinValue should not cause any problems""") {
+  test("""Long.MinValue should not cause any problems when rendering durations""") {
     Long.MinValue.render.duration.months should be("-768614336404564650 years 8 months")
     Long.MinValue.render.duration.days should be("-1317624576693539401 weeks 1 day")
     Long.MinValue.render.duration.hours should be("-54901024028897475 weeks 8 hours")

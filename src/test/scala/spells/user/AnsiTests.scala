@@ -5,7 +5,7 @@ class AnsiTests extends UnitTestConfiguration {
     73.green should be(Green.value + "73" + Reset.value)
   }
 
-  test(""""style".toAnsiStyle should be(AnsiStyle("style"))""") {
+  test(""""style".toAnsiStyle should be(spells.Ansi.Style("style"))""") {
     "style".toAnsiStyle should be(spells.Ansi.Style("style"))
   }
 
@@ -27,16 +27,42 @@ class AnsiTests extends UnitTestConfiguration {
   }
 
   test("""Scoverage should be happy""") {
-    val styles = Vector(Black, Red, Green, Yellow, Blue, Magenta, Cyan, White, Bold, Blink, Reversed, Invisible)
+    val styles =
+      Vector(
+        Black,
+        Red,
+        Green,
+        Yellow,
+        Blue,
+        Magenta,
+        Cyan,
+        White,
+        Bold,
+        Blink,
+        Reversed,
+        Invisible
+      )
 
-    forEvery(styles) { style =>
-      "sample" in style should be(style.value + "sample" + Reset.value)
-    }
+    val factories =
+      Vector[Any => String](
+        _.black,
+        _.red,
+        _.green,
+        _.yellow,
+        _.blue,
+        _.magenta,
+        _.cyan,
+        _.white,
+        _.bold,
+        _.blink,
+        _.reversed,
+        _.invisible
+      )
 
-    val functions = Vector[Any => String](_.black, _.red, _.green, _.yellow, _.blue, _.magenta, _.cyan, _.white, _.bold, _.blink, _.reversed, _.invisible)
-
-    forEvery(functions zip styles) {
-      case (function, style) => function("sample") should be("sample" in style)
+    forEvery(styles zip factories) {
+      case (style, factory) =>
+        "sample" in style should be(style.value + "sample" + Reset.value)
+        factory("sample") should be("sample" in style)
     }
   }
 }

@@ -1,11 +1,8 @@
 package spells
 
-import java.text.SimpleDateFormat
-import java.util.Date
-
 trait DateOps {
-  implicit class DateOpsFromSpells(value: Date) extends CustomRendering {
-    def rendered: String =
-      new SimpleDateFormat("EEEE, MMMM d, yyyy HH:mm:ss.SSS z Z") format value
+  implicit class DateOpsFromSpells(value: java.util.Date) extends CustomRendering {
+    override final def rendered: String =
+      new java.text.SimpleDateFormat("EEEE, MMMM d, yyyy HH:mm:ss.SSS z Z") format value
   }
 }
