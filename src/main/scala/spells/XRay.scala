@@ -94,7 +94,7 @@ object Xray
         }
       }
 
-      val table = renderedTable(lines, styles = Map("Value" -> Magenta) withDefaultValue Reset)
+      val table = renderedTable4Xray(lines, styles = Map("Value" -> Magenta) withDefaultValue Reset)
 
       val numberOfCharsInTheLongestLine =
         table.map(Ansi.removeStyles).flatMap(_ split "\n").maxBy(_.size).size
@@ -113,5 +113,72 @@ object Xray
 
       styled(resultingLines mkString "\n")(style)
     }
+
+    private[spells] final def renderedTable4Xray(in: Seq[(String, String)], styles: Map[String, Ansi.Style] = Map.empty withDefaultValue Reset): Seq[String] = {
+      if (in.isEmpty) {
+        println("I'm here")
+        Seq.empty
+      } else {
+        val sizeOfTheBiggestKey = in map {
+          case (key, _) => Ansi.removeStyles(key).size
+        } max
+
+        val separator = " | "
+
+        val maxWidthInCharacters =
+          spells.terminal.`width-in-characters` - separator.size - sizeOfTheBiggestKey
+
+        in.foldLeft(Vector.empty[String]) {
+          case (result, (key, value)) =>
+            val keyWithPadding = key.padTo(sizeOfTheBiggestKey, ' ')
+            val line = {
+              val actualValue = value wrappedOnSpaces maxWidthInCharacters
+
+              if (!(actualValue contains "\n"))
+                keyWithPadding + separator + styled(actualValue)(styles(key))
+              else {
+                val subLines = actualValue.split("\n").toList
+                val renderedHead = keyWithPadding + separator + styled(subLines.head)(styles(key)) + "\n"
+
+                var previousSubLine = styled(subLines.head)(styles(key))
+
+                val renderedTail = subLines.tail.map { subLine =>
+                  val previousSublineStyle = {
+                    var takenSoFar = ""
+                    var result = ""
+
+                    previousSubLine.reverse.takeWhile { char =>
+                      takenSoFar += char
+                      val theMatch = StylePrint.styleOrReset.r findFirstIn takenSoFar.reverse
+                      theMatch foreach (result = _)
+                      theMatch.isEmpty
+                    }
+
+                    result.toAnsiStyle
+                  }
+
+                  val thisSubLine =
+                    if (previousSublineStyle.value == Reset.value)
+                      styled(subLine)(styles(key))
+                    else
+                      styled(subLine)(previousSublineStyle)
+
+                  val result = (" " * sizeOfTheBiggestKey) + separator + thisSubLine
+
+                  if (thisSubLine.nonEmpty)
+                    previousSubLine = thisSubLine
+
+                  result
+                }.mkString("\n")
+
+                renderedHead + renderedTail
+              }
+            }
+
+            result :+ line
+        }
+      }
+    }
   }
 }
+

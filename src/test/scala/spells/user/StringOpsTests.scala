@@ -39,6 +39,14 @@ class StringOpsTests extends UnitTestConfiguration {
   }
 
   test("Wrap on a 'per line' basis2") {
-    "xxxx\n xxxx".wrappedOnSpaces(4) should be("xxxx\n xxxx")
+    "xxxx\n xxx".wrappedOnSpaces(4) should be("xxxx\n xxx")
+  }
+
+  test("Wrap should preserve empty lines") {
+    "xxxx\n\n xxx".wrappedOnSpaces(4) should be("xxxx\n\n xxx")
+  }
+
+  test("Wrap should preserve empty lines2") {
+    "xxxx\n\n\n xxx".wrappedOnSpaces(4) should be("xxxx\n\n\n xxx")
   }
 }

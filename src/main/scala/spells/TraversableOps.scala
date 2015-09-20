@@ -23,10 +23,9 @@ trait TraversableOps {
 
   final implicit def ArrayOpsFromSpells[T](value: Array[T])(implicit manifest: Manifest[T], rendering: T => CustomRendering = CustomRendering.Defaults.Any): CustomRendering = new CustomRendering {
     def rendered: String = {
-      lazy val className = value.decodedClassName
       lazy val typeName = manifest.toString.withDecodedScalaSymbols
 
-      render[Array[T]](value, _.isEmpty, _.size, s"Array()", className, typeName) { in =>
+      render[Array[T]](value, _.isEmpty, _.size, s"Array()", "Array", typeName) { in =>
         var result: Vector[(String, String)] = Vector.empty[(String, String)]
         var index = 0
         value foreach { element =>
@@ -91,10 +90,10 @@ trait TraversableOps {
     if (isEmpty(value)) emptyRendered else nonEmptyRendered
   }
 
-  private[spells] final def renderedTable(in: Seq[(String, String)], styles: Map[String, Ansi.Style] = Map.empty withDefaultValue Reset): Seq[String] = {
-    if (in.isEmpty)
+  private[spells] final def renderedTable(in: Seq[(String, String)]): Seq[String] = {
+    if (in.isEmpty) {
       Seq.empty
-    else {
+    } else {
       val sizeOfTheBiggestKey = in map {
         case (key, _) => Ansi.removeStyles(key).size
       } max
@@ -108,41 +107,14 @@ trait TraversableOps {
         case (result, (key, value)) =>
           val keyWithPadding = key.padTo(sizeOfTheBiggestKey, ' ')
           val line = {
-            val actualValue = value wrappedOnSpaces maxWidthInCharacters
+            val wrappedValue = value wrappedOnSpaces maxWidthInCharacters
 
-            if (!(actualValue contains "\n"))
-              keyWithPadding + separator + styled(actualValue)(styles(key))
+            if (!(wrappedValue contains "\n"))
+              keyWithPadding + separator + wrappedValue
             else {
-              val subLines = actualValue.split("\n").toList
-              val renderedHead = keyWithPadding + separator + styled(subLines.head)(styles(key)) + "\n"
-
-              var previousSubLine = styled(subLines.head)(styles(key))
-
-              val renderedTail = subLines.tail.map { subLine =>
-                val previousSublineStyle = {
-                  var takenSoFar = ""
-                  var result = ""
-
-                  previousSubLine.reverse.takeWhile { char =>
-                    takenSoFar += char
-                    val theMatch = StylePrint.styleOnly.r findFirstIn takenSoFar.reverse
-                    theMatch foreach (result = _)
-                    theMatch.isEmpty
-                  }
-
-                  result.toAnsiStyle
-                }
-
-                val thisSubLine = styled(subLine)(previousSublineStyle)
-                val result = (" " * sizeOfTheBiggestKey) + separator + thisSubLine
-
-                if (thisSubLine.nonEmpty)
-                  previousSubLine = thisSubLine
-
-                result
-              }.mkString("\n")
-
-              renderedHead + renderedTail
+              val subLines = wrappedValue.split("\n").toList
+              val head = keyWithPadding + separator + subLines.head
+              (head :: subLines.tail.map(subLine => (" " * keyWithPadding.size) + separator + subLine)).mkString("\n")
             }
           }
 

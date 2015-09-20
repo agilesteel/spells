@@ -13,11 +13,11 @@ trait StylePrint {
     Console print styled(input)(style)
   }
 
-  final def styled(anput: Any)(implicit style: Ansi.Style = Reset): String = {
-    val input = String valueOf anput
+  final def styled(input: Any)(implicit style: Ansi.Style = Reset): String = {
+    val in = String valueOf input
 
-    if (style == Reset) input
-    else restyle(input, style)
+    if (style == Reset) in
+    else restyle(in, style)
   }
 
   private final def restyle(input: String, style: Ansi.Style): String = input match {

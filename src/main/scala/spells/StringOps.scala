@@ -36,9 +36,12 @@ trait StringOps {
 
         parts.tail.foldLeft(parts.head) {
           case (result, currentPart) =>
-            if (result endsWith "\n")
-              result + currentPart
-            else result + "\n" + currentPart
+            val current = if (currentPart.isEmpty) "\n" else currentPart
+
+            if (result.endsWith("\n"))
+              result + current
+            else
+              result + "\n" + current
         }
       }
     }

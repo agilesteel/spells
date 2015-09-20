@@ -123,7 +123,7 @@ object SpellsBuild extends Build {
 object Dependencies {
   val config = "com.typesafe" % "config" % "1.3.0"
 
-  val pegdown = "org.pegdown" % "pegdown" % "1.5.0" % "test"
+  val pegdown = "org.pegdown" % "pegdown" % "1.6.0" % "test"
   val scalaTest = "org.scalatest" %% "scalatest" % "2.2.5" % "test"
 
   val all = Seq(config, pegdown, scalaTest)
