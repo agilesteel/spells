@@ -34,6 +34,10 @@ class StringOpsTests extends UnitTestConfiguration {
     "Saturday, March 7, 2015 11:06:53 AM CET".wrappedOnSpaces(160) should be("Saturday, March 7, 2015 11:06:53 AM CET")
   }
 
+  test("Wrapping with multispace should preserve spaces in the end, but ignore them when calculating the length of the line") {
+    "x  y".wrappedOnSpaces(1) should be("x \ny")
+  }
+
   test("Wrap on a 'per line' basis") {
     "xxxx \nxxxx".wrappedOnSpaces(4) should be("xxxx\nxxxx")
   }
