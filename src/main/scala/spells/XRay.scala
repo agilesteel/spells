@@ -70,8 +70,8 @@ object Xray
       final val thread: Thread,
       final val style: Ansi.Style = Reset,
       rendering: T => CustomRendering = CustomRendering.Defaults.Any) extends spells.CustomRendering {
-    override final def rendered: String = {
-      val lines: Seq[(String, String)] = {
+    override final def rendered(implicit availableWidthInCharacters: Int = spells.terminal.`width-in-characters`): String = {
+      def lines(availableWidthInCharacters: Int): Seq[(String, String)] = {
         val content = Vector(
           "DateTime" -> timestamp.rendered,
           "Duration" -> duration.rendered,
@@ -89,17 +89,17 @@ object Xray
             Vector("Class" -> `class`, "Type" -> `type`)
         }
 
-        content ++ classOrTypeOrBoth :+ "Value" -> (Option(value).fold("null")(rendering(_).rendered)) map {
+        content ++ classOrTypeOrBoth :+ "Value" -> (Option(value).fold("null")(rendering(_).rendered(availableWidthInCharacters))) map {
           case (key, value) => key.toString -> value.toString
         }
       }
 
-      val table = renderedTable4Xray(lines, styles = Map("Value" -> Magenta) withDefaultValue Reset)
+      val table = renderedTable4Xray(lines, styles = Map("Value" -> Magenta) withDefaultValue Reset, availableWidthInCharacters)
 
       val numberOfCharsInTheLongestLine =
         table.map(Ansi.removeStyles).flatMap(_ split "\n").maxBy(_.size).size
 
-      lazy val hyphens = "-" * (numberOfCharsInTheLongestLine min spells.terminal.`width-in-characters`)
+      lazy val hyphens = "-" * (numberOfCharsInTheLongestLine min availableWidthInCharacters)
 
       val centeredHeader = {
         val header = if (Ansi.removeStyles(description).isEmpty) "X-Ray".green else styled(description)(Green)
@@ -114,21 +114,21 @@ object Xray
       styled(resultingLines mkString "\n")(style)
     }
 
-    private[spells] final def renderedTable4Xray(in: Seq[(String, String)], styles: Map[String, Ansi.Style] = Map.empty withDefaultValue Reset): Seq[String] = {
-      if (in.isEmpty) {
+    private[spells] final def renderedTable4Xray(in: Int => Seq[(String, String)], styles: Map[String, Ansi.Style] = Map.empty withDefaultValue Reset, availableWidthInCharacters: Int): Seq[String] = {
+      if (in(0).isEmpty) {
         println("I'm here")
         Seq.empty
       } else {
-        val sizeOfTheBiggestKey = in map {
+        val sizeOfTheBiggestKey = in(0) map {
           case (key, _) => Ansi.removeStyles(key).size
         } max
 
         val separator = " | "
 
         val maxWidthInCharacters =
-          spells.terminal.`width-in-characters` - separator.size - sizeOfTheBiggestKey
+          availableWidthInCharacters - separator.size - sizeOfTheBiggestKey
 
-        in.foldLeft(Vector.empty[String]) {
+        in(maxWidthInCharacters).foldLeft(Vector.empty[String]) {
           case (result, (key, value)) =>
             val keyWithPadding = key.padTo(sizeOfTheBiggestKey, ' ')
             val line = {

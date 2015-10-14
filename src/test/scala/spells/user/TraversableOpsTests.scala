@@ -131,7 +131,7 @@ class TraversableOpsTests extends UnitTestConfiguration {
   }
 
   test("If values are of the same length all lines should have equal size") {
-    val table = renderedTable(Seq("I" -> "foo", "II" -> "bar"))
+    val table = renderedTable(_ => Seq("I" -> "foo", "II" -> "bar"), availableWidthInCharacters = Int.MaxValue)
     val sizes = table.map(_.size)
     sizes.forall(_ == sizes.head) should be(true)
   }
@@ -141,7 +141,7 @@ class TraversableOpsTests extends UnitTestConfiguration {
     val sizeOfKeyWithSeparator = 4
     def atom(c: Char) = c.toString * (maxWidthInCharacters - sizeOfKeyWithSeparator)
     val toBeSpliced = atom('x') + " " + atom('y')
-    val table = renderedTable(Seq("I" -> toBeSpliced))
+    val table = renderedTable(_ => Seq("I" -> toBeSpliced), availableWidthInCharacters = maxWidthInCharacters)
     table should be {
       Vector(
       // format: OFF
