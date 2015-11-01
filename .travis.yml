@@ -2,6 +2,7 @@
 # Scala: http://docs.travis-ci.com/user/languages/scala/
 # Yaml:  http://yaml-online-parser.appspot.com/
 
+sudo: false
 language: scala
 scala:
   - 2.10.6
