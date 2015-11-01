@@ -6,7 +6,7 @@ class AnsiTests extends UnitTestConfiguration {
   }
 
   test(""""style".toAnsiStyle should be(spells.Ansi.Style("style"))""") {
-    "style".toAnsiStyle should be(spells.Ansi.Style("style"))
+    "style".toAnsiStyle should be(new spells.Ansi.Style("style"))
   }
 
   test(""""green" in customStyle should be(customStyle.value + "green" + Reset.value)""") {

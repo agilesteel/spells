@@ -11,8 +11,3 @@ trait AnyOps {
       if (input == null) "Null" else name
   }
 }
-
-object Main extends App with Spells {
-  def inner(in: Char) = List(s"$in " * 100)
-  Array(inner('x'), inner('y'), inner('z')).xray
-}

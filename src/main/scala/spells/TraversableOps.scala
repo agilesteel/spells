@@ -99,11 +99,10 @@ trait TraversableOps {
   }
 
   private[spells] final def renderedTable(in: Int => Seq[(String, String)], availableWidthInCharacters: Int): Seq[String] = {
-    if (in(0).isEmpty) {
-      Seq.empty
-    } else {
+    if (in(0).isEmpty) Seq.empty
+    else {
       val sizeOfTheBiggestKey = in(0) map {
-        case (key, _) => Ansi.removeStyles(key).size
+        case (key, _) => Ansi.removedStyles(key).size
       } max
 
       val separator = " | "

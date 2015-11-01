@@ -23,12 +23,21 @@ class XrayTests extends UnitTestConfiguration {
     }
   }
 
-  test("Monitor should only be called for xrayIf if the condition is true") {
+  test("Monitor should only be called for xrayIf if the condition yields true") {
     new MonitoringEnvironement {
-      val condition: spells.Xray.Report[Int] => Boolean = _.value == input
+      val condition: spells.Xray.Report[Int] => Boolean = _ => true
 
       input.xrayIf(condition)
-      wasMonitorCalled should be(condition(new spells.Xray.Report(value = input, null, null, null, null, null, null, null)))
+      wasMonitorCalled should be(true)
+    }
+  }
+
+  test("Monitor should not be called for xrayIf if the condition yields false") {
+    new MonitoringEnvironement {
+      val condition: spells.Xray.Report[Int] => Boolean = _ => false
+
+      input.xrayIf(condition)
+      wasMonitorCalled should be(false)
     }
   }
 
@@ -222,7 +231,7 @@ class XrayReportRenderingTests extends UnitTestConfiguration {
     }
   }
 
-  test("Multiline rendering should not cause any style los") {
+  test("Multiline rendering should not cause any style loss") {
     // format: OFF
     val expected =
       "Value    | " + "scala.collection.immutable.::[java.lang.String] with 3 elements:".magenta + "\n" +
@@ -239,6 +248,10 @@ class XrayReportRenderingTests extends UnitTestConfiguration {
 
       Seq("I", "II", "III").xray
     }
+  }
+
+  test("The customRenderedTableForXray helper method should yield an empty Seq when given an empty input") {
+    spells.Xray.Report.customRenderedTableForXray(_ => Seq.empty, styles = Map.empty, availableWidthInCharacters = util.Random.nextInt) should be(Vector.empty[String])
   }
 }
 

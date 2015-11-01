@@ -94,16 +94,16 @@ object Xray
         }
       }
 
-      val table = renderedTable4Xray(lines, styles = Map("Value" -> Magenta) withDefaultValue Reset, availableWidthInCharacters)
+      val table = Report.customRenderedTableForXray(lines, styles = Map("Value" -> Magenta) withDefaultValue Reset, availableWidthInCharacters)
 
       val numberOfCharsInTheLongestLine =
-        table.map(Ansi.removeStyles).flatMap(_ split "\n").maxBy(_.size).size
+        table.map(Ansi.removedStyles).flatMap(_ split "\n").maxBy(_.size).size
 
       lazy val hyphens = "-" * (numberOfCharsInTheLongestLine min availableWidthInCharacters)
 
       val centeredHeader = {
-        val header = if (Ansi.removeStyles(description).isEmpty) "X-Ray".green else styled(description)(Green)
-        val emptySpace = hyphens.size - Ansi.removeStyles(header).size
+        val header = if (Ansi.removedStyles(description).isEmpty) "X-Ray".green else styled(description)(Green)
+        val emptySpace = hyphens.size - Ansi.removedStyles(header).size
         val leftPadding = " " * (emptySpace / 2)
 
         leftPadding + header
@@ -113,14 +113,14 @@ object Xray
 
       styled(resultingLines mkString "\n")(style)
     }
+  }
 
-    private[spells] final def renderedTable4Xray(in: Int => Seq[(String, String)], styles: Map[String, Ansi.Style] = Map.empty withDefaultValue Reset, availableWidthInCharacters: Int): Seq[String] = {
-      if (in(0).isEmpty) {
-        println("I'm here")
-        Seq.empty
-      } else {
+  object Report {
+    private[spells] final def customRenderedTableForXray(in: Int => Seq[(String, String)], styles: Map[String, Ansi.Style] = Map.empty withDefaultValue Reset, availableWidthInCharacters: Int): Seq[String] = {
+      if (in(0).isEmpty) Seq.empty
+      else {
         val sizeOfTheBiggestKey = in(0) map {
-          case (key, _) => Ansi.removeStyles(key).size
+          case (key, _) => Ansi.removedStyles(key).size
         } max
 
         val separator = " | "
@@ -149,7 +149,7 @@ object Xray
 
                     previousSubLine.reverse.takeWhile { char =>
                       takenSoFar += char
-                      val theMatch = StylePrint.styleOrReset.r findFirstIn takenSoFar.reverse
+                      val theMatch = StylePrint.StyleOrReset.r findFirstIn takenSoFar.reverse
                       theMatch foreach (result = _)
                       theMatch.isEmpty
                     }
@@ -181,4 +181,3 @@ object Xray
     }
   }
 }
-

@@ -17,5 +17,9 @@ class CompilationTests extends spells.user.UnitTestConfiguration {
     Map.empty[Any, Any].rendered
     new java.util.HashSet[Any].rendered
     new java.util.HashMap[Any, Any].rendered
+
+    object CR extends spells.CustomRendering {
+      def rendered(implicit availableWidthInCharacters: Int = spells.terminal.`width-in-characters`): String = ???
+    }
   }
 }

@@ -14,20 +14,20 @@ private[spells] trait LocationAwareConfig {
 
   config.checkValid(defaultReference(), "spells")
 
-  private[spells] final implicit def propertyToBoolean(property: LocationAwareProperty[Boolean]): Boolean =
+  final implicit def locationAwarePropertyToBoolean(property: LocationAwareProperty[Boolean]): Boolean =
     config getBoolean property.location
 
-  private[spells] final implicit def propertyToInt(property: LocationAwareProperty[Int]): Int =
+  final implicit def locationAwarePropertyToInt(property: LocationAwareProperty[Int]): Int =
     config getInt property.location
 
   // Commented out, because it's not used yet... for better coverage ;)
 
-  // private[spells] final implicit def propertyToDouble(property: LocationAwareProperty[Double]): Double =
+  // final implicit def locationAwarePropertyToDouble(property: LocationAwareProperty[Double]): Double =
   //   config getDouble property.location
 
-  // private[spells] final implicit def propertyToLong(property: LocationAwareProperty[Long]): Long =
+  // final implicit def locationAwarePropertyToLong(property: LocationAwareProperty[Long]): Long =
   //   config getLong property.location
 
-  // private[spells] final implicit def propertyToString(property: LocationAwareProperty[String]): String =
+  // final implicit def locationAwarePropertyToString(property: LocationAwareProperty[String]): String =
   //   config getString property.location
 }

@@ -3,8 +3,8 @@ package spells
 trait Ansi {
   implicit final def anyToAnsiString(input: Any): Ansi.AnsiString = new Ansi.AnsiString(input)
 
-  implicit final class AnsiStyleWrapper(style: String) {
-    def toAnsiStyle: Ansi.Style = Ansi.Style(style)
+  implicit final class AnsiStyleBuilder(style: String) {
+    def toAnsiStyle: Ansi.Style = new Ansi.Style(style)
   }
 
   final val Reset: Ansi.Style = Console.RESET.toAnsiStyle
@@ -24,19 +24,19 @@ trait Ansi {
 }
 
 object Ansi extends Ansi {
-  case class Style(value: String) {
-    override final def toString = Ansi.Sample in this
+  class Style(val value: String) extends AnyVal {
+    override final def toString: String = Ansi.Sample in this
   }
 
   final class AnsiString(val input: Any) extends AnyVal {
-    final def in(style: Ansi.Style): String = style.value + removeStyles(String valueOf input) + Reset.value
+    final def in(style: Ansi.Style): String = style.value + removedStyles(String valueOf input) + Reset.value
 
     final def black: String = this in Black
     final def red: String = this in Red
     final def green: String = this in Green
     final def yellow: String = this in Yellow
     final def blue: String = this in Blue
-    final def magenta: String = this in Magenta;
+    final def magenta: String = this in Magenta
     final def cyan: String = this in Cyan
     final def white: String = this in White
 
@@ -46,7 +46,7 @@ object Ansi extends Ansi {
     final def invisible: String = this in Invisible
   }
 
-  final def removeStyles(input: String) = input.replaceAll(StylePrint.styleOrReset, "")
+  final def removedStyles(input: String): String = input.replaceAll(StylePrint.StyleOrReset, "")
 
-  private final lazy val Sample = "sample"
+  private final val Sample: String = "sample"
 }

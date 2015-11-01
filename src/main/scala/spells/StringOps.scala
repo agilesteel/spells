@@ -4,7 +4,7 @@ trait StringOps {
   implicit class StringOpsFromSpells(input: String) {
     final def withDecodedScalaSymbols: String = scala.reflect.NameTransformer decode input
 
-    final def wrappedOnSpaces(limit: Int): String = { // and tabs?
+    final def wrappedOnSpaces(limit: Int): String = {
       val separator = " "
 
       def wrapped(in: String): String = {

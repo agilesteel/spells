@@ -57,6 +57,78 @@ class TraversableOpsTests extends UnitTestConfiguration {
     actual should be(expected)
   }
 
+  test("This is how recursive renderng for traversables should work") {
+    val inner = Seq("I", "II", "III")
+    val actual = Seq(inner, inner, inner).rendered
+
+    // format: OFF
+    val expected =
+      "scala.collection.immutable.::[scala.collection.Seq[java.lang.String]] with 3 elements:" + "\n" +
+      "" + "\n" +
+      "0 | scala.collection.immutable.::[java.lang.String] with 3 elements:" + "\n" +
+      "  | " + "\n" +
+      "  | 0 | I" + "\n" +
+      "  | 1 | II" + "\n" +
+      "  | 2 | III" + "\n" +
+      "1 | scala.collection.immutable.::[java.lang.String] with 3 elements:" + "\n" +
+      "  | " + "\n" +
+      "  | 0 | I" + "\n" +
+      "  | 1 | II" + "\n" +
+      "  | 2 | III" + "\n" +
+      "2 | scala.collection.immutable.::[java.lang.String] with 3 elements:" + "\n" +
+      "  | " + "\n" +
+      "  | 0 | I" + "\n" +
+      "  | 1 | II" + "\n" +
+      "  | 2 | III"
+    // format: ON
+
+    actual should be(expected)
+  }
+
+  test("Recursive renderng for traversables should include recursive line wrapping") {
+    val availableWidthInCharacters = spells.terminal.`width-in-characters`
+    val sizeOfKeyWithSeparator = 8
+    def atom(c: Char) = c.toString * (availableWidthInCharacters - sizeOfKeyWithSeparator)
+    val xs = atom('x')
+    val ys = atom('y')
+    val zs = atom('z')
+
+    val inner = Seq(xs + " " + xs, ys + " " + ys, zs + " " + zs)
+    val actual = Seq(inner, inner, inner).rendered
+
+    // format: OFF
+    val expected =
+      "scala.collection.immutable.::[scala.collection.Seq[java.lang.String]] with 3 elements:" + "\n" +
+      "" + "\n" +
+      "0 | scala.collection.immutable.::[java.lang.String] with 3 elements:" + "\n" +
+      "  | " + "\n" +
+      "  | 0 | " + xs + "\n" +
+      "  |   | " + xs + "\n" +
+      "  | 1 | " + ys + "\n" +
+      "  |   | " + ys + "\n" +
+      "  | 2 | " + zs + "\n" +
+      "  |   | " + zs + "\n" +
+      "1 | scala.collection.immutable.::[java.lang.String] with 3 elements:" + "\n" +
+      "  | " + "\n" +
+      "  | 0 | " + xs + "\n" +
+      "  |   | " + xs + "\n" +
+      "  | 1 | " + ys + "\n" +
+      "  |   | " + ys + "\n" +
+      "  | 2 | " + zs + "\n" +
+      "  |   | " + zs + "\n" +
+      "2 | scala.collection.immutable.::[java.lang.String] with 3 elements:" + "\n" +
+      "  | " + "\n" +
+      "  | 0 | " + xs + "\n" +
+      "  |   | " + xs + "\n" +
+      "  | 1 | " + ys + "\n" +
+      "  |   | " + ys + "\n" +
+      "  | 2 | " + zs + "\n" +
+      "  |   | " + zs
+    // format: ON
+
+    actual should be(expected)
+  }
+
   test("This is how maps should be rendered") {
     val actual = Map(1 -> "I", 2 -> "II", 3 -> "III").rendered
 
@@ -137,11 +209,12 @@ class TraversableOpsTests extends UnitTestConfiguration {
   }
 
   test("Lines should be wrapped") {
-    val maxWidthInCharacters = spells.terminal.`width-in-characters`
+    val availableWidthInCharacters = spells.terminal.`width-in-characters`
     val sizeOfKeyWithSeparator = 4
-    def atom(c: Char) = c.toString * (maxWidthInCharacters - sizeOfKeyWithSeparator)
+    def atom(c: Char) = c.toString * (availableWidthInCharacters - sizeOfKeyWithSeparator)
     val toBeSpliced = atom('x') + " " + atom('y')
-    val table = renderedTable(_ => Seq("I" -> toBeSpliced), availableWidthInCharacters = maxWidthInCharacters)
+    val table = renderedTable(_ => Seq("I" -> toBeSpliced), availableWidthInCharacters)
+
     table should be {
       Vector(
       // format: OFF
@@ -152,19 +225,7 @@ class TraversableOpsTests extends UnitTestConfiguration {
     }
   }
 
-  // test("""Lines should be wrapped, but the style should be preserved for the "Value" key, assuming custom styles are passed in""") {
-  //   val maxWidthInCharacters = spells.terminal.`width-in-characters`
-  //   val sizeOfKeyWithSeparator = 8
-  //   def atom(c: Char) = c.toString * (maxWidthInCharacters - sizeOfKeyWithSeparator)
-  //   val toBeSpliced = atom('x') + " " + atom('y')
-  //   val table = renderedTable(Seq("Value" -> toBeSpliced), styles = Map("Value" -> Magenta) withDefaultValue Reset)
-  //   table should be {
-  //     Vector(
-  //     // format: OFF
-  //       "Value | " + atom('x').magenta + "\n" +
-  //       "      | " + atom('y').magenta
-  //     // format: ON
-  //     )
-  //   }
-  // }
+  test("The renderedTable helper method should yield an empty Seq when given an empty input") {
+    renderedTable(_ => Seq.empty, availableWidthInCharacters = util.Random.nextInt) should be(Vector.empty[String])
+  }
 }

@@ -15,6 +15,6 @@ trait ClearPrint {
     styled(ClearPrint.Clear.value + s"\r$input" + Reset.value)(style)
 
   object ClearPrint {
-    final lazy val Clear = "\u001b[2K".toAnsiStyle
+    final val Clear: Ansi.Style = "\u001b[2K".toAnsiStyle
   }
 }

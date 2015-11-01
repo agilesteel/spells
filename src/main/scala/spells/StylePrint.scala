@@ -27,12 +27,12 @@ trait StylePrint {
 }
 
 object StylePrint extends Ansi with StylePrint {
-  private[spells] final val AnsiPattern = s"""($multiline)($anything)($styleOnly$anything$reset)($anything)""".r
+  private[spells] final val Multiline: String = """?s"""
+  private[spells] final val Anything: String = """.*?"""
 
-  private[spells] final val multiline = """?s"""
-  private[spells] final val anything = """.*?"""
+  private[spells] final val StyleOnly: String = """\033\[\d{2}m"""
+  private[spells] final val StyleOrReset: String = """\033\[\d{1,2}m"""
+  private[spells] final val ResetValue: String = """\033\[0m"""
 
-  private[spells] final val styleOnly = """\033\[\d{2}m"""
-  private[spells] final val styleOrReset = """\033\[\d{1,2}m"""
-  private[spells] final val reset = """\033\[0m"""
+  private[spells] final val AnsiPattern = s"""($Multiline)($Anything)($StyleOnly$Anything$ResetValue)($Anything)""".r
 }

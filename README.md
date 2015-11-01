@@ -1,5 +1,5 @@
-[Java 8]:       http://java.com/en/download/index.jsp
-[SBT 0.13.5]:     http://www.scala-sbt.org/
+[Java 8]:         http://java.com/en/download/index.jsp
+[SBT 0.13.9]:     http://www.scala-sbt.org/
 
 [Ansi]:           https://github.com/agilesteel/spells/blob/master/src/test/scala/spells/user/AnsiTests.scala
 [AnyOps]:         https://github.com/agilesteel/spells/blob/master/src/test/scala/spells/user/AnyOpsTests.scala
@@ -42,7 +42,7 @@ This is a small scala "util" library, which will hopefully grow over time.
 ### Requirements
 
 * [Java 8] or greater
-* [SBT 0.13.5] or greater if you want to build from source
+* [SBT 0.13.9] or greater if you want to build from source
 
 ### Configuring your project's dependencies
 
@@ -57,7 +57,7 @@ Snapshots: add these lines to your SBT build file:
 ```scala
 resolvers += Resolver.sonatypeRepo("snapshots")
 
-libraryDependencies += "com.github.agilesteel" %% "spells" % "1.6.2-SNAPSHOT"
+libraryDependencies += "com.github.agilesteel" %% "spells" % "2.0.0-SNAPSHOT"
 ```
 ### Help
 If you clone this repository, SBT will guide you through the man pages!

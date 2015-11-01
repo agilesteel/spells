@@ -3,7 +3,7 @@ package object spells extends LocationAwareConfig {
     object `should-be-happy` extends LocationAwareProperty[Boolean]
   }
 
-  private[spells] object terminal {
+  object terminal {
     object `width-in-characters` extends LocationAwareProperty[Int]
   }
 }

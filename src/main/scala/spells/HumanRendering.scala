@@ -32,21 +32,21 @@ trait HumanRendering {
         final lazy val months: String = render(Month)
         final lazy val years: String = render(Year)
 
-        final private def render(unit: String) =
+        final private def render(unit: String): String =
           if (value == 1) s"$value $unit" else s"$value ${unit}s"
       }
     }
   }
 
-  final val Nanosecond = "nanosecond"
-  final val Millisecond = "millisecond"
-  final val Second = "second"
-  final val Minute = "minute"
-  final val Hour = "hour"
-  final val Day = "day"
-  final val Week = "week"
-  final val Month = "month"
-  final val Year = "year"
+  private[spells] final val Nanosecond: String = "nanosecond"
+  private[spells] final val Millisecond: String = "millisecond"
+  private[spells] final val Second: String = "second"
+  private[spells] final val Minute: String = "minute"
+  private[spells] final val Hour: String = "hour"
+  private[spells] final val Day: String = "day"
+  private[spells] final val Week: String = "week"
+  private[spells] final val Month: String = "month"
+  private[spells] final val Year: String = "year"
 
   private case class Duration(
       years: Long = 0,
