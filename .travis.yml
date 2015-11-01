@@ -4,15 +4,17 @@
 
 language: scala
 scala:
-  - 2.10.4
-  - 2.11.4
+  - 2.10.6
+  - 2.11.7
 branches:
   only:
     - master
 jdk:
   - oraclejdk8
 script:
-  - sbt ++$TRAVIS_SCALA_VERSION clean coverage test coveralls
+  - sbt ++$TRAVIS_SCALA_VERSION clean coverage test
+after_success:
+  - sbt coveralls
 notifications:
   email:
     - agilesteel@gmail.com
