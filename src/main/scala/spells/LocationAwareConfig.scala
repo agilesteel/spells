@@ -3,7 +3,7 @@ package spells
 import com.typesafe.config.Config
 import com.typesafe.config.ConfigFactory._
 
-private[spells] trait LocationAwareConfig {
+private[spells] trait LocationAwareConfig extends Ansi {
   private[spells] final implicit lazy val config: Config =
     if (userConfig.exists)
       load(parseFile(userConfig)).withFallback(load)
@@ -19,6 +19,9 @@ private[spells] trait LocationAwareConfig {
 
   final implicit def locationAwarePropertyToInt(property: LocationAwareProperty[Int]): Int =
     config getInt property.location
+
+  final implicit def locationAwarePropertyToAnsiStyle(property: LocationAwareProperty[Ansi.Style]): Ansi.Style =
+    config getString property.location toAnsiStyle
 
   // Commented out, because it's not used yet... for better coverage ;)
 

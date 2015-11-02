@@ -14,6 +14,23 @@ class AnsiTests extends UnitTestConfiguration {
     "green" in customStyle should be(customStyle.value + "green" + Reset.value)
   }
 
+  test("""The toAnsiStyle method should handle human capitalised readable colors""") {
+    "Untouched".toAnsiStyle should be(Reset)
+    "Reset".toAnsiStyle should be(Reset)
+    "Black".toAnsiStyle should be(Black)
+    "Red".toAnsiStyle should be(Red)
+    "Green".toAnsiStyle should be(Green)
+    "Yellow".toAnsiStyle should be(Yellow)
+    "Blue".toAnsiStyle should be(Blue)
+    "Magenta".toAnsiStyle should be(Magenta)
+    "Cyan".toAnsiStyle should be(Cyan)
+    "White".toAnsiStyle should be(White)
+    "Bold".toAnsiStyle should be(Bold)
+    "Blink".toAnsiStyle should be(Blink)
+    "Reversed".toAnsiStyle should be(Reversed)
+    "Invisible".toAnsiStyle should be(Invisible)
+  }
+
   test(""""green".green should be(Green.value + "green" + Reset.value)""") {
     "green".green should be(Green.value + "green" + Reset.value)
   }

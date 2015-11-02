@@ -4,7 +4,23 @@ trait Ansi {
   implicit final def anyToAnsiString(input: Any): Ansi.AnsiString = new Ansi.AnsiString(input)
 
   implicit final class AnsiStyleBuilder(style: String) {
-    def toAnsiStyle: Ansi.Style = new Ansi.Style(style)
+    def toAnsiStyle: Ansi.Style = style match {
+      case "Untouched" => Reset
+      case "Reset" => Reset
+      case "Black" => Black
+      case "Red" => Red
+      case "Green" => Green
+      case "Yellow" => Yellow
+      case "Blue" => Blue
+      case "Magenta" => Magenta
+      case "Cyan" => Cyan
+      case "White" => White
+      case "Bold" => Bold
+      case "Blink" => Blink
+      case "Reversed" => Reversed
+      case "Invisible" => Invisible
+      case _ => new Ansi.Style(style)
+    }
   }
 
   final val Reset: Ansi.Style = Console.RESET.toAnsiStyle

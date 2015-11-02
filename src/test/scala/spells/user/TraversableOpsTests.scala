@@ -86,7 +86,7 @@ class TraversableOpsTests extends UnitTestConfiguration {
   }
 
   test("Recursive renderng for traversables should include recursive line wrapping") {
-    val availableWidthInCharacters = spells.terminal.`width-in-characters`
+    val availableWidthInCharacters = spells.CustomRendering.Defaults.AvailableWidthInCharacters
     val sizeOfKeyWithSeparator = 8
     def atom(c: Char) = c.toString * (availableWidthInCharacters - sizeOfKeyWithSeparator)
     val xs = atom('x')
@@ -209,7 +209,7 @@ class TraversableOpsTests extends UnitTestConfiguration {
   }
 
   test("Lines should be wrapped") {
-    val availableWidthInCharacters = spells.terminal.`width-in-characters`
+    val availableWidthInCharacters = spells.CustomRendering.Defaults.AvailableWidthInCharacters
     val sizeOfKeyWithSeparator = 4
     def atom(c: Char) = c.toString * (availableWidthInCharacters - sizeOfKeyWithSeparator)
     val toBeSpliced = atom('x') + " " + atom('y')

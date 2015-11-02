@@ -94,7 +94,20 @@ object Xray
         }
       }
 
-      val table = Report.customRenderedTableForXray(lines, styles = Map("Value" -> Magenta) withDefaultValue Reset, availableWidthInCharacters)
+      val table =
+        Report.customRenderedTableForXray(
+          lines,
+          styles = Map[String, Ansi.Style](
+            "DateTime" -> spells.XrayReport.DateTimeStyle,
+            "Duration" -> spells.XrayReport.DurationStyle,
+            "Location" -> spells.XrayReport.LocationStyle,
+            "Thread" -> spells.XrayReport.ThreadStyle,
+            "Class" -> spells.XrayReport.ClassStyle,
+            "Type" -> spells.XrayReport.TypeStyle,
+            "Value" -> spells.XrayReport.ValueStyle
+          ) withDefaultValue Reset,
+          availableWidthInCharacters
+        )
 
       val numberOfCharsInTheLongestLine =
         table.map(Ansi.removedStyles).flatMap(_ split "\n").maxBy(_.size).size
@@ -102,7 +115,8 @@ object Xray
       lazy val hyphens = "-" * (numberOfCharsInTheLongestLine min availableWidthInCharacters)
 
       val centeredHeader = {
-        val header = if (Ansi.removedStyles(description).isEmpty) "X-Ray".green else styled(description)(Green)
+        val headerStyleFromConfig: Ansi.Style = spells.XrayReport.DescriptionStyle
+        val header = if (Ansi.removedStyles(description).isEmpty) styled("X-Ray")(headerStyleFromConfig) else styled(description)(headerStyleFromConfig)
         val emptySpace = hyphens.size - Ansi.removedStyles(header).size
         val leftPadding = " " * (emptySpace / 2)
 

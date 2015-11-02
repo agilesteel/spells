@@ -205,8 +205,8 @@ class XrayReportRenderingTests extends UnitTestConfiguration {
     createReport(value = null).rendered should include(s"Value    | ${"null".magenta}")
   }
 
-  test(s"Rendered report should contain maximum ${spells.terminal.`width-in-characters`} hyphens") {
-    val maxWidthInCharacters: Int = spells.terminal.`width-in-characters`
+  test(s"Rendered report should contain maximum ${spells.terminal.WidthInCharacters} hyphens") {
+    val maxWidthInCharacters: Int = spells.terminal.WidthInCharacters
 
     forAll(createReport().rendered split "\n") { line =>
       line.size should be <= maxWidthInCharacters

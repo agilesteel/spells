@@ -13,7 +13,7 @@ object CustomRendering {
       }
     }
 
-    final val AvailableWidthInCharacters: CustomRendering.AvailableWidthInCharacters = new CustomRendering.AvailableWidthInCharacters(spells.terminal.`width-in-characters`)
+    final val AvailableWidthInCharacters: CustomRendering.AvailableWidthInCharacters = new CustomRendering.AvailableWidthInCharacters(spells.terminal.WidthInCharacters)
   }
 
   implicit class AvailableWidthInCharacters(val value: Int) extends AnyVal {
