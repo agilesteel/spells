@@ -48,13 +48,13 @@ class XrayTests extends UnitTestConfiguration {
   private def assert(sample: String) =
     xrayed(sample).stackTraceElement should be(currentLineStackTraceElement(increaseStackTraceDepthBy = -3)) // dodgy
 
-  test("""It should be possible to implicitly specify styles to xrayed""") {
+  test("""It should be possible to implicitly pass in styles to xrayed""") {
     implicit val color = Yellow
 
     xrayed(10).rendered should startWith(color.value)
   }
 
-  test("""It should be possible to implicitly specify styles to xray""") {
+  test("""It should be possible to implicitly pass in styles to xray""") {
     implicit val color = Yellow
 
     SilentOutputStream out {
@@ -65,13 +65,13 @@ class XrayTests extends UnitTestConfiguration {
     }
   }
 
-  test("It should not be possible to implicitly specify descriptions of type String to xrayed") {
+  test("It should not be possible to implicitly pass in descriptions of type String to xrayed") {
     implicit val description: String = "description"
 
     xrayed("value").description should be(spells.Xray.Defaults.Description.toString)
   }
 
-  test("It should not be possible to implicitly specify descriptions of type String to xrat") {
+  test("It should not be possible to implicitly pass in descriptions of type String to xrat") {
     implicit val description: String = "description"
 
     SilentOutputStream out {
@@ -82,13 +82,13 @@ class XrayTests extends UnitTestConfiguration {
     }
   }
 
-  test("It should be possible to explicitly specify descriptions of type String to xrayed") {
+  test("It should be possible to explicitly pass in descriptions of type String to xrayed") {
     val description: String = "description"
 
     xrayed("value", description).description should be(description)
   }
 
-  test("It should be possible to explicitly specify descriptions of type String to xray") {
+  test("It should be possible to explicitly pass in descriptions of type String to xray") {
     val description: String = "description"
 
     SilentOutputStream out {

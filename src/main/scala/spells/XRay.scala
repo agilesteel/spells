@@ -70,7 +70,7 @@ object Xray
       final val thread: Thread,
       final val style: Ansi.Style = Reset,
       rendering: T => CustomRendering = CustomRendering.Defaults.Any) extends spells.CustomRendering {
-    override final def rendered(implicit availableWidthInCharacters: Int = spells.terminal.`width-in-characters`): String = {
+    override final def rendered(implicit availableWidthInCharacters: CustomRendering.AvailableWidthInCharacters = CustomRendering.Defaults.AvailableWidthInCharacters): String = {
       def lines(availableWidthInCharacters: Int): Seq[(String, String)] = {
         val content = Vector(
           "DateTime" -> timestamp.rendered,

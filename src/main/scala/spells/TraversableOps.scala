@@ -1,10 +1,12 @@
 package spells
 
+// import CustomRendering._
+
 trait TraversableOps {
   this: Ansi with AnyOps with CalendarOps with DurationOps with HumanRendering with StringOps with StylePrint =>
 
   final implicit def TraversableOpsFromSpells[T](value: Traversable[T])(implicit manifest: Manifest[T], rendering: T => CustomRendering = CustomRendering.Defaults.Any): CustomRendering = new CustomRendering {
-    def rendered(implicit availableWidthInCharacters: Int = spells.terminal.`width-in-characters`): String = {
+    def rendered(implicit availableWidthInCharacters: CustomRendering.AvailableWidthInCharacters = CustomRendering.Defaults.AvailableWidthInCharacters): String = {
       lazy val className = value.decodedClassName
       lazy val typeName = manifest.toString.withDecodedScalaSymbols
 
@@ -24,7 +26,7 @@ trait TraversableOps {
   }
 
   final implicit def ArrayOpsFromSpells[T](value: Array[T])(implicit manifest: Manifest[T], rendering: T => CustomRendering = CustomRendering.Defaults.Any): CustomRendering = new CustomRendering {
-    def rendered(implicit availableWidthInCharacters: Int = spells.terminal.`width-in-characters`): String = {
+    def rendered(implicit availableWidthInCharacters: CustomRendering.AvailableWidthInCharacters = CustomRendering.Defaults.AvailableWidthInCharacters): String = {
       lazy val typeName = manifest.toString.withDecodedScalaSymbols
 
       render[Array[T]](value, _.isEmpty, _.size, s"Array()", "Array", typeName, availableWidthInCharacters) { in =>
@@ -43,7 +45,7 @@ trait TraversableOps {
   }
 
   final implicit def CollectionOpsFromSpells[T](value: java.util.Collection[T])(implicit manifest: Manifest[T], rendering: T => CustomRendering = CustomRendering.Defaults.Any): CustomRendering = new CustomRendering {
-    def rendered(implicit availableWidthInCharacters: Int = spells.terminal.`width-in-characters`): String = {
+    def rendered(implicit availableWidthInCharacters: CustomRendering.AvailableWidthInCharacters = CustomRendering.Defaults.AvailableWidthInCharacters): String = {
       lazy val className = value.decodedClassName
       lazy val typeName = manifest.toString.withDecodedScalaSymbols
 
@@ -65,7 +67,7 @@ trait TraversableOps {
   }
 
   final implicit def MapOpsFromSpells[Key, Value](value: java.util.Map[Key, Value])(implicit manifest: Manifest[java.util.Map.Entry[Key, Value]], rendering: java.util.Map.Entry[Key, Value] => CustomRendering = CustomRendering.Defaults.Any): CustomRendering = new CustomRendering {
-    def rendered(implicit availableWidthInCharacters: Int = spells.terminal.`width-in-characters`): String = {
+    def rendered(implicit availableWidthInCharacters: CustomRendering.AvailableWidthInCharacters = CustomRendering.Defaults.AvailableWidthInCharacters): String = {
       lazy val className = value.decodedClassName
       lazy val typeName = manifest.toString.withDecodedScalaSymbols
 
