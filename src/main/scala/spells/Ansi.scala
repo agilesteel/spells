@@ -5,6 +5,7 @@ trait Ansi {
 
   implicit final class AnsiStyleBuilder(style: String) {
     def toAnsiStyle: Ansi.Style = style match {
+      case "Random" => Random
       case "Untouched" => Reset
       case "Reset" => Reset
       case "Black" => Black
@@ -15,10 +16,6 @@ trait Ansi {
       case "Magenta" => Magenta
       case "Cyan" => Cyan
       case "White" => White
-      case "Bold" => Bold
-      case "Blink" => Blink
-      case "Reversed" => Reversed
-      case "Invisible" => Invisible
       case _ => new Ansi.Style(style)
     }
   }
@@ -32,11 +29,12 @@ trait Ansi {
   final val Magenta: Ansi.Style = Console.MAGENTA.toAnsiStyle
   final val Cyan: Ansi.Style = Console.CYAN.toAnsiStyle
   final val White: Ansi.Style = Console.WHITE.toAnsiStyle
-
-  final val Bold: Ansi.Style = Console.BOLD.toAnsiStyle
-  final val Blink: Ansi.Style = Console.BLINK.toAnsiStyle
-  final val Reversed: Ansi.Style = Console.REVERSED.toAnsiStyle
-  final val Invisible: Ansi.Style = Console.INVISIBLE.toAnsiStyle
+  final def Random: Ansi.Style =
+    Ansi.AllStylesOutOfTheBox {
+      util.Random.nextInt {
+        Ansi.AllStylesOutOfTheBox.size
+      }
+    }
 }
 
 object Ansi extends Ansi {
@@ -55,14 +53,21 @@ object Ansi extends Ansi {
     final def magenta: String = this in Magenta
     final def cyan: String = this in Cyan
     final def white: String = this in White
-
-    final def bold: String = this in Bold
-    final def blink: String = this in Blink
-    final def reversed: String = this in Reversed
-    final def invisible: String = this in Invisible
   }
 
   final def removedStyles(input: String): String = input.replaceAll(StylePrint.StyleOrReset, "")
 
   private final val Sample: String = "sample"
+
+  val AllStylesOutOfTheBox: Vector[Style] =
+    Vector(
+      Black,
+      Red,
+      Green,
+      Yellow,
+      Blue,
+      Magenta,
+      Cyan,
+      White
+    )
 }

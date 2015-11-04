@@ -25,10 +25,7 @@ class AnsiTests extends UnitTestConfiguration {
     "Magenta".toAnsiStyle should be(Magenta)
     "Cyan".toAnsiStyle should be(Cyan)
     "White".toAnsiStyle should be(White)
-    "Bold".toAnsiStyle should be(Bold)
-    "Blink".toAnsiStyle should be(Blink)
-    "Reversed".toAnsiStyle should be(Reversed)
-    "Invisible".toAnsiStyle should be(Invisible)
+    spells.Ansi.AllStylesOutOfTheBox should contain("Random".toAnsiStyle)
   }
 
   test(""""green".green should be(Green.value + "green" + Reset.value)""") {
@@ -53,11 +50,7 @@ class AnsiTests extends UnitTestConfiguration {
         Blue,
         Magenta,
         Cyan,
-        White,
-        Bold,
-        Blink,
-        Reversed,
-        Invisible
+        White
       )
 
     val factories =
@@ -69,11 +62,7 @@ class AnsiTests extends UnitTestConfiguration {
         _.blue,
         _.magenta,
         _.cyan,
-        _.white,
-        _.bold,
-        _.blink,
-        _.reversed,
-        _.invisible
+        _.white
       )
 
     forEvery(styles zip factories) {

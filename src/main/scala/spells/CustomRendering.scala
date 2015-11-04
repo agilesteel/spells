@@ -16,7 +16,7 @@ object CustomRendering {
     final val AvailableWidthInCharacters: CustomRendering.AvailableWidthInCharacters = new CustomRendering.AvailableWidthInCharacters(spells.terminal.WidthInCharacters)
   }
 
-  implicit class AvailableWidthInCharacters(val value: Int) extends AnyVal {
+  implicit class AvailableWidthInCharacters(val value: Int) {
     override final def toString: String = value.toString
   }
 

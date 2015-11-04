@@ -19,7 +19,7 @@ class CompilationTests extends spells.user.UnitTestConfiguration {
     new java.util.HashMap[Any, Any].rendered
 
     object CR extends spells.CustomRendering {
-      def rendered(implicit availableWidthInCharacters: spells.CustomRendering.AvailableWidthInCharacters = spells.CustomRendering.Defaults.AvailableWidthInCharacters): String = ???
+      override def rendered(implicit availableWidthInCharacters: spells.CustomRendering.AvailableWidthInCharacters = spells.CustomRendering.Defaults.AvailableWidthInCharacters): String = "adf"
     }
   }
 }

@@ -1,27 +1,29 @@
 package object spells extends LocationAwareConfig {
-  // private[spells] object coverage {
-  //   object `should-be-happy` extends LocationAwareProperty[Boolean]
-  // }
-
   object terminal {
     object WidthInCharacters extends LocationAwareProperty[Int]
   }
 
-  object XrayReport {
-    object DisplayDateTime extends LocationAwareProperty[Boolean]
-    object DisplayDuration extends LocationAwareProperty[Boolean]
-    object DisplayLocation extends LocationAwareProperty[Boolean]
-    object DisplayThread extends LocationAwareProperty[Boolean]
-    object DisplayClass extends LocationAwareProperty[Boolean]
-    object DisplayType extends LocationAwareProperty[Boolean]
+  object xray {
+    object report {
+      object display {
+        object DateTime extends LocationAwareProperty[Boolean]
+        object Duration extends LocationAwareProperty[Boolean]
+        object Location extends LocationAwareProperty[Boolean]
+        object Thread extends LocationAwareProperty[Boolean]
+        object Class extends LocationAwareProperty[Boolean]
+        object Type extends LocationAwareProperty[Boolean]
+      }
 
-    object DescriptionStyle extends LocationAwareProperty[Ansi.Style]
-    object DateTimeStyle extends LocationAwareProperty[Ansi.Style]
-    object DurationStyle extends LocationAwareProperty[Ansi.Style]
-    object LocationStyle extends LocationAwareProperty[Ansi.Style]
-    object ThreadStyle extends LocationAwareProperty[Ansi.Style]
-    object ClassStyle extends LocationAwareProperty[Ansi.Style]
-    object TypeStyle extends LocationAwareProperty[Ansi.Style]
-    object ValueStyle extends LocationAwareProperty[Ansi.Style]
+      object styles {
+        object Description extends LocationAwareProperty[Ansi.Style]
+        object DateTime extends LocationAwareProperty[Ansi.Style]
+        object Duration extends LocationAwareProperty[Ansi.Style]
+        object Location extends LocationAwareProperty[Ansi.Style]
+        object Thread extends LocationAwareProperty[Ansi.Style]
+        object Class extends LocationAwareProperty[Ansi.Style]
+        object Type extends LocationAwareProperty[Ansi.Style]
+        object Value extends LocationAwareProperty[Ansi.Style]
+      }
+    }
   }
 }
