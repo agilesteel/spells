@@ -6,22 +6,22 @@ class DoubleEntryConfigKeeping extends UnitTestConfiguration {
   }
 
   test("The reference.conf file should be valid") {
-    (spells.terminal.WidthInCharacters: Int) should be(160)
+    (SpellsConfig.terminal.WidthInCharacters: Int) should be(160)
 
-    (spells.xray.report.display.DateTime: Boolean) should be(true)
-    (spells.xray.report.display.Duration: Boolean) should be(true)
-    (spells.xray.report.display.Location: Boolean) should be(true)
-    (spells.xray.report.display.Thread: Boolean) should be(true)
-    (spells.xray.report.display.Class: Boolean) should be(true)
-    (spells.xray.report.display.Type: Boolean) should be(true)
+    (SpellsConfig.xray.report.display.DateTime: Boolean) should be(true)
+    (SpellsConfig.xray.report.display.Duration: Boolean) should be(true)
+    (SpellsConfig.xray.report.display.Location: Boolean) should be(true)
+    (SpellsConfig.xray.report.display.Thread: Boolean) should be(true)
+    (SpellsConfig.xray.report.display.Class: Boolean) should be(true)
+    (SpellsConfig.xray.report.display.Type: Boolean) should be(true)
 
-    (spells.xray.report.styles.Description: spells.Ansi.Style) should be(Green)
-    (spells.xray.report.styles.DateTime: spells.Ansi.Style) should be(Reset)
-    (spells.xray.report.styles.Duration: spells.Ansi.Style) should be(Reset)
-    (spells.xray.report.styles.Location: spells.Ansi.Style) should be(Reset)
-    (spells.xray.report.styles.Thread: spells.Ansi.Style) should be(Reset)
-    (spells.xray.report.styles.Class: spells.Ansi.Style) should be(Reset)
-    (spells.xray.report.styles.Type: spells.Ansi.Style) should be(Reset)
-    (spells.xray.report.styles.Value: spells.Ansi.Style) should be(Magenta)
+    (SpellsConfig.xray.report.styles.Description: spells.Ansi.Style) should be(Green)
+    (SpellsConfig.xray.report.styles.DateTime: spells.Ansi.Style) should be(Reset)
+    (SpellsConfig.xray.report.styles.Duration: spells.Ansi.Style) should be(Reset)
+    (SpellsConfig.xray.report.styles.Location: spells.Ansi.Style) should be(Reset)
+    (SpellsConfig.xray.report.styles.Thread: spells.Ansi.Style) should be(Reset)
+    (SpellsConfig.xray.report.styles.Class: spells.Ansi.Style) should be(Reset)
+    (SpellsConfig.xray.report.styles.Type: spells.Ansi.Style) should be(Reset)
+    (SpellsConfig.xray.report.styles.Value: spells.Ansi.Style) should be(Magenta)
   }
 }

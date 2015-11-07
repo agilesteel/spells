@@ -4,7 +4,7 @@ trait CustomRendering {
   implicit def rendered(implicit availableWidthInCharacters: CustomRendering.AvailableWidthInCharacters = CustomRendering.Defaults.AvailableWidthInCharacters): String
 }
 
-object CustomRendering {
+object CustomRendering extends SpellsConfig {
   object Defaults {
     object Any extends (Any => CustomRendering) {
       final def apply(any: Any): CustomRendering = new CustomRendering {
@@ -13,7 +13,7 @@ object CustomRendering {
       }
     }
 
-    final val AvailableWidthInCharacters: CustomRendering.AvailableWidthInCharacters = new CustomRendering.AvailableWidthInCharacters(spells.terminal.WidthInCharacters)
+    final val AvailableWidthInCharacters: CustomRendering.AvailableWidthInCharacters = new CustomRendering.AvailableWidthInCharacters(SpellsConfig.terminal.WidthInCharacters)
   }
 
   implicit class AvailableWidthInCharacters(val value: Int) {

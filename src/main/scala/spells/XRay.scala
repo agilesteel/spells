@@ -52,7 +52,8 @@ object Xray
     with HumanRendering
     with StringOps
     with StylePrint
-    with TraversableOps {
+    with TraversableOps
+    with SpellsConfig {
   object Defaults {
     final val Description: Xray.Description = new Xray.Description("X-Ray")
   }
@@ -69,7 +70,7 @@ object Xray
       final val description: String,
       final val thread: Thread,
       final val style: Ansi.Style = Reset,
-      rendering: T => CustomRendering = CustomRendering.Defaults.Any) extends spells.CustomRendering {
+      rendering: T => CustomRendering = CustomRendering.Defaults.Any) extends CustomRendering {
     override final def rendered(implicit availableWidthInCharacters: CustomRendering.AvailableWidthInCharacters = CustomRendering.Defaults.AvailableWidthInCharacters): String = {
       def lines(availableWidthInCharacters: Int): Seq[(String, String)] = {
         val content = Vector(
@@ -98,13 +99,13 @@ object Xray
         Report.customRenderedTableForXray(
           lines,
           styles = Map[String, Ansi.Style](
-            "DateTime" -> spells.xray.report.styles.DateTime,
-            "Duration" -> spells.xray.report.styles.Duration,
-            "Location" -> spells.xray.report.styles.Location,
-            "Thread" -> spells.xray.report.styles.Thread,
-            "Class" -> spells.xray.report.styles.Class,
-            "Type" -> spells.xray.report.styles.Type,
-            "Value" -> spells.xray.report.styles.Value
+            "DateTime" -> SpellsConfig.xray.report.styles.DateTime,
+            "Duration" -> SpellsConfig.xray.report.styles.Duration,
+            "Location" -> SpellsConfig.xray.report.styles.Location,
+            "Thread" -> SpellsConfig.xray.report.styles.Thread,
+            "Class" -> SpellsConfig.xray.report.styles.Class,
+            "Type" -> SpellsConfig.xray.report.styles.Type,
+            "Value" -> SpellsConfig.xray.report.styles.Value
           ) withDefaultValue Reset,
           availableWidthInCharacters
         )
@@ -115,7 +116,7 @@ object Xray
       lazy val hyphens = "-" * (numberOfCharsInTheLongestLine min availableWidthInCharacters)
 
       val centeredHeader = {
-        val headerStyleFromConfig: Ansi.Style = spells.xray.report.styles.Description
+        val headerStyleFromConfig: Ansi.Style = SpellsConfig.xray.report.styles.Description
         val header = if (Ansi.removedStyles(description).isEmpty) styled("X-Ray")(headerStyleFromConfig) else styled(description)(headerStyleFromConfig)
         val emptySpace = hyphens.size - Ansi.removedStyles(header).size
         val leftPadding = " " * (emptySpace / 2)

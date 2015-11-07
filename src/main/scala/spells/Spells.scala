@@ -11,6 +11,7 @@ trait Spells
   with ErrorPrint
   with HumanRendering
   with Misc
+  with SpellsConfig
   with StringOps
   with StylePrint
   with TraversableOps

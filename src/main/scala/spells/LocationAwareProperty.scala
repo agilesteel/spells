@@ -6,7 +6,8 @@ private[spells] abstract class LocationAwareProperty[T](implicit materialised: (
   private[spells] final lazy val location: String =
     scala.reflect.NameTransformer
       .decode(getClass.getName)
-      .replace(".package", "")
+      .replace("spells.SpellsConfig$", "")
+      .replace("SpellsConfig$", "spells.")
       .split('$')
       .mkString(".")
 
