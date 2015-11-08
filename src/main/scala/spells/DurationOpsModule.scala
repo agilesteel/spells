@@ -1,6 +1,6 @@
 package spells
 
-trait DurationOps {
+trait DurationOpsModule {
   this: HumanRendering =>
 
   implicit class DurationOpsFromSpells(value: scala.concurrent.duration.Duration) extends CustomRendering {

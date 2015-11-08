@@ -7,7 +7,7 @@ trait Spells
   with ClearPrintModule
   with ClipboardModule
   with DateOpsModule
-  with DurationOps
+  with DurationOpsModule
   with ErrorPrint
   with HumanRendering
   with Misc
