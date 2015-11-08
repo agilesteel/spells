@@ -1,6 +1,6 @@
 package spells
 
-trait ErrorPrint {
+trait ErrorPrintModule {
   this: AnsiModule with StylePrint =>
 
   final def printerr(error: Any): Unit = {

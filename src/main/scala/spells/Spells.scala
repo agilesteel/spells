@@ -8,7 +8,7 @@ trait Spells
   with ClipboardModule
   with DateOpsModule
   with DurationOpsModule
-  with ErrorPrint
+  with ErrorPrintModule
   with HumanRendering
   with Misc
   with SpellsConfig
