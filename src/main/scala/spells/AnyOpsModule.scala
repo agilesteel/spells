@@ -1,6 +1,6 @@
 package spells
 
-trait AnyOps {
+trait AnyOpsModule {
   this: StringOps =>
 
   implicit class AnyOpsFromSpells(input: Any) {

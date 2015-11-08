@@ -2,7 +2,7 @@ package spells
 
 trait Spells
   extends AnsiModule
-  with AnyOps
+  with AnyOpsModule
   with CalendarOps
   with ClearPrint
   with Clipboard
