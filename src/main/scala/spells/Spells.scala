@@ -6,7 +6,7 @@ trait Spells
   with CalendarOpsModule
   with ClearPrintModule
   with ClipboardModule
-  with DateOps
+  with DateOpsModule
   with DurationOps
   with ErrorPrint
   with HumanRendering

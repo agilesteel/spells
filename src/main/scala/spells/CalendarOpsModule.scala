@@ -1,7 +1,7 @@
 package spells
 
 trait CalendarOpsModule {
-  this: DateOps =>
+  this: DateOpsModule =>
 
   implicit class CalendarOpsFromSpells(value: java.util.Calendar) extends DateOpsFromSpells(value.getTime)
 }
