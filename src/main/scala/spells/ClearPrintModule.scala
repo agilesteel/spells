@@ -1,6 +1,6 @@
 package spells
 
-trait ClearPrint {
+trait ClearPrintModule {
   this: AnsiModule with StylePrint =>
 
   final def clearPrintln(input: Any = "")(implicit style: AnsiModule.Style = Reset): Unit = {

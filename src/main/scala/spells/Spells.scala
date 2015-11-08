@@ -4,7 +4,7 @@ trait Spells
   extends AnsiModule
   with AnyOpsModule
   with CalendarOpsModule
-  with ClearPrint
+  with ClearPrintModule
   with Clipboard
   with DateOps
   with DurationOps
