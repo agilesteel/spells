@@ -4,19 +4,23 @@ trait Ansi {
   implicit final def anyToAnsiString(input: Any): Ansi.AnsiString = new Ansi.AnsiString(input)
 
   implicit final class AnsiStyleBuilder(style: String) {
-    def toAnsiStyle: Ansi.Style = style match {
-      case "Random" => Random
-      case "Untouched" => Reset
-      case "Reset" => Reset
-      case "Black" => Black
-      case "Red" => Red
-      case "Green" => Green
-      case "Yellow" => Yellow
-      case "Blue" => Blue
-      case "Magenta" => Magenta
-      case "Cyan" => Cyan
-      case "White" => White
-      case _ => new Ansi.Style(style)
+    def toAnsiStyle: Ansi.Style = {
+      require(style != null)
+
+      style match {
+        case "Random" => Ansi.Random
+        case "Untouched" => Reset
+        case "Reset" => Reset
+        case "Black" => Black
+        case "Red" => Red
+        case "Green" => Green
+        case "Yellow" => Yellow
+        case "Blue" => Blue
+        case "Magenta" => Magenta
+        case "Cyan" => Cyan
+        case "White" => White
+        case _ => new Ansi.Style(style)
+      }
     }
   }
 
@@ -29,12 +33,6 @@ trait Ansi {
   final val Magenta: Ansi.Style = Console.MAGENTA.toAnsiStyle
   final val Cyan: Ansi.Style = Console.CYAN.toAnsiStyle
   final val White: Ansi.Style = Console.WHITE.toAnsiStyle
-  final def Random: Ansi.Style =
-    Ansi.AllStylesOutOfTheBox {
-      util.Random.nextInt {
-        Ansi.AllStylesOutOfTheBox.size
-      }
-    }
 }
 
 object Ansi extends Ansi {
@@ -58,6 +56,13 @@ object Ansi extends Ansi {
   final def removedStyles(input: String): String = input.replaceAll(StylePrint.StyleOrReset, "")
 
   private final val Sample: String = "sample"
+
+  final def Random: Ansi.Style =
+    Ansi.AllStylesOutOfTheBox {
+      util.Random.nextInt {
+        Ansi.AllStylesOutOfTheBox.size
+      }
+    }
 
   val AllStylesOutOfTheBox: Vector[Style] =
     Vector(

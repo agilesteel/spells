@@ -1,6 +1,6 @@
 package spells.user
 
-class TraversableOpsTests extends UnitTestConfiguration {
+class TraversableOpsTests extends spells.UnitTestConfiguration {
   test("Empty traversables should be rendered the same way as toString") {
     Traversable.empty[Int].rendered should be(Traversable.empty[String].toString)
   }

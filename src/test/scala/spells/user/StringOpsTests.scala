@@ -1,6 +1,6 @@
 package spells.user
 
-class StringOpsTests extends UnitTestConfiguration {
+class StringOpsTests extends spells.UnitTestConfiguration {
   test("The withDecodedScalaSymbols method should delegate to scala.reflect.NameTransformer.decode") {
     val sample = "Encoded + Whatever"
     val encodedSample = scala.reflect.NameTransformer encode sample

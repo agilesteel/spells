@@ -1,6 +1,6 @@
 package compilation
 
-class CompilationTests extends spells.user.UnitTestConfiguration {
+class CompilationTests extends spells.UnitTestConfiguration {
   test("All these examples should compile") {
     "this should compile".green
     cleared("this should compile")(Green)

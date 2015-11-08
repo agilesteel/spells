@@ -3,10 +3,10 @@ package spells
 import java.util.Calendar
 import scala.concurrent.duration._
 
-trait Xray {
-  this: Ansi =>
+trait XrayModule {
+  this: Ansi with AnyOps with CalendarOps with DateOps with DurationOps with HumanRendering with StringOps with StylePrint with TraversableOps with SpellsConfig =>
 
-  final def xrayed[T](expression: => T, description: Xray.Description = Xray.Defaults.Description, increaseStackTraceDepthBy: Int = 0)(implicit manifest: Manifest[T], style: Ansi.Style = Reset, rendering: T => CustomRendering = CustomRendering.Defaults.Any): Xray.Report[T] = {
+  final def xrayed[T](expression: => T, description: XrayModule#Description = Xray.Defaults.Description, increaseStackTraceDepthBy: Int = 0)(implicit manifest: Manifest[T], style: Ansi.Style = Reset, rendering: T => CustomRendering = CustomRendering.Defaults.Any): XrayModule#XrayReport[T] = {
     val stackTraceElement = currentLineStackTraceElement(increaseStackTraceDepthBy - 1)
 
     val now = Calendar.getInstance
@@ -15,14 +15,14 @@ trait Xray {
     val value = expression
     val stop = System.nanoTime - start
 
-    new Xray.Report(value, stop.nanos, stackTraceElement, now, description.toString, Thread.currentThread, style, rendering)
+    new XrayReport(value, stop.nanos, stackTraceElement, now, description.toString, Thread.currentThread, style, rendering)
   }
 
   def currentLineStackTraceElement(implicit increaseStackTraceDepthBy: Int = 0): StackTraceElement =
     Thread.currentThread.getStackTrace apply increaseStackTraceDepthBy + 6
 
-  implicit class XrayFromSpells[T](expression: => T)(implicit manifest: Manifest[T], style: Ansi.Style = Reset, rendering: T => CustomRendering = CustomRendering.Defaults.Any, monitor: Xray.Report[T] => Unit = (report: Xray.Report[T]) => Console.println(report.rendered)) {
-    def xray(implicit description: Xray.Description = Xray.Defaults.Description): T = {
+  implicit class XrayFromSpells[T](expression: => T)(implicit manifest: Manifest[T], style: Ansi.Style = Reset, rendering: T => CustomRendering = CustomRendering.Defaults.Any, monitor: XrayModule#XrayReport[T] => Unit = (report: XrayModule#XrayReport[T]) => Console.println(report.rendered)) {
+    def xray(implicit description: XrayModule#Description = Xray.Defaults.Description): T = {
       val report = xrayed(expression, description, increaseStackTraceDepthBy = +1)(manifest, style, rendering)
 
       monitor(report)
@@ -30,7 +30,7 @@ trait Xray {
       report.value
     }
 
-    def xrayIf(conditionFunction: Xray.Report[T] => Boolean)(implicit description: Xray.Description = Xray.Defaults.Description): T = {
+    def xrayIf(conditionFunction: XrayModule#XrayReport[T] => Boolean)(implicit description: XrayModule#Description = Xray.Defaults.Description): T = {
       val report = xrayed(expression, description, increaseStackTraceDepthBy = +1)(manifest, style, rendering)
 
       if (conditionFunction(report))
@@ -40,29 +40,17 @@ trait Xray {
     }
   }
 
-}
-
-object Xray
-    extends Xray
-    with Ansi
-    with AnyOps
-    with CalendarOps
-    with DateOps
-    with DurationOps
-    with HumanRendering
-    with StringOps
-    with StylePrint
-    with TraversableOps
-    with SpellsConfig {
-  object Defaults {
-    final val Description: Xray.Description = new Xray.Description("X-Ray")
-  }
-
-  implicit class Description(val value: String) extends AnyVal {
+  implicit class Description(val value: String) {
     override final def toString: String = value
   }
 
-  final class Report[+T: Manifest](
+  object Xray {
+    object Defaults {
+      final val Description: XrayModule#Description = new Description("X-Ray")
+    }
+  }
+
+  final class XrayReport[+T: Manifest](
       final val value: T,
       final val duration: Duration,
       final val stackTraceElement: StackTraceElement,
@@ -96,7 +84,7 @@ object Xray
       }
 
       val table =
-        Report.customRenderedTableForXray(
+        XrayReport.customRenderedTableForXray(
           lines,
           styles = Map[String, Ansi.Style](
             "DateTime" -> SpellsConfig.xray.report.styles.DateTime,
@@ -130,7 +118,7 @@ object Xray
     }
   }
 
-  object Report {
+  object XrayReport {
     private[spells] final def customRenderedTableForXray(in: Int => Seq[(String, String)], styles: Map[String, Ansi.Style] = Map.empty withDefaultValue Reset, availableWidthInCharacters: Int): Seq[String] = {
       if (in(0).isEmpty) Seq.empty
       else {

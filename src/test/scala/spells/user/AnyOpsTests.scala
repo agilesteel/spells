@@ -1,6 +1,6 @@
 package spells.user
 
-class AnyOpsTests extends UnitTestConfiguration {
+class AnyOpsTests extends spells.UnitTestConfiguration {
   test("sample.decodedSimpleClassName should be(sample.getClass.getSimpleName.withDecodedScalaSymbols)") {
     forEvery(samples) { sample =>
       sample.decodedSimpleClassName should be(sample.getClass.getSimpleName.withDecodedScalaSymbols)

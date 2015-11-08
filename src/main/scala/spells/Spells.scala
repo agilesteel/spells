@@ -16,4 +16,4 @@ trait Spells
   with StylePrint
   with TraversableOps
   with Tuple2Ops
-  with Xray
+  with XrayModule

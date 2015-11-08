@@ -1,6 +1,6 @@
 package spells.user
 
-class CustomRenderingTests extends UnitTestConfiguration {
+class CustomRenderingTests extends spells.UnitTestConfiguration {
   test("It should not be possible to implicitly pass in availableWidthInCharacters of type Int for rendered") {
     implicit val availableWidthInCharacters: Int = 1337
 

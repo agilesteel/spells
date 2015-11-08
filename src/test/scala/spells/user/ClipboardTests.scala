@@ -1,6 +1,6 @@
 package spells.user
 
-class ClipboardTests extends UnitTestConfiguration {
+class ClipboardTests extends spells.UnitTestConfiguration {
   test("Clipboard CRUD - (Clipboard.writeString and Clipboard.readString") {
     isolated {
       Clipboard.writeString("test")

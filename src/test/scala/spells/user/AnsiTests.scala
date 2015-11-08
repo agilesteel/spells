@@ -1,6 +1,6 @@
 package spells.user
 
-class AnsiTests extends UnitTestConfiguration {
+class AnsiTests extends spells.UnitTestConfiguration {
   test("""73.green should be(Green.value + "73" + Reset.value)""") {
     73.green should be(Green.value + "73" + Reset.value)
   }
@@ -9,23 +9,31 @@ class AnsiTests extends UnitTestConfiguration {
     "style".toAnsiStyle should be(new spells.Ansi.Style("style"))
   }
 
+  test("""An IllegalArgumentException should be thrownBy (null: String).toAnsiStyle""") {
+    an[IllegalArgumentException] should be thrownBy {
+      (null: String).toAnsiStyle
+    }
+  }
+
   test(""""green" in customStyle should be(customStyle.value + "green" + Reset.value)""") {
     val customStyle = "style".toAnsiStyle
     "green" in customStyle should be(customStyle.value + "green" + Reset.value)
   }
 
   test("""The toAnsiStyle method should handle human capitalised readable colors""") {
-    "Untouched".toAnsiStyle should be(Reset)
-    "Reset".toAnsiStyle should be(Reset)
-    "Black".toAnsiStyle should be(Black)
-    "Red".toAnsiStyle should be(Red)
-    "Green".toAnsiStyle should be(Green)
-    "Yellow".toAnsiStyle should be(Yellow)
-    "Blue".toAnsiStyle should be(Blue)
-    "Magenta".toAnsiStyle should be(Magenta)
-    "Cyan".toAnsiStyle should be(Cyan)
-    "White".toAnsiStyle should be(White)
+    "Untouched".toAnsiStyle.value should be(Reset.value)
+    "Reset".toAnsiStyle.value should be(Reset.value)
+    "Black".toAnsiStyle.value should be(Black.value)
+    "Red".toAnsiStyle.value should be(Red.value)
+    "Green".toAnsiStyle.value should be(Green.value)
+    "Yellow".toAnsiStyle.value should be(Yellow.value)
+    "Blue".toAnsiStyle.value should be(Blue.value)
+    "Magenta".toAnsiStyle.value should be(Magenta.value)
+    "Cyan".toAnsiStyle.value should be(Cyan.value)
+    "White".toAnsiStyle.value should be(White.value)
+    spells.Ansi.AllStylesOutOfTheBox should contain(spells.Ansi.Random)
     spells.Ansi.AllStylesOutOfTheBox should contain("Random".toAnsiStyle)
+    Green.value.toAnsiStyle.value should be(Green.value)
   }
 
   test(""""green".green should be(Green.value + "green" + Reset.value)""") {

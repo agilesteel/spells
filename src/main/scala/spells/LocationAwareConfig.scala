@@ -4,7 +4,11 @@ import com.typesafe.config.Config
 import com.typesafe.config.ConfigFactory._
 
 private[spells] trait LocationAwareConfig extends Ansi {
-  private[spells] final implicit lazy val config: Config =
+  spellsConfig.checkValid(defaultReference(), "spells")
+
+  implicit final lazy val spellsConfig: Config = loadSpellsConfig
+
+  def loadSpellsConfig: Config =
     if (userConfig.exists)
       load(parseFile(userConfig)).withFallback(load)
     else load
@@ -12,25 +16,23 @@ private[spells] trait LocationAwareConfig extends Ansi {
   private final def userConfig = new java.io.File(userConfigLocation)
   private final def userConfigLocation = s"""${System.getProperty("user.home")}/.spells.conf"""
 
-  config.checkValid(defaultReference(), "spells")
-
   final implicit def locationAwarePropertyToBoolean(property: LocationAwareProperty[Boolean]): Boolean =
-    config getBoolean property.location
+    spellsConfig getBoolean property.location
 
   final implicit def locationAwarePropertyToInt(property: LocationAwareProperty[Int]): Int =
-    config getInt property.location
+    spellsConfig getInt property.location
 
   final implicit def locationAwarePropertyToAnsiStyle(property: LocationAwareProperty[Ansi.Style]): Ansi.Style =
-    config getString property.location toAnsiStyle
+    spellsConfig getString property.location toAnsiStyle
 
   // Commented out, because it's not used yet... for better coverage ;)
 
   // final implicit def locationAwarePropertyToDouble(property: LocationAwareProperty[Double]): Double =
-  //   config getDouble property.location
+  //   spellsConfig getDouble property.location
 
   // final implicit def locationAwarePropertyToLong(property: LocationAwareProperty[Long]): Long =
-  //   config getLong property.location
+  //   spellsConfig getLong property.location
 
   // final implicit def locationAwarePropertyToString(property: LocationAwareProperty[String]): String =
-  //   config getString property.location
+  //   spellsConfig getString property.location
 }

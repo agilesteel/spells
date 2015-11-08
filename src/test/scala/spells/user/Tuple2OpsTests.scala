@@ -1,6 +1,6 @@
 package spells.user
 
-class Tuple2OpsTests extends UnitTestConfiguration {
+class Tuple2OpsTests extends spells.UnitTestConfiguration {
   test("Tuple2 should always be rendered with an arrow") {
     (1 -> "II").rendered should be("1 -> II")
   }

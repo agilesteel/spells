@@ -1,6 +1,6 @@
 package spells.user
 
-class StylePrintTests extends UnitTestConfiguration {
+class StylePrintTests extends spells.UnitTestConfiguration {
   test("""styled("white") should be("white")""") {
     styled("white") should be("white")
   }
