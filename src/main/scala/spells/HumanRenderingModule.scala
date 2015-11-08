@@ -1,6 +1,6 @@
 package spells
 
-trait HumanRendering {
+trait HumanRenderingModule {
   implicit final def byteToRendering(value: Byte): Rendering = Rendering(value)
   implicit final def shortToRendering(value: Short): Rendering = Rendering(value)
   implicit final def intToRendering(value: Int): Rendering = Rendering(value)

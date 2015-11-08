@@ -9,7 +9,7 @@ trait Spells
   with DateOpsModule
   with DurationOpsModule
   with ErrorPrintModule
-  with HumanRendering
+  with HumanRenderingModule
   with Misc
   with SpellsConfig
   with StringOps
