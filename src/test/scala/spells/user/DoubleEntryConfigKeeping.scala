@@ -15,13 +15,13 @@ class DoubleEntryConfigKeeping extends spells.UnitTestConfiguration {
     (SpellsConfig.xray.report.display.Class: Boolean) should be(true)
     (SpellsConfig.xray.report.display.Type: Boolean) should be(true)
 
-    (SpellsConfig.xray.report.styles.Description: spells.Ansi.Style) should be(Green)
-    (SpellsConfig.xray.report.styles.DateTime: spells.Ansi.Style) should be(Reset)
-    (SpellsConfig.xray.report.styles.Duration: spells.Ansi.Style) should be(Reset)
-    (SpellsConfig.xray.report.styles.Location: spells.Ansi.Style) should be(Reset)
-    (SpellsConfig.xray.report.styles.Thread: spells.Ansi.Style) should be(Reset)
-    (SpellsConfig.xray.report.styles.Class: spells.Ansi.Style) should be(Reset)
-    (SpellsConfig.xray.report.styles.Type: spells.Ansi.Style) should be(Reset)
-    (SpellsConfig.xray.report.styles.Value: spells.Ansi.Style) should be(Magenta)
+    (SpellsConfig.xray.report.styles.Description: spells.AnsiModule.Style) should be(Green)
+    (SpellsConfig.xray.report.styles.DateTime: spells.AnsiModule.Style) should be(Reset)
+    (SpellsConfig.xray.report.styles.Duration: spells.AnsiModule.Style) should be(Reset)
+    (SpellsConfig.xray.report.styles.Location: spells.AnsiModule.Style) should be(Reset)
+    (SpellsConfig.xray.report.styles.Thread: spells.AnsiModule.Style) should be(Reset)
+    (SpellsConfig.xray.report.styles.Class: spells.AnsiModule.Style) should be(Reset)
+    (SpellsConfig.xray.report.styles.Type: spells.AnsiModule.Style) should be(Reset)
+    (SpellsConfig.xray.report.styles.Value: spells.AnsiModule.Style) should be(Magenta)
   }
 }

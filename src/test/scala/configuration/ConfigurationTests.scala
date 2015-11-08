@@ -23,7 +23,7 @@ class ConfigurationTests extends spells.UnitTestConfiguration {
 
   test("Xray should use styles from config") {
     new spells.Spells {
-      lazy val ChosenStyle = spells.Ansi.Random
+      lazy val ChosenStyle = spells.AnsiModule.Random
 
       override def loadSpellsConfig: Config =
         ConfigFactory parseString {
@@ -52,7 +52,7 @@ class ConfigurationTests extends spells.UnitTestConfiguration {
           stackTraceElement: StackTraceElement = stackTraceElement,
           timestamp: Calendar = timestamp,
           description: String = description,
-          style: spells.Ansi.Style = Reset,
+          style: spells.AnsiModule.Style = Reset,
           rendering: T => spells.CustomRendering = spells.CustomRendering.Defaults.Any): XrayReport[T] =
           new XrayReport[T](
             value = value,

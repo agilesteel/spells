@@ -1,14 +1,14 @@
 package spells
 
-trait Ansi {
-  implicit final def anyToAnsiString(input: Any): Ansi.AnsiString = new Ansi.AnsiString(input)
+trait AnsiModule {
+  implicit final def anyToAnsiString(input: Any): AnsiModule.AnsiString = new AnsiModule.AnsiString(input)
 
   implicit final class AnsiStyleBuilder(style: String) {
-    def toAnsiStyle: Ansi.Style = {
+    def toAnsiStyle: AnsiModule.Style = {
       require(style != null)
 
       style match {
-        case "Random" => Ansi.Random
+        case "Random" => AnsiModule.Random
         case "Untouched" => Reset
         case "Reset" => Reset
         case "Black" => Black
@@ -19,29 +19,29 @@ trait Ansi {
         case "Magenta" => Magenta
         case "Cyan" => Cyan
         case "White" => White
-        case _ => new Ansi.Style(style)
+        case _ => new AnsiModule.Style(style)
       }
     }
   }
 
-  final val Reset: Ansi.Style = Console.RESET.toAnsiStyle
-  final val Black: Ansi.Style = Console.BLACK.toAnsiStyle
-  final val Red: Ansi.Style = Console.RED.toAnsiStyle
-  final val Green: Ansi.Style = Console.GREEN.toAnsiStyle
-  final val Yellow: Ansi.Style = Console.YELLOW.toAnsiStyle
-  final val Blue: Ansi.Style = Console.BLUE.toAnsiStyle
-  final val Magenta: Ansi.Style = Console.MAGENTA.toAnsiStyle
-  final val Cyan: Ansi.Style = Console.CYAN.toAnsiStyle
-  final val White: Ansi.Style = Console.WHITE.toAnsiStyle
+  final val Reset: AnsiModule.Style = Console.RESET.toAnsiStyle
+  final val Black: AnsiModule.Style = Console.BLACK.toAnsiStyle
+  final val Red: AnsiModule.Style = Console.RED.toAnsiStyle
+  final val Green: AnsiModule.Style = Console.GREEN.toAnsiStyle
+  final val Yellow: AnsiModule.Style = Console.YELLOW.toAnsiStyle
+  final val Blue: AnsiModule.Style = Console.BLUE.toAnsiStyle
+  final val Magenta: AnsiModule.Style = Console.MAGENTA.toAnsiStyle
+  final val Cyan: AnsiModule.Style = Console.CYAN.toAnsiStyle
+  final val White: AnsiModule.Style = Console.WHITE.toAnsiStyle
 }
 
-object Ansi extends Ansi {
+object AnsiModule extends AnsiModule {
   class Style(val value: String) extends AnyVal {
-    override final def toString: String = Ansi.Sample in this
+    override final def toString: String = AnsiModule.Sample in this
   }
 
   final class AnsiString(val input: Any) extends AnyVal {
-    final def in(style: Ansi.Style): String = style.value + removedStyles(String valueOf input) + Reset.value
+    final def in(style: AnsiModule.Style): String = style.value + removedStyles(String valueOf input) + Reset.value
 
     final def black: String = this in Black
     final def red: String = this in Red
@@ -57,10 +57,10 @@ object Ansi extends Ansi {
 
   private final val Sample: String = "sample"
 
-  final def Random: Ansi.Style =
-    Ansi.AllStylesOutOfTheBox {
+  final def Random: AnsiModule.Style =
+    AnsiModule.AllStylesOutOfTheBox {
       util.Random.nextInt {
-        Ansi.AllStylesOutOfTheBox.size
+        AnsiModule.AllStylesOutOfTheBox.size
       }
     }
 

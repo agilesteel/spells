@@ -1,7 +1,7 @@
 package spells
 
 trait ErrorPrint {
-  this: Ansi with StylePrint =>
+  this: AnsiModule with StylePrint =>
 
   final def printerr(error: Any): Unit = {
     Console.err println erred(error)

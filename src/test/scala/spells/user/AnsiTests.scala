@@ -5,8 +5,8 @@ class AnsiTests extends spells.UnitTestConfiguration {
     73.green should be(Green.value + "73" + Reset.value)
   }
 
-  test(""""style".toAnsiStyle should be(spells.Ansi.Style("style"))""") {
-    "style".toAnsiStyle should be(new spells.Ansi.Style("style"))
+  test(""""style".toAnsiStyle should be(spells.AnsiModule.Style("style"))""") {
+    "style".toAnsiStyle should be(new spells.AnsiModule.Style("style"))
   }
 
   test("""An IllegalArgumentException should be thrownBy (null: String).toAnsiStyle""") {
@@ -31,8 +31,8 @@ class AnsiTests extends spells.UnitTestConfiguration {
     "Magenta".toAnsiStyle.value should be(Magenta.value)
     "Cyan".toAnsiStyle.value should be(Cyan.value)
     "White".toAnsiStyle.value should be(White.value)
-    spells.Ansi.AllStylesOutOfTheBox should contain(spells.Ansi.Random)
-    spells.Ansi.AllStylesOutOfTheBox should contain("Random".toAnsiStyle)
+    spells.AnsiModule.AllStylesOutOfTheBox should contain(spells.AnsiModule.Random)
+    spells.AnsiModule.AllStylesOutOfTheBox should contain("Random".toAnsiStyle)
     Green.value.toAnsiStyle.value should be(Green.value)
   }
 

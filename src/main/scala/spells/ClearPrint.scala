@@ -1,20 +1,20 @@
 package spells
 
 trait ClearPrint {
-  this: Ansi with StylePrint =>
+  this: AnsiModule with StylePrint =>
 
-  final def clearPrintln(input: Any = "")(implicit style: Ansi.Style = Reset): Unit = {
+  final def clearPrintln(input: Any = "")(implicit style: AnsiModule.Style = Reset): Unit = {
     Console println cleared(input)(style)
   }
 
-  final def clearPrint(input: Any = "")(implicit style: Ansi.Style = Reset): Unit = {
+  final def clearPrint(input: Any = "")(implicit style: AnsiModule.Style = Reset): Unit = {
     Console print cleared(input)(style)
   }
 
-  final def cleared(input: Any = "")(implicit style: Ansi.Style = Reset): String =
+  final def cleared(input: Any = "")(implicit style: AnsiModule.Style = Reset): String =
     styled(ClearPrint.Clear.value + s"\r$input" + Reset.value)(style)
 
   object ClearPrint {
-    final val Clear: Ansi.Style = "\u001b[2K".toAnsiStyle
+    final val Clear: AnsiModule.Style = "\u001b[2K".toAnsiStyle
   }
 }

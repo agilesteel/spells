@@ -3,7 +3,7 @@ package spells
 // import CustomRendering._
 
 trait TraversableOps {
-  this: Ansi with AnyOps with CalendarOps with DurationOps with HumanRendering with StringOps with StylePrint =>
+  this: AnsiModule with AnyOps with CalendarOps with DurationOps with HumanRendering with StringOps with StylePrint =>
 
   final implicit def TraversableOpsFromSpells[T](value: Traversable[T])(implicit manifest: Manifest[T], rendering: T => CustomRendering = CustomRendering.Defaults.Any): CustomRendering = new CustomRendering {
     def rendered(implicit availableWidthInCharacters: CustomRendering.AvailableWidthInCharacters = CustomRendering.Defaults.AvailableWidthInCharacters): String = {
@@ -104,7 +104,7 @@ trait TraversableOps {
     if (in(0).isEmpty) Seq.empty
     else {
       val sizeOfTheBiggestKey = in(0) map {
-        case (key, _) => Ansi.removedStyles(key).size
+        case (key, _) => AnsiModule.removedStyles(key).size
       } max
 
       val separator = " | "

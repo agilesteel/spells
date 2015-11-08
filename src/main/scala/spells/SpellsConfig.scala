@@ -18,14 +18,14 @@ trait SpellsConfig extends LocationAwareConfig {
         }
 
         object styles {
-          object Description extends LocationAwareProperty[Ansi.Style]
-          object DateTime extends LocationAwareProperty[Ansi.Style]
-          object Duration extends LocationAwareProperty[Ansi.Style]
-          object Location extends LocationAwareProperty[Ansi.Style]
-          object Thread extends LocationAwareProperty[Ansi.Style]
-          object Class extends LocationAwareProperty[Ansi.Style]
-          object Type extends LocationAwareProperty[Ansi.Style]
-          object Value extends LocationAwareProperty[Ansi.Style]
+          object Description extends LocationAwareProperty[AnsiModule.Style]
+          object DateTime extends LocationAwareProperty[AnsiModule.Style]
+          object Duration extends LocationAwareProperty[AnsiModule.Style]
+          object Location extends LocationAwareProperty[AnsiModule.Style]
+          object Thread extends LocationAwareProperty[AnsiModule.Style]
+          object Class extends LocationAwareProperty[AnsiModule.Style]
+          object Type extends LocationAwareProperty[AnsiModule.Style]
+          object Value extends LocationAwareProperty[AnsiModule.Style]
         }
       }
     }

@@ -139,7 +139,7 @@ object XrayReportRenderingTests {
     stackTraceElement: StackTraceElement = stackTraceElement,
     timestamp: Calendar = timestamp,
     description: String = description,
-    style: spells.Ansi.Style = Reset,
+    style: spells.AnsiModule.Style = Reset,
     rendering: T => spells.CustomRendering = spells.CustomRendering.Defaults.Any): XrayReport[T] =
     new XrayReport[T](
       value = value,
