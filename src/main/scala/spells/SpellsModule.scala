@@ -13,7 +13,7 @@ trait SpellsModule
   with MiscModule
   with SpellsConfig
   with StringOpsModule
-  with StylePrint
+  with StylePrintModule
   with TraversableOps
   with Tuple2Ops
   with XrayModule

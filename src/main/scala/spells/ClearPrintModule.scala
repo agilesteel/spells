@@ -1,7 +1,7 @@
 package spells
 
 trait ClearPrintModule {
-  this: AnsiModule with StylePrint =>
+  this: AnsiModule with StylePrintModule =>
 
   final def clearPrintln(input: Any = "")(implicit style: AnsiModule.Style = Reset): Unit = {
     Console println cleared(input)(style)

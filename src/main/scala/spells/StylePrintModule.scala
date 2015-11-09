@@ -1,6 +1,6 @@
 package spells
 
-trait StylePrint {
+trait StylePrintModule {
   this: AnsiModule =>
 
   import StylePrint._
@@ -26,7 +26,7 @@ trait StylePrint {
   }
 }
 
-object StylePrint extends AnsiModule with StylePrint {
+object StylePrint extends AnsiModule with StylePrintModule {
   private[spells] final val Multiline: String = """?s"""
   private[spells] final val Anything: String = """.*?"""
 
