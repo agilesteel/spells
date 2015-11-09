@@ -28,21 +28,21 @@ class ConfigurationTests extends spells.UnitTestConfiguration {
       override def loadSpellsConfig: Config =
         ConfigFactory parseString {
           s"""|spells {
-             |  xray {
-             |    report {
-             |      styles {
-             |        Description = \"\"\"${ChosenStyle.value}\"\"\"
-             |        DateTime = \"\"\"${ChosenStyle.value}\"\"\"
-             |        Duration = \"\"\"${ChosenStyle.value}\"\"\"
-             |        Location = \"\"\"${ChosenStyle.value}\"\"\"
-             |        Thread = \"\"\"${ChosenStyle.value}\"\"\"
-             |        Class = \"\"\"${ChosenStyle.value}\"\"\"
-             |        Type = \"\"\"${ChosenStyle.value}\"\"\"
-             |        Value = \"\"\"${ChosenStyle.value}\"\"\"
-             |      }
-             |    }
-             |  }
-             |}""".stripMargin
+              |  xray {
+              |    report {
+              |      styles {
+              |        Description = \"\"\"${ChosenStyle.value}\"\"\"
+              |        DateTime = \"\"\"${ChosenStyle.value}\"\"\"
+              |        Duration = \"\"\"${ChosenStyle.value}\"\"\"
+              |        Location = \"\"\"${ChosenStyle.value}\"\"\"
+              |        Thread = \"\"\"${ChosenStyle.value}\"\"\"
+              |        Class = \"\"\"${ChosenStyle.value}\"\"\"
+              |        Type = \"\"\"${ChosenStyle.value}\"\"\"
+              |        Value = \"\"\"${ChosenStyle.value}\"\"\"
+              |      }
+              |    }
+              |  }
+              |}""".stripMargin
         } withFallback super.loadSpellsConfig
 
       object StolenFromXrayReportRenderingTests {
