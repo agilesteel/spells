@@ -12,7 +12,7 @@ trait SpellsModule
   with HumanRenderingModule
   with MiscModule
   with SpellsConfig
-  with StringOps
+  with StringOpsModule
   with StylePrint
   with TraversableOps
   with Tuple2Ops

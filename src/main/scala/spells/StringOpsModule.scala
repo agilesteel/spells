@@ -1,6 +1,6 @@
 package spells
 
-trait StringOps {
+trait StringOpsModule {
   implicit class StringOpsFromSpells(input: String) {
     final def withDecodedScalaSymbols: String = scala.reflect.NameTransformer decode input
 

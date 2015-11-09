@@ -1,7 +1,7 @@
 package spells
 
 trait AnyOpsModule {
-  this: StringOps =>
+  this: StringOpsModule =>
 
   implicit class AnyOpsFromSpells(input: Any) {
     final def decodedSimpleClassName: String = orNull(input.getClass.getSimpleName.withDecodedScalaSymbols)

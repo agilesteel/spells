@@ -1,7 +1,7 @@
 package spells
 
 trait TraversableOps {
-  this: AnsiModule with AnyOpsModule with CalendarOpsModule with DurationOpsModule with HumanRenderingModule with StringOps with StylePrint =>
+  this: AnsiModule with AnyOpsModule with CalendarOpsModule with DurationOpsModule with HumanRenderingModule with StringOpsModule with StylePrint =>
 
   final implicit def TraversableOpsFromSpells[T](value: Traversable[T])(implicit manifest: Manifest[T], rendering: T => CustomRendering = CustomRendering.Defaults.Any): CustomRendering = new CustomRendering {
     def rendered(implicit availableWidthInCharacters: CustomRendering.AvailableWidthInCharacters = CustomRendering.Defaults.AvailableWidthInCharacters): String = {
