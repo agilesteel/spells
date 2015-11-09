@@ -15,5 +15,5 @@ trait SpellsModule
   with StringOpsModule
   with StylePrintModule
   with TraversableOpsModule
-  with Tuple2Ops
+  with Tuple2OpsModule
   with XrayModule

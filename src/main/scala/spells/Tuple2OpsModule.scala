@@ -1,6 +1,6 @@
 package spells
 
-trait Tuple2Ops {
+trait Tuple2OpsModule {
   final implicit def Tuple2OpsFromSpells[Key, Value](tuple: (Key, Value))(implicit keyRendering: Key => CustomRendering = CustomRendering.Defaults.Any, valueRendering: Value => CustomRendering = CustomRendering.Defaults.Any): CustomRendering = new CustomRendering {
     val (key, value) = tuple
 
