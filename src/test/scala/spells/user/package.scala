@@ -1,3 +1,3 @@
 package spells
 
-package object user extends spells.Spells
+package object user extends spells.SpellsModule

@@ -1,6 +1,6 @@
 package spells
 
-trait Spells
+trait SpellsModule
   extends AnsiModule
   with AnyOpsModule
   with CalendarOpsModule

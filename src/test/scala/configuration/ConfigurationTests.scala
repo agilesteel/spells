@@ -7,7 +7,7 @@ import com.typesafe.config.{ Config, ConfigFactory }
 
 class ConfigurationTests extends spells.UnitTestConfiguration {
   test("This is how config injection should work") {
-    new spells.Spells {
+    new spells.SpellsModule {
       override def loadSpellsConfig: Config =
         ConfigFactory parseString {
           """|spells {
@@ -22,7 +22,7 @@ class ConfigurationTests extends spells.UnitTestConfiguration {
   }
 
   test("Xray should use styles from config") {
-    new spells.Spells {
+    new spells.SpellsModule {
       lazy val ChosenStyle = spells.AnsiModule.Random
 
       override def loadSpellsConfig: Config =

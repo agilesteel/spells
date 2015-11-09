@@ -1,1 +1,1 @@
-package object examples extends spells.Spells
+package object examples extends spells.SpellsModule

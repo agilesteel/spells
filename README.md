@@ -67,7 +67,7 @@ If you clone this repository, SBT will guide you through the man pages!
 ```scala
 package company.project
 
-package object util extends spells.Spells
+package object util extends spells.SpellsModule
 
 import company.project.util._
 

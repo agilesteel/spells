@@ -36,7 +36,7 @@ object SpellsBuild extends Build {
 
   lazy val spellsSettings = Seq(
     incOptions := incOptions.value.withNameHashing(true),
-    initialCommands in console := "object user extends spells.Spells;import user._;import scala.concurrent.duration._",
+    initialCommands in console := "object user extends spells.SpellsModule;import user._;import scala.concurrent.duration._",
     libraryDependencies ++= Dependencies.all,
     onLoad in Global := {
       val checkForDepdendencyUpdates = (state: State) => "dependencyUpdates" :: state

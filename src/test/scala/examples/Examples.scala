@@ -8,7 +8,7 @@ case object `1_GettingStarted` extends App {
         |-----------------------------------------
         |package company.project
         |
-        |package object util ${"extends spells.Spells".magenta}
+        |package object util ${"extends spells.SpellsModule".magenta}
         |-----------------------------------------
         |""".stripMargin
   }
