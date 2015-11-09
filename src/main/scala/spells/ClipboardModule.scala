@@ -4,7 +4,7 @@ import scala.util.control.Exception._
 import scala.util.Try
 
 trait ClipboardModule {
-  this: Misc =>
+  this: MiscModule =>
 
   trait Clipboard {
     def writeString(content: String): Unit

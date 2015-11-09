@@ -10,7 +10,7 @@ trait Spells
   with DurationOpsModule
   with ErrorPrintModule
   with HumanRenderingModule
-  with Misc
+  with MiscModule
   with SpellsConfig
   with StringOps
   with StylePrint

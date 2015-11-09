@@ -1,5 +1,5 @@
 package spells
 
-trait Misc {
+trait MiscModule {
   final def noop[T]: T => Unit = _ => ()
 }
