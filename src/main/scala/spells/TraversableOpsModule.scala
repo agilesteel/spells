@@ -1,6 +1,6 @@
 package spells
 
-trait TraversableOps {
+trait TraversableOpsModule {
   this: AnsiModule with AnyOpsModule with CalendarOpsModule with DurationOpsModule with HumanRenderingModule with StringOpsModule with StylePrintModule =>
 
   final implicit def TraversableOpsFromSpells[T](value: Traversable[T])(implicit manifest: Manifest[T], rendering: T => CustomRendering = CustomRendering.Defaults.Any): CustomRendering = new CustomRendering {
