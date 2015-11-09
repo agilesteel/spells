@@ -4,7 +4,7 @@ trait CustomRendering {
   implicit def rendered(implicit availableWidthInCharacters: CustomRendering.AvailableWidthInCharacters = CustomRendering.Defaults.AvailableWidthInCharacters): String
 }
 
-object CustomRendering extends SpellsConfig {
+object CustomRendering extends SpellsConfigModule with AnsiModule {
   object Defaults {
     object Any extends (Any => CustomRendering) {
       final def apply(any: Any): CustomRendering = new CustomRendering {

@@ -11,7 +11,7 @@ trait SpellsModule
   with ErrorPrintModule
   with HumanRenderingModule
   with MiscModule
-  with SpellsConfig
+  with SpellsConfigModule
   with StringOpsModule
   with StylePrintModule
   with TraversableOpsModule

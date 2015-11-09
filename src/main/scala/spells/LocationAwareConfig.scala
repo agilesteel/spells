@@ -3,7 +3,9 @@ package spells
 import com.typesafe.config.Config
 import com.typesafe.config.ConfigFactory._
 
-private[spells] trait LocationAwareConfig extends AnsiModule {
+private[spells] trait LocationAwareConfig {
+  this: AnsiModule =>
+
   spellsConfig.checkValid(defaultReference(), "spells")
 
   implicit final lazy val spellsConfig: Config = loadSpellsConfig
