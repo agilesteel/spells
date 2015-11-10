@@ -5,22 +5,22 @@ trait StylePrintModule {
 
   import StylePrint._
 
-  final def println(input: Any = "")(implicit style: AnsiModule.Style = Reset): Unit = {
+  final def println(input: Any = "")(implicit style: AnsiModule#AnsiStyle = Reset): Unit = {
     Console println styled(input)(style)
   }
 
-  final def print(input: Any = "")(implicit style: AnsiModule.Style = Reset): Unit = {
+  final def print(input: Any = "")(implicit style: AnsiModule#AnsiStyle = Reset): Unit = {
     Console print styled(input)(style)
   }
 
-  final def styled(input: Any)(implicit style: AnsiModule.Style = Reset): String = {
+  final def styled(input: Any)(implicit style: AnsiModule#AnsiStyle = Reset): String = {
     val in = String valueOf input
 
     if (style == Reset) in
     else restyle(in, style)
   }
 
-  private final def restyle(input: String, style: AnsiModule.Style): String = input match {
+  private final def restyle(input: String, style: AnsiModule#AnsiStyle): String = input match {
     case AnsiPattern(before, alreadyStyled, after) => restyle(before, style) + alreadyStyled + restyle(after, style)
     case _ => if (input.isEmpty) "" else style.value + input + Reset.value
   }

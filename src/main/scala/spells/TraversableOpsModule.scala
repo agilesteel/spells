@@ -102,7 +102,7 @@ trait TraversableOpsModule {
     if (in(0).isEmpty) Seq.empty
     else {
       val sizeOfTheBiggestKey = in(0) map {
-        case (key, _) => AnsiModule.removedStyles(key).size
+        case (key, _) => Ansi.removedStyles(key).size
       } max
 
       val separator = " | "

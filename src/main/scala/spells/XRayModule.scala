@@ -6,7 +6,7 @@ import scala.concurrent.duration._
 trait XrayModule {
   this: AnsiModule with AnyOpsModule with CalendarOpsModule with DateOpsModule with DurationOpsModule with HumanRenderingModule with StringOpsModule with StylePrintModule with TraversableOpsModule with SpellsConfigModule =>
 
-  final def xrayed[T](expression: => T, description: XrayModule#Description = Xray.Defaults.Description, increaseStackTraceDepthBy: Int = 0)(implicit manifest: Manifest[T], style: AnsiModule.Style = Reset, rendering: T => CustomRendering = CustomRendering.Defaults.Any): XrayModule#XrayReport[T] = {
+  final def xrayed[T](expression: => T, description: XrayModule#Description = Xray.Defaults.Description, increaseStackTraceDepthBy: Int = 0)(implicit manifest: Manifest[T], style: AnsiModule#AnsiStyle = Reset, rendering: T => CustomRendering = CustomRendering.Defaults.Any): XrayModule#XrayReport[T] = {
     val stackTraceElement = currentLineStackTraceElement(increaseStackTraceDepthBy - 1)
 
     val now = Calendar.getInstance
@@ -21,7 +21,7 @@ trait XrayModule {
   def currentLineStackTraceElement(implicit increaseStackTraceDepthBy: Int = 0): StackTraceElement =
     Thread.currentThread.getStackTrace apply increaseStackTraceDepthBy + 6
 
-  implicit class XrayFromSpells[T](expression: => T)(implicit manifest: Manifest[T], style: AnsiModule.Style = Reset, rendering: T => CustomRendering = CustomRendering.Defaults.Any, monitor: XrayModule#XrayReport[T] => Unit = (report: XrayModule#XrayReport[T]) => Console.println(report.rendered)) {
+  implicit class XrayFromSpells[T](expression: => T)(implicit manifest: Manifest[T], style: AnsiModule#AnsiStyle = Reset, rendering: T => CustomRendering = CustomRendering.Defaults.Any, monitor: XrayModule#XrayReport[T] => Unit = (report: XrayModule#XrayReport[T]) => Console.println(report.rendered)) {
     def xray(implicit description: XrayModule#Description = Xray.Defaults.Description): T = {
       val report = xrayed(expression, description, increaseStackTraceDepthBy = +1)(manifest, style, rendering)
 
@@ -57,7 +57,7 @@ trait XrayModule {
       final val timestamp: Calendar,
       final val description: String,
       final val thread: Thread,
-      final val style: AnsiModule.Style = Reset,
+      final val style: AnsiModule#AnsiStyle = Reset,
       rendering: T => CustomRendering = CustomRendering.Defaults.Any) extends CustomRendering {
     override final def rendered(implicit availableWidthInCharacters: CustomRendering.AvailableWidthInCharacters = CustomRendering.Defaults.AvailableWidthInCharacters): String = {
       def lines(availableWidthInCharacters: Int): Seq[(String, String)] = {
@@ -86,7 +86,7 @@ trait XrayModule {
       val table =
         XrayReport.customRenderedTableForXray(
           lines,
-          styles = Map[String, AnsiModule.Style](
+          styles = Map[String, AnsiModule#AnsiStyle](
             "DateTime" -> SpellsConfig.xray.report.styles.DateTime,
             "Duration" -> SpellsConfig.xray.report.styles.Duration,
             "Location" -> SpellsConfig.xray.report.styles.Location,
@@ -99,14 +99,14 @@ trait XrayModule {
         )
 
       val numberOfCharsInTheLongestLine =
-        table.map(AnsiModule.removedStyles).flatMap(_ split "\n").maxBy(_.size).size
+        table.map(Ansi.removedStyles).flatMap(_ split "\n").maxBy(_.size).size
 
       lazy val hyphens = "-" * (numberOfCharsInTheLongestLine min availableWidthInCharacters)
 
       val centeredHeader = {
-        val headerStyleFromConfig: AnsiModule.Style = SpellsConfig.xray.report.styles.Description
-        val header = if (AnsiModule.removedStyles(description).isEmpty) styled("X-Ray")(headerStyleFromConfig) else styled(description)(headerStyleFromConfig)
-        val emptySpace = hyphens.size - AnsiModule.removedStyles(header).size
+        val headerStyleFromConfig: AnsiModule#AnsiStyle = SpellsConfig.xray.report.styles.Description
+        val header = if (Ansi.removedStyles(description).isEmpty) styled("X-Ray")(headerStyleFromConfig) else styled(description)(headerStyleFromConfig)
+        val emptySpace = hyphens.size - Ansi.removedStyles(header).size
         val leftPadding = " " * (emptySpace / 2)
 
         leftPadding + header
@@ -119,11 +119,11 @@ trait XrayModule {
   }
 
   object XrayReport {
-    private[spells] final def customRenderedTableForXray(in: Int => Seq[(String, String)], styles: Map[String, AnsiModule.Style] = Map.empty withDefaultValue Reset, availableWidthInCharacters: Int): Seq[String] = {
+    private[spells] final def customRenderedTableForXray(in: Int => Seq[(String, String)], styles: Map[String, AnsiModule#AnsiStyle] = Map.empty withDefaultValue Reset, availableWidthInCharacters: Int): Seq[String] = {
       if (in(0).isEmpty) Seq.empty
       else {
         val sizeOfTheBiggestKey = in(0) map {
-          case (key, _) => AnsiModule.removedStyles(key).size
+          case (key, _) => Ansi.removedStyles(key).size
         } max
 
         val separator = " | "
