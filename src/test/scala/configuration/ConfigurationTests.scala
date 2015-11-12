@@ -52,7 +52,7 @@ class ConfigurationTests extends spells.UnitTestConfiguration {
           stackTraceElement: StackTraceElement = stackTraceElement,
           timestamp: Calendar = timestamp,
           description: String = description,
-          rendering: T => spells.CustomRendering = spells.CustomRendering.Defaults.Any): XrayReport[T] =
+          rendering: T => spells.CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any): XrayReport[T] =
           new XrayReport[T](
             value = value,
             duration = duration,

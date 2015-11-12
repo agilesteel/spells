@@ -18,8 +18,8 @@ class CompilationTests extends spells.UnitTestConfiguration {
     new java.util.HashSet[Any].rendered
     new java.util.HashMap[Any, Any].rendered
 
-    object CR extends spells.CustomRendering {
-      override def rendered(implicit availableWidthInCharacters: spells.CustomRendering.AvailableWidthInCharacters = spells.CustomRendering.Defaults.AvailableWidthInCharacters): String = "adf"
+    object CR extends CustomRendering {
+      override def rendered(implicit availableWidthInCharacters: spells.CustomRenderingModule#AvailableWidthInCharacters = CustomRendering.Defaults.AvailableWidthInCharacters): String = ???
     }
   }
 }
