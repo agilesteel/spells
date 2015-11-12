@@ -1,10 +1,10 @@
 package spells
 
-import java.util.Calendar
-import scala.concurrent.duration._
-
 trait XrayModule {
   this: AnsiModule with AnyOpsModule with CalendarOpsModule with DateOpsModule with DurationOpsModule with HumanRenderingModule with StringOpsModule with StylePrintModule with TraversableOpsModule with SpellsConfigModule =>
+
+  import java.util.Calendar
+  import scala.concurrent.duration._
 
   final def xrayed[T](expression: => T, description: XrayModule#Description = Xray.Defaults.Description, increaseStackTraceDepthBy: Int = 0)(implicit manifest: Manifest[T], style: AnsiModule#AnsiStyle = Reset, rendering: T => CustomRendering = CustomRendering.Defaults.Any): XrayModule#XrayReport[T] = {
     val stackTraceElement = currentLineStackTraceElement(increaseStackTraceDepthBy - 1)

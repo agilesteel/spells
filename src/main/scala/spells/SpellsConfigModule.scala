@@ -1,6 +1,6 @@
 package spells
 
-trait SpellsConfigModule extends LocationAwareConfig {
+trait SpellsConfigModule extends LocationAwareConfigModule {
   this: AnsiModule =>
 
   object SpellsConfig {

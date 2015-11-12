@@ -1,10 +1,10 @@
 package spells
 
-import com.typesafe.config.Config
-import com.typesafe.config.ConfigFactory._
-
-private[spells] trait LocationAwareConfig {
+private[spells] trait LocationAwareConfigModule {
   this: AnsiModule =>
+
+  import com.typesafe.config.Config
+  import com.typesafe.config.ConfigFactory._
 
   spellsConfig.checkValid(defaultReference(), "spells")
 
@@ -24,7 +24,7 @@ private[spells] trait LocationAwareConfig {
   final implicit def locationAwarePropertyToInt(property: LocationAwareProperty[Int]): Int =
     spellsConfig getInt property.location
 
-  // Unsolved compiler bug: https://issues.scala-lang.org/browse/SI-5643
+  // Unresolved compiler bug: https://issues.scala-lang.org/browse/SI-5643
   final implicit def locationAwarePropertyToAnsiStyle(property: LocationAwareProperty[AnsiModule#AnsiStyle]): AnsiModule#AnsiStyle =
     spellsConfig getString property.location toAnsiStyle
 

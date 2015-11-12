@@ -1,13 +1,12 @@
 package spells
 
-import scala.util.control.Exception._
-import scala.util.Try
-
 trait ClipboardModule {
   this: MiscModule =>
 
+  import scala.util.Try
+
   trait Clipboard {
-    def writeString(content: String): Unit
+    def writeString(content: String): Try[Unit]
     def readString: Try[String]
   }
 
@@ -34,7 +33,7 @@ trait ClipboardModule {
 
     private lazy val clipboard = Toolkit.getDefaultToolkit.getSystemClipboard
 
-    def writeString(content: String): Unit = ignoring(classOf[Throwable]) {
+    def writeString(content: String): Try[Unit] = Try {
       val contentAsStringSelection = new StringSelection(content)
       clipboard setContents (contentAsStringSelection, contentAsStringSelection)
     }

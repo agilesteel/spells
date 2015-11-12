@@ -1,8 +1,10 @@
 package spells.user
 
+import java.io.File
+
 class DoubleEntryConfigKeeping extends spells.UnitTestConfiguration {
   test("The spells library should contain a reference.conf file") {
-    new java.io.File(getClass.getResource("/reference.conf").getFile) should exist
+    new File(getClass.getResource("/reference.conf").getFile) should exist
   }
 
   test("The reference.conf file should be valid") {
