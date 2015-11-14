@@ -61,24 +61,27 @@ trait XrayModule {
       rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any) extends CustomRendering {
     override final def rendered(implicit availableWidthInCharacters: CustomRenderingModule#AvailableWidthInCharacters = CustomRendering.Defaults.AvailableWidthInCharacters): String = {
       def lines(availableWidthInCharacters: Int): Seq[(String, String)] = {
-        val content = Vector(
-          "DateTime" -> timestamp.rendered,
-          "Duration" -> duration.rendered,
-          "Location" -> stackTraceElement,
-          "Thread" -> thread
-        )
+        val contentLines = {
+          val metaContent = Vector(
+            { if (SpellsConfig.xray.report.display.DateTime) Some("DateTime" -> timestamp.rendered) else None },
+            { if (SpellsConfig.xray.report.display.Duration) Some("Duration" -> duration.rendered) else None },
+            { if (SpellsConfig.xray.report.display.Location) Some("Location" -> stackTraceElement) else None },
+            { if (SpellsConfig.xray.report.display.Thread) Some("Thread" -> thread) else None }
+          )
 
-        val classOrTypeOrBoth = {
-          val `class` = value.decodedClassName
-          val `type` = manifest.toString.withDecodedScalaSymbols
+          val classOrTypeOrBoth = {
+            val `class` = value.decodedClassName
+            val `type` = manifest.toString.withDecodedScalaSymbols
+            val classTyple = { if (SpellsConfig.xray.report.display.Class) Some("Class" -> `class`) else None }
+            val typeTuple = { if (SpellsConfig.xray.report.display.Type) Some("Type" -> `type`) else None }
 
-          if (`class` == `type`)
-            Vector("Type" -> `type`)
-          else
-            Vector("Class" -> `class`, "Type" -> `type`)
+            if (`class` == `type`) Vector(typeTuple) else Vector(classTyple, typeTuple)
+          }
+
+          (metaContent ++ classOrTypeOrBoth).flatten
         }
 
-        content ++ classOrTypeOrBoth :+ "Value" -> (Option(value).fold("null")(rendering(_).rendered(availableWidthInCharacters))) map {
+        contentLines :+ "Value" -> (Option(value).fold("null")(rendering(_).rendered(availableWidthInCharacters))) map {
           case (key, value) => key.toString -> value.toString
         }
       }
@@ -112,7 +115,10 @@ trait XrayModule {
         leftPadding + header
       }
 
-      val resultingLines = Vector(hyphens, centeredHeader, hyphens) ++ table.dropRight(1) ++ Vector(hyphens, table.last) :+ hyphens
+      val metaContentPartOfTable = table.dropRight(1)
+      val valuePartOfTable = if (metaContentPartOfTable.isEmpty) Vector(table.last) else Vector(hyphens, table.last)
+
+      val resultingLines = Vector(hyphens, centeredHeader, hyphens) ++ metaContentPartOfTable ++ valuePartOfTable :+ hyphens
 
       styled(resultingLines mkString "\n")(style)
     }

@@ -98,6 +98,16 @@ class XrayReportRenderingTests extends spells.UnitTestConfiguration {
     }
   }
 
+  test(s"Rendered report should contain exactly 4 lines with hyphens") {
+    val maxWidthInCharacters: Int = SpellsConfig.terminal.WidthInCharacters
+
+    val largeReport = createReport(value = ("V" * (maxWidthInCharacters + 20)))
+    val largeLines = largeReport.rendered split "\n"
+    val hyphenLines = largeLines.filter(_.forall(_ == '-'))
+
+    hyphenLines.size should be(4)
+  }
+
   test("Custom rendering for java.util.Calendar") {
     val now = Calendar.getInstance
 
