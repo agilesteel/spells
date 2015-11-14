@@ -152,4 +152,21 @@ class ConfigurationTests extends spells.UnitTestConfiguration {
       hyphenLines.size should be(3)
     }
   }
+
+  test("Config validaiton tests") {
+    new spells.SpellsModule {
+      override def loadSpellsConfig: Config =
+        ConfigFactory parseString {
+          """|spells {
+             |  terminal {
+             |    WidthInCharacters = -1
+             |  }
+             |}""".stripMargin
+        } withFallback super.loadSpellsConfig
+
+      an[IllegalArgumentException] should be thrownBy {
+        val explode = SpellsConfig.terminal.WidthInCharacters.value
+      }
+    }
+  }
 }

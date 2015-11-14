@@ -8,7 +8,7 @@ private[spells] trait LocationAwareConfigModule {
 
   spellsConfig.checkValid(defaultReference(), "spells")
 
-  implicit final lazy val spellsConfig: Config = loadSpellsConfig
+  final lazy val spellsConfig: Config = loadSpellsConfig
 
   def loadSpellsConfig: Config =
     if (userConfig.exists)
@@ -18,24 +18,24 @@ private[spells] trait LocationAwareConfigModule {
   private final def userConfig = new java.io.File(userConfigLocation)
   private final def userConfigLocation = s"""${System.getProperty("user.home")}/.spells.conf"""
 
-  final implicit def locationAwarePropertyToBoolean(property: LocationAwareProperty[Boolean]): Boolean =
+  implicit final def locationAwarePropertyToBoolean(property: LocationAwarePropertyModule#LocationAwareProperty[Boolean]): Boolean =
     spellsConfig getBoolean property.location
 
-  final implicit def locationAwarePropertyToInt(property: LocationAwareProperty[Int]): Int =
+  implicit final def locationAwarePropertyToInt(property: LocationAwarePropertyModule#LocationAwareProperty[Int]): Int =
     spellsConfig getInt property.location
 
   // Unresolved compiler bug: https://issues.scala-lang.org/browse/SI-5643
-  final implicit def locationAwarePropertyToAnsiStyle(property: LocationAwareProperty[AnsiModule#AnsiStyle]): AnsiModule#AnsiStyle =
+  implicit final def locationAwarePropertyToAnsiStyle(property: LocationAwarePropertyModule#LocationAwareProperty[AnsiModule#AnsiStyle]): AnsiModule#AnsiStyle =
     spellsConfig getString property.location toAnsiStyle
 
   // Commented out, because it's not used yet... for better coverage ;)
 
-  // final implicit def locationAwarePropertyToDouble(property: LocationAwareProperty[Double]): Double =
+  // implicit final def locationAwarePropertyToDouble(property: AnsiModule#LocationAwareProperty[Double]): Double =
   //   spellsConfig getDouble property.location
 
-  // final implicit def locationAwarePropertyToLong(property: LocationAwareProperty[Long]): Long =
+  // implicit final def locationAwarePropertyToLong(property: AnsiModule#LocationAwareProperty[Long]): Long =
   //   spellsConfig getLong property.location
 
-  // final implicit def locationAwarePropertyToString(property: LocationAwareProperty[String]): String =
+  // implicit final def locationAwarePropertyToString(property: AnsiModule#LocationAwareProperty[String]): String =
   //   spellsConfig getString property.location
 }

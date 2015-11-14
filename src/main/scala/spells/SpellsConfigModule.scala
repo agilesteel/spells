@@ -1,11 +1,14 @@
 package spells
 
-trait SpellsConfigModule extends LocationAwareConfigModule {
-  this: AnsiModule =>
+trait SpellsConfigModule extends LocationAwareConfigModule with LocationAwarePropertyModule {
+  this: StylePrintModule with AnsiModule =>
 
   object SpellsConfig {
     object terminal {
-      object WidthInCharacters extends LocationAwareProperty[Int]
+      object WidthInCharacters extends LocationAwareProperty[Int] {
+        override def isValid(in: Int): Boolean = in >= 0
+        override def customValidationErrorMessage(in: Int): String = s"${location.yellow} must be ${">= 0".yellow}"
+      }
     }
 
     object xray {
