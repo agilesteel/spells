@@ -1,7 +1,7 @@
 package spells.user
 
 import java.text.SimpleDateFormat
-import java.util.Calendar
+import java.util.{ Date, Calendar }
 import scala.concurrent.duration._
 
 class XrayReportRenderingTests extends spells.UnitTestConfiguration {
@@ -96,6 +96,26 @@ class XrayReportRenderingTests extends spells.UnitTestConfiguration {
     forAll(hyphenLines) { hyphenLine =>
       hyphenLine should have size maxWidthInCharacters
     }
+  }
+
+  test("Calendards should be rendered as Dates") {
+    val date: Date = new Date
+
+    val calendar: Calendar = {
+      val c = Calendar.getInstance
+      c setTime date
+      c
+    }
+
+    calendar.rendered should be(date.rendered)
+  }
+
+  test("Dates should be rendered as Calendars") {
+    val calendar: Calendar = Calendar.getInstance
+
+    val date: Date = calendar.getTime
+
+    date.rendered should be(calendar.rendered)
   }
 
   test(s"Rendered report should contain exactly 4 lines with hyphens") {
