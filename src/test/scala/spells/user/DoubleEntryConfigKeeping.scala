@@ -8,22 +8,22 @@ class DoubleEntryConfigKeeping extends spells.UnitTestConfiguration {
   }
 
   test("The reference.conf file should be valid") {
-    (SpellsConfig.terminal.WidthInCharacters: Int) should be(160)
+    SpellsConfig.terminal.WidthInCharacters.value should be(160)
 
-    (SpellsConfig.xray.report.display.DateTime: Boolean) should be(true)
-    (SpellsConfig.xray.report.display.Duration: Boolean) should be(true)
-    (SpellsConfig.xray.report.display.Location: Boolean) should be(true)
-    (SpellsConfig.xray.report.display.Thread: Boolean) should be(true)
-    (SpellsConfig.xray.report.display.Class: Boolean) should be(true)
-    (SpellsConfig.xray.report.display.Type: Boolean) should be(true)
+    SpellsConfig.xray.report.display.DateTime.value should be(true)
+    SpellsConfig.xray.report.display.Duration.value should be(true)
+    SpellsConfig.xray.report.display.Location.value should be(true)
+    SpellsConfig.xray.report.display.Thread.value should be(true)
+    SpellsConfig.xray.report.display.Class.value should be(true)
+    SpellsConfig.xray.report.display.Type.value should be(true)
 
-    locationAwarePropertyToAnsiStyle(SpellsConfig.xray.report.styles.Description).value should be(Green.value)
-    locationAwarePropertyToAnsiStyle(SpellsConfig.xray.report.styles.DateTime).value should be(Reset.value)
-    locationAwarePropertyToAnsiStyle(SpellsConfig.xray.report.styles.Duration).value should be(Reset.value)
-    locationAwarePropertyToAnsiStyle(SpellsConfig.xray.report.styles.Location).value should be(Reset.value)
-    locationAwarePropertyToAnsiStyle(SpellsConfig.xray.report.styles.Thread).value should be(Reset.value)
-    locationAwarePropertyToAnsiStyle(SpellsConfig.xray.report.styles.Class).value should be(Reset.value)
-    locationAwarePropertyToAnsiStyle(SpellsConfig.xray.report.styles.Type).value should be(Reset.value)
-    locationAwarePropertyToAnsiStyle(SpellsConfig.xray.report.styles.Value).value should be(Magenta.value)
+    SpellsConfig.xray.report.styles.Description.value.value should be(Green.value)
+    SpellsConfig.xray.report.styles.DateTime.value.value should be(Reset.value)
+    SpellsConfig.xray.report.styles.Duration.value.value should be(Reset.value)
+    SpellsConfig.xray.report.styles.Location.value.value should be(Reset.value)
+    SpellsConfig.xray.report.styles.Thread.value.value should be(Reset.value)
+    SpellsConfig.xray.report.styles.Class.value.value should be(Reset.value)
+    SpellsConfig.xray.report.styles.Type.value.value should be(Reset.value)
+    SpellsConfig.xray.report.styles.Value.value.value should be(Magenta.value)
   }
 }
