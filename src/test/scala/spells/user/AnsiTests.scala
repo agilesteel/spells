@@ -22,7 +22,6 @@ class AnsiTests extends spells.UnitTestConfiguration {
 
   test("""The toAnsiStyle method should handle human capitalised readable colors""") {
     "Untouched".toAnsiStyle.value should be(Reset.value)
-    "Reset".toAnsiStyle.value should be(Reset.value)
     "Black".toAnsiStyle.value should be(Black.value)
     "Red".toAnsiStyle.value should be(Red.value)
     "Green".toAnsiStyle.value should be(Green.value)

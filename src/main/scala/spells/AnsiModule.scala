@@ -6,9 +6,8 @@ trait AnsiModule {
       require(style != null)
 
       style match {
-        case "Random" => Ansi.RandomStyle
         case "Untouched" => Reset
-        case "Reset" => Reset
+        case "Random" => Ansi.RandomStyle
         case "Black" => Black
         case "Red" => Red
         case "Green" => Green
@@ -17,7 +16,7 @@ trait AnsiModule {
         case "Magenta" => Magenta
         case "Cyan" => Cyan
         case "White" => White
-        case _ => new AnsiStyle(style)
+        case _ => new AnsiStyle(style.replace("\\033", "\u001b"))
       }
     }
   }

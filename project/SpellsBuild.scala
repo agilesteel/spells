@@ -42,22 +42,25 @@ object SpellsBuild extends Build {
       val checkForDepdendencyUpdates = (state: State) => "dependencyUpdates" :: state
       checkForDepdendencyUpdates compose (onLoad in Global).value
     },
-    scalacOptions ++= Seq(
-      "-encoding", "UTF-8",
-      "-deprecation",
-      "-feature",
-      "-language:_",
-      "-unchecked",
-      "-Xlint",
-      "-Ywarn-adapted-args",
-      "-Ywarn-inaccessible"
-      // "-Ywarn-value-discard"
-    ) ++ {
+    scalacOptions in (Compile, console) := nonDestructiveCompilerFlags,
+    scalacOptions ++= nonDestructiveCompilerFlags ++ {
       if(scalaVersion.value.startsWith("2.11"))
         Seq("-Ywarn-dead-code", "-Ywarn-unused-import")
       else
         Seq.empty[String]
     }
+  )
+
+  lazy val nonDestructiveCompilerFlags = Seq(
+    "-encoding", "UTF-8",
+    "-deprecation",
+    "-feature",
+    "-language:_",
+    "-unchecked",
+    "-Xlint",
+    "-Ywarn-adapted-args",
+    "-Ywarn-inaccessible"
+    // "-Ywarn-value-discard"
   )
 
   lazy val Build = config("build") extend Compile
@@ -106,6 +109,7 @@ object SpellsBuild extends Build {
   )
 
   lazy val aliasSettings =
+    addCommandAlias("deploySnapshot", "; +clean; +test; +publish") ++
     addCommandAlias("pluginUpdates", "; reload plugins; dependencyUpdates; reload return") ++
     addCommandAlias("man", "test:run") ++
     addCommandAlias("e", "test:run-main") ++ {
