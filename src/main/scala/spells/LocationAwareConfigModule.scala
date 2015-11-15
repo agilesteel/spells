@@ -19,14 +19,20 @@ private[spells] trait LocationAwareConfigModule {
   private final def userConfigLocation = s"""${System.getProperty("user.home")}/.spells.conf"""
 
   implicit final def locationAwarePropertyToBoolean(property: LocationAwarePropertyModule#LocationAwareProperty[Boolean]): Boolean =
-    spellsConfig getBoolean property.location
+    locationAwarePropertyTo(property, spellsConfig getBoolean property.location)
 
   implicit final def locationAwarePropertyToInt(property: LocationAwarePropertyModule#LocationAwareProperty[Int]): Int =
-    spellsConfig getInt property.location
+    locationAwarePropertyTo(property, spellsConfig getInt property.location)
 
   // Unresolved compiler bug: https://issues.scala-lang.org/browse/SI-5643
   implicit final def locationAwarePropertyToAnsiStyle(property: LocationAwarePropertyModule#LocationAwareProperty[AnsiModule#AnsiStyle]): AnsiModule#AnsiStyle =
-    spellsConfig getString property.location toAnsiStyle
+    locationAwarePropertyTo(property, spellsConfig getString property.location toAnsiStyle)
+
+  private[spells] def locationAwarePropertyTo[T](property: LocationAwarePropertyModule#LocationAwareProperty[T], value: T): T = {
+    require(property isValid value, property validationErrorMessage value)
+
+    value
+  }
 
   // Commented out, because it's not used yet... for better coverage ;)
 

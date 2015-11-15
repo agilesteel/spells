@@ -1,4 +1,4 @@
-package configuration
+package spells.configuration
 
 import java.util.Calendar
 import scala.concurrent.duration._
@@ -154,7 +154,9 @@ class ConfigurationTests extends spells.UnitTestConfiguration {
   }
 
   test("Config validaiton tests") {
-    new spells.SpellsModule {
+    import spells._
+
+    new SpellsConfigModule with StylePrintModule with AnsiModule {
       override def loadSpellsConfig: Config =
         ConfigFactory parseString {
           """|spells {
@@ -169,4 +171,47 @@ class ConfigurationTests extends spells.UnitTestConfiguration {
       }
     }
   }
+
+  test("Config validaiton error message tests") {
+    import spells._
+
+    new LocationAwareConfigModule with LocationAwarePropertyModule with StylePrintModule with AnsiModule {
+      val value = -1
+
+      implicit def materialise(property: LocationAwareProperty[Int]): Int =
+        locationAwarePropertyTo(property, value)
+
+      object ValidationProperty extends LocationAwareProperty[Int] {
+        override def isValid(in: Int): Boolean = false
+      }
+
+      the[IllegalArgumentException] thrownBy {
+        val explode = ValidationProperty.value
+      } should have message s"requirement failed: ${styled(s"SpellsConfig contains a property: ${ValidationProperty.location.yellow} with an illegal value: ${value.yellow}")(Red)}"
+    }
+  }
+
+  test("Config validaiton custom error message tests") {
+    import spells._
+
+    new SpellsConfigModule with StylePrintModule with AnsiModule {
+      val value = -1
+
+      override def loadSpellsConfig: Config =
+        ConfigFactory parseString {
+          s"""|spells {
+              |  terminal {
+              |    WidthInCharacters = -1
+              |  }
+              |}""".stripMargin
+        } withFallback super.loadSpellsConfig
+
+      val property = SpellsConfig.terminal.WidthInCharacters
+
+      the[IllegalArgumentException] thrownBy {
+        val explode: Int = property
+      } should have message s"requirement failed: ${styled(s"SpellsConfig contains a property: ${property.location.yellow} with an illegal value: ${value.yellow}: ${property.location.yellow} must be ${">= 0".yellow}")(Red)}"
+    }
+  }
+
 }
