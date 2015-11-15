@@ -10,6 +10,8 @@ class DoubleEntryConfigKeeping extends spells.UnitTestConfiguration {
   test("The reference.conf file should be valid") {
     SpellsConfig.terminal.WidthInCharacters.value should be(160)
 
+    SpellsConfig.terminal.display.Styles.value should be(true)
+
     SpellsConfig.xray.report.display.DateTime.value should be(true)
     SpellsConfig.xray.report.display.Duration.value should be(true)
     SpellsConfig.xray.report.display.Location.value should be(true)

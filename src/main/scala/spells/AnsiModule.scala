@@ -1,6 +1,8 @@
 package spells
 
 trait AnsiModule {
+  this: SpellsConfigModule with StylePrintModule =>
+
   implicit final class AnsiStyleBuilder(style: String) {
     def toAnsiStyle: AnsiModule#AnsiStyle = {
       require(style != null)
@@ -36,7 +38,13 @@ trait AnsiModule {
   }
 
   implicit final class AnsiString(val input: Any) {
-    final def in(style: AnsiModule#AnsiStyle): String = style.value + Ansi.removedStyles(String valueOf input) + Reset.value
+    final def in(style: AnsiModule#AnsiStyle): String = {
+      val rawValue = String valueOf input
+
+      if (SpellsConfig.terminal.display.Styles)
+        style.value + Ansi.removedStyles(rawValue) + Reset.value
+      else rawValue
+    }
 
     final def black: String = this in Black
     final def red: String = this in Red

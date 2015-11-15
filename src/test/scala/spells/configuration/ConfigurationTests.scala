@@ -176,7 +176,7 @@ class ConfigurationTests extends spells.UnitTestConfiguration {
   test("Config validaiton error message tests") {
     import spells._
 
-    new LocationAwareConfigModule with LocationAwarePropertyModule with StylePrintModule with AnsiModule {
+    new SpellsConfigModule with LocationAwarePropertyModule with StylePrintModule with AnsiModule {
       val value = -1
 
       implicit def materialise(property: LocationAwareProperty[Int]): Int =
@@ -215,4 +215,26 @@ class ConfigurationTests extends spells.UnitTestConfiguration {
     }
   }
 
+  test("Turning off styles") {
+    import spells._
+
+    new SpellsConfigModule with StylePrintModule with AnsiModule with ErrorPrintModule {
+      override def loadSpellsConfig: Config =
+        ConfigFactory parseString {
+          """|spells {
+             |  terminal {
+             |    display {
+             |      Styles = no
+             |    }
+             |  }
+             |}""".stripMargin
+        } withFallback super.loadSpellsConfig
+
+      val rawValue = "test"
+      rawValue.green should be(rawValue)
+      rawValue in Green should be(rawValue)
+      styled(rawValue)(Green) should be(rawValue)
+      erred(rawValue) should be(rawValue)
+    }
+  }
 }

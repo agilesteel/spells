@@ -9,6 +9,10 @@ trait SpellsConfigModule extends LocationAwareConfigModule with LocationAwarePro
         override def isValid(in: Int): Boolean = in >= 0
         override def customValidationErrorMessage(in: Int): String = s"${location.yellow} must be ${">= 0".yellow}"
       }
+
+      object display {
+        object Styles extends LocationAwareProperty[Boolean]
+      }
     }
 
     object xray {
