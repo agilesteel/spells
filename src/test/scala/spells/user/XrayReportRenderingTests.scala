@@ -3,6 +3,7 @@ package spells.user
 import java.text.SimpleDateFormat
 import java.util.{ Date, Calendar }
 import scala.concurrent.duration._
+import scala.reflect.runtime.universe._
 
 class XrayReportRenderingTests extends spells.UnitTestConfiguration {
   import XrayReportRenderingTests._
@@ -57,7 +58,7 @@ class XrayReportRenderingTests extends spells.UnitTestConfiguration {
     val typedReport = createReport(value = List(1, 2, 3)).rendered
 
     typedReport should include(s"Class    | scala.collection.immutable.::")
-    typedReport should include(s"Type     | scala.collection.immutable.List[Int]")
+    typedReport should include(s"Type     | List[Int]")
   }
 
   test("Simple values should be rendered in magenta") {
@@ -163,7 +164,7 @@ class XrayReportRenderingTests extends spells.UnitTestConfiguration {
 }
 
 object XrayReportRenderingTests {
-  private def createReport[T: Manifest](
+  private def createReport[T: TypeTag](
     value: T = value,
     duration: Duration = duration,
     stackTraceElement: StackTraceElement = stackTraceElement,

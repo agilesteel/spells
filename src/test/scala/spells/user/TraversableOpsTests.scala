@@ -63,7 +63,7 @@ class TraversableOpsTests extends spells.UnitTestConfiguration {
 
     // format: OFF
     val expected =
-      "scala.collection.immutable.::[scala.collection.Seq[java.lang.String]] with 3 elements:" + "\n" +
+      "scala.collection.immutable.::[Seq[java.lang.String]] with 3 elements:" + "\n" +
       "" + "\n" +
       "0 | scala.collection.immutable.::[java.lang.String] with 3 elements:" + "\n" +
       "  | " + "\n" +
@@ -98,7 +98,7 @@ class TraversableOpsTests extends spells.UnitTestConfiguration {
 
     // format: OFF
     val expected =
-      "scala.collection.immutable.::[scala.collection.Seq[java.lang.String]] with 3 elements:" + "\n" +
+      "scala.collection.immutable.::[Seq[java.lang.String]] with 3 elements:" + "\n" +
       "" + "\n" +
       "0 | scala.collection.immutable.::[java.lang.String] with 3 elements:" + "\n" +
       "  | " + "\n" +
@@ -134,7 +134,7 @@ class TraversableOpsTests extends spells.UnitTestConfiguration {
 
     // format: OFF
     val expected =
-      "scala.collection.immutable.Map$Map3[scala.Tuple2[Int, java.lang.String]] with 3 elements:" + "\n" +
+      "scala.collection.immutable.Map$Map3[(Int, java.lang.String)] with 3 elements:" + "\n" +
       "" + "\n" +
       "0 | 1 -> I" + "\n" +
       "1 | 2 -> II" + "\n" +
@@ -158,7 +158,7 @@ class TraversableOpsTests extends spells.UnitTestConfiguration {
     actual should be(expected)
   }
 
-  test("This is how java collections should be rendered should be rendered") {
+  test("This is how java collections should be rendered") {
     val actual = {
       val collection = new java.util.ArrayList[String]
       collection add "I"
@@ -170,7 +170,7 @@ class TraversableOpsTests extends spells.UnitTestConfiguration {
 
     // format: OFF
     val expected =
-      "java.util.ArrayList[java.lang.String] with 3 elements:" + "\n" +
+      "java.util.ArrayList[String] with 3 elements:" + "\n" +
       "" + "\n" +
       "0 | I" + "\n" +
       "1 | II" + "\n" +
@@ -192,7 +192,7 @@ class TraversableOpsTests extends spells.UnitTestConfiguration {
 
     // format: OFF
     val expected =
-      "java.util.HashMap[java.util.Map$Entry[Int, java.lang.String]] with 3 elements:" + "\n" +
+      "java.util.HashMap[java.util.Map.Entry[Int,String]] with 3 elements:" + "\n" +
       "" + "\n" +
       "0 | 1 -> I" + "\n" +
       "1 | 2 -> II" + "\n" +

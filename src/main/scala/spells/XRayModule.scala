@@ -5,8 +5,9 @@ trait XrayModule {
 
   import java.util.Calendar
   import scala.concurrent.duration._
+  import scala.reflect.runtime.universe._
 
-  final def xrayed[T](expression: => T, description: XrayModule#Description = Xray.Defaults.Description, increaseStackTraceDepthBy: Int = 0)(implicit manifest: Manifest[T], style: AnsiModule#AnsiStyle = Reset, rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any): XrayModule#XrayReport[T] = {
+  final def xrayed[T](expression: => T, description: XrayModule#Description = Xray.Defaults.Description, increaseStackTraceDepthBy: Int = 0)(implicit typeTag: TypeTag[T], style: AnsiModule#AnsiStyle = Reset, rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any): XrayModule#XrayReport[T] = {
     val stackTraceElement = currentLineStackTraceElement(increaseStackTraceDepthBy - 1)
 
     val now = Calendar.getInstance
@@ -21,9 +22,9 @@ trait XrayModule {
   def currentLineStackTraceElement(implicit increaseStackTraceDepthBy: Int = 0): StackTraceElement =
     Thread.currentThread.getStackTrace apply increaseStackTraceDepthBy + 6
 
-  implicit class XrayFromSpells[T](expression: => T)(implicit manifest: Manifest[T], style: AnsiModule#AnsiStyle = Reset, rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any, monitor: XrayModule#XrayReport[T] => Unit = (report: XrayModule#XrayReport[T]) => Console.println(report.rendered)) {
+  implicit class XrayFromSpells[T](expression: => T)(implicit typeTag: TypeTag[T], style: AnsiModule#AnsiStyle = Reset, rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any, monitor: XrayModule#XrayReport[T] => Unit = (report: XrayModule#XrayReport[T]) => Console.println(report.rendered)) {
     def xray(implicit description: XrayModule#Description = Xray.Defaults.Description): T = {
-      val report = xrayed(expression, description, increaseStackTraceDepthBy = +1)(manifest, style, rendering)
+      val report = xrayed(expression, description, increaseStackTraceDepthBy = +1)(typeTag, style, rendering)
 
       monitor(report)
 
@@ -31,7 +32,7 @@ trait XrayModule {
     }
 
     def xrayIf(conditionFunction: XrayModule#XrayReport[T] => Boolean)(implicit description: XrayModule#Description = Xray.Defaults.Description): T = {
-      val report = xrayed(expression, description, increaseStackTraceDepthBy = +1)(manifest, style, rendering)
+      val report = xrayed(expression, description, increaseStackTraceDepthBy = +1)(typeTag, style, rendering)
 
       if (conditionFunction(report))
         monitor(report)
@@ -50,7 +51,7 @@ trait XrayModule {
     }
   }
 
-  final class XrayReport[+T: Manifest](
+  final class XrayReport[+T: TypeTag](
       final val value: T,
       final val duration: Duration,
       final val stackTraceElement: StackTraceElement,
@@ -71,7 +72,7 @@ trait XrayModule {
 
           val classOrTypeOrBoth = {
             val `class` = value.decodedClassName
-            val `type` = manifest.toString.withDecodedScalaSymbols
+            val `type` = typeTag.tpe.toString.withDecodedScalaSymbols
             val classTyple = { if (SpellsConfig.xray.report.display.Class) Some("Class" -> `class`) else None }
             val typeTuple = { if (SpellsConfig.xray.report.display.Type) Some("Type" -> `type`) else None }
 

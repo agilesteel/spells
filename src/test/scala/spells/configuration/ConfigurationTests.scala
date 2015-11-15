@@ -2,6 +2,7 @@ package spells.configuration
 
 import java.util.Calendar
 import scala.concurrent.duration._
+import scala.reflect.runtime.universe._
 
 import com.typesafe.config.{ Config, ConfigFactory }
 
@@ -46,7 +47,7 @@ class ConfigurationTests extends spells.UnitTestConfiguration {
         } withFallback super.loadSpellsConfig
 
       object StolenFromXrayReportRenderingTests {
-        def createReport[T: Manifest](
+        def createReport[T: TypeTag](
           value: T = reportValue,
           duration: Duration = duration,
           stackTraceElement: StackTraceElement = stackTraceElement,
@@ -105,7 +106,7 @@ class ConfigurationTests extends spells.UnitTestConfiguration {
         } withFallback super.loadSpellsConfig
 
       object StolenFromXrayReportRenderingTests {
-        def createReport[T: Manifest](
+        def createReport[T: TypeTag](
           value: T = reportValue,
           duration: Duration = duration,
           stackTraceElement: StackTraceElement = stackTraceElement,

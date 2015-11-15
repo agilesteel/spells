@@ -37,7 +37,7 @@ object SpellsBuild extends Build {
   lazy val spellsSettings = Seq(
     incOptions := incOptions.value.withNameHashing(true),
     initialCommands in console := "object user extends spells.SpellsModule;import user._;import scala.concurrent.duration._",
-    libraryDependencies ++= Dependencies.all,
+    libraryDependencies ++= Dependencies.all(scalaVersion.value.toString),
     onLoad in Global := {
       val checkForDepdendencyUpdates = (state: State) => "dependencyUpdates" :: state
       checkForDepdendencyUpdates compose (onLoad in Global).value
@@ -124,11 +124,12 @@ object SpellsBuild extends Build {
 
 object Dependencies {
   val config = "com.typesafe" % "config" % "1.3.0"
+  def `scala-reflect`(scalaVersion: String) = "org.scala-lang" % "scala-reflect" % scalaVersion
 
   val pegdown = "org.pegdown" % "pegdown" % "1.6.0" % "test"
   val scalaTest = "org.scalatest" %% "scalatest" % "2.2.5" % "test"
 
-  val all = Seq(config, pegdown, scalaTest)
+  def all(scalaVersion: String) = Seq(config, `scala-reflect`(scalaVersion), pegdown, scalaTest)
 }
 
 object UserConfigFileManager {
