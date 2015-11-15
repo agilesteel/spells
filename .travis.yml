@@ -12,6 +12,8 @@ branches:
     - master
 jdk:
   - oraclejdk8
+env:
+  - CODACY_PROJECT_TOKEN=a5c89dcf2b304b2ea4c8f72b4f593823
 script:
   - sbt ++$TRAVIS_SCALA_VERSION clean coverage test coverageReport
 after_success:
