@@ -15,10 +15,11 @@ jdk:
 env:
   - CODACY_PROJECT_TOKEN=a5c89dcf2b304b2ea4c8f72b4f593823
 script:
-  - sbt ++$TRAVIS_SCALA_VERSION clean coverage test coverageReport
+  - sbt ++$TRAVIS_SCALA_VERSION clean coverage test
 after_success:
-  - sbt ++$TRAVIS_SCALA_VERSION coveralls
-  - sbt ++$TRAVIS_SCALA_VERSION codacyCoverage
+  - sbt coveralls
+  - sbt coverageReport
+  - sbt codacyCoverage
 notifications:
   email:
     - agilesteel@gmail.com
