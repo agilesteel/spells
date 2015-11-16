@@ -123,13 +123,13 @@ object SpellsBuild extends Build {
 }
 
 object Dependencies {
-  val config = "com.typesafe" % "config" % "1.3.0"
   def `scala-reflect`(scalaVersion: String) = "org.scala-lang" % "scala-reflect" % scalaVersion
+  val config = "com.typesafe" % "config" % "1.3.0"
 
   val pegdown = "org.pegdown" % "pegdown" % "1.6.0" % "test"
   val scalaTest = "org.scalatest" %% "scalatest" % "2.2.5" % "test"
 
-  def all(scalaVersion: String) = Seq(config, `scala-reflect`(scalaVersion), pegdown, scalaTest)
+  def all(scalaVersion: String) = Seq(`scala-reflect`(scalaVersion), config, pegdown, scalaTest)
 }
 
 object UserConfigFileManager {

@@ -67,6 +67,7 @@ trait XrayModule {
             { if (SpellsConfig.xray.report.display.DateTime) Some("DateTime" -> timestamp.rendered) else None },
             { if (SpellsConfig.xray.report.display.Duration) Some("Duration" -> duration.rendered) else None },
             { if (SpellsConfig.xray.report.display.Location) Some("Location" -> stackTraceElement) else None },
+            { if (SpellsConfig.xray.report.display.HashCode && value != null) Some("HashCode" -> value.hashCode) else None },
             { if (SpellsConfig.xray.report.display.Thread) Some("Thread" -> thread) else None }
           )
 
@@ -94,6 +95,7 @@ trait XrayModule {
             "DateTime" -> SpellsConfig.xray.report.styles.DateTime,
             "Duration" -> SpellsConfig.xray.report.styles.Duration,
             "Location" -> SpellsConfig.xray.report.styles.Location,
+            "HashCode" -> SpellsConfig.xray.report.styles.HashCode,
             "Thread" -> SpellsConfig.xray.report.styles.Thread,
             "Class" -> SpellsConfig.xray.report.styles.Class,
             "Type" -> SpellsConfig.xray.report.styles.Type,

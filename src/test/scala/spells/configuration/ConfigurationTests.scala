@@ -36,6 +36,7 @@ class ConfigurationTests extends spells.UnitTestConfiguration {
               |        DateTime = \"\"\"${ChosenStyle.value}\"\"\"
               |        Duration = \"\"\"${ChosenStyle.value}\"\"\"
               |        Location = \"\"\"${ChosenStyle.value}\"\"\"
+              |        HashCode = \"\"\"${ChosenStyle.value}\"\"\"
               |        Thread = \"\"\"${ChosenStyle.value}\"\"\"
               |        Class = \"\"\"${ChosenStyle.value}\"\"\"
               |        Type = \"\"\"${ChosenStyle.value}\"\"\"
@@ -79,6 +80,7 @@ class ConfigurationTests extends spells.UnitTestConfiguration {
       renderedReport should include(reportValue in ChosenStyle)
       renderedReport should include(duration.rendered in ChosenStyle)
       renderedReport should include(stackTraceElement in ChosenStyle)
+      renderedReport should include(reportValue.hashCode in ChosenStyle)
       renderedReport should include(timestamp.rendered in ChosenStyle)
       renderedReport should include(description in ChosenStyle)
       renderedReport should include(thread in ChosenStyle)
@@ -96,6 +98,7 @@ class ConfigurationTests extends spells.UnitTestConfiguration {
               |        DateTime = no
               |        Duration = no
               |        Location = no
+              |        HashCode = no
               |        Thread = no
               |        Class = no
               |        Type = no

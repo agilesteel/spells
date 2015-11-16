@@ -6,29 +6,27 @@ import scala.concurrent.duration._
 import scala.reflect.runtime.universe._
 
 class XrayReportRenderingTests extends spells.UnitTestConfiguration {
-  import XrayReportRenderingTests._
-
   test("The header should contain the string 'X-Ray' if description is empty") {
-    createReport(description = "").rendered should include("X-Ray".green)
+    XrayReportRenderingTests.createReport(description = "").rendered should include("X-Ray".green)
   }
 
   test("Empty styled header should result in the default one") {
-    createReport(description = "".yellow).rendered should include("X-Ray".green)
+    XrayReportRenderingTests.createReport(description = "".yellow).rendered should include("X-Ray".green)
   }
 
   test("X-Ray header should still be rendered green") {
-    createReport(description = "X-Ray").rendered should include("X-Ray".green)
+    XrayReportRenderingTests.createReport(description = "X-Ray").rendered should include("X-Ray".green)
   }
 
-  test(s"The header should contain the string '$description' if description is nonempty") {
-    createReport().rendered should include(description)
+  test(s"The header should contain the string '${XrayReportRenderingTests.description}' if description is nonempty") {
+    XrayReportRenderingTests.createReport().rendered should include(XrayReportRenderingTests.description)
   }
 
   test("If the description contains styles the header should still be centered properly") {
     val descriptionValue = "desc"
 
     def headerWithDescription(newDescription: String): String =
-      createReport(description = newDescription).rendered.split("\n").tail.head
+      XrayReportRenderingTests.createReport(description = newDescription).rendered.split("\n").tail.head
 
     val headerWithoutStyle = headerWithDescription(descriptionValue)
     val headerWithStyle = headerWithDescription(descriptionValue.yellow)
@@ -39,34 +37,42 @@ class XrayReportRenderingTests extends spells.UnitTestConfiguration {
   }
 
   test("The datetime should be rendered in full format") {
-    createReport().rendered should include(s"""DateTime | ${new SimpleDateFormat("EEEE, MMMM d, yyyy HH:mm:ss.SSS z Z") format timestamp.getTime}""")
+    XrayReportRenderingTests.createReport().rendered should include(s"""DateTime | ${new SimpleDateFormat("EEEE, MMMM d, yyyy HH:mm:ss.SSS z Z") format XrayReportRenderingTests.timestamp.getTime}""")
   }
 
   test("The duration should be readable by humans") {
-    createReport().rendered should include(s"Duration | 1 minute 2 seconds")
+    XrayReportRenderingTests.createReport().rendered should include(s"Duration | 1 minute 2 seconds")
   }
 
   test("Location should be equal to the toString implementation of the StackTraceElement") {
-    createReport().rendered should include(s"Location | $stackTraceElement")
+    XrayReportRenderingTests.createReport().rendered should include(s"Location | ${XrayReportRenderingTests.stackTraceElement}")
+  }
+
+  test("HashCode should be equal to the toString implementation of the hashCode method") {
+    XrayReportRenderingTests.createReport().rendered should include(s"HashCode | ${XrayReportRenderingTests.reportValue.hashCode}")
+  }
+
+  test("HashCode should not be included in xray report") {
+    XrayReportRenderingTests.createReport(reportValue = null).rendered should not include (s"HashCode | ${XrayReportRenderingTests.reportValue.hashCode}")
   }
 
   test("If type and class are equal the class should not be rendered") {
-    createReport().rendered should not include s"Class    | spells.Encoded + Whatever"
+    XrayReportRenderingTests.createReport().rendered should not include s"Class    | spells.Encoded + Whatever"
   }
 
   test("If type and class are different they should both be rendered") {
-    val typedReport = createReport(value = List(1, 2, 3)).rendered
+    val typedReport = XrayReportRenderingTests.createReport(reportValue = List(1, 2, 3)).rendered
 
     typedReport should include(s"Class    | scala.collection.immutable.::")
     typedReport should include(s"Type     | List[Int]")
   }
 
   test("Simple values should be rendered in magenta") {
-    createReport().rendered should include(s"Value    | ${"encoded".magenta}")
+    XrayReportRenderingTests.createReport().rendered should include(s"Value    | ${"encoded".magenta}")
   }
 
   test("""If value conains '\n' it should be rendered on the new line""") {
-    val newReportString = createReport(value = "first\nsecond").rendered
+    val newReportString = XrayReportRenderingTests.createReport(reportValue = "first\nsecond").rendered
 
     newReportString should include(s"Value    | ${"first".magenta}")
     newReportString should include(s"         | ${"second".magenta}")
@@ -74,23 +80,23 @@ class XrayReportRenderingTests extends spells.UnitTestConfiguration {
 
   test("Simple values should be deeply (other styles should not be lost) rendered in magenta") {
     val withStyle = s"enc${"o".green}ded"
-    val reportWithStyle = createReport(value = withStyle)
+    val reportWithStyle = XrayReportRenderingTests.createReport(reportValue = withStyle)
 
     reportWithStyle.rendered should include(s"Value    | ${styled(withStyle)(Magenta)}")
   }
 
   test("Nulls should be rendered as values and thus not throw exceptions") {
-    createReport(value = null).rendered should include(s"Value    | ${"null".magenta}")
+    XrayReportRenderingTests.createReport(reportValue = null).rendered should include(s"Value    | ${"null".magenta}")
   }
 
   test(s"Rendered report should contain maximum ${SpellsConfig.terminal.WidthInCharacters} hyphens") {
     val maxWidthInCharacters: Int = SpellsConfig.terminal.WidthInCharacters
 
-    forAll(createReport().rendered split "\n") { line =>
+    forAll(XrayReportRenderingTests.createReport().rendered split "\n") { line =>
       line.size should be <= maxWidthInCharacters
     }
 
-    val largeReport = createReport(value = ("V" * (maxWidthInCharacters + 20)))
+    val largeReport = XrayReportRenderingTests.createReport(reportValue = ("V" * (maxWidthInCharacters + 20)))
     val largeLines = largeReport.rendered split "\n"
     val hyphenLines = largeLines.filter(_.forall(_ == '-'))
 
@@ -122,7 +128,7 @@ class XrayReportRenderingTests extends spells.UnitTestConfiguration {
   test(s"Rendered report should contain exactly 4 lines with hyphens") {
     val maxWidthInCharacters: Int = SpellsConfig.terminal.WidthInCharacters
 
-    val largeReport = createReport(value = ("V" * (maxWidthInCharacters + 20)))
+    val largeReport = XrayReportRenderingTests.createReport(reportValue = ("V" * (maxWidthInCharacters + 20)))
     val largeLines = largeReport.rendered split "\n"
     val hyphenLines = largeLines.filter(_.forall(_ == '-'))
 
@@ -132,7 +138,7 @@ class XrayReportRenderingTests extends spells.UnitTestConfiguration {
   test("Custom rendering for java.util.Calendar") {
     val now = Calendar.getInstance
 
-    assume(now != timestamp)
+    assume(now != XrayReportRenderingTests.timestamp)
 
     xrayed(now).rendered should include {
       new SimpleDateFormat("EEEE, MMMM d, yyyy HH:mm:ss.SSS z Z").format(now.getTime).magenta
@@ -165,14 +171,14 @@ class XrayReportRenderingTests extends spells.UnitTestConfiguration {
 
 object XrayReportRenderingTests {
   private def createReport[T: TypeTag](
-    value: T = value,
+    reportValue: T = reportValue,
     duration: Duration = duration,
     stackTraceElement: StackTraceElement = stackTraceElement,
     timestamp: Calendar = timestamp,
     description: String = description,
     rendering: T => spells.CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any): XrayReport[T] =
     new XrayReport[T](
-      value = value,
+      value = reportValue,
       duration = duration,
       stackTraceElement = stackTraceElement,
       timestamp = timestamp,
@@ -181,7 +187,7 @@ object XrayReportRenderingTests {
       rendering = rendering
     )
 
-  private lazy val value = new `Encoded + Whatever`
+  private lazy val reportValue = new `Encoded + Whatever`
   private lazy val duration = 62.seconds
   private lazy val stackTraceElement = new StackTraceElement("declaringClass", "methodName", "fileName", lineNumber)
   private lazy val lineNumber = 4711
