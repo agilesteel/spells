@@ -157,16 +157,20 @@ trait XrayModule {
                 val renderedTail = subLines.tail.map { subLine =>
                   val previousSublineStyle = {
                     var takenSoFar = ""
-                    var result = ""
+                    var resultingStyle = ""
 
                     previousSubLine.reverse.takeWhile { char =>
                       takenSoFar += char
-                      val theMatch = StylePrint.StyleOrReset.r findFirstIn takenSoFar.reverse
-                      theMatch foreach (result = _)
+
+                      val theMatch: Option[String] =
+                        StylePrint.StyleOrReset.r findFirstIn takenSoFar.reverse
+
+                      theMatch foreach (resultingStyle = _)
+
                       theMatch.isEmpty
                     }
 
-                    result.toAnsiStyle
+                    resultingStyle.toAnsiStyle
                   }
 
                   val thisSubLine =
