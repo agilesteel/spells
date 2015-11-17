@@ -13,6 +13,7 @@ trait SpellsModule
   with HumanRenderingModule
   with MiscModule
   with SpellsConfigModule
+  with StackTraceElementModule
   with StringOpsModule
   with StylePrintModule
   with TraversableOpsModule

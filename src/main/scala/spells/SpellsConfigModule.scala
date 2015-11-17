@@ -4,6 +4,12 @@ trait SpellsConfigModule extends LocationAwareConfigModule with LocationAwarePro
   this: StylePrintModule with AnsiModule =>
 
   object SpellsConfig {
+    object `custom-rendering` {
+      object display {
+        object ShortStackTraceElements extends LocationAwareProperty[Boolean]
+      }
+    }
+
     object terminal {
       object WidthInCharacters extends LocationAwareProperty[Int] {
         override def isValid(in: Int): Boolean = in >= 0

@@ -8,6 +8,8 @@ class DoubleEntryConfigKeeping extends spells.UnitTestConfiguration {
   }
 
   test("The reference.conf file should be valid") {
+    SpellsConfig.`custom-rendering`.display.ShortStackTraceElements.value should be(false)
+
     SpellsConfig.terminal.WidthInCharacters.value should be(160)
 
     SpellsConfig.terminal.display.Styles.value should be(true)

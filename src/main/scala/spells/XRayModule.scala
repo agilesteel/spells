@@ -1,7 +1,7 @@
 package spells
 
 trait XrayModule {
-  this: AnsiModule with AnyOpsModule with CalendarOpsModule with CustomRenderingModule with DateOpsModule with DurationOpsModule with HumanRenderingModule with StringOpsModule with StylePrintModule with TraversableOpsModule with SpellsConfigModule =>
+  this: AnsiModule with AnyOpsModule with CalendarOpsModule with CustomRenderingModule with DateOpsModule with DurationOpsModule with HumanRenderingModule with StringOpsModule with StylePrintModule with TraversableOpsModule with SpellsConfigModule with StackTraceElementModule =>
 
   import java.util.Calendar
   import scala.concurrent.duration._
@@ -66,7 +66,7 @@ trait XrayModule {
           val metaContent = Vector(
             { if (SpellsConfig.xray.report.display.DateTime) Some("DateTime" -> timestamp.rendered) else None },
             { if (SpellsConfig.xray.report.display.Duration) Some("Duration" -> duration.rendered) else None },
-            { if (SpellsConfig.xray.report.display.Location) Some("Location" -> stackTraceElement) else None },
+            { if (SpellsConfig.xray.report.display.Location) Some("Location" -> stackTraceElement.rendered) else None },
             { if (SpellsConfig.xray.report.display.HashCode && value != null) Some("HashCode" -> value.hashCode) else None },
             { if (SpellsConfig.xray.report.display.Thread) Some("Thread" -> thread) else None }
           )

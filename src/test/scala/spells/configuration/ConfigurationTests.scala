@@ -240,4 +240,61 @@ class ConfigurationTests extends spells.UnitTestConfiguration {
       erred(rawValue) should be(rawValue)
     }
   }
+
+  test("Short StackTraceElements") {
+    new spells.SpellsModule {
+      override def loadSpellsConfig: Config =
+        ConfigFactory parseString {
+          s"""|spells {
+              |  custom-rendering {
+              |    display {
+              |      ShortStackTraceElements = yes
+              |    }
+              |  }
+              |}""".stripMargin
+        } withFallback super.loadSpellsConfig
+
+      val nativeMethod = -2
+      val basic = new StackTraceElement("declaringClass", "methodName", "fileName", 0)
+
+      basic.rendered should be("(fileName:0)")
+      new StackTraceElement("declaringClass", "methodName", "fileName", -1).rendered should be("(fileName)")
+      new StackTraceElement("declaringClass", "methodName", "fileName", nativeMethod).rendered should be("(Native Method)")
+      new StackTraceElement("declaringClass", "methodName", null, 0).rendered should be("(Unknown Source)")
+      new StackTraceElement("declaringClass", "methodName", null, -1).rendered should be("(Unknown Source)")
+      new StackTraceElement("declaringClass", "methodName", null, nativeMethod).rendered should be("(Native Method)")
+
+      object StolenFromXrayReportRenderingTests {
+        def createReport[T: TypeTag](
+          value: T = reportValue,
+          duration: Duration = duration,
+          stackTraceElement: StackTraceElement = stackTraceElement,
+          timestamp: Calendar = timestamp,
+          description: String = description,
+          rendering: T => spells.CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any): XrayReport[T] =
+          new XrayReport[T](
+            value = value,
+            duration = duration,
+            stackTraceElement = stackTraceElement,
+            timestamp = timestamp,
+            description = description,
+            thread = thread,
+            rendering = rendering
+          )
+
+        lazy val reportValue = 10
+        lazy val duration = 62.seconds
+        lazy val stackTraceElement = new StackTraceElement("declaringClass", "methodName", "fileName", lineNumber)
+        lazy val lineNumber = 4711
+        lazy val timestamp = Calendar.getInstance
+        lazy val description = "description"
+        lazy val thread = Thread.currentThread
+      }
+
+      val report = StolenFromXrayReportRenderingTests.createReport(stackTraceElement = basic)
+
+      report.rendered should include("(fileName:0)")
+      report.rendered should not include basic.toString
+    }
+  }
 }
