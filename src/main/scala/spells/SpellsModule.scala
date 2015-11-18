@@ -16,6 +16,7 @@ trait SpellsModule
   with StackTraceElementModule
   with StringOpsModule
   with StylePrintModule
+  with ThrowableOpsModule
   with TraversableOpsModule
   with Tuple2OpsModule
   with XrayModule
