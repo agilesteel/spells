@@ -10,6 +10,7 @@ trait SpellsModule
   with DateOpsModule
   with DurationOpsModule
   with ErrorPrintModule
+  with FunctionNOpsModule
   with HumanRenderingModule
   with MiscModule
   with SpellsConfigModule

@@ -1,16 +1,15 @@
 package spells
 
 trait TraversableOpsModule {
-  this: AnsiModule with AnyOpsModule with CalendarOpsModule with CustomRenderingModule with DurationOpsModule with HumanRenderingModule with StringOpsModule with StylePrintModule =>
+  this: AnsiModule with AnyOpsModule with CalendarOpsModule with CustomRenderingModule with DurationOpsModule with HumanRenderingModule with StringOpsModule with StylePrintModule with Tuple2OpsModule =>
 
   import scala.reflect.runtime.universe._
 
-  final implicit def TraversableOpsFromSpells[T](value: Traversable[T])(implicit typeTag: TypeTag[T], rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any): CustomRendering = new CustomRendering {
+  final implicit def TraversableOpsFromSpells[A, T[A] <: Traversable[A]](value: T[A])(implicit typeTag: TypeTag[T[A]], rendering: A => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any): CustomRendering = new CustomRendering {
     def rendered(implicit availableWidthInCharacters: CustomRenderingModule#AvailableWidthInCharacters = CustomRendering.Defaults.AvailableWidthInCharacters): String = {
-      lazy val className = value.decodedClassName
       lazy val typeName = typeTag.tpe.toString.withDecodedScalaSymbols
 
-      render[Traversable[T]](value, _.isEmpty, _.size, value.toString, className, typeName, availableWidthInCharacters) { in =>
+      render[T[A]](value, _.isEmpty, _.size, value.toString, typeName, availableWidthInCharacters) { in =>
         { availableWidthInCharacters =>
           var result: Vector[(String, String)] = Vector.empty[(String, String)]
           var index = 0
@@ -25,11 +24,11 @@ trait TraversableOpsModule {
     }
   }
 
-  final implicit def ArrayOpsFromSpells[T](value: Array[T])(implicit typeTag: TypeTag[T], rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any): CustomRendering = new CustomRendering {
+  final implicit def MapOpsFromSpells[Key, Value, T[Key, Value] <: Map[Key, Value]](value: T[Key, Value])(implicit typeTag: TypeTag[T[Key, Value]], rendering: Tuple2[Key, Value] => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any): CustomRendering = new CustomRendering {
     def rendered(implicit availableWidthInCharacters: CustomRenderingModule#AvailableWidthInCharacters = CustomRendering.Defaults.AvailableWidthInCharacters): String = {
       lazy val typeName = typeTag.tpe.toString.withDecodedScalaSymbols
 
-      render[Array[T]](value, _.isEmpty, _.size, s"Array()", "Array", typeName, availableWidthInCharacters) { in =>
+      render[T[Key, Value]](value, _.isEmpty, _.size, value.toString, typeName, availableWidthInCharacters) { in =>
         { availableWidthInCharacters =>
           var result: Vector[(String, String)] = Vector.empty[(String, String)]
           var index = 0
@@ -44,12 +43,31 @@ trait TraversableOpsModule {
     }
   }
 
-  final implicit def CollectionOpsFromSpells[T](value: java.util.Collection[T])(implicit typeTag: TypeTag[T], rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any): CustomRendering = new CustomRendering {
+  final implicit def ArrayOpsFromSpells[A, T[A] <: Array[A]](value: T[A])(implicit typeTag: TypeTag[T[A]], rendering: A => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any): CustomRendering = new CustomRendering {
+    def rendered(implicit availableWidthInCharacters: CustomRenderingModule#AvailableWidthInCharacters = CustomRendering.Defaults.AvailableWidthInCharacters): String = {
+      lazy val typeName = typeTag.tpe.toString.withDecodedScalaSymbols
+
+      render[T[A]](value, _.isEmpty, _.size, s"Array()", typeName, availableWidthInCharacters) { in =>
+        { availableWidthInCharacters =>
+          var result: Vector[(String, String)] = Vector.empty[(String, String)]
+          var index = 0
+          value foreach { element =>
+            result :+= (index.toString -> element.rendered(availableWidthInCharacters))
+            index += 1
+          }
+
+          result
+        }
+      }
+    }
+  }
+
+  final implicit def CollectionOpsFromSpells[A, T[A] <: java.util.Collection[A]](value: T[A])(implicit typeTag: TypeTag[T[A]], rendering: A => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any): CustomRendering = new CustomRendering {
     def rendered(implicit availableWidthInCharacters: CustomRenderingModule#AvailableWidthInCharacters = CustomRendering.Defaults.AvailableWidthInCharacters): String = {
       lazy val className = value.decodedClassName
       lazy val typeName = typeTag.tpe.toString.withDecodedScalaSymbols
 
-      render[java.util.Collection[T]](value, _.isEmpty, _.size, s"$className()", className, typeName, availableWidthInCharacters) { in =>
+      render[T[A]](value, _.isEmpty, _.size, s"$className()", typeName, availableWidthInCharacters) { in =>
         { availableWidthInCharacters =>
           var result: Vector[(String, String)] = Vector.empty[(String, String)]
           var index = 0
@@ -66,12 +84,12 @@ trait TraversableOpsModule {
     }
   }
 
-  final implicit def MapOpsFromSpells[Key, Value](value: java.util.Map[Key, Value])(implicit typeTag: TypeTag[java.util.Map.Entry[Key, Value]], rendering: java.util.Map.Entry[Key, Value] => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any): CustomRendering = new CustomRendering {
+  final implicit def JavaMapOpsFromSpells[Key, Value, T[Key, Value] <: java.util.Map[Key, Value]](value: T[Key, Value])(implicit typeTag: TypeTag[T[Key, Value]], rendering: java.util.Map.Entry[Key, Value] => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any): CustomRendering = new CustomRendering {
     def rendered(implicit availableWidthInCharacters: CustomRenderingModule#AvailableWidthInCharacters = CustomRendering.Defaults.AvailableWidthInCharacters): String = {
       lazy val className = value.decodedClassName
       lazy val typeName = typeTag.tpe.toString.withDecodedScalaSymbols
 
-      render[java.util.Map[Key, Value]](value, _.isEmpty, _.size, s"$className()", className, typeName, availableWidthInCharacters) { in =>
+      render[java.util.Map[Key, Value]](value, _.isEmpty, _.size, s"$className()", typeName, availableWidthInCharacters) { in =>
         { availableWidthInCharacters =>
           var result: Vector[(String, String)] = Vector.empty[(String, String)]
           var index = 0
@@ -88,13 +106,12 @@ trait TraversableOpsModule {
     }
   }
 
-  private final def render[T](value: => T, isEmpty: T => Boolean, getSize: T => Int, emptyRendered: => String, className: => String, typeName: => String, availableWidthInCharacters: Int)(pairs: T => Int => Seq[(String, String)]): String = {
+    private final def render[T](value: => T, isEmpty: T => Boolean, getSize: T => Int, emptyRendered: => String, typeName: => String, availableWidthInCharacters: Int)(pairs: T => Int => Seq[(String, String)]): String = {
     def nonEmptyRendered: String = {
       val size = getSize(value)
       val sizeString = if (size == 1) "1 element" else s"$size elements"
 
-      val header = s"$className[$typeName] with $sizeString"
-      header + ":\n\n" + renderedTable(pairs(value), availableWidthInCharacters).mkString("\n")
+      s"$typeName with $sizeString" + ":\n\n" + renderedTable(pairs(value), availableWidthInCharacters).mkString("\n")
     }
 
     if (isEmpty(value)) emptyRendered else nonEmptyRendered

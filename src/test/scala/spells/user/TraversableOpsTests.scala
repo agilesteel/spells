@@ -35,7 +35,7 @@ class TraversableOpsTests extends spells.UnitTestConfiguration {
   }
 
   test("A traversable heaeder should contain the class of the traversable parameterised with the type of its elements as well the number of elements the traversable contains") {
-    Traversable(1).rendered should include("scala.collection.immutable.::[Int] with 1 element:\n\n")
+    Traversable(1).rendered should include("Traversable[Int] with 1 element:\n\n")
   }
 
   test("An array heaeder should contain the class word Array parameterised with the type of its elements as well the number of elements the traversable contains") {
@@ -47,7 +47,7 @@ class TraversableOpsTests extends spells.UnitTestConfiguration {
 
     // format: OFF
     val expected =
-      "scala.collection.immutable.::[java.lang.String] with 3 elements:" + "\n" +
+      "Seq[java.lang.String] with 3 elements:" + "\n" +
       "" + "\n" +
       "0 | I" + "\n" +
       "1 | II" + "\n" +
@@ -59,23 +59,23 @@ class TraversableOpsTests extends spells.UnitTestConfiguration {
 
   test("This is how recursive renderng for traversables should work") {
     val inner = Seq("I", "II", "III")
-    val actual = Seq(inner, inner, inner).rendered
+    val actual = List(inner, inner, inner).rendered
 
     // format: OFF
     val expected =
-      "scala.collection.immutable.::[Seq[java.lang.String]] with 3 elements:" + "\n" +
+      "List[Seq[java.lang.String]] with 3 elements:" + "\n" +
       "" + "\n" +
-      "0 | scala.collection.immutable.::[java.lang.String] with 3 elements:" + "\n" +
+      "0 | Seq[java.lang.String] with 3 elements:" + "\n" +
       "  | " + "\n" +
       "  | 0 | I" + "\n" +
       "  | 1 | II" + "\n" +
       "  | 2 | III" + "\n" +
-      "1 | scala.collection.immutable.::[java.lang.String] with 3 elements:" + "\n" +
+      "1 | Seq[java.lang.String] with 3 elements:" + "\n" +
       "  | " + "\n" +
       "  | 0 | I" + "\n" +
       "  | 1 | II" + "\n" +
       "  | 2 | III" + "\n" +
-      "2 | scala.collection.immutable.::[java.lang.String] with 3 elements:" + "\n" +
+      "2 | Seq[java.lang.String] with 3 elements:" + "\n" +
       "  | " + "\n" +
       "  | 0 | I" + "\n" +
       "  | 1 | II" + "\n" +
@@ -94,13 +94,13 @@ class TraversableOpsTests extends spells.UnitTestConfiguration {
     val zs = atom('z')
 
     val inner = Seq(xs + " " + xs, ys + " " + ys, zs + " " + zs)
-    val actual = Seq(inner, inner, inner).rendered
+    val actual = List(inner, inner, inner).rendered
 
     // format: OFF
     val expected =
-      "scala.collection.immutable.::[Seq[java.lang.String]] with 3 elements:" + "\n" +
+      "List[Seq[java.lang.String]] with 3 elements:" + "\n" +
       "" + "\n" +
-      "0 | scala.collection.immutable.::[java.lang.String] with 3 elements:" + "\n" +
+      "0 | Seq[java.lang.String] with 3 elements:" + "\n" +
       "  | " + "\n" +
       "  | 0 | " + xs + "\n" +
       "  |   | " + xs + "\n" +
@@ -108,7 +108,7 @@ class TraversableOpsTests extends spells.UnitTestConfiguration {
       "  |   | " + ys + "\n" +
       "  | 2 | " + zs + "\n" +
       "  |   | " + zs + "\n" +
-      "1 | scala.collection.immutable.::[java.lang.String] with 3 elements:" + "\n" +
+      "1 | Seq[java.lang.String] with 3 elements:" + "\n" +
       "  | " + "\n" +
       "  | 0 | " + xs + "\n" +
       "  |   | " + xs + "\n" +
@@ -116,7 +116,7 @@ class TraversableOpsTests extends spells.UnitTestConfiguration {
       "  |   | " + ys + "\n" +
       "  | 2 | " + zs + "\n" +
       "  |   | " + zs + "\n" +
-      "2 | scala.collection.immutable.::[java.lang.String] with 3 elements:" + "\n" +
+      "2 | Seq[java.lang.String] with 3 elements:" + "\n" +
       "  | " + "\n" +
       "  | 0 | " + xs + "\n" +
       "  |   | " + xs + "\n" +
@@ -134,7 +134,7 @@ class TraversableOpsTests extends spells.UnitTestConfiguration {
 
     // format: OFF
     val expected =
-      "scala.collection.immutable.Map$Map3[(Int, java.lang.String)] with 3 elements:" + "\n" +
+      "scala.collection.immutable.Map[Int,java.lang.String] with 3 elements:" + "\n" +
       "" + "\n" +
       "0 | 1 -> I" + "\n" +
       "1 | 2 -> II" + "\n" +
@@ -150,7 +150,7 @@ class TraversableOpsTests extends spells.UnitTestConfiguration {
 
     // format: OFF
     val expected =
-      "scala.collection.immutable.::[java.util.Calendar] with 1 element:" + "\n" +
+      "List[java.util.Calendar] with 1 element:" + "\n" +
       "" + "\n" +
       "0 | " + now.rendered
     // format: ON
@@ -192,7 +192,7 @@ class TraversableOpsTests extends spells.UnitTestConfiguration {
 
     // format: OFF
     val expected =
-      "java.util.HashMap[java.util.Map.Entry[Int,String]] with 3 elements:" + "\n" +
+      "java.util.HashMap[Int,String] with 3 elements:" + "\n" +
       "" + "\n" +
       "0 | 1 -> I" + "\n" +
       "1 | 2 -> II" + "\n" +
