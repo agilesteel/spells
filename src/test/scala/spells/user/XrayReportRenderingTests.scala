@@ -176,7 +176,8 @@ object XrayReportRenderingTests {
     stackTraceElement: StackTraceElement = stackTraceElement,
     timestamp: Calendar = timestamp,
     description: String = description,
-    rendering: T => spells.CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any): XrayReport[T] =
+    rendering: T => spells.CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any
+  ): XrayReport[T] =
     new XrayReport[T](
       value = reportValue,
       duration = duration,

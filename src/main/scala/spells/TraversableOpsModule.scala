@@ -106,7 +106,7 @@ trait TraversableOpsModule {
     }
   }
 
-    private final def render[T](value: => T, isEmpty: T => Boolean, getSize: T => Int, emptyRendered: => String, typeName: => String, availableWidthInCharacters: Int)(pairs: T => Int => Seq[(String, String)]): String = {
+  private final def render[T](value: => T, isEmpty: T => Boolean, getSize: T => Int, emptyRendered: => String, typeName: => String, availableWidthInCharacters: Int)(pairs: T => Int => Seq[(String, String)]): String = {
     def nonEmptyRendered: String = {
       val size = getSize(value)
       val sizeString = if (size == 1) "1 element" else s"$size elements"

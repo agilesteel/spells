@@ -7,7 +7,7 @@ addSbtPlugin("com.timushev.sbt" % "sbt-updates" % "0.1.9")
 
 addSbtPlugin("com.typesafe.sbt" % "sbt-pgp" % "0.8.1")
 
-addSbtPlugin("com.typesafe.sbt" % "sbt-scalariform" % "1.3.0")
+addSbtPlugin("org.scalariform" % "sbt-scalariform" % "1.5.1")
 
 addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.0.4")
 

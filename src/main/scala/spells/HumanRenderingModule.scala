@@ -57,7 +57,8 @@ trait HumanRenderingModule {
       minutes: Long = 0,
       seconds: Long = 0,
       milliseconds: Long = 0,
-      nanoseconds: Long = 0) {
+      nanoseconds: Long = 0
+  ) {
     override val toString = if (isPositiveOrZero) calculated else recalculated
 
     private final lazy val isPositiveOrZero: Boolean =

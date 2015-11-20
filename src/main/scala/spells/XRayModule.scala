@@ -59,7 +59,8 @@ trait XrayModule {
       final val description: String,
       final val thread: Thread,
       final val style: AnsiModule#AnsiStyle = Reset,
-      rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any) extends CustomRendering {
+      rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any
+  ) extends CustomRendering {
     override final def rendered(implicit availableWidthInCharacters: CustomRenderingModule#AvailableWidthInCharacters = CustomRendering.Defaults.AvailableWidthInCharacters): String = {
       def lines(availableWidthInCharacters: Int): Seq[(String, String)] = {
         val contentLines = {
@@ -92,15 +93,15 @@ trait XrayModule {
         XrayReport.customRenderedTableForXray(
           lines,
           styles = Map[String, AnsiModule#AnsiStyle](
-            "DateTime" -> SpellsConfig.xray.report.styles.DateTime,
-            "Duration" -> SpellsConfig.xray.report.styles.Duration,
-            "Location" -> SpellsConfig.xray.report.styles.Location,
-            "HashCode" -> SpellsConfig.xray.report.styles.HashCode,
-            "Thread" -> SpellsConfig.xray.report.styles.Thread,
-            "Class" -> SpellsConfig.xray.report.styles.Class,
-            "Type" -> SpellsConfig.xray.report.styles.Type,
-            "Value" -> SpellsConfig.xray.report.styles.Value
-          ) withDefaultValue Reset,
+          "DateTime" -> SpellsConfig.xray.report.styles.DateTime,
+          "Duration" -> SpellsConfig.xray.report.styles.Duration,
+          "Location" -> SpellsConfig.xray.report.styles.Location,
+          "HashCode" -> SpellsConfig.xray.report.styles.HashCode,
+          "Thread" -> SpellsConfig.xray.report.styles.Thread,
+          "Class" -> SpellsConfig.xray.report.styles.Class,
+          "Type" -> SpellsConfig.xray.report.styles.Type,
+          "Value" -> SpellsConfig.xray.report.styles.Value
+        ) withDefaultValue Reset,
           availableWidthInCharacters
         )
 
