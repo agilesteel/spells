@@ -72,9 +72,9 @@ class XrayReportRenderingTests extends spells.UnitTestConfiguration {
   }
 
   test("""If value conains '\n' it should be rendered on the new line""") {
-    val newReportString = XrayReportRenderingTests.createReport(reportValue = "first\nsecond").rendered
+    val newReportString = XrayReportRenderingTests.createReport(reportValue = "firstX\nsecond").rendered
 
-    newReportString should include(s"Value    | ${"first".magenta}")
+    newReportString should include(s"Value    | ${"firstX".magenta}")
     newReportString should include(s"         | ${"second".magenta}")
   }
 
@@ -83,6 +83,14 @@ class XrayReportRenderingTests extends spells.UnitTestConfiguration {
     val reportWithStyle = XrayReportRenderingTests.createReport(reportValue = withStyle)
 
     reportWithStyle.rendered should include(s"Value    | ${styled(withStyle)(Magenta)}")
+  }
+
+  test("Styled values should be deeply (other styles should not be lost) rendered in magenta") {
+    val startsWithStyleAndThereforeEndsWithReset = styled("first\nsecond")(Red)
+    val newReportString = XrayReportRenderingTests.createReport(reportValue = startsWithStyleAndThereforeEndsWithReset).rendered
+
+    newReportString should include(s"Value    | ${Magenta.value}${"first".red}")
+    newReportString should include(s"         | ${"second".red}")
   }
 
   test("Nulls should be rendered as values and thus not throw exceptions") {
@@ -166,6 +174,15 @@ class XrayReportRenderingTests extends spells.UnitTestConfiguration {
 
   test("The customRenderedTableForXray helper method should yield an empty Seq when given an empty input") {
     XrayReport.customRenderedTableForXray(_ => Seq.empty, styles = Map.empty, availableWidthInCharacters = util.Random.nextInt) should be(Vector.empty[String])
+  }
+
+  test("CustomRendering style loss test #infinity") {
+    val value = styled("first\nsecond")(Red)
+    val inner = xrayed(value)
+    val outer = xrayed(inner)
+
+    outer.rendered should include(s"         | ${Magenta.value}Value    | ${Reset.value}${Magenta.value}${Red.value}first")
+    outer.rendered should include(s"         | ${Magenta.value}         | ${Reset.value}${Red.value}second")
   }
 }
 

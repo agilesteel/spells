@@ -26,14 +26,13 @@ trait StylePrintModule {
   }
 
   object StylePrint {
-    private[spells] final val Multiline: String = """?s"""
     private[spells] final val Anything: String = """.*?"""
+    private[spells] final val Multiline: String = """?s"""
 
+    private[spells] final val ResetOnly: String = """\033\[0m"""
     private[spells] final val StyleOnly: String = """\033\[\d{2}m"""
     private[spells] final val StyleOrReset: String = """\033\[\d{1,2}m"""
-    private[spells] final val ResetValue: String = """\033\[0m"""
 
-    private[spells] final val AnsiPattern = s"""($Multiline)($Anything)($StyleOnly$Anything$ResetValue)($Anything)""".r
+    private[spells] final val AnsiPattern = s"""($Multiline)($Anything)($StyleOnly$Anything$ResetOnly)($Anything)""".r
   }
 }
-

@@ -6,6 +6,7 @@ trait XrayModule {
   import java.util.Calendar
   import scala.concurrent.duration._
   import scala.reflect.runtime.universe._
+  import scala.util.matching.Regex
 
   final def xrayed[T](expression: => T, description: XrayModule#Description = Xray.Defaults.Description, increaseStackTraceDepthBy: Int = 0)(implicit typeTag: TypeTag[T], style: AnsiModule#AnsiStyle = Reset, rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any): XrayModule#XrayReport[T] = {
     val stackTraceElement = currentLineStackTraceElement(increaseStackTraceDepthBy - 1)
@@ -84,7 +85,10 @@ trait XrayModule {
           (metaContent ++ classOrTypeOrBoth).flatten
         }
 
-        contentLines :+ "Value" -> (Option(value).fold("null")(rendering(_).rendered(availableWidthInCharacters))) map {
+        contentLines :+ "Value" -> (Option(value).fold("null") {
+          case in: CustomRendering => in.rendered(availableWidthInCharacters)
+          case in => rendering(in).rendered(availableWidthInCharacters)
+        }) map {
           case (key, value) => key.toString -> value.toString
         }
       }
@@ -144,57 +148,62 @@ trait XrayModule {
         in(maxWidthInCharacters).foldLeft(Vector.empty[String]) {
           case (result, (key, value)) =>
             val keyWithPadding = key.padTo(sizeOfTheBiggestKey, ' ')
+
             val line = {
               val actualValue = value wrappedOnSpaces maxWidthInCharacters
 
               if (!(actualValue contains "\n"))
                 keyWithPadding + separator + styled(actualValue)(styles(key))
               else {
-                val subLines = actualValue.split("\n").toList
-                val renderedHead = keyWithPadding + separator + styled(subLines.head)(styles(key)) + "\n"
+                val sublines = actualValue.split("\n").toList
 
-                var previousSubLine = styled(subLines.head)(styles(key))
+                var previousSubline = ""
+                var previousSublineWithoutStylingOfCurrentStep = ""
 
-                val renderedTail = subLines.tail.map { subLine =>
-                  val previousSublineStyle = {
-                    var takenSoFar = ""
-                    var resultingStyle = ""
+                sublines.map { subline =>
+                  val previousSublineStyleOrReset = fetchLastStyleBasedOnRegex(previousSubline, StylePrint.StyleOrReset.r)
 
-                    previousSubLine.reverse.takeWhile { char =>
-                      takenSoFar += char
+                  val thisSubline =
+                    if (previousSublineStyleOrReset.value.isEmpty || previousSublineStyleOrReset.value == Reset.value) {
+                      val previousSublineStyleOnly = fetchLastStyleBasedOnRegex(previousSubline, StylePrint.StyleOnly.r)
 
-                      val theMatch: Option[String] =
-                        StylePrint.StyleOrReset.r findFirstIn takenSoFar.reverse
+                      if (previousSublineStyleOnly.value.nonEmpty && previousSublineWithoutStylingOfCurrentStep.lastIndexOf(previousSublineStyleOnly.value) > previousSublineWithoutStylingOfCurrentStep.lastIndexOf(Reset.value))
+                        styled(subline)(previousSublineStyleOnly)
+                      else
+                        styled(subline)(styles(key))
+                    } else styled(subline)(previousSublineStyleOrReset)
 
-                      theMatch foreach (resultingStyle = _)
-
-                      theMatch.isEmpty
-                    }
-
-                    resultingStyle.toAnsiStyle
+                  if (thisSubline.nonEmpty) {
+                    previousSubline = thisSubline
+                    previousSublineWithoutStylingOfCurrentStep = subline
                   }
 
-                  val thisSubLine =
-                    if (previousSublineStyle.value == Reset.value)
-                      styled(subLine)(styles(key))
-                    else
-                      styled(subLine)(previousSublineStyle)
-
-                  val result = (" " * sizeOfTheBiggestKey) + separator + thisSubLine
-
-                  if (thisSubLine.nonEmpty)
-                    previousSubLine = thisSubLine
-
-                  result
-                }.mkString("\n")
-
-                renderedHead + renderedTail
+                  (" " * sizeOfTheBiggestKey) + separator + thisSubline
+                }.mkString("\n").replaceFirst(" " * sizeOfTheBiggestKey, keyWithPadding)
               }
             }
 
             result :+ line
         }
       }
+    }
+
+    private[spells] final def fetchLastStyleBasedOnRegex(line: String, regex: Regex): AnsiModule#AnsiStyle = {
+      var style = ""
+      var takenSoFar = ""
+
+      line.reverse takeWhile { char =>
+        takenSoFar += char
+
+        val theMatch: Option[String] =
+          regex findFirstIn takenSoFar.reverse
+
+        theMatch foreach (style = _)
+
+        theMatch.isEmpty
+      }
+
+      style.toAnsiStyle
     }
   }
 }
