@@ -1,7 +1,7 @@
 package spells
 
 trait StringOpsModule {
-  implicit class StringOpsFromSpells(input: String) {
+  implicit final class StringOpsFromSpells(input: String) {
     final def withDecodedScalaSymbols: String = scala.reflect.NameTransformer decode input
 
     final def wrappedOnSpaces(limit: Int): String = {
@@ -49,4 +49,3 @@ trait StringOpsModule {
     }
   }
 }
-

@@ -5,8 +5,8 @@ trait TraversableOpsModule {
 
   import scala.reflect.runtime.universe._
 
-  final implicit def TraversableOpsFromSpells[A, T[A] <: Traversable[A]](value: T[A])(implicit typeTag: TypeTag[T[A]], rendering: A => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any): CustomRendering = new CustomRendering {
-    def rendered(implicit availableWidthInCharacters: CustomRenderingModule#AvailableWidthInCharacters = CustomRendering.Defaults.AvailableWidthInCharacters): String = {
+  implicit final def TraversableOpsFromSpells[A, T[A] <: Traversable[A]](value: T[A])(implicit typeTag: TypeTag[T[A]], rendering: A => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any): CustomRendering = new CustomRendering {
+    override final def rendered(implicit availableWidthInCharacters: CustomRenderingModule#AvailableWidthInCharacters = CustomRendering.Defaults.AvailableWidthInCharacters): String = {
       lazy val typeName = typeTag.tpe.toString.withDecodedScalaSymbols
 
       render[T[A]](value, _.isEmpty, _.size, value.toString, typeName, availableWidthInCharacters) { in =>
@@ -24,8 +24,8 @@ trait TraversableOpsModule {
     }
   }
 
-  final implicit def MapOpsFromSpells[Key, Value, T[Key, Value] <: Map[Key, Value]](value: T[Key, Value])(implicit typeTag: TypeTag[T[Key, Value]], rendering: Tuple2[Key, Value] => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any): CustomRendering = new CustomRendering {
-    def rendered(implicit availableWidthInCharacters: CustomRenderingModule#AvailableWidthInCharacters = CustomRendering.Defaults.AvailableWidthInCharacters): String = {
+  implicit final def MapOpsFromSpells[Key, Value, T[Key, Value] <: Map[Key, Value]](value: T[Key, Value])(implicit typeTag: TypeTag[T[Key, Value]], rendering: Tuple2[Key, Value] => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any): CustomRendering = new CustomRendering {
+    override final def rendered(implicit availableWidthInCharacters: CustomRenderingModule#AvailableWidthInCharacters = CustomRendering.Defaults.AvailableWidthInCharacters): String = {
       lazy val typeName = typeTag.tpe.toString.withDecodedScalaSymbols
 
       render[T[Key, Value]](value, _.isEmpty, _.size, value.toString, typeName, availableWidthInCharacters) { in =>
@@ -43,8 +43,8 @@ trait TraversableOpsModule {
     }
   }
 
-  final implicit def ArrayOpsFromSpells[A, T[A] <: Array[A]](value: T[A])(implicit typeTag: TypeTag[T[A]], rendering: A => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any): CustomRendering = new CustomRendering {
-    def rendered(implicit availableWidthInCharacters: CustomRenderingModule#AvailableWidthInCharacters = CustomRendering.Defaults.AvailableWidthInCharacters): String = {
+  implicit final def ArrayOpsFromSpells[A, T[A] <: Array[A]](value: T[A])(implicit typeTag: TypeTag[T[A]], rendering: A => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any): CustomRendering = new CustomRendering {
+    override final def rendered(implicit availableWidthInCharacters: CustomRenderingModule#AvailableWidthInCharacters = CustomRendering.Defaults.AvailableWidthInCharacters): String = {
       lazy val typeName = typeTag.tpe.toString.withDecodedScalaSymbols
 
       render[T[A]](value, _.isEmpty, _.size, s"Array()", typeName, availableWidthInCharacters) { in =>
@@ -62,8 +62,8 @@ trait TraversableOpsModule {
     }
   }
 
-  final implicit def CollectionOpsFromSpells[A, T[A] <: java.util.Collection[A]](value: T[A])(implicit typeTag: TypeTag[T[A]], rendering: A => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any): CustomRendering = new CustomRendering {
-    def rendered(implicit availableWidthInCharacters: CustomRenderingModule#AvailableWidthInCharacters = CustomRendering.Defaults.AvailableWidthInCharacters): String = {
+  implicit final def CollectionOpsFromSpells[A, T[A] <: java.util.Collection[A]](value: T[A])(implicit typeTag: TypeTag[T[A]], rendering: A => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any): CustomRendering = new CustomRendering {
+    override final def rendered(implicit availableWidthInCharacters: CustomRenderingModule#AvailableWidthInCharacters = CustomRendering.Defaults.AvailableWidthInCharacters): String = {
       lazy val className = value.decodedClassName
       lazy val typeName = typeTag.tpe.toString.withDecodedScalaSymbols
 
@@ -84,8 +84,8 @@ trait TraversableOpsModule {
     }
   }
 
-  final implicit def JavaMapOpsFromSpells[Key, Value, T[Key, Value] <: java.util.Map[Key, Value]](value: T[Key, Value])(implicit typeTag: TypeTag[T[Key, Value]], rendering: java.util.Map.Entry[Key, Value] => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any): CustomRendering = new CustomRendering {
-    def rendered(implicit availableWidthInCharacters: CustomRenderingModule#AvailableWidthInCharacters = CustomRendering.Defaults.AvailableWidthInCharacters): String = {
+  implicit final def JavaMapOpsFromSpells[Key, Value, T[Key, Value] <: java.util.Map[Key, Value]](value: T[Key, Value])(implicit typeTag: TypeTag[T[Key, Value]], rendering: java.util.Map.Entry[Key, Value] => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any): CustomRendering = new CustomRendering {
+    override final def rendered(implicit availableWidthInCharacters: CustomRenderingModule#AvailableWidthInCharacters = CustomRendering.Defaults.AvailableWidthInCharacters): String = {
       lazy val className = value.decodedClassName
       lazy val typeName = typeTag.tpe.toString.withDecodedScalaSymbols
 

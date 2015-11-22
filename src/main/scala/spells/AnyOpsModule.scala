@@ -3,11 +3,13 @@ package spells
 trait AnyOpsModule {
   this: StringOpsModule =>
 
-  implicit class AnyOpsFromSpells(input: Any) {
-    final def decodedSimpleClassName: String = orNull(input.getClass.getSimpleName.withDecodedScalaSymbols)
-    final def decodedClassName: String = orNull(input.getClass.getName.withDecodedScalaSymbols)
+  implicit final class AnyOpsFromSpells(input: Any) {
+    final def decodedClassName: String =
+      Option(input).fold(Null)(_.getClass.getName.withDecodedScalaSymbols)
 
-    private final def orNull(name: => String): String =
-      if (input == null) "Null" else name
+    final def decodedSimpleClassName: String =
+      Option(input).fold(Null)(_.getClass.getSimpleName.withDecodedScalaSymbols)
+
+    private final val Null: String = "Null"
   }
 }

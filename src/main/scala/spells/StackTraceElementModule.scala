@@ -3,7 +3,7 @@ package spells
 trait StackTraceElementModule {
   this: CustomRenderingModule with SpellsConfigModule =>
 
-  implicit class StackTraceElementOpsFromSpells(value: StackTraceElement) extends CustomRendering {
+  implicit final class StackTraceElementOpsFromSpells(value: StackTraceElement) extends CustomRendering {
     override final def rendered(implicit availableWidthInCharacters: CustomRenderingModule#AvailableWidthInCharacters = CustomRendering.Defaults.AvailableWidthInCharacters): String = {
       val fileNameOrUnknownSource =
         if (value.getFileName != null)

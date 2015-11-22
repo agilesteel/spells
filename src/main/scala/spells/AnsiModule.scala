@@ -4,22 +4,18 @@ trait AnsiModule {
   this: SpellsConfigModule with StylePrintModule =>
 
   implicit final class AnsiStyleBuilder(style: String) {
-    def toAnsiStyle: AnsiModule#AnsiStyle = {
-      require(style != null)
-
-      style match {
-        case "Untouched" => AnsiStyle.Reset
-        case "Random" => AnsiStyle.Random
-        case "Black" => AnsiStyle.Black
-        case "Red" => AnsiStyle.Red
-        case "Green" => AnsiStyle.Green
-        case "Yellow" => AnsiStyle.Yellow
-        case "Blue" => AnsiStyle.Blue
-        case "Magenta" => AnsiStyle.Magenta
-        case "Cyan" => AnsiStyle.Cyan
-        case "White" => AnsiStyle.White
-        case _ => new AnsiStyle(style.replace("\\033", "\u001b"))
-      }
+    final def toAnsiStyle: AnsiModule#AnsiStyle = style match {
+      case "Untouched" => AnsiStyle.Reset
+      case "Random" => AnsiStyle.Random
+      case "Black" => AnsiStyle.Black
+      case "Red" => AnsiStyle.Red
+      case "Green" => AnsiStyle.Green
+      case "Yellow" => AnsiStyle.Yellow
+      case "Blue" => AnsiStyle.Blue
+      case "Magenta" => AnsiStyle.Magenta
+      case "Cyan" => AnsiStyle.Cyan
+      case "White" => AnsiStyle.White
+      case _ => new AnsiStyle(Option(style).fold("")(_.replace("\\033", "\u001b")))
     }
   }
 
@@ -62,7 +58,7 @@ trait AnsiModule {
     final val White: AnsiModule#AnsiStyle = Console.WHITE.toAnsiStyle
     final def Random: AnsiModule#AnsiStyle = All(util.Random.nextInt(All.size))
 
-    private[spells] final val All: Vector[AnsiModule#AnsiStyle] =
+    final val All: Vector[AnsiModule#AnsiStyle] =
       Vector(
         Black,
         Red,

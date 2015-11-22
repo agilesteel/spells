@@ -21,10 +21,10 @@ trait XrayModule {
     new XrayReport(value, stop.nanos, stackTraceElement, now, description.toString, Thread.currentThread, style, rendering)
   }
 
-  def currentLineStackTraceElement(implicit increaseStackTraceDepthBy: Int = 0): StackTraceElement =
+  final def currentLineStackTraceElement(implicit increaseStackTraceDepthBy: Int = 0): StackTraceElement =
     Thread.currentThread.getStackTrace apply increaseStackTraceDepthBy + 6
 
-  implicit class XrayFromSpells[T](expression: => T)(implicit typeTag: TypeTag[T], style: AnsiModule#AnsiStyle = AnsiStyle.Reset, rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any, monitor: XrayModule#XrayReport[T] => Unit = (report: XrayModule#XrayReport[T]) => Console.println(report.rendered)) {
+  implicit final class XrayFromSpells[T](expression: => T)(implicit typeTag: TypeTag[T], style: AnsiModule#AnsiStyle = AnsiStyle.Reset, rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any, monitor: XrayModule#XrayReport[T] => Unit = (report: XrayModule#XrayReport[T]) => Console.println(report.rendered)) {
     def xray(implicit description: XrayModule#Description = Xray.Defaults.Description): T = {
       val report = xrayed(expression, description, increaseStackTraceDepthBy = +1)(typeTag, style, rendering)
 
@@ -43,7 +43,7 @@ trait XrayModule {
     }
   }
 
-  implicit class Description(val value: String) {
+  implicit final class Description(val value: String) {
     override final def toString: String = value
   }
 
@@ -64,7 +64,7 @@ trait XrayModule {
       rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any,
       final val additionalContent: immutable.Seq[(String, String)] = immutable.Seq.empty
   ) extends CustomRendering {
-    def withAdditionalContent(content: immutable.Seq[(String, String)]): XrayModule#XrayReport[T] =
+    final def withAdditionalContent(content: immutable.Seq[(String, String)]): XrayModule#XrayReport[T] =
       new XrayReport(value, duration, stackTraceElement, timestamp, description, thread, style, rendering, content)
 
     override final def rendered(implicit availableWidthInCharacters: CustomRenderingModule#AvailableWidthInCharacters = CustomRendering.Defaults.AvailableWidthInCharacters): String = {

@@ -14,7 +14,7 @@ class CustomRenderingTests extends spells.UnitTestConfiguration {
   }
 
   object CR extends CustomRendering {
-    def rendered(implicit availableWidthInCharacters: spells.CustomRenderingModule#AvailableWidthInCharacters = CustomRendering.Defaults.AvailableWidthInCharacters.value): String =
+    override final def rendered(implicit availableWidthInCharacters: spells.CustomRenderingModule#AvailableWidthInCharacters = CustomRendering.Defaults.AvailableWidthInCharacters.value): String =
       availableWidthInCharacters.toString
   }
 }

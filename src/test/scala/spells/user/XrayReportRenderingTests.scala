@@ -39,7 +39,7 @@ class XrayReportRenderingTests extends spells.UnitTestConfiguration {
   }
 
   test("The datetime should be rendered in full format") {
-    XrayReportRenderingTests.createReport().rendered should include(s"""DateTime | ${new SimpleDateFormat("EEEE, MMMM d, yyyy HH:mm:ss.SSS z Z") format XrayReportRenderingTests.timestamp.getTime}""")
+    XrayReportRenderingTests.createReport().rendered should include(s"""DateTime | ${new SimpleDateFormat(DateOpsFromSpells.Defaults.Format) format XrayReportRenderingTests.timestamp.getTime}""")
   }
 
   test("The duration should be readable by humans") {
@@ -151,7 +151,7 @@ class XrayReportRenderingTests extends spells.UnitTestConfiguration {
     assume(now != XrayReportRenderingTests.timestamp)
 
     xrayed(now).rendered should include {
-      new SimpleDateFormat("EEEE, MMMM d, yyyy HH:mm:ss.SSS z Z").format(now.getTime).magenta
+      new SimpleDateFormat(DateOpsFromSpells.Defaults.Format).format(now.getTime).magenta
     }
   }
 
@@ -199,7 +199,7 @@ class XrayReportRenderingTests extends spells.UnitTestConfiguration {
 
   test("Explicit CustomRendering should be picked up") {
     object OwnSource extends CustomRendering {
-      def rendered(implicit availableWidthInCharacters: spells.CustomRenderingModule#AvailableWidthInCharacters = CustomRendering.Defaults.AvailableWidthInCharacters): String =
+      override final def rendered(implicit availableWidthInCharacters: spells.CustomRenderingModule#AvailableWidthInCharacters = CustomRendering.Defaults.AvailableWidthInCharacters): String =
         "works"
     }
 

@@ -10,7 +10,7 @@ private[spells] trait LocationAwareConfigModule {
 
   final lazy val spellsConfig: Config = loadSpellsConfig
 
-  def loadSpellsConfig: Config =
+  protected def loadSpellsConfig: Config =
     if (userConfig.exists)
       load(parseFile(userConfig)).withFallback(load)
     else load

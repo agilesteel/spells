@@ -11,10 +11,8 @@ class AnsiTests extends spells.UnitTestConfiguration {
     "style".toAnsiStyle.value should be(new AnsiStyle("style").value)
   }
 
-  test("""An IllegalArgumentException should be thrownBy (null: String).toAnsiStyle""") {
-    an[IllegalArgumentException] should be thrownBy {
-      (null: String).toAnsiStyle
-    }
+  test("""The null.toAnsiStyle call should yield an empty AnsiStyle """) {
+    (null: String).toAnsiStyle.value should be(new AnsiStyle("").value)
   }
 
   test(""""green" in customStyle should be(customStyle.value + "green" + Reset.value)""") {

@@ -3,8 +3,6 @@ package spells
 trait StylePrintModule {
   this: AnsiModule with SpellsConfigModule =>
 
-  import StylePrint._
-
   final def println(input: Any = "")(implicit style: AnsiModule#AnsiStyle = AnsiStyle.Reset): Unit = {
     Console println styled(input)(style)
   }
@@ -21,18 +19,18 @@ trait StylePrintModule {
   }
 
   private final def restyle(input: String, style: AnsiModule#AnsiStyle): String = input match {
-    case AnsiPattern(before, alreadyStyled, after) => restyle(before, style) + alreadyStyled + restyle(after, style)
+    case StylePrint.AnsiPattern(before, alreadyStyled, after) => restyle(before, style) + alreadyStyled + restyle(after, style)
     case _ => if (input.isEmpty) "" else style.value + input + AnsiStyle.Reset.value
   }
 
   object StylePrint {
-    private[spells] final val Anything: String = """.*?"""
-    private[spells] final val Multiline: String = """?s"""
+    private[spells] val Anything: String = """.*?"""
+    private[spells] val Multiline: String = """?s"""
 
-    private[spells] final val ResetOnly: String = """\033\[0m"""
-    private[spells] final val StyleOnly: String = """\033\[\d{2}m"""
-    private[spells] final val StyleOrReset: String = """\033\[\d{1,2}m"""
+    val ResetOnly: String = """\033\[0m"""
+    val StyleOnly: String = """\033\[\d{2}m"""
+    val StyleOrReset: String = """\033\[\d{1,2}m"""
 
-    private[spells] final val AnsiPattern = s"""($Multiline)($Anything)($StyleOnly$Anything$ResetOnly)($Anything)""".r
+    val AnsiPattern = s"""($Multiline)($Anything)($StyleOnly$Anything$ResetOnly)($Anything)""".r
   }
 }
