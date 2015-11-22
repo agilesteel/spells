@@ -6,6 +6,7 @@ trait XrayModule {
   import java.util.Calendar
   import scala.concurrent.duration._
   import scala.reflect.runtime.universe._
+  import scala.collection.immutable
   import scala.util.matching.Regex
 
   final def xrayed[T](expression: => T, description: XrayModule#Description = Xray.Defaults.Description, increaseStackTraceDepthBy: Int = 0)(implicit typeTag: TypeTag[T], style: AnsiModule#AnsiStyle = Reset, rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any): XrayModule#XrayReport[T] = {
@@ -60,14 +61,21 @@ trait XrayModule {
       final val description: String,
       final val thread: Thread,
       final val style: AnsiModule#AnsiStyle = Reset,
-      rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any
+      rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any,
+      final val additionalContent: immutable.Seq[(String, String)] = immutable.Seq.empty
   ) extends CustomRendering {
+    def withAdditionalContent(content: immutable.Seq[(String, String)]): XrayModule#XrayReport[T] =
+      new XrayReport(value, duration, stackTraceElement, timestamp, description, thread, style, rendering, content)
+
     override final def rendered(implicit availableWidthInCharacters: CustomRenderingModule#AvailableWidthInCharacters = CustomRendering.Defaults.AvailableWidthInCharacters): String = {
       def lines(availableWidthInCharacters: Int): Seq[(String, String)] = {
         val contentLines = {
           val metaContent = Vector(
             { if (SpellsConfig.xray.report.display.DateTime) Some("DateTime" -> timestamp.rendered) else None },
-            { if (SpellsConfig.xray.report.display.Duration) Some("Duration" -> duration.rendered) else None },
+            { if (SpellsConfig.xray.report.display.Duration) Some("Duration" -> duration.rendered) else None }
+          )
+
+          val valueRelatedContent = Vector(
             { if (SpellsConfig.xray.report.display.Location) Some("Location" -> stackTraceElement.rendered) else None },
             { if (SpellsConfig.xray.report.display.HashCode && value != null) Some("HashCode" -> value.hashCode) else None },
             { if (SpellsConfig.xray.report.display.Thread) Some("Thread" -> thread) else None }
@@ -82,7 +90,12 @@ trait XrayModule {
             if (`class` == `type`) Vector(typeTuple) else Vector(classTyple, typeTuple)
           }
 
-          (metaContent ++ classOrTypeOrBoth).flatten
+          val liftedAdditionalContent: immutable.Seq[Option[(String, String)]] =
+            Option(additionalContent).getOrElse(immutable.Seq.empty) collect {
+              case (key, value) => Option(String.valueOf(key) -> String.valueOf(value))
+            }
+
+          (metaContent ++ liftedAdditionalContent ++ valueRelatedContent ++ classOrTypeOrBoth).flatten
         }
 
         contentLines :+ "Value" -> (Option(value).fold("null") {

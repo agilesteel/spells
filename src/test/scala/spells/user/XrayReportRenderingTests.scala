@@ -203,6 +203,18 @@ class XrayReportRenderingTests extends spells.UnitTestConfiguration {
 
     xrayed(OwnSource).rendered should include(s"Value    | ${Magenta.value}works")
   }
+
+  test("Additional content for the report") {
+    val report = XrayReportRenderingTests.createReport()
+    val expected = "Key      | Value"
+
+    report.withAdditionalContent(null).rendered should not include expected
+    report.withAdditionalContent(List(null)).rendered should not include expected
+    report.withAdditionalContent(List((null, "Value"))).rendered should include("null     | Value")
+    report.withAdditionalContent(List(("Key", null))).rendered should include("Key      | null")
+    report.withAdditionalContent(List((null, null))).rendered should include("null     | null")
+    report.withAdditionalContent(List("Key" -> "Value")).rendered should include(expected)
+  }
 }
 
 object XrayReportRenderingTests {
