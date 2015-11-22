@@ -185,6 +185,16 @@ class XrayReportRenderingTests extends spells.UnitTestConfiguration {
     outer.rendered should include(s"         | ${Magenta.value}         | ${Reset.value}${Red.value}second")
   }
 
+  test("CustomRendering style loss test #infinity+1") {
+    val value = styled("first\nsecond\nthird")(Red)
+    val inner = xrayed(value)
+    val outer = xrayed(inner)
+
+    outer.rendered should include(s"         | ${Magenta.value}Value    | ${Reset.value}${Magenta.value}${Red.value}first")
+    outer.rendered should include(s"         | ${Magenta.value}         | ${Reset.value}${Red.value}second")
+    outer.rendered should include(s"         | ${Magenta.value}         | ${Reset.value}${Red.value}third")
+  }
+
   test("Explicit CustomRendering should be picked up") {
     object OwnSource extends CustomRendering {
       def rendered(implicit availableWidthInCharacters: spells.CustomRenderingModule#AvailableWidthInCharacters = CustomRendering.Defaults.AvailableWidthInCharacters): String =

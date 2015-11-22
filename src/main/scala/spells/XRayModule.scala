@@ -140,6 +140,7 @@ trait XrayModule {
           case (key, _) => Ansi.removedStyles(key).size
         } max
 
+        val spaces = (" " * sizeOfTheBiggestKey)
         val separator = " | "
 
         val maxWidthInCharacters =
@@ -147,39 +148,29 @@ trait XrayModule {
 
         in(maxWidthInCharacters).foldLeft(Vector.empty[String]) {
           case (result, (key, value)) =>
-            val keyWithPadding = key.padTo(sizeOfTheBiggestKey, ' ')
-
+            val keyPaddedWithSpaces = key.padTo(sizeOfTheBiggestKey, ' ')
             val line = {
               val actualValue = value wrappedOnSpaces maxWidthInCharacters
 
               if (!(actualValue contains "\n"))
-                keyWithPadding + separator + styled(actualValue)(styles(key))
+                keyPaddedWithSpaces + separator + styled(actualValue)(styles(key))
               else {
                 val sublines = actualValue.split("\n").toList
 
-                var previousSubline = ""
-                var previousSublineWithoutStylingOfCurrentStep = ""
+                var previousSublineStyle = "".toAnsiStyle
 
                 sublines.map { subline =>
-                  val previousSublineStyleOrReset = fetchLastStyleBasedOnRegex(previousSubline, StylePrint.StyleOrReset.r)
+                  val styledSubline =
+                    if (previousSublineStyle.value.nonEmpty)
+                      styled(subline)(previousSublineStyle)
+                    else
+                      styled(subline)(styles(key))
 
-                  val thisSubline =
-                    if (previousSublineStyleOrReset.value.isEmpty || previousSublineStyleOrReset.value == Reset.value) {
-                      val previousSublineStyleOnly = fetchLastStyleBasedOnRegex(previousSubline, StylePrint.StyleOnly.r)
+                  if (previousSublineStyle.value.isEmpty)
+                    previousSublineStyle = fetchLastStyleBasedOnRegex(styledSubline, StylePrint.StyleOnly.r)
 
-                      if (previousSublineStyleOnly.value.nonEmpty && previousSublineWithoutStylingOfCurrentStep.lastIndexOf(previousSublineStyleOnly.value) > previousSublineWithoutStylingOfCurrentStep.lastIndexOf(Reset.value))
-                        styled(subline)(previousSublineStyleOnly)
-                      else
-                        styled(subline)(styles(key))
-                    } else styled(subline)(previousSublineStyleOrReset)
-
-                  if (thisSubline.nonEmpty) {
-                    previousSubline = thisSubline
-                    previousSublineWithoutStylingOfCurrentStep = subline
-                  }
-
-                  (" " * sizeOfTheBiggestKey) + separator + thisSubline
-                }.mkString("\n").replaceFirst(" " * sizeOfTheBiggestKey, keyWithPadding)
+                  spaces + separator + styledSubline
+                }.mkString("\n").replaceFirst(spaces, keyPaddedWithSpaces)
               }
             }
 
@@ -194,12 +185,8 @@ trait XrayModule {
 
       line.reverse takeWhile { char =>
         takenSoFar += char
-
-        val theMatch: Option[String] =
-          regex findFirstIn takenSoFar.reverse
-
+        val theMatch: Option[String] = regex findFirstIn takenSoFar.reverse
         theMatch foreach (style = _)
-
         theMatch.isEmpty
       }
 
