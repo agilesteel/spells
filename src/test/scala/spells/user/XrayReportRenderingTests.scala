@@ -184,6 +184,15 @@ class XrayReportRenderingTests extends spells.UnitTestConfiguration {
     outer.rendered should include(s"         | ${Magenta.value}Value    | ${Reset.value}${Magenta.value}${Red.value}first")
     outer.rendered should include(s"         | ${Magenta.value}         | ${Reset.value}${Red.value}second")
   }
+
+  test("Explicit CustomRendering should be picked up") {
+    object OwnSource extends CustomRendering {
+      def rendered(implicit availableWidthInCharacters: spells.CustomRenderingModule#AvailableWidthInCharacters = CustomRendering.Defaults.AvailableWidthInCharacters): String =
+        "works"
+    }
+
+    xrayed(OwnSource).rendered should include(s"Value    | ${Magenta.value}works")
+  }
 }
 
 object XrayReportRenderingTests {
