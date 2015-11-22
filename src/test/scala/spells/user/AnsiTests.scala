@@ -30,8 +30,8 @@ class AnsiTests extends spells.UnitTestConfiguration {
     "Magenta".toAnsiStyle.value should be(Magenta.value)
     "Cyan".toAnsiStyle.value should be(Cyan.value)
     "White".toAnsiStyle.value should be(White.value)
-    Ansi.AllStylesOutOfTheBox should contain(Ansi.RandomStyle)
-    Ansi.AllStylesOutOfTheBox should contain("Random".toAnsiStyle)
+    AnsiStyle.All should contain(AnsiStyle.Random)
+    AnsiStyle.All should contain("Random".toAnsiStyle)
     Green.value.toAnsiStyle.value should be(Green.value)
   }
 

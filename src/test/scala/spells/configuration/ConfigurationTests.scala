@@ -24,7 +24,7 @@ class ConfigurationTests extends spells.UnitTestConfiguration {
 
   test("XrayReport default rendering should use styles from config") {
     new spells.SpellsModule {
-      lazy val ChosenStyle = Ansi.RandomStyle
+      lazy val ChosenStyle = AnsiStyle.Random
 
       override def loadSpellsConfig: Config =
         ConfigFactory parseString {

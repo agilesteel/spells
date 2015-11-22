@@ -123,14 +123,14 @@ trait XrayModule {
         )
 
       val numberOfCharsInTheLongestLine =
-        table.map(Ansi.removedStyles).flatMap(_ split "\n").maxBy(_.size).size
+        table.map(AnsiStyle.removed).flatMap(_ split "\n").maxBy(_.size).size
 
       lazy val hyphens = "-" * (numberOfCharsInTheLongestLine min availableWidthInCharacters)
 
       val centeredHeader = {
         val headerStyleFromConfig: AnsiModule#AnsiStyle = SpellsConfig.xray.report.styles.Description
-        val header = if (Ansi.removedStyles(description).isEmpty) styled("X-Ray")(headerStyleFromConfig) else styled(description)(headerStyleFromConfig)
-        val emptySpace = hyphens.size - Ansi.removedStyles(header).size
+        val header = if (AnsiStyle.removed(description).isEmpty) styled("X-Ray")(headerStyleFromConfig) else styled(description)(headerStyleFromConfig)
+        val emptySpace = hyphens.size - AnsiStyle.removed(header).size
         val leftPadding = " " * (emptySpace / 2)
 
         leftPadding + header
@@ -150,7 +150,7 @@ trait XrayModule {
       if (in(0).isEmpty) Seq.empty
       else {
         val sizeOfTheBiggestKey = in(0) map {
-          case (key, _) => Ansi.removedStyles(key).size
+          case (key, _) => AnsiStyle.removed(key).size
         } max
 
         val spaces = (" " * sizeOfTheBiggestKey)

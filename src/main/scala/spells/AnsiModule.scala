@@ -9,7 +9,7 @@ trait AnsiModule {
 
       style match {
         case "Untouched" => Reset
-        case "Random" => Ansi.RandomStyle
+        case "Random" => AnsiStyle.Random
         case "Black" => Black
         case "Red" => Red
         case "Green" => Green
@@ -34,7 +34,7 @@ trait AnsiModule {
   final val White: AnsiModule#AnsiStyle = Console.WHITE.toAnsiStyle
 
   final class AnsiStyle(val value: String) {
-    override final def toString: String = Ansi.Sample in this
+    override final def toString: String = AnsiStyle.Sample in this
   }
 
   implicit final class AnsiString(val input: Any) {
@@ -42,7 +42,7 @@ trait AnsiModule {
       val rawValue = String valueOf input
 
       if (SpellsConfig.terminal.display.Styles)
-        style.value + Ansi.removedStyles(rawValue) + Reset.value
+        style.value + AnsiStyle.removed(rawValue) + Reset.value
       else rawValue
     }
 
@@ -56,19 +56,13 @@ trait AnsiModule {
     final def white: String = this in White
   }
 
-  object Ansi {
+  object AnsiStyle {
     private[spells] final val Sample: String = "sample"
 
-    final def removedStyles(input: String): String = input.replaceAll(StylePrint.StyleOrReset, "")
+    final def removed(input: String): String = input.replaceAll(StylePrint.StyleOrReset, "")
+    final def Random: AnsiModule#AnsiStyle = All(util.Random.nextInt(All.size))
 
-    final def RandomStyle: AnsiModule#AnsiStyle =
-      AllStylesOutOfTheBox {
-        util.Random.nextInt {
-          AllStylesOutOfTheBox.size
-        }
-      }
-
-    private[spells] final val AllStylesOutOfTheBox: Vector[AnsiModule#AnsiStyle] =
+    private[spells] final val All: Vector[AnsiModule#AnsiStyle] =
       Vector(
         Black,
         Red,
