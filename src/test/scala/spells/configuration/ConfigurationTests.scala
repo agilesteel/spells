@@ -3,12 +3,13 @@ package spells.configuration
 import java.util.Calendar
 import scala.concurrent.duration._
 import scala.reflect.runtime.universe._
+import spells._
 
 import com.typesafe.config.{ Config, ConfigFactory }
 
-class ConfigurationTests extends spells.UnitTestConfiguration {
+class ConfigurationTests extends UnitTestConfiguration {
   test("This is how config injection should work") {
-    new spells.SpellsModule {
+    new Spells {
       override def loadSpellsConfig: Config =
         ConfigFactory parseString {
           """|spells {
@@ -23,7 +24,7 @@ class ConfigurationTests extends spells.UnitTestConfiguration {
   }
 
   test("XrayReport default rendering should use styles from config") {
-    new spells.SpellsModule {
+    new Spells {
       lazy val ChosenStyle = AnsiStyle.Random
 
       override def loadSpellsConfig: Config =
@@ -54,7 +55,7 @@ class ConfigurationTests extends spells.UnitTestConfiguration {
           stackTraceElement: StackTraceElement = stackTraceElement,
           timestamp: Calendar = timestamp,
           description: String = description,
-          rendering: T => spells.CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any
+          rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any
         ): XrayReport[T] =
           new XrayReport[T](
             value = value,
@@ -89,7 +90,7 @@ class ConfigurationTests extends spells.UnitTestConfiguration {
   }
 
   test("XrayReport default rendering should be tweak-able from the config") {
-    new spells.SpellsModule {
+    new Spells {
       override def loadSpellsConfig: Config =
         ConfigFactory parseString {
           s"""|spells {
@@ -116,7 +117,7 @@ class ConfigurationTests extends spells.UnitTestConfiguration {
           stackTraceElement: StackTraceElement = stackTraceElement,
           timestamp: Calendar = timestamp,
           description: String = description,
-          rendering: T => spells.CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any
+          rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any
         ): XrayReport[T] =
           new XrayReport[T](
             value = value,
@@ -160,8 +161,6 @@ class ConfigurationTests extends spells.UnitTestConfiguration {
   }
 
   test("Config validaiton tests") {
-    import spells._
-
     new SpellsConfigModule with StylePrintModule with AnsiModule {
       override def loadSpellsConfig: Config =
         ConfigFactory parseString {
@@ -179,8 +178,6 @@ class ConfigurationTests extends spells.UnitTestConfiguration {
   }
 
   test("Config validaiton error message tests") {
-    import spells._
-
     new SpellsConfigModule with LocationAwarePropertyModule with StylePrintModule with AnsiModule {
       val value = -1
 
@@ -198,8 +195,6 @@ class ConfigurationTests extends spells.UnitTestConfiguration {
   }
 
   test("Config validaiton custom error message tests") {
-    import spells._
-
     new SpellsConfigModule with StylePrintModule with AnsiModule {
       val value = -1
 
@@ -221,8 +216,6 @@ class ConfigurationTests extends spells.UnitTestConfiguration {
   }
 
   test("Turning off styles") {
-    import spells._
-
     new SpellsConfigModule with StylePrintModule with AnsiModule with ErrorPrintModule {
       override def loadSpellsConfig: Config =
         ConfigFactory parseString {
@@ -244,7 +237,7 @@ class ConfigurationTests extends spells.UnitTestConfiguration {
   }
 
   test("Short StackTraceElements") {
-    new spells.SpellsModule {
+    new Spells {
       override def loadSpellsConfig: Config =
         ConfigFactory parseString {
           s"""|spells {
@@ -273,7 +266,7 @@ class ConfigurationTests extends spells.UnitTestConfiguration {
           stackTraceElement: StackTraceElement = stackTraceElement,
           timestamp: Calendar = timestamp,
           description: String = description,
-          rendering: T => spells.CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any
+          rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any
         ): XrayReport[T] =
           new XrayReport[T](
             value = value,

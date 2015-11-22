@@ -1,1 +1,1 @@
-package object compilation extends spells.SpellsModule
+package object compilation extends spells.Spells
