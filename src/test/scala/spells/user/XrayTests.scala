@@ -3,6 +3,8 @@ package spells.user
 import java.text.SimpleDateFormat
 import java.util.Calendar
 
+import AnsiStyle._
+
 class XrayTests extends spells.UnitTestConfiguration {
   test("The expression inside of xray should be evaluated only once") {
     var timesEvaluated = 0

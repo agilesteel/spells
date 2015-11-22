@@ -1,5 +1,7 @@
 package spells.user
 
+import AnsiStyle._
+
 class AnsiTests extends spells.UnitTestConfiguration {
   test("""73.green should be(Green.value + "73" + Reset.value)""") {
     73.green should be(Green.value + "73" + Reset.value)

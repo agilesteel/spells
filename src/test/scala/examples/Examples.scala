@@ -1,5 +1,7 @@
 package examples
 
+import AnsiStyle._
+
 case object `1_GettingStarted` extends App {
   println {
     s"""|

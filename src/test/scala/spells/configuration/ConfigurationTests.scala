@@ -193,7 +193,7 @@ class ConfigurationTests extends spells.UnitTestConfiguration {
 
       the[IllegalArgumentException] thrownBy {
         val explode = ValidationProperty.value
-      } should have message s"requirement failed: ${styled(s"SpellsConfig contains a property: ${ValidationProperty.location.yellow} with an illegal value: ${value.yellow}")(Red)}"
+      } should have message s"requirement failed: ${styled(s"SpellsConfig contains a property: ${ValidationProperty.location.yellow} with an illegal value: ${value.yellow}")(AnsiStyle.Red)}"
     }
   }
 
@@ -216,7 +216,7 @@ class ConfigurationTests extends spells.UnitTestConfiguration {
 
       the[IllegalArgumentException] thrownBy {
         val explode: Int = property
-      } should have message s"requirement failed: ${styled(s"SpellsConfig contains a property: ${property.location.yellow} with an illegal value: ${value.yellow}: ${property.location.yellow} must be ${">= 0".yellow}")(Red)}"
+      } should have message s"requirement failed: ${styled(s"SpellsConfig contains a property: ${property.location.yellow} with an illegal value: ${value.yellow}: ${property.location.yellow} must be ${">= 0".yellow}")(AnsiStyle.Red)}"
     }
   }
 
@@ -237,8 +237,8 @@ class ConfigurationTests extends spells.UnitTestConfiguration {
 
       val rawValue = "test"
       rawValue.green should be(rawValue)
-      rawValue in Green should be(rawValue)
-      styled(rawValue)(Green) should be(rawValue)
+      rawValue in AnsiStyle.Green should be(rawValue)
+      styled(rawValue)(AnsiStyle.Green) should be(rawValue)
       erred(rawValue) should be(rawValue)
     }
   }

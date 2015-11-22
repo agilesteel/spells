@@ -3,9 +3,9 @@ package compilation
 class CompilationTests extends spells.UnitTestConfiguration {
   test("All these examples should compile") {
     "this should compile".green
-    cleared("this should compile")(Green)
+    cleared("this should compile")(AnsiStyle.Green)
     erred("this should compile")
-    styled("this should compile")(Green)
+    styled("this should compile")(AnsiStyle.Green)
 
     spells.user.SilentOutputStream out {
       10.xray("description")

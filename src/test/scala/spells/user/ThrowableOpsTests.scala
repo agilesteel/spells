@@ -21,6 +21,6 @@ class ThrowableOpsTests extends spells.UnitTestConfiguration {
 
   test("The getFullStackTraceString should write what printStackTrace produces into a string") {
     val runtime = new RuntimeException
-    runtime.rendered should be(styled(runtime.getFullStackTraceString)(Red))
+    runtime.rendered should be(styled(runtime.getFullStackTraceString)(AnsiStyle.Red))
   }
 }

@@ -7,7 +7,7 @@ trait ThrowableOpsModule {
 
   implicit class ThrowableOpsFromSpells(value: Throwable) extends CustomRendering {
     override final def rendered(implicit availableWidthInCharacters: CustomRenderingModule#AvailableWidthInCharacters = CustomRendering.Defaults.AvailableWidthInCharacters): String =
-      styled(getFullStackTraceString)(Red)
+      styled(getFullStackTraceString)(AnsiStyle.Red)
 
     def getFullStackTraceString: String = {
       val writer = new StringWriter

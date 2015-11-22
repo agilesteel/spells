@@ -22,14 +22,14 @@ class DoubleEntryConfigKeeping extends spells.UnitTestConfiguration {
     SpellsConfig.xray.report.display.Class.value should be(true)
     SpellsConfig.xray.report.display.Type.value should be(true)
 
-    SpellsConfig.xray.report.styles.Description.value.value should be(Green.value)
-    SpellsConfig.xray.report.styles.DateTime.value.value should be(Reset.value)
-    SpellsConfig.xray.report.styles.Duration.value.value should be(Reset.value)
-    SpellsConfig.xray.report.styles.Location.value.value should be(Reset.value)
-    SpellsConfig.xray.report.styles.HashCode.value.value should be(Reset.value)
-    SpellsConfig.xray.report.styles.Thread.value.value should be(Reset.value)
-    SpellsConfig.xray.report.styles.Class.value.value should be(Reset.value)
-    SpellsConfig.xray.report.styles.Type.value.value should be(Reset.value)
-    SpellsConfig.xray.report.styles.Value.value.value should be(Magenta.value)
+    SpellsConfig.xray.report.styles.Description.value.value should be(AnsiStyle.Green.value)
+    SpellsConfig.xray.report.styles.DateTime.value.value should be(AnsiStyle.Reset.value)
+    SpellsConfig.xray.report.styles.Duration.value.value should be(AnsiStyle.Reset.value)
+    SpellsConfig.xray.report.styles.Location.value.value should be(AnsiStyle.Reset.value)
+    SpellsConfig.xray.report.styles.HashCode.value.value should be(AnsiStyle.Reset.value)
+    SpellsConfig.xray.report.styles.Thread.value.value should be(AnsiStyle.Reset.value)
+    SpellsConfig.xray.report.styles.Class.value.value should be(AnsiStyle.Reset.value)
+    SpellsConfig.xray.report.styles.Type.value.value should be(AnsiStyle.Reset.value)
+    SpellsConfig.xray.report.styles.Value.value.value should be(AnsiStyle.Magenta.value)
   }
 }

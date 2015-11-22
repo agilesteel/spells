@@ -9,7 +9,7 @@ trait XrayModule {
   import scala.collection.immutable
   import scala.util.matching.Regex
 
-  final def xrayed[T](expression: => T, description: XrayModule#Description = Xray.Defaults.Description, increaseStackTraceDepthBy: Int = 0)(implicit typeTag: TypeTag[T], style: AnsiModule#AnsiStyle = Reset, rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any): XrayModule#XrayReport[T] = {
+  final def xrayed[T](expression: => T, description: XrayModule#Description = Xray.Defaults.Description, increaseStackTraceDepthBy: Int = 0)(implicit typeTag: TypeTag[T], style: AnsiModule#AnsiStyle = AnsiStyle.Reset, rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any): XrayModule#XrayReport[T] = {
     val stackTraceElement = currentLineStackTraceElement(increaseStackTraceDepthBy - 1)
 
     val now = Calendar.getInstance
@@ -24,7 +24,7 @@ trait XrayModule {
   def currentLineStackTraceElement(implicit increaseStackTraceDepthBy: Int = 0): StackTraceElement =
     Thread.currentThread.getStackTrace apply increaseStackTraceDepthBy + 6
 
-  implicit class XrayFromSpells[T](expression: => T)(implicit typeTag: TypeTag[T], style: AnsiModule#AnsiStyle = Reset, rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any, monitor: XrayModule#XrayReport[T] => Unit = (report: XrayModule#XrayReport[T]) => Console.println(report.rendered)) {
+  implicit class XrayFromSpells[T](expression: => T)(implicit typeTag: TypeTag[T], style: AnsiModule#AnsiStyle = AnsiStyle.Reset, rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any, monitor: XrayModule#XrayReport[T] => Unit = (report: XrayModule#XrayReport[T]) => Console.println(report.rendered)) {
     def xray(implicit description: XrayModule#Description = Xray.Defaults.Description): T = {
       val report = xrayed(expression, description, increaseStackTraceDepthBy = +1)(typeTag, style, rendering)
 
@@ -60,7 +60,7 @@ trait XrayModule {
       final val timestamp: Calendar,
       final val description: String,
       final val thread: Thread,
-      final val style: AnsiModule#AnsiStyle = Reset,
+      final val style: AnsiModule#AnsiStyle = AnsiStyle.Reset,
       rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any,
       final val additionalContent: immutable.Seq[(String, String)] = immutable.Seq.empty
   ) extends CustomRendering {
@@ -118,7 +118,7 @@ trait XrayModule {
           "Class" -> SpellsConfig.xray.report.styles.Class,
           "Type" -> SpellsConfig.xray.report.styles.Type,
           "Value" -> SpellsConfig.xray.report.styles.Value
-        ) withDefaultValue Reset,
+        ) withDefaultValue AnsiStyle.Reset,
           availableWidthInCharacters
         )
 
@@ -146,7 +146,7 @@ trait XrayModule {
   }
 
   object XrayReport {
-    private[spells] final def customRenderedTableForXray(in: Int => Seq[(String, String)], styles: Map[String, AnsiModule#AnsiStyle] = Map.empty withDefaultValue Reset, availableWidthInCharacters: Int): Seq[String] = {
+    private[spells] final def customRenderedTableForXray(in: Int => Seq[(String, String)], styles: Map[String, AnsiModule#AnsiStyle] = Map.empty withDefaultValue AnsiStyle.Reset, availableWidthInCharacters: Int): Seq[String] = {
       if (in(0).isEmpty) Seq.empty
       else {
         val sizeOfTheBiggestKey = in(0) map {

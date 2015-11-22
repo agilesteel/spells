@@ -1,5 +1,7 @@
 package spells.user
 
+import AnsiStyle._
+
 class StylePrintTests extends spells.UnitTestConfiguration {
   test("""styled("white") should be("white")""") {
     styled("white") should be("white")

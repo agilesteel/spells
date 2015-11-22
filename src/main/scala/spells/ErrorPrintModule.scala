@@ -7,5 +7,5 @@ trait ErrorPrintModule {
     Console.err println erred(error)
   }
 
-  final def erred(error: Any): String = styled(error)(Red)
+  final def erred(error: Any): String = styled(error)(AnsiStyle.Red)
 }

@@ -13,7 +13,7 @@ trait LocationAwarePropertyModule {
 
       if (customErrorMessage.isEmpty) errorMessage
       else errorMessage + ": " + customErrorMessage
-    }(Red)
+    }(AnsiStyle.Red)
 
     def customValidationErrorMessage(in: T): String = ""
 

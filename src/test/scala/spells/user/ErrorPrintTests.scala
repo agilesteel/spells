@@ -3,7 +3,7 @@ package spells.user
 class ErrorPrintTests extends spells.UnitTestConfiguration {
   test("""erred(error) should be(styled(error)(Red))""") {
     forEvery(TestSamples.samples) { error =>
-      erred(error) should be(styled(error)(Red))
+      erred(error) should be(styled(error)(AnsiStyle.Red))
     }
   }
 

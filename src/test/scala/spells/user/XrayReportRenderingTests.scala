@@ -5,6 +5,8 @@ import java.util.{ Date, Calendar }
 import scala.concurrent.duration._
 import scala.reflect.runtime.universe._
 
+import AnsiStyle._
+
 class XrayReportRenderingTests extends spells.UnitTestConfiguration {
   test("The header should contain the string 'X-Ray' if description is empty") {
     XrayReportRenderingTests.createReport(description = "").rendered should include("X-Ray".green)
