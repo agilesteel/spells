@@ -3,6 +3,8 @@ package spells
 private[spells] trait LocationAwareConfigModule {
   this: AnsiModule =>
 
+  import scala.collection.JavaConverters._
+
   import com.typesafe.config.Config
   import com.typesafe.config.ConfigFactory._
 
@@ -24,6 +26,9 @@ private[spells] trait LocationAwareConfigModule {
   implicit final def locationAwarePropertyToInt(property: LocationAwarePropertyModule#LocationAwareProperty[Int]): Int =
     locationAwarePropertyTo(property, spellsConfig getInt property.location)
 
+  implicit final def locationAwarePropertyToString(property: LocationAwarePropertyModule#LocationAwareProperty[List[String]]): List[String] =
+    locationAwarePropertyTo(property, spellsConfig.getStringList(property.location).asScala.toList)
+
   // Unresolved compiler bug: https://issues.scala-lang.org/browse/SI-5643
   implicit final def locationAwarePropertyToAnsiStyle(property: LocationAwarePropertyModule#LocationAwareProperty[AnsiModule#AnsiStyle]): AnsiModule#AnsiStyle =
     locationAwarePropertyTo(property, spellsConfig getString property.location toAnsiStyle)
@@ -33,15 +38,4 @@ private[spells] trait LocationAwareConfigModule {
 
     value
   }
-
-  // Commented out, because it's not used yet... for better coverage ;)
-
-  // implicit final def locationAwarePropertyToDouble(property: AnsiModule#LocationAwareProperty[Double]): Double =
-  //   spellsConfig getDouble property.location
-
-  // implicit final def locationAwarePropertyToLong(property: AnsiModule#LocationAwareProperty[Long]): Long =
-  //   spellsConfig getLong property.location
-
-  // implicit final def locationAwarePropertyToString(property: AnsiModule#LocationAwareProperty[String]): String =
-  //   spellsConfig getString property.location
 }

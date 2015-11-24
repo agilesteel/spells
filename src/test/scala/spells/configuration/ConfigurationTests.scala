@@ -293,4 +293,60 @@ class ConfigurationTests extends UnitTestConfiguration {
       report.rendered should not include basic.toString
     }
   }
+
+  test("IgnoredAdditionalContentKeys") {
+    new Spells {
+      override def loadSpellsConfig: Config =
+        ConfigFactory parseString {
+          s"""|spells {
+              |  xray {
+              |    report {
+              |      IgnoredAdditionalContentKeys = [Key1, Key3]
+              |    }
+              |  }
+              |}""".stripMargin
+        } withFallback super.loadSpellsConfig
+
+      object StolenFromXrayReportRenderingTests {
+        def createReport[T: TypeTag](
+          value: T = reportValue,
+          duration: Duration = duration,
+          stackTraceElement: StackTraceElement = stackTraceElement,
+          timestamp: Calendar = timestamp,
+          description: String = description,
+          rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any
+        ): XrayReport[T] =
+          new XrayReport[T](
+            value = value,
+            duration = duration,
+            stackTraceElement = stackTraceElement,
+            timestamp = timestamp,
+            description = description,
+            thread = thread,
+            rendering = rendering
+          )
+
+        lazy val reportValue = 10
+        lazy val duration = 62.seconds
+        lazy val stackTraceElement = new StackTraceElement("declaringClass", "methodName", "fileName", lineNumber)
+        lazy val lineNumber = 4711
+        lazy val timestamp = Calendar.getInstance
+        lazy val description = "description"
+        lazy val thread = Thread.currentThread
+      }
+
+      val report =
+        StolenFromXrayReportRenderingTests.createReport() withAdditionalContent Vector(
+          "Key1" -> "Value1",
+          "Key2" -> "Value2",
+          "Key3" -> "Value3"
+        )
+
+      // format: OFF
+      report.rendered should not include("Key1     | Value1")
+      report.rendered should     include("Key2     | Value2")
+      report.rendered should not include("Key3     | Value3")
+      // format: ON
+    }
+  }
 }

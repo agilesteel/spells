@@ -92,7 +92,7 @@ trait XrayModule {
 
           val liftedAdditionalContent: immutable.Seq[Option[(String, String)]] =
             Option(additionalContent).getOrElse(immutable.Seq.empty) collect {
-              case (key, value) => Option(String.valueOf(key) -> String.valueOf(value))
+              case (key, value) if !SpellsConfig.xray.report.IgnoredAdditionalContentKeys.contains(key) => Option(String.valueOf(key) -> String.valueOf(value))
             }
 
           (metaContent ++ liftedAdditionalContent ++ valueRelatedContent ++ classOrTypeOrBoth).flatten

@@ -33,6 +33,8 @@ trait SpellsConfigModule extends LocationAwareConfigModule with LocationAwarePro
           object Type extends LocationAwareProperty[Boolean]
         }
 
+        object IgnoredAdditionalContentKeys extends LocationAwareProperty[List[String]]
+
         object styles {
           object Description extends LocationAwareProperty[AnsiModule#AnsiStyle]
           object DateTime extends LocationAwareProperty[AnsiModule#AnsiStyle]

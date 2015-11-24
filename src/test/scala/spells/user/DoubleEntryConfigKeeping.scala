@@ -22,6 +22,8 @@ class DoubleEntryConfigKeeping extends spells.UnitTestConfiguration {
     SpellsConfig.xray.report.display.Class.value should be(true)
     SpellsConfig.xray.report.display.Type.value should be(true)
 
+    SpellsConfig.xray.report.IgnoredAdditionalContentKeys.value should be(List.empty[String])
+
     SpellsConfig.xray.report.styles.Description.value.value should be(AnsiStyle.Green.value)
     SpellsConfig.xray.report.styles.DateTime.value.value should be(AnsiStyle.Reset.value)
     SpellsConfig.xray.report.styles.Duration.value.value should be(AnsiStyle.Reset.value)
