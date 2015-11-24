@@ -49,13 +49,14 @@ class ConfigurationTests extends UnitTestConfiguration {
         } withFallback super.loadSpellsConfig
 
       object StolenFromXrayReportRenderingTests {
-        def createReport[T: TypeTag](
+        def createReport[T](
           value: T = reportValue,
           duration: Duration = duration,
           stackTraceElement: StackTraceElement = stackTraceElement,
           timestamp: Calendar = timestamp,
           description: String = description,
-          rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any
+          rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any,
+          typeTag: Option[TypeTag[T]] = theTypeTag
         ): XrayReport[T] =
           new XrayReport[T](
             value = value,
@@ -64,7 +65,8 @@ class ConfigurationTests extends UnitTestConfiguration {
             timestamp = timestamp,
             description = description,
             thread = thread,
-            rendering = rendering
+            rendering = rendering,
+            typeTag = typeTag
           )
 
         lazy val reportValue = 10
@@ -74,6 +76,7 @@ class ConfigurationTests extends UnitTestConfiguration {
         lazy val timestamp = Calendar.getInstance
         lazy val description = "description"
         lazy val thread = Thread.currentThread
+        lazy val theTypeTag = Some(typeTag[Int])
       }
 
       import StolenFromXrayReportRenderingTests._
@@ -111,13 +114,14 @@ class ConfigurationTests extends UnitTestConfiguration {
         } withFallback super.loadSpellsConfig
 
       object StolenFromXrayReportRenderingTests {
-        def createReport[T: TypeTag](
+        def createReport[T](
           value: T = reportValue,
           duration: Duration = duration,
           stackTraceElement: StackTraceElement = stackTraceElement,
           timestamp: Calendar = timestamp,
           description: String = description,
-          rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any
+          rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any,
+          typeTag: Option[TypeTag[T]] = theTypeTag
         ): XrayReport[T] =
           new XrayReport[T](
             value = value,
@@ -126,7 +130,8 @@ class ConfigurationTests extends UnitTestConfiguration {
             timestamp = timestamp,
             description = description,
             thread = thread,
-            rendering = rendering
+            rendering = rendering,
+            typeTag = typeTag
           )
 
         lazy val reportValue = 10
@@ -136,6 +141,7 @@ class ConfigurationTests extends UnitTestConfiguration {
         lazy val timestamp = Calendar.getInstance
         lazy val description = "description"
         lazy val thread = Thread.currentThread
+        lazy val theTypeTag = Some(typeTag[Int])
         lazy val `class` = "java.lang.Integer"
         lazy val `type` = "Int"
       }
@@ -152,7 +158,7 @@ class ConfigurationTests extends UnitTestConfiguration {
 
       val maxWidthInCharacters: Int = SpellsConfig.terminal.WidthInCharacters
 
-      val largeReport = createReport(value = ("V" * (maxWidthInCharacters + 20)))
+      val largeReport = createReport(value = ("V" * (maxWidthInCharacters + 20)), typeTag = Some(typeTag[String]))
       val largeLines = largeReport.rendered split "\n"
       val hyphenLines = largeLines.filter(_.forall(_ == '-'))
 
@@ -260,13 +266,14 @@ class ConfigurationTests extends UnitTestConfiguration {
       new StackTraceElement("declaringClass", "methodName", null, nativeMethod).rendered should be("(Native Method)")
 
       object StolenFromXrayReportRenderingTests {
-        def createReport[T: TypeTag](
+        def createReport[T](
           value: T = reportValue,
           duration: Duration = duration,
           stackTraceElement: StackTraceElement = stackTraceElement,
           timestamp: Calendar = timestamp,
           description: String = description,
-          rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any
+          rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any,
+          typeTag: Option[TypeTag[T]] = theTypeTag
         ): XrayReport[T] =
           new XrayReport[T](
             value = value,
@@ -275,7 +282,8 @@ class ConfigurationTests extends UnitTestConfiguration {
             timestamp = timestamp,
             description = description,
             thread = thread,
-            rendering = rendering
+            rendering = rendering,
+            typeTag = typeTag
           )
 
         lazy val reportValue = 10
@@ -285,6 +293,7 @@ class ConfigurationTests extends UnitTestConfiguration {
         lazy val timestamp = Calendar.getInstance
         lazy val description = "description"
         lazy val thread = Thread.currentThread
+        lazy val theTypeTag = Some(typeTag[Int])
       }
 
       val report = StolenFromXrayReportRenderingTests.createReport(stackTraceElement = basic)
@@ -308,13 +317,14 @@ class ConfigurationTests extends UnitTestConfiguration {
         } withFallback super.loadSpellsConfig
 
       object StolenFromXrayReportRenderingTests {
-        def createReport[T: TypeTag](
+        def createReport[T](
           value: T = reportValue,
           duration: Duration = duration,
           stackTraceElement: StackTraceElement = stackTraceElement,
           timestamp: Calendar = timestamp,
           description: String = description,
-          rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any
+          rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any,
+          typeTag: Option[TypeTag[T]] = theTypeTag
         ): XrayReport[T] =
           new XrayReport[T](
             value = value,
@@ -323,7 +333,8 @@ class ConfigurationTests extends UnitTestConfiguration {
             timestamp = timestamp,
             description = description,
             thread = thread,
-            rendering = rendering
+            rendering = rendering,
+            typeTag = typeTag
           )
 
         lazy val reportValue = 10
@@ -333,6 +344,7 @@ class ConfigurationTests extends UnitTestConfiguration {
         lazy val timestamp = Calendar.getInstance
         lazy val description = "description"
         lazy val thread = Thread.currentThread
+        lazy val theTypeTag = Some(typeTag[Int])
       }
 
       val report =

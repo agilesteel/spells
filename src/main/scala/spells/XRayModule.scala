@@ -18,7 +18,19 @@ trait XrayModule {
     val value = expression
     val stop = System.nanoTime - start
 
-    new XrayReport(value, stop.nanos, stackTraceElement, now, description.toString, Thread.currentThread, style, rendering)
+    new XrayReport(value, stop.nanos, stackTraceElement, now, description.toString, Thread.currentThread, style, rendering, Some(typeTag))
+  }
+
+  final def xrayedWeak[T](expression: => T, description: XrayModule#Description = Xray.Defaults.Description, increaseStackTraceDepthBy: Int = 0)(implicit style: AnsiModule#AnsiStyle = AnsiStyle.Reset, rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any): XrayModule#XrayReport[T] = {
+    val stackTraceElement = currentLineStackTraceElement(increaseStackTraceDepthBy - 1)
+
+    val now = Calendar.getInstance
+
+    val start = System.nanoTime
+    val value = expression
+    val stop = System.nanoTime - start
+
+    new XrayReport(value, stop.nanos, stackTraceElement, now, description.toString, Thread.currentThread, style, rendering, typeTag = None)
   }
 
   final def currentLineStackTraceElement(implicit increaseStackTraceDepthBy: Int = 0): StackTraceElement =
@@ -43,6 +55,25 @@ trait XrayModule {
     }
   }
 
+  implicit final class XrayWeakFromSpells[T](expression: => T)(implicit style: AnsiModule#AnsiStyle = AnsiStyle.Reset, rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any, monitor: XrayModule#XrayReport[T] => Unit = (report: XrayModule#XrayReport[T]) => Console.println(report.rendered)) {
+    def xrayWeak(implicit description: XrayModule#Description = Xray.Defaults.Description): T = {
+      val report = xrayedWeak(expression, description, increaseStackTraceDepthBy = +1)(style, rendering)
+
+      monitor(report)
+
+      report.value
+    }
+
+    def xrayWeakIf(conditionFunction: XrayModule#XrayReport[T] => Boolean)(implicit description: XrayModule#Description = Xray.Defaults.Description): T = {
+      val report = xrayedWeak(expression, description, increaseStackTraceDepthBy = +1)(style, rendering)
+
+      if (conditionFunction(report))
+        monitor(report)
+
+      report.value
+    }
+  }
+
   implicit final class Description(val value: String) {
     override final def toString: String = value
   }
@@ -53,7 +84,7 @@ trait XrayModule {
     }
   }
 
-  final class XrayReport[+T: TypeTag](
+  final class XrayReport[+T](
       final val value: T,
       final val duration: Duration,
       final val stackTraceElement: StackTraceElement,
@@ -62,10 +93,11 @@ trait XrayModule {
       final val thread: Thread,
       final val style: AnsiModule#AnsiStyle = AnsiStyle.Reset,
       rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any,
+      typeTag: Option[TypeTag[T]],
       final val additionalContent: immutable.Seq[(String, String)] = immutable.Seq.empty
   ) extends CustomRendering {
     final def withAdditionalContent(content: immutable.Seq[(String, String)]): XrayModule#XrayReport[T] =
-      new XrayReport(value, duration, stackTraceElement, timestamp, description, thread, style, rendering, content)
+      new XrayReport(value, duration, stackTraceElement, timestamp, description, thread, style, rendering, typeTag, content)
 
     override final def rendered(implicit availableWidthInCharacters: CustomRenderingModule#AvailableWidthInCharacters = CustomRendering.Defaults.AvailableWidthInCharacters): String = {
       def lines(availableWidthInCharacters: Int): Seq[(String, String)] = {
@@ -83,11 +115,14 @@ trait XrayModule {
 
           val classOrTypeOrBoth = {
             val `class` = value.decodedClassName
-            val `type` = typeTag.tpe.toString.withDecodedScalaSymbols
-            val classTyple = { if (SpellsConfig.xray.report.display.Class) Some("Class" -> `class`) else None }
-            val typeTuple = { if (SpellsConfig.xray.report.display.Type) Some("Type" -> `type`) else None }
+            val classTuple = { if (SpellsConfig.xray.report.display.Class) Some("Class" -> `class`) else None }
 
-            if (`class` == `type`) Vector(typeTuple) else Vector(classTyple, typeTuple)
+            typeTag.fold(Vector(classTuple)) { tag =>
+              val `type` = tag.tpe.toString.withDecodedScalaSymbols
+              val typeTuple = { if (SpellsConfig.xray.report.display.Type) Some("Type" -> `type`) else None }
+
+              if (`class` == `type`) Vector(typeTuple) else Vector(classTuple, typeTuple)
+            }
           }
 
           val liftedAdditionalContent: immutable.Seq[Option[(String, String)]] =

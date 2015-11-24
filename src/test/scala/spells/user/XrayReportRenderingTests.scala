@@ -63,7 +63,7 @@ class XrayReportRenderingTests extends spells.UnitTestConfiguration {
   }
 
   test("If type and class are different they should both be rendered") {
-    val typedReport = XrayReportRenderingTests.createReport(reportValue = List(1, 2, 3)).rendered
+    val typedReport = XrayReportRenderingTests.createReport(reportValue = List(1, 2, 3), typeTag = Some(typeTag[scala.collection.immutable.List[Int]])).rendered
 
     typedReport should include(s"Class    | scala.collection.immutable.::")
     typedReport should include(s"Type     | List[Int]")
@@ -74,7 +74,7 @@ class XrayReportRenderingTests extends spells.UnitTestConfiguration {
   }
 
   test("""If value conains '\n' it should be rendered on the new line""") {
-    val newReportString = XrayReportRenderingTests.createReport(reportValue = "firstX\nsecond").rendered
+    val newReportString = XrayReportRenderingTests.createReport(reportValue = "firstX\nsecond", typeTag = Some(typeTag[String])).rendered
 
     newReportString should include(s"Value    | ${"firstX".magenta}")
     newReportString should include(s"         | ${"second".magenta}")
@@ -82,14 +82,14 @@ class XrayReportRenderingTests extends spells.UnitTestConfiguration {
 
   test("Simple values should be deeply (other styles should not be lost) rendered in magenta") {
     val withStyle = s"enc${"o".green}ded"
-    val reportWithStyle = XrayReportRenderingTests.createReport(reportValue = withStyle)
+    val reportWithStyle = XrayReportRenderingTests.createReport(reportValue = withStyle, typeTag = Some(typeTag[String]))
 
     reportWithStyle.rendered should include(s"Value    | ${styled(withStyle)(Magenta)}")
   }
 
   test("Styled values should be deeply (other styles should not be lost) rendered in magenta") {
     val startsWithStyleAndThereforeEndsWithReset = styled("first\nsecond")(Red)
-    val newReportString = XrayReportRenderingTests.createReport(reportValue = startsWithStyleAndThereforeEndsWithReset).rendered
+    val newReportString = XrayReportRenderingTests.createReport(reportValue = startsWithStyleAndThereforeEndsWithReset, typeTag = Some(typeTag[String])).rendered
 
     newReportString should include(s"Value    | ${Magenta.value}${"first".red}")
     newReportString should include(s"         | ${"second".red}")
@@ -106,7 +106,7 @@ class XrayReportRenderingTests extends spells.UnitTestConfiguration {
       line.size should be <= maxWidthInCharacters
     }
 
-    val largeReport = XrayReportRenderingTests.createReport(reportValue = ("V" * (maxWidthInCharacters + 20)))
+    val largeReport = XrayReportRenderingTests.createReport(reportValue = ("V" * (maxWidthInCharacters + 20)), typeTag = Some(typeTag[String]))
     val largeLines = largeReport.rendered split "\n"
     val hyphenLines = largeLines.filter(_.forall(_ == '-'))
 
@@ -138,7 +138,7 @@ class XrayReportRenderingTests extends spells.UnitTestConfiguration {
   test(s"Rendered report should contain exactly 4 lines with hyphens") {
     val maxWidthInCharacters: Int = SpellsConfig.terminal.WidthInCharacters
 
-    val largeReport = XrayReportRenderingTests.createReport(reportValue = ("V" * (maxWidthInCharacters + 20)))
+    val largeReport = XrayReportRenderingTests.createReport(reportValue = ("V" * (maxWidthInCharacters + 20)), typeTag = Some(typeTag[String]))
     val largeLines = largeReport.rendered split "\n"
     val hyphenLines = largeLines.filter(_.forall(_ == '-'))
 
@@ -226,7 +226,8 @@ object XrayReportRenderingTests {
     stackTraceElement: StackTraceElement = stackTraceElement,
     timestamp: Calendar = timestamp,
     description: String = description,
-    rendering: T => spells.CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any
+    rendering: T => spells.CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any,
+    typeTag: Option[TypeTag[T]] = theTypeTag
   ): XrayReport[T] =
     new XrayReport[T](
       value = reportValue,
@@ -235,7 +236,8 @@ object XrayReportRenderingTests {
       timestamp = timestamp,
       description = description,
       thread = Thread.currentThread,
-      rendering = rendering
+      rendering = rendering,
+      typeTag = typeTag
     )
 
   private lazy val reportValue = new `Encoded + Whatever`
@@ -244,4 +246,5 @@ object XrayReportRenderingTests {
   private lazy val lineNumber = 4711
   private lazy val timestamp = Calendar.getInstance
   private lazy val description = "description"
+  private lazy val theTypeTag = Some(typeTag[`Encoded + Whatever`])
 }
