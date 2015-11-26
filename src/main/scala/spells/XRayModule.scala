@@ -97,7 +97,7 @@ trait XrayModule {
       final val additionalContent: immutable.Seq[(String, String)] = immutable.Seq.empty
   ) extends CustomRendering {
     final def withAdditionalContent(content: immutable.Seq[(String, String)]): XrayModule#XrayReport[T] =
-      new XrayReport(value, duration, stackTraceElement, timestamp, description, thread, style, rendering, typeTag, content)
+      new XrayReport(value, duration, stackTraceElement, timestamp, description, thread, style, rendering, typeTag, additionalContent ++ Option(content).getOrElse(immutable.Seq.empty))
 
     override final def rendered(implicit availableWidthInCharacters: CustomRenderingModule#AvailableWidthInCharacters = CustomRendering.Defaults.AvailableWidthInCharacters): String = {
       def lines(availableWidthInCharacters: Int): Seq[(String, String)] = {

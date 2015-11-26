@@ -216,6 +216,13 @@ class XrayReportRenderingTests extends spells.UnitTestConfiguration {
     report.withAdditionalContent(List(("Key", null))).rendered should include("Key      | null")
     report.withAdditionalContent(List((null, null))).rendered should include("null     | null")
     report.withAdditionalContent(List("Key" -> "Value")).rendered should include(expected)
+
+    val multipleAdditions =
+      report.withAdditionalContent(List("Key1" -> "Value1"))
+        .withAdditionalContent(List("Key2" -> "Value2")).rendered
+
+    multipleAdditions should include("Key1     | Value1")
+    multipleAdditions should include("Key2     | Value2")
   }
 }
 
