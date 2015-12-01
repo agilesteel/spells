@@ -23,17 +23,7 @@ trait SpellsConfigModule extends LocationAwareConfigModule with LocationAwarePro
 
     object xray {
       object report {
-        object display {
-          object DateTime extends LocationAwareProperty[Boolean]
-          object Duration extends LocationAwareProperty[Boolean]
-          object Location extends LocationAwareProperty[Boolean]
-          object HashCode extends LocationAwareProperty[Boolean]
-          object Thread extends LocationAwareProperty[Boolean]
-          object Class extends LocationAwareProperty[Boolean]
-          object Type extends LocationAwareProperty[Boolean]
-        }
-
-        object IgnoredAdditionalContentKeys extends LocationAwareProperty[List[String]]
+        object IgnoredContentKeys extends LocationAwareProperty[List[String]]
 
         object styles {
           object Description extends LocationAwareProperty[AnsiModule#AnsiStyle]

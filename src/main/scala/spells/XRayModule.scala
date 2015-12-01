@@ -101,33 +101,40 @@ trait XrayModule {
 
     override final def rendered(implicit availableWidthInCharacters: CustomRenderingModule#AvailableWidthInCharacters = CustomRendering.Defaults.AvailableWidthInCharacters): String = {
       def lines(availableWidthInCharacters: Int): Seq[(String, String)] = {
+        def ifNotIgnored(key: String, value: String): Option[(String, String)] =
+          if (SpellsConfig.xray.report.IgnoredContentKeys.contains(String.valueOf(key)))
+            None
+          else
+            Some(String.valueOf(key) -> String.valueOf(value))
+
         val contentLines = {
           val metaContent = Vector(
-            { if (SpellsConfig.xray.report.display.DateTime) Some("DateTime" -> timestamp.rendered) else None },
-            { if (SpellsConfig.xray.report.display.Duration) Some("Duration" -> duration.rendered) else None }
+            ifNotIgnored("DateTime", timestamp.rendered),
+            ifNotIgnored("Duration", duration.rendered)
           )
 
           val valueRelatedContent = Vector(
-            { if (SpellsConfig.xray.report.display.Location) Some("Location" -> stackTraceElement.rendered) else None },
-            { if (SpellsConfig.xray.report.display.HashCode && value != null) Some("HashCode" -> value.hashCode) else None },
-            { if (SpellsConfig.xray.report.display.Thread) Some("Thread" -> thread) else None }
+            ifNotIgnored("Location", stackTraceElement.rendered),
+            { if (value == null) None else ifNotIgnored("HashCode", value.hashCode.toString) },
+            ifNotIgnored("Thread", thread.toString)
           )
 
           val classOrTypeOrBoth = {
-            val `class` = value.decodedClassName
-            val classTuple = { if (SpellsConfig.xray.report.display.Class) Some("Class" -> `class`) else None }
+            val decodedClassName = value.decodedClassName
+            val classTuple = ifNotIgnored("Class", decodedClassName)
 
             typeTag.fold(Vector(classTuple)) { tag =>
-              val `type` = tag.tpe.toString.withDecodedScalaSymbols
-              val typeTuple = { if (SpellsConfig.xray.report.display.Type) Some("Type" -> `type`) else None }
+              val decodedTypeName = tag.tpe.toString.withDecodedScalaSymbols
+              val typeTuple = ifNotIgnored("Type", decodedTypeName)
+              val shouldIgnoreClass = SpellsConfig.xray.report.IgnoredContentKeys.contains("Class")
 
-              if (`class` == `type`) Vector(typeTuple) else Vector(classTuple, typeTuple)
+              if (decodedClassName == decodedTypeName && shouldIgnoreClass) Vector(typeTuple) else Vector(classTuple, typeTuple)
             }
           }
 
           val liftedAdditionalContent: immutable.Seq[Option[(String, String)]] =
             Option(additionalContent).getOrElse(immutable.Seq.empty) collect {
-              case (key, value) if !SpellsConfig.xray.report.IgnoredAdditionalContentKeys.contains(key) => Option(String.valueOf(key) -> String.valueOf(value))
+              case (key, value) => ifNotIgnored(key, value)
             }
 
           (metaContent ++ liftedAdditionalContent ++ valueRelatedContent ++ classOrTypeOrBoth).flatten

@@ -99,15 +99,15 @@ class ConfigurationTests extends UnitTestConfiguration {
           s"""|spells {
               |  xray {
               |    report {
-              |      display {
-              |        DateTime = no
-              |        Duration = no
-              |        Location = no
-              |        HashCode = no
-              |        Thread = no
-              |        Class = no
-              |        Type = no
-              |      }
+              |      IgnoredContentKeys = [
+              |        DateTime,
+              |        Duration,
+              |        Location,
+              |        HashCode,
+              |        Thread,
+              |        Class,
+              |        Type
+              |      ]
               |    }
               |  }
               |}""".stripMargin
@@ -163,6 +163,61 @@ class ConfigurationTests extends UnitTestConfiguration {
       val hyphenLines = largeLines.filter(_.forall(_ == '-'))
 
       hyphenLines.size should be(3)
+    }
+  }
+
+  test("""XrayReport default rendering should be tweak-able from the config (the "class == value" case)""") {
+    new Spells {
+      override def loadSpellsConfig: Config =
+        ConfigFactory parseString {
+          s"""|spells {
+              |  xray {
+              |    report {
+              |      IgnoredContentKeys = [
+              |        Type
+              |      ]
+              |    }
+              |  }
+              |}""".stripMargin
+        } withFallback super.loadSpellsConfig
+
+      object StolenFromXrayReportRenderingTests {
+        def createReport[T](
+          value: T = reportValue,
+          duration: Duration = duration,
+          stackTraceElement: StackTraceElement = stackTraceElement,
+          timestamp: Calendar = timestamp,
+          description: String = description,
+          rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any,
+          typeTag: Option[TypeTag[T]] = theTypeTag
+        ): XrayReport[T] =
+          new XrayReport[T](
+            value = value,
+            duration = duration,
+            stackTraceElement = stackTraceElement,
+            timestamp = timestamp,
+            description = description,
+            thread = thread,
+            rendering = rendering,
+            typeTag = typeTag
+          )
+
+        lazy val reportValue = "10"
+        lazy val duration = 62.seconds
+        lazy val stackTraceElement = new StackTraceElement("declaringClass", "methodName", "fileName", lineNumber)
+        lazy val lineNumber = 4711
+        lazy val timestamp = Calendar.getInstance
+        lazy val description = "description"
+        lazy val thread = Thread.currentThread
+        lazy val theTypeTag = Some(typeTag[java.lang.String])
+        lazy val `class` = "java.lang.String"
+      }
+
+      import StolenFromXrayReportRenderingTests._
+      val renderedReport = createReport().rendered
+
+      renderedReport should include(`class`)
+      // renderedReport should not include s"| ${`type`}"
     }
   }
 
@@ -310,7 +365,7 @@ class ConfigurationTests extends UnitTestConfiguration {
           s"""|spells {
               |  xray {
               |    report {
-              |      IgnoredAdditionalContentKeys = [Key1, Key3]
+              |      IgnoredContentKeys = [Key1, Key3]
               |    }
               |  }
               |}""".stripMargin
