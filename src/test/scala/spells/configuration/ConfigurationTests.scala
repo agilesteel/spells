@@ -211,13 +211,14 @@ class ConfigurationTests extends UnitTestConfiguration {
         lazy val thread = Thread.currentThread
         lazy val theTypeTag = Some(typeTag[java.lang.String])
         lazy val `class` = "java.lang.String"
+        lazy val `type` = "java.lang.String"
       }
 
       import StolenFromXrayReportRenderingTests._
       val renderedReport = createReport().rendered
 
-      renderedReport should include(`class`)
-      // renderedReport should not include s"| ${`type`}"
+      renderedReport should include("Class    | " + `class`)
+      renderedReport should not include ("Type     | " + `type`)
     }
   }
 

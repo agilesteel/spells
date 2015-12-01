@@ -2,6 +2,7 @@ package spells.user
 
 import java.text.SimpleDateFormat
 import java.util.{ Date, Calendar }
+import scala.collection._
 import scala.concurrent.duration._
 import scala.reflect.runtime.universe._
 
@@ -219,10 +220,17 @@ class XrayReportRenderingTests extends spells.UnitTestConfiguration {
 
     val multipleAdditions =
       report.withAdditionalContent(List("Key1" -> "Value1"))
-        .withAdditionalContent(List("Key2" -> "Value2")).rendered
+        .withAdditionalContent(List("Key2" -> "Value2"))
+        .rendered
 
     multipleAdditions should include("Key1     | Value1")
     multipleAdditions should include("Key2     | Value2")
+  }
+
+  test("Manually passed in additional content") {
+    XrayReportRenderingTests.createReport(additionalContent = null)
+      .withAdditionalContent(List("Key" -> "Value"))
+      .rendered should include("Key      | Value")
   }
 }
 
@@ -234,7 +242,8 @@ object XrayReportRenderingTests {
     timestamp: Calendar = timestamp,
     description: String = description,
     rendering: T => spells.CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any,
-    typeTag: Option[TypeTag[T]] = theTypeTag
+    typeTag: Option[TypeTag[T]] = theTypeTag,
+    additionalContent: immutable.Seq[(String, String)] = immutable.Seq.empty
   ): XrayReport[T] =
     new XrayReport[T](
       value = reportValue,
@@ -244,7 +253,8 @@ object XrayReportRenderingTests {
       description = description,
       thread = Thread.currentThread,
       rendering = rendering,
-      typeTag = typeTag
+      typeTag = typeTag,
+      additionalContent = additionalContent
     )
 
   private lazy val reportValue = new `Encoded + Whatever`

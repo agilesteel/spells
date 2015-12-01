@@ -96,8 +96,10 @@ trait XrayModule {
       typeTag: Option[TypeTag[T]],
       final val additionalContent: immutable.Seq[(String, String)] = immutable.Seq.empty
   ) extends CustomRendering {
+    private lazy val safeAdditionalContent: immutable.Seq[(String, String)] = Option(additionalContent).getOrElse(immutable.Seq.empty)
+
     final def withAdditionalContent(content: immutable.Seq[(String, String)]): XrayModule#XrayReport[T] =
-      new XrayReport(value, duration, stackTraceElement, timestamp, description, thread, style, rendering, typeTag, additionalContent ++ Option(content).getOrElse(immutable.Seq.empty))
+      new XrayReport(value, duration, stackTraceElement, timestamp, description, thread, style, rendering, typeTag, safeAdditionalContent ++ Option(content).getOrElse(immutable.Seq.empty))
 
     override final def rendered(implicit availableWidthInCharacters: CustomRenderingModule#AvailableWidthInCharacters = CustomRendering.Defaults.AvailableWidthInCharacters): String = {
       def lines(availableWidthInCharacters: Int): Seq[(String, String)] = {
@@ -126,18 +128,21 @@ trait XrayModule {
             typeTag.fold(Vector(classTuple)) { tag =>
               val decodedTypeName = tag.tpe.toString.withDecodedScalaSymbols
               val typeTuple = ifNotIgnored("Type", decodedTypeName)
-              val shouldIgnoreClass = SpellsConfig.xray.report.IgnoredContentKeys.contains("Class")
+              val shouldNotIgnoreClass = !SpellsConfig.xray.report.IgnoredContentKeys.contains("Class")
+              val shouldIgnoreType = SpellsConfig.xray.report.IgnoredContentKeys.contains("Type")
 
-              if (decodedClassName == decodedTypeName && shouldIgnoreClass) Vector(typeTuple) else Vector(classTuple, typeTuple)
+              if (shouldIgnoreType && shouldNotIgnoreClass) Vector(classTuple)
+              else if (decodedClassName == decodedTypeName) Vector(typeTuple)
+              else Vector(classTuple, typeTuple)
             }
           }
 
-          val liftedAdditionalContent: immutable.Seq[Option[(String, String)]] =
-            Option(additionalContent).getOrElse(immutable.Seq.empty) collect {
+          val liftedAdditionalContentIfNotIgnored: immutable.Seq[Option[(String, String)]] =
+            safeAdditionalContent collect {
               case (key, value) => ifNotIgnored(key, value)
             }
 
-          (metaContent ++ liftedAdditionalContent ++ valueRelatedContent ++ classOrTypeOrBoth).flatten
+          (metaContent ++ liftedAdditionalContentIfNotIgnored ++ valueRelatedContent ++ classOrTypeOrBoth).flatten
         }
 
         contentLines :+ "Value" -> (Option(value).fold("null") {
