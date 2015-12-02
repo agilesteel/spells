@@ -9,6 +9,17 @@ trait XrayModule {
   import scala.collection.immutable
   import scala.util.matching.Regex
 
+  /** Creates an instance of XrayReport. Primarily useful for library authors.
+    *
+    * @param expression the expression to be avaluated
+    * @param description an optional description
+    * @param increaseStackTraceDepthBy the depth can be used in certain cases when you want to write your own library and have issues with line numberes jumping around
+    * @param typeTag the typeTag injected by the compiler
+    * @param style outer style for the report
+    * @param rendering custom rendering for `T`
+    * @tparam T the type, your expression evaluates to
+    * @return an instance of XrayReport, which can be rendered or written to a database etc etc
+    */
   final def xrayed[T](expression: => T, description: XrayModule#Description = Xray.Defaults.Description, increaseStackTraceDepthBy: Int = 0)(implicit typeTag: TypeTag[T], style: AnsiModule#AnsiStyle = AnsiStyle.Reset, rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any): XrayModule#XrayReport[T] = {
     val stackTraceElement = currentLineStackTraceElement(increaseStackTraceDepthBy - 1)
 
