@@ -30,7 +30,9 @@ trait AnyOpsModule {
       try Option(input).fold(Null)(_.getClass.getSimpleName.withDecodedScalaSymbols)
       catch {
         // https://issues.scala-lang.org/browse/SI-2034
+        // $COVERAGE-OFF$
         case bug: InternalError => decodedClassName
+        // $COVERAGE-ON$
       }
 
     private final val Null: String = "Null"
