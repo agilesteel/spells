@@ -19,6 +19,20 @@ class AnyOpsTests extends spells.UnitTestConfiguration {
     (null: String).decodedSimpleClassName should be("Null")
     (null: String).decodedClassName should be("Null")
   }
+
+  test("https://issues.scala-lang.org/browse/SI-2034") {
+    object outer {
+      class inner
+    }
+
+    val sample = new outer.inner
+
+    the[InternalError] thrownBy {
+      sample.getClass.getSimpleName
+    } should have message "Malformed class name"
+
+    sample.decodedSimpleClassName should be(sample.decodedClassName)
+  }
 }
 
 class `Encoded + Whatever` {
