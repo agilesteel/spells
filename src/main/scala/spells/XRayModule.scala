@@ -1,5 +1,12 @@
 package spells
 
+/**
+ * This module provides the `xrayed` as well as `xrayedWeak` methods respectively,
+ * which analyse an expression and return an instance of `XrayReport`.
+ *
+ * It also provides the `xray` as well as `xrayIf` method respectively as well as their "weak" counterparts,
+ * which is a DSL for creating `XrayReport`s without interrupting the flow of your code.
+ */
 trait XrayModule {
   this: AnsiModule with AnyOpsModule with CalendarOpsModule with CustomRenderingModule with DateOpsModule with DurationOpsModule with HumanRenderingModule with StringOpsModule with StylePrintModule with TraversableOpsModule with SpellsConfigModule with StackTraceElementModule =>
 
@@ -9,17 +16,17 @@ trait XrayModule {
   import scala.collection.immutable
   import scala.util.matching.Regex
 
-  /** Creates an instance of XrayReport. Primarily useful for library authors.
-    *
-    * @param expression the expression to be avaluated
-    * @param description an optional description
-    * @param increaseStackTraceDepthBy the depth can be used in certain cases when you want to write your own library and have issues with line numberes jumping around
-    * @param typeTag the typeTag injected by the compiler
-    * @param style outer style for the report
-    * @param rendering custom rendering for `T`
-    * @tparam T the type, your expression evaluates to
-    * @return an instance of XrayReport, which can be rendered or written to a database etc etc
-    */
+  /**
+   * Creates an instance of `XrayReport`. Primarily useful for library authors.
+   * @param expression the expression to be evaluated
+   * @param description an optional description
+   * @param increaseStackTraceDepthBy the depth can be used in certain cases when you want to write your own library and have issues with line numberes jumping around
+   * @param typeTag the typeTag injected by the compiler
+   * @param style outer style for the report
+   * @param rendering custom rendering for `T`
+   * @tparam T the type, your expression evaluates to
+   * @return an instance of `XrayReport`, which can be rendered or written to a database etc etc
+   */
   final def xrayed[T](expression: => T, description: XrayModule#Description = Xray.Defaults.Description, increaseStackTraceDepthBy: Int = 0)(implicit typeTag: TypeTag[T], style: AnsiModule#AnsiStyle = AnsiStyle.Reset, rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any): XrayModule#XrayReport[T] = {
     val stackTraceElement = currentLineStackTraceElement(increaseStackTraceDepthBy - 1)
 
@@ -32,6 +39,16 @@ trait XrayModule {
     new XrayReport(value, stop.nanos, stackTraceElement, now, description.toString, Thread.currentThread, style, rendering, Some(typeTag))
   }
 
+  /**
+   * Creates an instance of `XrayReport`. Primarily useful for library authors.
+   * @param expression the expression to be evaluated
+   * @param description an optional description
+   * @param increaseStackTraceDepthBy the depth can be used in certain cases when you want to write your own library and have issues with line numberes jumping around
+   * @param style outer style for the report
+   * @param rendering custom rendering for `T`
+   * @tparam T the type, your expression evaluates to
+   * @return an instance of `XrayReport`, which can be rendered or written to a database etc etc
+   */
   final def xrayedWeak[T](expression: => T, description: XrayModule#Description = Xray.Defaults.Description, increaseStackTraceDepthBy: Int = 0)(implicit style: AnsiModule#AnsiStyle = AnsiStyle.Reset, rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any): XrayModule#XrayReport[T] = {
     val stackTraceElement = currentLineStackTraceElement(increaseStackTraceDepthBy - 1)
 
@@ -44,10 +61,35 @@ trait XrayModule {
     new XrayReport(value, stop.nanos, stackTraceElement, now, description.toString, Thread.currentThread, style, rendering, typeTag = None)
   }
 
+  /**
+   * Creates an instance of `StackTraceElement` at current line.
+   * @param increaseStackTraceDepthBy adjust if you build a library around it and the line stopps matching
+   * @return an instance of `StackTraceElement` at current line.
+   */
   final def currentLineStackTraceElement(implicit increaseStackTraceDepthBy: Int = 0): StackTraceElement =
     Thread.currentThread.getStackTrace apply increaseStackTraceDepthBy + 6
 
+  /**
+   * Implicit conversion from `T` to `XrayFromSpells`, which contains methods like `xray` and `xrayIf`.
+   * @param expression the expression to be evaluated
+   * @param typeTag the typeTag injected by the compiler
+   * @param style outer style for the report
+   * @param rendering custom rendering for `T`
+   * @param monitor a monitor, which tracks the side effect (a `println` essentially)
+   * @tparam T the type, your expression evaluates to
+   */
   implicit final class XrayFromSpells[T](expression: => T)(implicit typeTag: TypeTag[T], style: AnsiModule#AnsiStyle = AnsiStyle.Reset, rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any, monitor: XrayModule#XrayReport[T] => Unit = (report: XrayModule#XrayReport[T]) => Console.println(report.rendered)) {
+    /**
+     * A DSL for producing `XrayReport`s.
+     *
+     * Example:
+     * {{{
+     * Array(1, 2, 3).xray.map(_ + 1).xray
+     * }}}
+     * Use `xrayWeak` if `xray` does not compile.
+     * @param description an optional description
+     * @return
+     */
     def xray(implicit description: XrayModule#Description = Xray.Defaults.Description): T = {
       val report = xrayed(expression, description, increaseStackTraceDepthBy = +1)(typeTag, style, rendering)
 
@@ -56,6 +98,15 @@ trait XrayModule {
       report.value
     }
 
+    /**
+     * A DSL for producing `XrayReport`s.
+     * Example:
+     * {{{
+     * Array(1, 2, 3).xrayIf(_.value contains 2).map(_ + 1).xrayIf(_.duration > 3.seconds)
+     * }}}
+     * @param description an optional description
+     * @return
+     */
     def xrayIf(conditionFunction: XrayModule#XrayReport[T] => Boolean)(implicit description: XrayModule#Description = Xray.Defaults.Description): T = {
       val report = xrayed(expression, description, increaseStackTraceDepthBy = +1)(typeTag, style, rendering)
 
@@ -67,6 +118,16 @@ trait XrayModule {
   }
 
   implicit final class XrayWeakFromSpells[T](expression: => T)(implicit style: AnsiModule#AnsiStyle = AnsiStyle.Reset, rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any, monitor: XrayModule#XrayReport[T] => Unit = (report: XrayModule#XrayReport[T]) => Console.println(report.rendered)) {
+    /**
+     * A DSL for producing `XrayReport`s when `xray` does not compile, because of the `TypeTag`.
+     *
+     * Example:
+     * {{{
+     * def m[T](t: T): T = t.xrayWeak
+     * }}}
+     * @param description an optional description
+     * @return
+     */
     def xrayWeak(implicit description: XrayModule#Description = Xray.Defaults.Description): T = {
       val report = xrayedWeak(expression, description, increaseStackTraceDepthBy = +1)(style, rendering)
 
@@ -75,7 +136,17 @@ trait XrayModule {
       report.value
     }
 
-    def xrayWeakIf(conditionFunction: XrayModule#XrayReport[T] => Boolean)(implicit description: XrayModule#Description = Xray.Defaults.Description): T = {
+    /**
+     * A DSL for producing `XrayReport`s when `xrayIf` does not compile, because of the `TypeTag`.
+     *
+     * Example:
+     * {{{
+     * def m[T](t: T): T = t.xrayIfWeak(_ => true)
+     * }}}
+     * @param description an optional description
+     * @return
+     */
+    def xrayIfWeak(conditionFunction: XrayModule#XrayReport[T] => Boolean)(implicit description: XrayModule#Description = Xray.Defaults.Description): T = {
       val report = xrayedWeak(expression, description, increaseStackTraceDepthBy = +1)(style, rendering)
 
       if (conditionFunction(report))
@@ -85,6 +156,10 @@ trait XrayModule {
     }
   }
 
+  /**
+   * A wrapper for `String`s, provided so that it can be used as an `implicit` parameter, which `String`s are not ideal for.
+   * @param value the `String` to be wrapped.
+   */
   implicit final class Description(val value: String) {
     override final def toString: String = value
   }
@@ -95,6 +170,22 @@ trait XrayModule {
     }
   }
 
+  /**
+   * Instances of this class are created by methods like `xray` or `xrayIf`.
+   * They are used to describe evaluated expressions and can be rendered as a table.
+   *
+   * @param value
+   * @param duration
+   * @param stackTraceElement
+   * @param timestamp
+   * @param description
+   * @param thread
+   * @param style
+   * @param rendering
+   * @param typeTag
+   * @param additionalContent
+   * @tparam T
+   */
   final class XrayReport[+T](
       final val value: T,
       final val duration: Duration,
@@ -203,7 +294,7 @@ trait XrayModule {
     }
   }
 
-  object XrayReport {
+  private[spells] object XrayReport {
     private[spells] final def customRenderedTableForXray(in: Int => Seq[(String, String)], styles: Map[String, AnsiModule#AnsiStyle] = Map.empty withDefaultValue AnsiStyle.Reset, availableWidthInCharacters: Int): Seq[String] = {
       if (in(0).isEmpty) Seq.empty
       else {

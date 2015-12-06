@@ -15,8 +15,8 @@ class CompilationTests extends spells.UnitTestConfiguration {
       10.xrayIf(_ => false)
 
       10.xrayWeak("description")
-      10.xrayWeakIf(_ => true)
-      10.xrayWeakIf(_ => false)
+      10.xrayIfWeak(_ => true)
+      10.xrayIfWeak(_ => false)
     }
 
     Array.empty[Any].rendered
