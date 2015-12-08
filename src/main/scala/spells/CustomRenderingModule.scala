@@ -1,17 +1,15 @@
 package spells
 
-/**
- * This module provides the `CustomRendering` trait, which is used throughout the whole library, especially in the `XrayModule`.
- */
+/** This module provides the `CustomRendering` trait, which is used throughout the whole library, especially in the `XrayModule`.
+  */
 trait CustomRenderingModule {
   this: SpellsConfigModule =>
 
   trait CustomRendering {
-    /**
-     * Renders anything. Used as view bound in many places, like `xray`.
-     * @param availableWidthInCharacters might be used by implementations
-     * @return a `String` rendering.
-     */
+    /** Renders anything. Used as view bound in many places, like `xray`.
+      * @param availableWidthInCharacters might be used by implementations
+      * @return a `String` rendering.
+      */
     def rendered(implicit availableWidthInCharacters: CustomRenderingModule#AvailableWidthInCharacters = CustomRendering.Defaults.AvailableWidthInCharacters): String
   }
 
@@ -28,10 +26,9 @@ trait CustomRenderingModule {
     }
   }
 
-  /**
-   * A wrapper for `Int`s, provided so that it can be used as an `implicit` parameter, which `Int`s are not ideal for.
-   * @param value the `Int` to be wrapped.
-   */
+  /** A wrapper for `Int`s, provided so that it can be used as an `implicit` parameter, which `Int`s are not ideal for.
+    * @param value the `Int` to be wrapped.
+    */
   implicit final class AvailableWidthInCharacters(val value: Int) {
     override final def toString: String = value.toString
   }

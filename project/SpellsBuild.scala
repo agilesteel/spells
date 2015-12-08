@@ -26,13 +26,21 @@ object SpellsBuild extends Build {
       ++ spellsSettings
       ++ pureScalaProjectSettings
       ++ publishSettings
-      ++ scalariformSettings
+      ++ scalariformSettingsFromSpells
       ++ aliasSettings
   )
     .configs(Build)
     .settings(testAndLayoutSettings: _*)
     // The following line has to come after testAndLayoutSettings
     .settings(inConfig(Build)(configScalariformSettings): _*)
+
+  lazy val scalariformSettingsFromSpells = scalariformSettings ++ {
+    import scalariform.formatter.preferences._
+
+    ScalariformKeys.preferences := ScalariformKeys.preferences.value
+      .setPreference(MultilineScaladocCommentsStartOnFirstLine, true)
+      .setPreference(PlaceScaladocAsterisksBeneathSecondAsterisk, true)
+  }
 
   lazy val spellsSettings = Seq(
     incOptions := incOptions.value.withNameHashing(true),
