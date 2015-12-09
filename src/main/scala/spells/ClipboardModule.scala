@@ -1,5 +1,6 @@
 package spells
 
+/** Contains the `Clipboard` object, which provides an API to write and read from the operating systems' clipboard. */
 trait ClipboardModule {
   this: MiscModule =>
 
@@ -8,12 +9,8 @@ trait ClipboardModule {
   import java.util.logging.Level
   import scala.util.Try
 
-  trait Clipboard {
-    def writeString(content: String): Try[Unit]
-    def readString: Try[String]
-  }
-
-  object Clipboard extends Clipboard {
+  /** Utility object, which provides an API to write and read from the operating systems' clipboard. */
+  object Clipboard {
     Vector(
       "java.awt",
       "java.awt.event",
@@ -30,12 +27,19 @@ trait ClipboardModule {
 
     private lazy val clipboard = Toolkit.getDefaultToolkit.getSystemClipboard
 
-    override final def writeString(content: String): Try[Unit] = Try {
+    /** Writes the content `String` to the operating systems' clipboard.
+      * @param content the `String` to write
+      * @return an instance of `Try[Unit]`
+      */
+    final def writeString(content: String): Try[Unit] = Try {
       val contentAsStringSelection = new StringSelection(content)
-      clipboard setContents (contentAsStringSelection, contentAsStringSelection)
+      clipboard.setContents(contentAsStringSelection, contentAsStringSelection)
     }
 
-    override final def readString: Try[String] = Try {
+    /** Reads the content of the operating systems' clipboard.
+      * @return the `String` content of the operating system's clipboard wrapped in a `Try`
+      */
+    final def readString: Try[String] = Try {
       clipboard.getContents(null).getTransferData(DataFlavor.stringFlavor).asInstanceOf[String]
     }
   }

@@ -1,5 +1,6 @@
 package spells
 
+/** Provides custom rendering for the FunctionN traits. */
 trait FunctionNOpsModule {
   this: CustomRenderingModule with SpellsConfigModule with StringOpsModule =>
 

@@ -1,5 +1,6 @@
 package spells
 
+/** Contains utility methods for `Throwable`s. */
 trait ThrowableOpsModule {
   this: CustomRenderingModule with SpellsConfigModule with StylePrintModule with AnsiModule =>
 

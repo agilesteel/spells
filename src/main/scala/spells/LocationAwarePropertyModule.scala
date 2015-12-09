@@ -1,6 +1,6 @@
 package spells
 
-trait LocationAwarePropertyModule {
+private[spells] trait LocationAwarePropertyModule {
   this: StylePrintModule with AnsiModule =>
 
   abstract class LocationAwareProperty[T](implicit materialised: (LocationAwareProperty[T] => T)) {

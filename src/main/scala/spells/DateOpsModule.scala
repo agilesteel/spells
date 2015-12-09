@@ -1,11 +1,15 @@
 package spells
 
+/** Provides utility methods for java.util.Date. */
 trait DateOpsModule {
   this: CustomRenderingModule =>
 
-  implicit final class DateOpsFromSpells(value: java.util.Date) extends CustomRendering {
+  import java.text.SimpleDateFormat
+  import java.util.Date
+
+  implicit final class DateOpsFromSpells(value: Date) extends CustomRendering {
     override final def rendered(implicit availableWidthInCharacters: CustomRenderingModule#AvailableWidthInCharacters = CustomRendering.Defaults.AvailableWidthInCharacters): String =
-      new java.text.SimpleDateFormat(DateOpsFromSpells.Defaults.Format) format value
+      new SimpleDateFormat(DateOpsFromSpells.Defaults.Format) format value
   }
 
   object DateOpsFromSpells {

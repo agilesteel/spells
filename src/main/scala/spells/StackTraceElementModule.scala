@@ -1,5 +1,6 @@
 package spells
 
+/** Contains custom rendering for `StackTraceElement`. */
 trait StackTraceElementModule {
   this: CustomRenderingModule with SpellsConfigModule =>
 
