@@ -1,10 +1,16 @@
 package spells
 
-/** This module provides the `xrayed` as well as `xrayedWeak` methods respectively,
-  * which analyse an expression and return an instance of `XrayReport`.
+/** Provides the `xrayed` as well as `xrayedWeak` methods respectively,
+  * which analyse an expression and return an instance of the `XrayReport`.
   *
   * It also provides the `xray` as well as `xrayIf` method respectively as well as their "weak" counterparts,
-  * which is a DSL for creating `XrayReport`s without interrupting the flow of your code.
+  * which is a DSL for creating `XrayReport`s without interrupting the code flow.
+  *
+  * {{{
+  * List(1,2,3).map(_ + 1)           // compiles and has same semantics
+  * List(1,2,3).xray.map(_ + 1)      // compiles and has same semantics
+  * List(1,2,3).xray.map(_ + 1).xray // compiles and has same semantics
+  * }}}
   */
 trait XrayModule {
   this: AnsiModule with AnyOpsModule with CalendarOpsModule with CustomRenderingModule with DateOpsModule with DurationOpsModule with HumanRenderingModule with StringOpsModule with StylePrintModule with TraversableOpsModule with SpellsConfigModule with StackTraceElementModule =>
@@ -82,7 +88,7 @@ trait XrayModule {
       * }}}
       * Use `xrayWeak` if `xray` does not compile.
       * @param description an optional description
-      * @return
+      * @return the original value of the expression it is being called on
       */
     def xray(implicit description: XrayModule#Description = Xray.Defaults.Description): T = {
       val report = xrayed(expression, description, increaseStackTraceDepthBy = +1)(typeTag, style, rendering)
@@ -98,7 +104,7 @@ trait XrayModule {
       * Array(1, 2, 3).xrayIf(_.value contains 2).map(_ + 1).xrayIf(_.duration > 3.seconds)
       * }}}
       * @param description an optional description
-      * @return
+      * @return the original value of the expression it is being called on
       */
     def xrayIf(conditionFunction: XrayModule#XrayReport[T] => Boolean)(implicit description: XrayModule#Description = Xray.Defaults.Description): T = {
       val report = xrayed(expression, description, increaseStackTraceDepthBy = +1)(typeTag, style, rendering)
@@ -118,7 +124,7 @@ trait XrayModule {
       * def m[T](t: T): T = t.xrayWeak
       * }}}
       * @param description an optional description
-      * @return
+      * @return the original value of the expression it is being called on
       */
     def xrayWeak(implicit description: XrayModule#Description = Xray.Defaults.Description): T = {
       val report = xrayedWeak(expression, description, increaseStackTraceDepthBy = +1)(style, rendering)
@@ -135,7 +141,7 @@ trait XrayModule {
       * def m[T](t: T): T = t.xrayIfWeak(_ => true)
       * }}}
       * @param description an optional description
-      * @return
+      * @return the original value of the expression it is being called on
       */
     def xrayIfWeak(conditionFunction: XrayModule#XrayReport[T] => Boolean)(implicit description: XrayModule#Description = Xray.Defaults.Description): T = {
       val report = xrayedWeak(expression, description, increaseStackTraceDepthBy = +1)(style, rendering)

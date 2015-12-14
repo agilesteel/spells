@@ -17,6 +17,9 @@ trait ThrowableOpsModule {
       writer.getBuffer.deleteCharAt(writer.getBuffer.length - 1).toString.replace("\t", "     ")
     }
 
+    /** Gets the deepest `Throwable`.
+      * @return the root cause
+      */
     final def getRootCause: Throwable =
       if (value.getCause == null) value
       else value.getCause.getRootCause

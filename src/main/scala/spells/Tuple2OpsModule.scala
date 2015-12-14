@@ -1,5 +1,6 @@
 package spells
 
+/** Provides utility methods for `Tuple2[Key, Value]`. */
 trait Tuple2OpsModule {
   this: CustomRenderingModule =>
 

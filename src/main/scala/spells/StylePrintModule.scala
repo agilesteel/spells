@@ -1,16 +1,34 @@
 package spells
 
+/** Contains deep (already existing styles will be preserved) styling methods.
+  */
 trait StylePrintModule {
   this: AnsiModule with SpellsConfigModule =>
 
+  /** Prints out an object to the default output, followed by a newline character.
+    * @param input the object to print
+    * @param style the style for the object to be printed in
+    */
   final def println(input: Any = "")(implicit style: AnsiModule#AnsiStyle = AnsiStyle.Reset): Unit = {
     Console println styled(input)(style)
   }
 
+  /** Prints an object to out using its toString method.
+    * @param input the object to print; may be null
+    * @param style the style for the object to be printed in
+    */
   final def print(input: Any = "")(implicit style: AnsiModule#AnsiStyle = AnsiStyle.Reset): Unit = {
     Console print styled(input)(style)
   }
 
+  /** Styled an object in a given style. Involves deep (already existing styles will be preserved) styling.
+    * {{{
+    *  styled("green" + "yellow".yellow + "green")(Green) // yellow is preserved
+    * }}}
+    * @param input the object to print
+    * @param style the style for the object to be printed in
+    * @return the styled object as `String`
+    */
   final def styled(input: Any)(implicit style: AnsiModule#AnsiStyle = AnsiStyle.Reset): String = {
     val rawValue = String valueOf input
 

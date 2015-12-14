@@ -3,10 +3,10 @@ package spells
 /** Provides utility methods for everything.
   * {{{
   * class `Encoded + Fancy` {
-  * def show(): Unit = {
-  *  println(getClass.getName)      // Encoded$u0020$plus$u0020Fancy
-  *  println(this.decodedClassName) // Encoded + Fancy
-  * }
+  *  def show(): Unit = {
+  *    println(getClass.getName)      // Encoded$u0020$plus$u0020Fancy
+  *    println(this.decodedClassName) // Encoded + Fancy
+  *  }
   * }
   * }}}
   */

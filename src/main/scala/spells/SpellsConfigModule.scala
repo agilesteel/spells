@@ -1,5 +1,9 @@
 package spells
 
+/** Provides access to the `SpellsConfig` object.
+  * Access values from the config like so: `SpellsConfig.terminal.WidthInCharacters.value`.
+  * If Scala can infer the type you might drop the `.value` call, thanks to the respective implicit conversions in scope.
+  */
 trait SpellsConfigModule extends LocationAwareConfigModule with LocationAwarePropertyModule {
   this: StylePrintModule with AnsiModule =>
 
