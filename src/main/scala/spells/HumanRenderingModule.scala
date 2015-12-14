@@ -1,5 +1,6 @@
 package spells
 
+/** Provides human readable renderings for numeric types. */
 trait HumanRenderingModule {
   implicit final def byteToRendering(value: Byte): Rendering = Rendering(value)
   implicit final def shortToRendering(value: Short): Rendering = Rendering(value)
@@ -10,17 +11,30 @@ trait HumanRenderingModule {
     final def render: Rendering = this
 
     object duration {
+      /** Renders months as follows `13.render.duration.months // 1 year 1 month` */
       final lazy val months: String = render(duration.just.months, Duration(months = value))
+      /** Renders days as follows `7.render.duration.days // 1 week 1 day` */
       final lazy val days: String = render(duration.just.days, Duration(days = value))
+      /** Renders hours as in `25.render.duration.hours // 1 day 1 hour` */
       final lazy val hours: String = render(duration.just.hours, Duration(hours = value))
+      /** Renders minutes as in `61.render.duration.minutes // 1 hour 1 minute` */
       final lazy val minutes: String = render(duration.just.minutes, Duration(minutes = value))
+      /** Renders seconds as in `61.render.duration.seconds // 1 minute 1 second` */
       final lazy val seconds: String = render(duration.just.seconds, Duration(seconds = value))
+      /** Renders milliseconds as in `1001.render.duration.milliseconds // 1 second 1 millisecond` */
       final lazy val milliseconds: String = render(duration.just.milliseconds, Duration(milliseconds = value))
+      /** Renders nanoseconds as in `1000001.render.duration.nanoseconds // 1 millisecond 1 nanosecond` */
       final lazy val nanoseconds: String = render(duration.just.nanoseconds, Duration(nanoseconds = value))
 
       final private def render(alreadyRendered: String, toRender: => Duration): String =
         if (value == 0) alreadyRendered else toRender.toString
 
+      /** Renders just what is requested
+        * {{{
+        * 1.render.duration.just.seconds // 1 second
+        * 61.render.duration.just.seconds // 61 seconds (instead of 1 minute 1 second)
+        * }}}
+        */
       object just {
         final lazy val nanoseconds: String = render(Nanosecond)
         final lazy val milliseconds: String = render(Millisecond)

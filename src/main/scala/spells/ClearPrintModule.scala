@@ -11,19 +11,19 @@ package spells
   * def hide(): Unit = on = false
   *
   * def show()(implicit ec: ExecutionContext = ExecutionContext.Implicits.global): Unit = {
-  *  if (off) {
-  *    on = true
+  * if (off) {
+  *   on = true
   *
-  *    Future {
-  *      while (on) {
-  *        clearPrint('/'); Thread sleep 500
-  *        clearPrint('-'); Thread sleep 500
-  *        clearPrint('\\'); Thread sleep 500
-  *      }
+  *   Future {
+  *     while (on) {
+  *       clearPrint('/'); Thread sleep 500
+  *       clearPrint('-'); Thread sleep 500
+  *       clearPrint('\\'); Thread sleep 500
+  *     }
   *
-  *      clearPrintln()
-  *    }
-  *  }
+  *     clearPrintln()
+  *   }
+  * }
   * }
   * }
   * }}}
