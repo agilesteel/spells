@@ -15,13 +15,13 @@ package spells
   * on = true
   *
   * Future {
-  *  while (on) {
-  *    clearPrint('/'); Thread sleep 500
-  *    clearPrint('-'); Thread sleep 500
-  *    clearPrint('\\'); Thread sleep 500
-  *  }
+  * while (on) {
+  *   clearPrint('/'); Thread sleep 500
+  *   clearPrint('-'); Thread sleep 500
+  *   clearPrint('\\'); Thread sleep 500
+  * }
   *
-  *  clearPrintln()
+  * clearPrintln()
   * }
   * }
   * }

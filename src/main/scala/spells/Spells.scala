@@ -1,6 +1,9 @@
 package spells
 
-/** The main spells module. Mix it into the highest level `package object` you can afford, in order to gain the most benefit from spells. */
+/** The main spells module.
+  * Mix it into the highest level `package object` you can afford,
+  * in order to gain the most benefit from spells.
+  */
 trait Spells
   extends AnsiModule
   with AnyOpsModule
