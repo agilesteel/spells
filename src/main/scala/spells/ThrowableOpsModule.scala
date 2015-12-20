@@ -20,6 +20,7 @@ trait ThrowableOpsModule {
     /** Gets the deepest `Throwable`.
       * @return the root cause
       */
+    @scala.annotation.tailrec
     final def getRootCause: Throwable =
       if (value.getCause == null) value
       else value.getCause.getRootCause

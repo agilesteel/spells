@@ -7,9 +7,9 @@ trait StringOpsModule {
       * {{{
       * class `Encoded + Fancy` {
       * def show(): Unit = {
-      *  println(getClass.getName)                        // Encoded$u0020$plus$u0020Fancy
-      *  println(getClass.getName.withDecodedScalaSymbols // Encoded + Fancy
-      *  println(this.decodedClassName)                   // Encoded + Fancy
+      * println(getClass.getName)                        // Encoded$u0020$plus$u0020Fancy
+      * println(getClass.getName.withDecodedScalaSymbols // Encoded + Fancy
+      * println(this.decodedClassName)                   // Encoded + Fancy
       * }
       * }
       * }}}
@@ -19,7 +19,7 @@ trait StringOpsModule {
 
     /** Line wrapping.
       * {{{
-      *  "hello world".wrappedOnSpaces(5) // "hello\nworld"
+      * "hello world".wrappedOnSpaces(5) // "hello\nworld"
       * }}}
       * @param limitInCharacters the maximum length
       * @return

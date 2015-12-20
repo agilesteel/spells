@@ -12,17 +12,17 @@ package spells
   *
   * def show()(implicit ec: ExecutionContext = ExecutionContext.Implicits.global): Unit = {
   * if (off) {
-  *  on = true
+  * on = true
   *
-  *  Future {
-  *    while (on) {
-  *      clearPrint('/'); Thread sleep 500
-  *      clearPrint('-'); Thread sleep 500
-  *      clearPrint('\\'); Thread sleep 500
-  *    }
-  *
-  *    clearPrintln()
+  * Future {
+  *  while (on) {
+  *    clearPrint('/'); Thread sleep 500
+  *    clearPrint('-'); Thread sleep 500
+  *    clearPrint('\\'); Thread sleep 500
   *  }
+  *
+  *  clearPrintln()
+  * }
   * }
   * }
   * }

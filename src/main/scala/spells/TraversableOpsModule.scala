@@ -1,5 +1,6 @@
 package spells
 
+/** Provides utilities for all kinds of `Traversable`s including Java collections and `Array`s. */
 trait TraversableOpsModule {
   this: AnsiModule with AnyOpsModule with CalendarOpsModule with CustomRenderingModule with DurationOpsModule with HumanRenderingModule with StringOpsModule with StylePrintModule with Tuple2OpsModule =>
 
