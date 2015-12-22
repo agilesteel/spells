@@ -14,8 +14,10 @@ class StringOpsTests extends spells.UnitTestConfiguration {
     "helloworld!".wrappedOnSpaces(Limit) should be("helloworld!")
   }
 
-  test("Empty should stay empty") {
+  test("Dodgy strings should not cause any trouble") {
     "".wrappedOnSpaces(Limit) should be('empty)
+    " ".wrappedOnSpaces(Limit) should be(" ")
+    "\n".wrappedOnSpaces(Limit) should be("\n")
   }
 
   test("A line should be broken at the breakCharacter before the Limit") {

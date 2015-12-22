@@ -16,9 +16,9 @@ package spells
   *
   * Future {
   * while (on) {
-  *   clearPrint('/'); Thread sleep 500
-  *   clearPrint('-'); Thread sleep 500
-  *   clearPrint('\\'); Thread sleep 500
+  * clearPrint('/'); Thread sleep 500
+  * clearPrint('-'); Thread sleep 500
+  * clearPrint('\\'); Thread sleep 500
   * }
   *
   * clearPrintln()

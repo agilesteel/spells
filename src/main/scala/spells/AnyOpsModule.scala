@@ -28,7 +28,7 @@ trait AnyOpsModule {
       catch {
         // https://issues.scala-lang.org/browse/SI-2034
         // $COVERAGE-OFF$
-        case bug: InternalError => decodedClassName
+        case bug: Exception => decodedClassName
         // $COVERAGE-ON$
       }
 

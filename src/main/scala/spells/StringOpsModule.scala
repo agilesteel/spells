@@ -15,7 +15,13 @@ trait StringOpsModule {
       * }}}
       * @return a decoded `String`
       */
-    final def withDecodedScalaSymbols: String = scala.reflect.NameTransformer decode input
+    final def withDecodedScalaSymbols: String =
+      try scala.reflect.NameTransformer decode input
+      catch {
+        // $COVERAGE-OFF$
+        case bug: Exception => input
+        // $COVERAGE-ON$
+      }
 
     /** Line wrapping.
       * {{{
@@ -28,18 +34,21 @@ trait StringOpsModule {
       val separator = " "
 
       def wrapped(in: String): String = {
-        val atoms = in split separator
+        in.split(separator).toList match {
+          case head :: tail =>
+            val (result, lastLine) =
+              tail.foldLeft(("", head)) {
+                case ((result, line), atom) =>
+                  if (wouldOverflow(line, atom))
+                    brokenCurrentLineWithAtomCarriedOverToNextLine(result, line, atom)
+                  else
+                    justAtomCarriedOverToNextLine(result, line, atom)
+              }
 
-        val (result, lastLine) =
-          atoms.tail.foldLeft(("", atoms.head)) {
-            case ((result, line), atom) =>
-              if (wouldOverflow(line, atom))
-                brokenCurrentLineWithAtomCarriedOverToNextLine(result, line, atom)
-              else
-                justAtomCarriedOverToNextLine(result, line, atom)
-          }
+            result + lastLine
 
-        result + lastLine
+          case _ => in
+        }
       }
 
       def wouldOverflow(line: String, atom: String): Boolean = {
@@ -53,18 +62,18 @@ trait StringOpsModule {
       def justAtomCarriedOverToNextLine(result: String, line: String, atom: String): (String, String) =
         result -> (line + separator + atom)
 
-      if (input.size < limitInCharacters || !(input contains ' ')) input else {
-        val parts = input split "\n" map wrapped
+      input.split("\n").toList.map(wrapped) match {
+        case head :: tail =>
+          tail.foldLeft(head) {
+            case (result, currentPart) =>
+              val current = if (currentPart.isEmpty) "\n" else currentPart
 
-        parts.tail.foldLeft(parts.head) {
-          case (result, currentPart) =>
-            val current = if (currentPart.isEmpty) "\n" else currentPart
-
-            if (result.endsWith("\n"))
-              result + current
-            else
-              result + "\n" + current
-        }
+              if (result.endsWith("\n"))
+                result + current
+              else
+                result + "\n" + current
+          }
+        case _ => input
       }
     }
   }
