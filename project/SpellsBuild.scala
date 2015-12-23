@@ -118,16 +118,7 @@ object SpellsBuild extends Build {
 
   lazy val aliasSettings =
     addCommandAlias("deploySnapshot", "; +clean; +test; +publish") ++
-    addCommandAlias("pluginUpdates", "; reload plugins; dependencyUpdates; reload return") ++
-    addCommandAlias("man", "test:run") ++
-    addCommandAlias("e", "test:run-main") ++ {
-      val info =
-        s"""|Type ${"man".magenta} to see the list of examples.
-            |Type ${"e".magenta} ${"name".cyan} to run a specific example (keep in mind that autocompletion requires prior compilation).""".stripMargin
-      Seq(
-        onLoadMessage <<= onLoadMessage { msg => msg + '\n' + info }
-      )
-    }
+    addCommandAlias("pluginUpdates", "; reload plugins; dependencyUpdates; reload return")
 }
 
 object Dependencies {
