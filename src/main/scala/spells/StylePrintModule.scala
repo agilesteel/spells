@@ -23,6 +23,19 @@ trait StylePrintModule {
     Console print styled(input)(style)
   }
 
+  /** Write to the `err` stream in `AnsiStyle.Red`.
+    * @param error which will be written to the stream
+    */
+  final def printerr(error: Any): Unit = {
+    Console.err println erred(error)
+  }
+
+  /** Styles `Any in Red`.
+    * @param error which will be styled
+    * @return
+    */
+  final def erred(error: Any): String = styled(error)(AnsiStyle.Red)
+
   /** Styled an object in a given style. Involves deep (already existing styles will be preserved) styling.
     * {{{
     * styled("green" + "yellow".yellow + "green")(Green) // yellow is preserved

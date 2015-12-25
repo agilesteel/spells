@@ -278,7 +278,7 @@ class ConfigurationTests extends UnitTestConfiguration {
   }
 
   test("Turning off styles") {
-    new SpellsConfigModule with StylePrintModule with AnsiModule with ErrorPrintModule {
+    new SpellsConfigModule with StylePrintModule with AnsiModule {
       override def loadSpellsConfig: Config =
         ConfigFactory parseString {
           """|spells {

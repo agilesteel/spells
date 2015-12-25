@@ -13,7 +13,6 @@ trait Spells
   with CustomRenderingModule
   with DateOpsModule
   with DurationOpsModule
-  with ErrorPrintModule
   with FunctionNOpsModule
   with HumanRenderingModule
   with MiscModule
