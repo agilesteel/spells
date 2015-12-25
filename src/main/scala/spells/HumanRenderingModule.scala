@@ -36,15 +36,15 @@ trait HumanRenderingModule {
         * }}}
         */
       object just {
-        final lazy val nanoseconds: String = render(Nanosecond)
-        final lazy val milliseconds: String = render(Millisecond)
-        final lazy val seconds: String = render(Second)
-        final lazy val minutes: String = render(Minute)
-        final lazy val hours: String = render(Hour)
-        final lazy val days: String = render(Day)
-        final lazy val weeks: String = render(Week)
-        final lazy val months: String = render(Month)
         final lazy val years: String = render(Year)
+        final lazy val months: String = render(Month)
+        final lazy val weeks: String = render(Week)
+        final lazy val days: String = render(Day)
+        final lazy val hours: String = render(Hour)
+        final lazy val minutes: String = render(Minute)
+        final lazy val seconds: String = render(Second)
+        final lazy val milliseconds: String = render(Millisecond)
+        final lazy val nanoseconds: String = render(Nanosecond)
 
         final private def render(unit: String): String =
           if (value == 1) s"$value $unit" else s"$value ${unit}s"
