@@ -13,7 +13,7 @@ package spells
   * }}}
   */
 trait XrayModule {
-  this: AnsiModule with AnyOpsModule with CalendarOpsModule with CustomRenderingModule with DateOpsModule with DurationOpsModule with HumanRenderingModule with StringOpsModule with StylePrintModule with TraversableOpsModule with SpellsConfigModule with StackTraceElementModule =>
+  this: AnsiModule with AnyOpsModule with CalendarOpsModule with CustomRenderingModule with DateOpsModule with DurationOpsModule with HumanRenderingModule with MiscModule with StringOpsModule with StylePrintModule with TraversableOpsModule with SpellsConfigModule with StackTraceElementModule =>
 
   import java.util.Calendar
   import scala.concurrent.duration._
@@ -32,15 +32,13 @@ trait XrayModule {
     * @return an instance of `XrayReport`, which can be rendered or written to a database etc etc
     */
   final def xrayed[T](expression: => T, description: XrayModule#Description = Xray.Defaults.Description, increaseStackTraceDepthBy: Int = 0)(implicit typeTag: TypeTag[T], style: AnsiModule#AnsiStyle = AnsiStyle.Reset, rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any): XrayModule#XrayReport[T] = {
-    val stackTraceElement = currentLineStackTraceElement(increaseStackTraceDepthBy - 1)
-
     val now = Calendar.getInstance
 
-    val start = System.nanoTime
-    val value = expression
-    val stop = System.nanoTime - start
+    val (value, duration) = measureExecutionTime(expression)
 
-    new XrayReport(value, stop.nanos, stackTraceElement, now, description.toString, Thread.currentThread, style, rendering, Some(typeTag))
+    val stackTraceElement = currentLineStackTraceElement(increaseStackTraceDepthBy - 1)
+
+    new XrayReport(value, duration, stackTraceElement, now, description.toString, Thread.currentThread, style, rendering, Some(typeTag))
   }
 
   /** Creates an instance of `XrayReport`. Primarily useful for library authors.
@@ -53,15 +51,13 @@ trait XrayModule {
     * @return an instance of `XrayReport`, which can be rendered or written to a database etc etc
     */
   final def xrayedWeak[T](expression: => T, description: XrayModule#Description = Xray.Defaults.Description, increaseStackTraceDepthBy: Int = 0)(implicit style: AnsiModule#AnsiStyle = AnsiStyle.Reset, rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any): XrayModule#XrayReport[T] = {
-    val stackTraceElement = currentLineStackTraceElement(increaseStackTraceDepthBy - 1)
-
     val now = Calendar.getInstance
 
-    val start = System.nanoTime
-    val value = expression
-    val stop = System.nanoTime - start
+    val (value, duration) = measureExecutionTime(expression)
 
-    new XrayReport(value, stop.nanos, stackTraceElement, now, description.toString, Thread.currentThread, style, rendering, typeTag = None)
+    val stackTraceElement = currentLineStackTraceElement(increaseStackTraceDepthBy - 1)
+
+    new XrayReport(value, duration, stackTraceElement, now, description.toString, Thread.currentThread, style, rendering, typeTag = None)
   }
 
   /** Creates an instance of `StackTraceElement` at current line.
