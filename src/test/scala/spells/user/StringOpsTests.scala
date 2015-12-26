@@ -55,4 +55,15 @@ class StringOpsTests extends spells.UnitTestConfiguration {
   test("Wrap should preserve empty lines2") {
     "xxxx\n\n\n xxx".wrappedOnSpaces(4) should be("xxxx\n\n\n xxx")
   }
+
+  test("Size calculations should take car of ANSI escape codes") {
+    val hello = "hello".green
+    val world = "world".yellow
+
+    val input = hello + " " + world
+    val output = hello + "\n" + world
+
+    input.wrappedOnSpaces(10) should be(output)
+    input.wrappedOnSpaces(11) should be(input)
+  }
 }

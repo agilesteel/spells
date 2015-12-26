@@ -2,6 +2,8 @@ package spells
 
 /** Provides utilities for `String`s */
 trait StringOpsModule {
+  this: AnsiModule =>
+
   implicit final class StringOpsFromSpells(input: String) {
     /** Decodes special symbols scalac is using in generated names.
       * {{{
@@ -52,8 +54,8 @@ trait StringOpsModule {
       }
 
       def wouldOverflow(line: String, atom: String): Boolean = {
-        if (atom.isEmpty) line.size > limitInCharacters
-        else (line + separator + atom).size > limitInCharacters
+        if (atom.isEmpty) AnsiStyle.removed(line).size > limitInCharacters
+        else AnsiStyle.removed(line + separator + atom).size > limitInCharacters
       }
 
       def brokenCurrentLineWithAtomCarriedOverToNextLine(result: String, line: String, atom: String): (String, String) =
