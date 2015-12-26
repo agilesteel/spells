@@ -39,7 +39,17 @@ trait AnsiModule {
     * @param value the style to encode
     */
   final class AnsiStyle private[spells] (val value: String) {
-    override final def toString: String = AnsiStyle.Sample in this
+    override final def toString: String = value match {
+      case AnsiStyle.Black.value => "Black" in this
+      case AnsiStyle.Blue.value => "Blue" in this
+      case AnsiStyle.Cyan.value => "Cyan" in this
+      case AnsiStyle.Green.value => "Green" in this
+      case AnsiStyle.Magenta.value => "Magenta" in this
+      case AnsiStyle.Red.value => "Red" in this
+      case AnsiStyle.White.value => "White" in this
+      case AnsiStyle.Yellow.value => "Yellow" in this
+      case _ => AnsiStyle.Sample in this
+    }
   }
 
   /** Provides the method `in` which converts `Any` to `String` `in` `AnsiStyle`.

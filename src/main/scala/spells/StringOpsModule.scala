@@ -83,11 +83,11 @@ trait StringOpsModule {
   /** A wrapper for `Int`s, provided so that it can be used as an `implicit` parameter, which `Int`s are not ideal for.
     * @param value the `Int` to be wrapped.
     */
-  implicit def toAvailableWidthInCharacters(value: Int): StringOpsModule#AvailableWidthInCharacters =
+  implicit final def toAvailableWidthInCharacters(value: Int): StringOpsModule#AvailableWidthInCharacters =
     new AvailableWidthInCharacters(value)
 
-  class AvailableWidthInCharacters(val value: Int) {
-    override def toString: String = value.toString
+  final class AvailableWidthInCharacters(val value: Int) {
+    override final def toString: String = value.toString
   }
 
   implicit final def availableWidthInCharactersBackToInt(availableWidthInCharacters: StringOpsModule#AvailableWidthInCharacters): Int =

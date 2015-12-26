@@ -44,7 +44,15 @@ class AnsiTests extends spells.UnitTestConfiguration {
   }
 
   test("""Green.toString should be("sample" in Green)""") {
-    Green.toString should be("sample" in Green)
+    Black.toString should be("Black" in Black)
+    Red.toString should be("Red" in Red)
+    Green.toString should be("Green" in Green)
+    Yellow.toString should be("Yellow" in Yellow)
+    Blue.toString should be("Blue" in Blue)
+    Magenta.toString should be("Magenta" in Magenta)
+    Cyan.toString should be("Cyan" in Cyan)
+    White.toString should be("White" in White)
+    "style".toAnsiStyle.toString should be("style" + "sample" + Reset.value)
   }
 
   test("""Scoverage should be happy""") {
