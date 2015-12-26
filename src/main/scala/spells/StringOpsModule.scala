@@ -2,7 +2,7 @@ package spells
 
 /** Provides utilities for `String`s */
 trait StringOpsModule {
-  this: AnsiModule =>
+  this: AnsiModule with SpellsConfigModule =>
 
   implicit final class StringOpsFromSpells(input: String) {
     /** Decodes special symbols scalac is using in generated names.
@@ -29,10 +29,10 @@ trait StringOpsModule {
       * {{{
       * "hello world".wrappedOnSpaces(5) // "hello\nworld"
       * }}}
-      * @param limitInCharacters the maximum length
+      * @param availableWidthInCharacters the maximum length
       * @return
       */
-    final def wrappedOnSpaces(limitInCharacters: Int): String = {
+    final def wrappedOnSpaces(availableWidthInCharacters: StringOpsModule#AvailableWidthInCharacters = SpellsConfig.terminal.WidthInCharacters.value): String = {
       val separator = " "
 
       def wrapped(in: String): String = {
@@ -54,8 +54,8 @@ trait StringOpsModule {
       }
 
       def wouldOverflow(line: String, atom: String): Boolean = {
-        if (atom.isEmpty) AnsiStyle.removed(line).size > limitInCharacters
-        else AnsiStyle.removed(line + separator + atom).size > limitInCharacters
+        if (atom.isEmpty) AnsiStyle.removed(line).size > availableWidthInCharacters
+        else AnsiStyle.removed(line + separator + atom).size > availableWidthInCharacters
       }
 
       def brokenCurrentLineWithAtomCarriedOverToNextLine(result: String, line: String, atom: String): (String, String) =
@@ -79,4 +79,17 @@ trait StringOpsModule {
       }
     }
   }
+
+  /** A wrapper for `Int`s, provided so that it can be used as an `implicit` parameter, which `Int`s are not ideal for.
+    * @param value the `Int` to be wrapped.
+    */
+  implicit def toAvailableWidthInCharacters(value: Int): StringOpsModule#AvailableWidthInCharacters =
+    new AvailableWidthInCharacters(value)
+
+  class AvailableWidthInCharacters(val value: Int) {
+    override def toString: String = value.toString
+  }
+
+  implicit final def availableWidthInCharactersBackToInt(availableWidthInCharacters: StringOpsModule#AvailableWidthInCharacters): Int =
+    availableWidthInCharacters.value
 }

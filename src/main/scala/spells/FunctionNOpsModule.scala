@@ -7,7 +7,7 @@ trait FunctionNOpsModule {
   import scala.reflect.runtime.universe._
 
   abstract class TypeTagBasedCustomRendering(typeTag: TypeTag[_]) extends CustomRendering {
-    override def rendered(implicit availableWidthInCharacters: CustomRenderingModule#AvailableWidthInCharacters = CustomRendering.Defaults.AvailableWidthInCharacters): String =
+    override def rendered(implicit availableWidthInCharacters: StringOpsModule#AvailableWidthInCharacters = SpellsConfig.terminal.WidthInCharacters.value): String =
       typeTag.tpe.toString.withDecodedScalaSymbols
   }
 

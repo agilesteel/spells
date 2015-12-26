@@ -2,12 +2,12 @@ package spells
 
 /** Contains utility methods for `Throwable`s. */
 trait ThrowableOpsModule {
-  this: CustomRenderingModule with SpellsConfigModule with StylePrintModule with AnsiModule =>
+  this: AnsiModule with CustomRenderingModule with SpellsConfigModule with AnsiModule with StringOpsModule with StylePrintModule =>
 
   import java.io.{ PrintWriter, StringWriter }
 
   implicit final class ThrowableOpsFromSpells(value: Throwable) extends CustomRendering {
-    override final def rendered(implicit availableWidthInCharacters: CustomRenderingModule#AvailableWidthInCharacters = CustomRendering.Defaults.AvailableWidthInCharacters): String =
+    override final def rendered(implicit availableWidthInCharacters: StringOpsModule#AvailableWidthInCharacters = SpellsConfig.terminal.WidthInCharacters.value): String =
       styled(getFullStackTraceString)(AnsiStyle.Red)
 
     final def getFullStackTraceString: String = {

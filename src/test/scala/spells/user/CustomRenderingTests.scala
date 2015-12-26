@@ -4,7 +4,7 @@ class CustomRenderingTests extends spells.UnitTestConfiguration {
   test("It should not be possible to implicitly pass in availableWidthInCharacters of type Int for rendered") {
     implicit val availableWidthInCharacters: Int = 1337
 
-    CR.rendered should be(CustomRendering.Defaults.AvailableWidthInCharacters.toString)
+    CR.rendered should be(SpellsConfig.terminal.WidthInCharacters.value.toString)
   }
 
   test("It should be possible to explicitly pass in availableWidthInCharacters of type Int for rendered") {
@@ -14,7 +14,7 @@ class CustomRenderingTests extends spells.UnitTestConfiguration {
   }
 
   object CR extends CustomRendering {
-    override final def rendered(implicit availableWidthInCharacters: spells.CustomRenderingModule#AvailableWidthInCharacters = CustomRendering.Defaults.AvailableWidthInCharacters.value): String =
+    override final def rendered(implicit availableWidthInCharacters: spells.StringOpsModule#AvailableWidthInCharacters = SpellsConfig.terminal.WidthInCharacters.value): String =
       availableWidthInCharacters.toString
   }
 }

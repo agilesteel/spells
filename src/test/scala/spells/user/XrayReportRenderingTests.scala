@@ -200,7 +200,7 @@ class XrayReportRenderingTests extends spells.UnitTestConfiguration {
 
   test("Explicit CustomRendering should be picked up") {
     object OwnSource extends CustomRendering {
-      override final def rendered(implicit availableWidthInCharacters: spells.CustomRenderingModule#AvailableWidthInCharacters = CustomRendering.Defaults.AvailableWidthInCharacters): String =
+      override final def rendered(implicit availableWidthInCharacters: spells.StringOpsModule#AvailableWidthInCharacters = SpellsConfig.terminal.WidthInCharacters.value): String =
         "works"
     }
 

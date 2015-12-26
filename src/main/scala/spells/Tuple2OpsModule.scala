@@ -2,12 +2,12 @@ package spells
 
 /** Provides utility methods for `Tuple2[Key, Value]`. */
 trait Tuple2OpsModule {
-  this: CustomRenderingModule =>
+  this: CustomRenderingModule with StringOpsModule with SpellsConfigModule =>
 
   implicit final def Tuple2OpsFromSpells[Key, Value](tuple: (Key, Value))(implicit keyRendering: Key => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any, valueRendering: Value => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any): CustomRenderingModule#CustomRendering = new CustomRendering {
     val (key, value) = tuple
 
-    override final def rendered(implicit availableWidthInCharacters: CustomRenderingModule#AvailableWidthInCharacters = CustomRendering.Defaults.AvailableWidthInCharacters): String =
+    override final def rendered(implicit availableWidthInCharacters: StringOpsModule#AvailableWidthInCharacters = SpellsConfig.terminal.WidthInCharacters.value): String =
       s"${key.rendered} -> ${value.rendered}"
   }
 
@@ -15,7 +15,7 @@ trait Tuple2OpsModule {
     val key = entry.getKey
     val value = entry.getValue
 
-    override final def rendered(implicit availableWidthInCharacters: CustomRenderingModule#AvailableWidthInCharacters = CustomRendering.Defaults.AvailableWidthInCharacters): String =
+    override final def rendered(implicit availableWidthInCharacters: StringOpsModule#AvailableWidthInCharacters = SpellsConfig.terminal.WidthInCharacters.value): String =
       s"${key.rendered} -> ${value.rendered}"
   }
 }

@@ -2,10 +2,10 @@ package spells
 
 /** Contains custom rendering for `StackTraceElement`. */
 trait StackTraceElementModule {
-  this: CustomRenderingModule with SpellsConfigModule =>
+  this: CustomRenderingModule with StringOpsModule with SpellsConfigModule =>
 
   implicit final class StackTraceElementOpsFromSpells(value: StackTraceElement) extends CustomRendering {
-    override final def rendered(implicit availableWidthInCharacters: CustomRenderingModule#AvailableWidthInCharacters = CustomRendering.Defaults.AvailableWidthInCharacters): String = {
+    override final def rendered(implicit availableWidthInCharacters: StringOpsModule#AvailableWidthInCharacters = SpellsConfig.terminal.WidthInCharacters.value): String = {
       val fileNameOrUnknownSource =
         if (value.getFileName != null)
           "(" + value.getFileName + ")"

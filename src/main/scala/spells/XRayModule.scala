@@ -194,7 +194,7 @@ trait XrayModule {
     final def withAdditionalContent(content: immutable.Seq[(String, String)]): XrayModule#XrayReport[T] =
       new XrayReport(value, duration, stackTraceElement, timestamp, description, thread, style, rendering, typeTag, safeAdditionalContent ++ Option(content).getOrElse(immutable.Seq.empty))
 
-    override final def rendered(implicit availableWidthInCharacters: CustomRenderingModule#AvailableWidthInCharacters = CustomRendering.Defaults.AvailableWidthInCharacters): String = {
+    override final def rendered(implicit availableWidthInCharacters: StringOpsModule#AvailableWidthInCharacters = SpellsConfig.terminal.WidthInCharacters.value): String = {
       def lines(availableWidthInCharacters: Int): Seq[(String, String)] = {
         def ifNotIgnored(key: String, value: String): Option[(String, String)] =
           if (SpellsConfig.xray.report.IgnoredContentKeys.contains(String.valueOf(key)))
