@@ -11,7 +11,6 @@
 [![Join the chat at https://gitter.im/agilesteel/spells](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/agilesteel/spells?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Stories in Ready](https://badge.waffle.io/agilesteel/spells.png?label=ready&title=Ready)](https://waffle.io/agilesteel/spells)
 
-
 ### Releases
 
 ```scala
