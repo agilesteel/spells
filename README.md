@@ -32,6 +32,6 @@ libraryDependencies += "com.github.agilesteel" %% "spells" % "2.0.0-SNAPSHOT"
 * [Java 8] or greater
 * [SBT 0.13.9] or greater if you want to build from source
 
-### Features:
+### Features
 
 For the full list of features, please refer to the [wiki](https://github.com/agilesteel/spells/wiki).
