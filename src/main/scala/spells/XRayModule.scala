@@ -50,14 +50,14 @@ trait XrayModule {
     * @tparam T the type, your expression evaluates to
     * @return an instance of `XrayReport`, which can be rendered or written to a database etc etc
     */
-  final def xrayedWeak[T](expression: => T, description: XrayModule#Description = Xray.Defaults.Description, increaseStackTraceDepthBy: Int = 0)(implicit style: AnsiModule#AnsiStyle = AnsiStyle.Reset, rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any): XrayModule#XrayReport[T] = {
+  final def xrayedWeak[T](expression: => T, description: XrayModule#Description = Xray.Defaults.Description, increaseStackTraceDepthBy: Int = 0)(implicit style: AnsiModule#AnsiStyle = AnsiStyle.Reset): XrayModule#XrayReport[T] = {
     val now = Calendar.getInstance
 
     val (value, duration) = measureExecutionTime(expression)
 
     val stackTraceElement = currentLineStackTraceElement(increaseStackTraceDepthBy - 1)
 
-    new XrayReport(value, duration, stackTraceElement, now, description.toString, Thread.currentThread, style, rendering, typeTag = None)
+    new XrayReport(value, duration, stackTraceElement, now, description.toString, Thread.currentThread, style, CustomRendering.Defaults.Any, typeTag = None)
   }
 
   /** Creates an instance of `StackTraceElement` at current line.
@@ -112,7 +112,7 @@ trait XrayModule {
     }
   }
 
-  implicit final class XrayWeakFromSpells[T](expression: => T)(implicit style: AnsiModule#AnsiStyle = AnsiStyle.Reset, rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any, monitor: XrayModule#XrayReport[T] => Unit = (report: XrayModule#XrayReport[T]) => Console.println(report.rendered)) {
+  implicit final class XrayWeakFromSpells[T](expression: => T)(implicit style: AnsiModule#AnsiStyle = AnsiStyle.Reset, monitor: XrayModule#XrayReport[T] => Unit = (report: XrayModule#XrayReport[T]) => Console.println(report.rendered)) {
     /** A DSL for producing `XrayReport`s when `xray` does not compile, because of the `TypeTag`.
       *
       * Example:
@@ -123,7 +123,7 @@ trait XrayModule {
       * @return the original value of the expression it is being called on
       */
     def xrayWeak(implicit description: XrayModule#Description = Xray.Defaults.Description): T = {
-      val report = xrayedWeak(expression, description, increaseStackTraceDepthBy = +1)(style, rendering)
+      val report = xrayedWeak(expression, description, increaseStackTraceDepthBy = +1)(style)
 
       monitor(report)
 
@@ -140,7 +140,7 @@ trait XrayModule {
       * @return the original value of the expression it is being called on
       */
     def xrayIfWeak(conditionFunction: XrayModule#XrayReport[T] => Boolean)(implicit description: XrayModule#Description = Xray.Defaults.Description): T = {
-      val report = xrayedWeak(expression, description, increaseStackTraceDepthBy = +1)(style, rendering)
+      val report = xrayedWeak(expression, description, increaseStackTraceDepthBy = +1)(style)
 
       if (conditionFunction(report))
         monitor(report)
