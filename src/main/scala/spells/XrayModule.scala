@@ -36,7 +36,7 @@ trait XrayModule {
 
     val (value, duration) = measureExecutionTime(expression)
 
-    val stackTraceElement = currentLineStackTraceElement(increaseStackTraceDepthBy - 1)
+    val stackTraceElement = currentLineStackTraceElement(3)
 
     new XrayReport(value, duration, stackTraceElement, now, description.toString, Thread.currentThread, style, rendering, Some(typeTag))
   }
@@ -55,7 +55,7 @@ trait XrayModule {
 
     val (value, duration) = measureExecutionTime(expression)
 
-    val stackTraceElement = currentLineStackTraceElement(increaseStackTraceDepthBy - 1)
+    val stackTraceElement = currentLineStackTraceElement(3)
 
     new XrayReport(value, duration, stackTraceElement, now, description.toString, Thread.currentThread, style, CustomRendering.Defaults.Any, typeTag = None)
   }
@@ -64,8 +64,8 @@ trait XrayModule {
     * @param increaseStackTraceDepthBy adjust if you build a library around it and the line stopps matching
     * @return an instance of `StackTraceElement` at current line.
     */
-  final def currentLineStackTraceElement(implicit increaseStackTraceDepthBy: Int = 0): StackTraceElement =
-    Thread.currentThread.getStackTrace apply increaseStackTraceDepthBy + 6
+  final def currentLineStackTraceElement(implicit increaseStackTraceDepthBy: XrayModule#IncreaseStackTraceDepthBy = 0): StackTraceElement =
+    Thread.currentThread.getStackTrace apply increaseStackTraceDepthBy.value + 3
 
   /** Implicit conversion from `T` to `XrayFromSpells`, which contains methods like `xray` and `xrayIf`.
     * @param expression the expression to be evaluated
@@ -148,6 +148,11 @@ trait XrayModule {
       report.value
     }
   }
+
+  /** A wrapper for `Int`s, provided so that it can be used as an `implicit` parameter, which `Int`s are not ideal for.
+    * @param value the `Int` to be wrapped.
+    */
+  implicit final class IncreaseStackTraceDepthBy(val value: Int)
 
   /** A wrapper for `String`s, provided so that it can be used as an `implicit` parameter, which `String`s are not ideal for.
     * @param value the `String` to be wrapped.

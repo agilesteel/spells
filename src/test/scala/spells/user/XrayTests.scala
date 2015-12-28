@@ -47,7 +47,7 @@ class XrayTests extends spells.UnitTestConfiguration {
   }
 
   private def assert(sample: String) =
-    xrayed(sample).stackTraceElement should be(currentLineStackTraceElement(increaseStackTraceDepthBy = -3)) // dodgy
+    xrayed(sample).stackTraceElement should be(currentLineStackTraceElement(increaseStackTraceDepthBy = 1)) // dodgy
 
   test("""It should be possible to implicitly pass in styles to xrayed""") {
     implicit val color = Yellow
