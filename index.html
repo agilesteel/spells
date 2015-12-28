@@ -32,51 +32,33 @@
       <section>
         <div id="title">
           <h1>spells</h1>
-          <p>This is a small scala &quot;util&quot; library, which will hopefully grow over time.</p>
+          <p>devtime utilities for Scala</p>
           <hr>
           <span class="credits left">Project maintained by <a href="https://github.com/agilesteel">agilesteel</a></span>
           <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></span>
         </div>
 
-        <p><a href="https://gitter.im/agilesteel/spells?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://badges.gitter.im/Join%20Chat.svg" alt="Join the chat at https://gitter.im/agilesteel/spells"></a>
-<a href="https://waffle.io/agilesteel/spells"><img src="https://badge.waffle.io/agilesteel/spells.png?label=ready&amp;title=Ready" alt="Stories in Ready"></a></p>
-
-<p><a href="https://maven-badges.herokuapp.com/maven-central/com.github.agilesteel/spells_2.11"><img src="https://maven-badges.herokuapp.com/maven-central/com.github.agilesteel/spells_2.11/badge.svg" alt="Maven Central"></a>
+        <p><a href="https://maven-badges.herokuapp.com/maven-central/com.github.agilesteel/spells_2.11"><img src="https://maven-badges.herokuapp.com/maven-central/com.github.agilesteel/spells_2.11/badge.svg" alt="Maven Central"></a>
 <a href="http://www.apache.org/licenses/LICENSE-2.0.txt"><img src="http://img.shields.io/:license-Apache%202-brightgreen.svg" alt="License"></a>
 <a href="https://travis-ci.org/agilesteel/spells"><img src="https://travis-ci.org/agilesteel/spells.svg?branch=master" alt="Build Status"></a>
 <a href="https://www.codacy.com/app/agilesteel/spells"><img src="https://api.codacy.com/project/badge/grade/aeb5e73b4a0e4ad98888505a544f3e7c" alt="Codacy Badge"></a>
-<a href="https://coveralls.io/r/agilesteel/spells"><img src="https://img.shields.io/coveralls/agilesteel/spells.svg" alt="Coverage Status"></a></p>
+<a href="https://coveralls.io/r/agilesteel/spells"><img src="https://img.shields.io/coveralls/agilesteel/spells.svg" alt="Coverage Status"></a>
+<a href="https://gitter.im/agilesteel/spells?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://badges.gitter.im/Join%20Chat.svg" alt="Join the chat at https://gitter.im/agilesteel/spells"></a>
+<a href="https://waffle.io/agilesteel/spells"><img src="https://badge.waffle.io/agilesteel/spells.png?label=ready&amp;title=Ready" alt="Stories in Ready"></a></p>
 
-<h2>
-<a id="features" class="anchor" href="#features" aria-hidden="true"><span class="octicon octicon-link"></span></a>Features:</h2>
+<h3>
+<a id="releases" class="anchor" href="#releases" aria-hidden="true"><span class="octicon octicon-link"></span></a>Releases</h3>
 
-<ul>
-<li>
-<a href="https://github.com/agilesteel/spells/blob/master/src/test/scala/spells/user/AnsiTests.scala">Ansi</a> - Ansi styled outputs for your strings</li>
-<li>
-<a href="https://github.com/agilesteel/spells/blob/master/src/test/scala/spells/user/AnyOpsTests.scala">AnyOps</a> - Additional operations on <code>Any</code>
-</li>
-<li>
-<a href="https://github.com/agilesteel/spells/blob/master/src/test/scala/spells/user/ClearPrintTests.scala">ClearPrint</a> - clearPrintln (let's you stay on the same line)</li>
-<li>
-<a href="https://github.com/agilesteel/spells/blob/master/src/test/scala/spells/user/ClipboardTests.scala">Clipboard</a> - Clipboard.writeString and Clipboard.readString</li>
-<li>
-<a href="https://github.com/agilesteel/spells/blob/master/src/test/scala/spells/user/ErrorPrintTests.scala">ErrorPrint</a> - printerr (eases styling of errors)</li>
-<li>
-<a href="https://github.com/agilesteel/spells/blob/master/src/test/scala/spells/user/HumanRenderingTests.scala">HumanRendering</a> - rendering for things like duration</li>
-<li>
-<a href="https://github.com/agilesteel/spells/blob/master/src/test/scala/spells/user/MiscTests.scala">Misc</a> - noop</li>
-<li>
-<a href="https://github.com/agilesteel/spells/blob/master/src/test/scala/spells/user/StringOpsTests.scala">StringOps</a> - Additional operations on <code>String</code>
-</li>
-<li>
-<a href="https://github.com/agilesteel/spells/blob/master/src/test/scala/spells/user/StylePrintTests.scala">StylePrint</a> - println on steroids</li>
-<li>
-<a href="https://github.com/agilesteel/spells/blob/master/src/test/scala/spells/user/XrayTests.scala">Xray</a> - call .xray on any expression to see what's inside of it ;)</li>
-</ul>
+<div class="highlight highlight-source-scala"><pre>resolvers <span class="pl-k">+</span><span class="pl-k">=</span> <span class="pl-en">Resolver</span>.sonatypeRepo(<span class="pl-s"><span class="pl-pds">"</span>releases<span class="pl-pds">"</span></span>) <span class="pl-c">// optional, but quicker</span>
 
-<h2>
-<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h2>
+libraryDependencies <span class="pl-k">+</span><span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>com.github.agilesteel<span class="pl-pds">"</span></span> <span class="pl-k">%%</span> <span class="pl-s"><span class="pl-pds">"</span>spells<span class="pl-pds">"</span></span> <span class="pl-k">%</span> <span class="pl-s"><span class="pl-pds">"</span>1.6.1<span class="pl-pds">"</span></span></pre></div>
+
+<h3>
+<a id="snapshots" class="anchor" href="#snapshots" aria-hidden="true"><span class="octicon octicon-link"></span></a>Snapshots</h3>
+
+<div class="highlight highlight-source-scala"><pre>resolvers <span class="pl-k">+</span><span class="pl-k">=</span> <span class="pl-en">Resolver</span>.sonatypeRepo(<span class="pl-s"><span class="pl-pds">"</span>snapshots<span class="pl-pds">"</span></span>)
+
+libraryDependencies <span class="pl-k">+</span><span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>com.github.agilesteel<span class="pl-pds">"</span></span> <span class="pl-k">%%</span> <span class="pl-s"><span class="pl-pds">"</span>spells<span class="pl-pds">"</span></span> <span class="pl-k">%</span> <span class="pl-s"><span class="pl-pds">"</span>2.0.0-SNAPSHOT<span class="pl-pds">"</span></span></pre></div>
 
 <h3>
 <a id="requirements" class="anchor" href="#requirements" aria-hidden="true"><span class="octicon octicon-link"></span></a>Requirements</h3>
@@ -88,64 +70,10 @@
 <a href="http://www.scala-sbt.org/">SBT 0.13.9</a> or greater if you want to build from source</li>
 </ul>
 
-<h3>
-<a id="configuring-your-projects-dependencies" class="anchor" href="#configuring-your-projects-dependencies" aria-hidden="true"><span class="octicon octicon-link"></span></a>Configuring your project's dependencies</h3>
+<h2>
+<a id="features" class="anchor" href="#features" aria-hidden="true"><span class="octicon octicon-link"></span></a>Features:</h2>
 
-<p>Releases: add these lines to your SBT build file:</p>
-
-<div class="highlight highlight-source-scala"><pre>resolvers <span class="pl-k">+</span><span class="pl-k">=</span> <span class="pl-en">Resolver</span>.sonatypeRepo(<span class="pl-s"><span class="pl-pds">"</span>releases<span class="pl-pds">"</span></span>) <span class="pl-c">// optional, but quicker</span>
-
-libraryDependencies <span class="pl-k">+</span><span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>com.github.agilesteel<span class="pl-pds">"</span></span> <span class="pl-k">%%</span> <span class="pl-s"><span class="pl-pds">"</span>spells<span class="pl-pds">"</span></span> <span class="pl-k">%</span> <span class="pl-s"><span class="pl-pds">"</span>1.6.1<span class="pl-pds">"</span></span></pre></div>
-
-<p>Snapshots: add these lines to your SBT build file:</p>
-
-<div class="highlight highlight-source-scala"><pre>resolvers <span class="pl-k">+</span><span class="pl-k">=</span> <span class="pl-en">Resolver</span>.sonatypeRepo(<span class="pl-s"><span class="pl-pds">"</span>snapshots<span class="pl-pds">"</span></span>)
-
-libraryDependencies <span class="pl-k">+</span><span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>com.github.agilesteel<span class="pl-pds">"</span></span> <span class="pl-k">%%</span> <span class="pl-s"><span class="pl-pds">"</span>spells<span class="pl-pds">"</span></span> <span class="pl-k">%</span> <span class="pl-s"><span class="pl-pds">"</span>2.0.0-SNAPSHOT<span class="pl-pds">"</span></span></pre></div>
-
-<h3>
-<a id="help" class="anchor" href="#help" aria-hidden="true"><span class="octicon octicon-link"></span></a>Help</h3>
-
-<p>If you clone this repository, SBT will guide you through the man pages!</p>
-
-<h3>
-<a id="examples" class="anchor" href="#examples" aria-hidden="true"><span class="octicon octicon-link"></span></a>Examples</h3>
-
-<div class="highlight highlight-source-scala"><pre><span class="pl-k">package</span> <span class="pl-en">company.project</span>
-
-<span class="pl-k">package object</span> <span class="pl-en">util</span> <span class="pl-k">extends</span> <span class="pl-e">spells.SpellsModule</span>
-
-<span class="pl-k">import</span> <span class="pl-v">company.project.util.</span><span class="pl-v">_</span>
-
-<span class="pl-k">object</span> <span class="pl-en">Ansi</span> <span class="pl-k">extends</span> <span class="pl-e">App</span> {
-   println(<span class="pl-s"><span class="pl-pds">"</span>white<span class="pl-pds">"</span></span>)
-   println(<span class="pl-s"><span class="pl-pds">"</span>green<span class="pl-pds">"</span></span>)(<span class="pl-en">Green</span>)
-   println(<span class="pl-s"><span class="pl-pds">"</span>green<span class="pl-pds">"</span></span>.green)
-   println(<span class="pl-c1">1337.</span>cyan)
-   println(<span class="pl-s"><span class="pl-pds">"</span>magenta<span class="pl-pds">"</span></span>.magenta)(<span class="pl-en">Green</span>)
-   println(<span class="pl-s"><span class="pl-pds">"</span>yellow<span class="pl-pds">"</span></span>.yellow <span class="pl-k">+</span> <span class="pl-s"><span class="pl-pds">"</span>green<span class="pl-pds">"</span></span>.green <span class="pl-k">+</span> <span class="pl-s"><span class="pl-pds">"</span>yellow<span class="pl-pds">"</span></span>.yellow)(<span class="pl-en">Yellow</span>)
-   println(<span class="pl-s"><span class="pl-pds">"</span>yellow<span class="pl-pds">"</span></span> <span class="pl-k">+</span> <span class="pl-s"><span class="pl-pds">"</span>green<span class="pl-pds">"</span></span>.green)(<span class="pl-en">Yellow</span>)
-   println(<span class="pl-s"><span class="pl-pds">"</span>yellow<span class="pl-pds">"</span></span>.yellow <span class="pl-k">+</span> <span class="pl-s"><span class="pl-pds">"</span>green<span class="pl-pds">"</span></span>)(<span class="pl-en">Green</span>)
-   println(<span class="pl-s"><span class="pl-pds">"</span>yellow<span class="pl-pds">"</span></span> <span class="pl-k">+</span> <span class="pl-s"><span class="pl-pds">"</span>green<span class="pl-pds">"</span></span>.green <span class="pl-k">+</span> <span class="pl-s"><span class="pl-pds">"</span>yellow<span class="pl-pds">"</span></span>)(<span class="pl-en">Yellow</span>)
-   println(<span class="pl-s"><span class="pl-pds">"</span>yellow<span class="pl-pds">"</span></span>.yellow <span class="pl-k">+</span> <span class="pl-s"><span class="pl-pds">"</span>green<span class="pl-pds">"</span></span> <span class="pl-k">+</span> <span class="pl-s"><span class="pl-pds">"</span>yellow<span class="pl-pds">"</span></span>.yellow)(<span class="pl-en">Green</span>)
-   println(<span class="pl-s"><span class="pl-pds">"</span>yellow<span class="pl-pds">"</span></span> <span class="pl-k">+</span> <span class="pl-s"><span class="pl-pds">"</span>green<span class="pl-pds">"</span></span>.green <span class="pl-k">+</span> <span class="pl-s"><span class="pl-pds">"</span>yellow<span class="pl-pds">"</span></span>.yellow)(<span class="pl-en">Yellow</span>)
-   println(<span class="pl-s"><span class="pl-pds">"</span>yellow<span class="pl-pds">"</span></span>.yellow <span class="pl-k">+</span> <span class="pl-s"><span class="pl-pds">"</span>green<span class="pl-pds">"</span></span>.green <span class="pl-k">+</span> <span class="pl-s"><span class="pl-pds">"</span>yellow<span class="pl-pds">"</span></span>)(<span class="pl-en">Yellow</span>)
-}
-
-<span class="pl-k">object</span> <span class="pl-en">UsingCustomStyles</span> <span class="pl-k">extends</span> <span class="pl-e">App</span> {
-   <span class="pl-k">val</span> <span class="pl-en">customStyle</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>someStyle<span class="pl-pds">"</span></span>.toAnsiStyle
-   println(<span class="pl-s"><span class="pl-pds">"</span>styled<span class="pl-pds">"</span></span> in customStyle)
-}
-
-<span class="pl-k">object</span> <span class="pl-en">OverridingDefaultStyle</span> <span class="pl-k">extends</span> <span class="pl-e">App</span> {
-   <span class="pl-k">implicit</span> <span class="pl-k">val</span> <span class="pl-en">defaultStyle</span> <span class="pl-k">=</span> <span class="pl-en">Yellow</span>
-   println(<span class="pl-s"><span class="pl-pds">"</span>yellow<span class="pl-pds">"</span></span> <span class="pl-k">+</span> <span class="pl-s"><span class="pl-pds">"</span>red<span class="pl-pds">"</span></span>.red <span class="pl-k">+</span> <span class="pl-s"><span class="pl-pds">"</span>yellow<span class="pl-pds">"</span></span> <span class="pl-k">+</span> <span class="pl-s"><span class="pl-pds">"</span>green<span class="pl-pds">"</span></span>.green <span class="pl-k">+</span> <span class="pl-s"><span class="pl-pds">"</span>yellow<span class="pl-pds">"</span></span>)
-}
-
-<span class="pl-k">object</span> <span class="pl-en">OverridingDefaultStyleWithCustomStyle</span> <span class="pl-k">extends</span> <span class="pl-e">App</span> {
-   <span class="pl-k">implicit</span> <span class="pl-k">val</span> <span class="pl-en">defaultStyle</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>someStyle<span class="pl-pds">"</span></span>.toAnsiStyle
-   println(<span class="pl-s"><span class="pl-pds">"</span>styled<span class="pl-pds">"</span></span>)
-}</pre></div>
+<p>For the full list of features, please refer to the <a href="https://github.com/agilesteel/spells/wiki">wiki</a>.</p>
       </section>
 
     </div>
