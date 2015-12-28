@@ -9,16 +9,16 @@ import scala.reflect.runtime.universe._
 import AnsiStyle._
 
 class XrayReportRenderingTests extends spells.UnitTestConfiguration {
-  test("The header should contain the string 'X-Ray' if description is empty") {
-    XrayReportRenderingTests.createReport(description = "").rendered should include("X-Ray".green)
+  test("The header should contain the string 'Xray' if description is empty") {
+    XrayReportRenderingTests.createReport(description = "").rendered should include("Xray".green)
   }
 
   test("Empty styled header should result in the default one") {
-    XrayReportRenderingTests.createReport(description = "".yellow).rendered should include("X-Ray".green)
+    XrayReportRenderingTests.createReport(description = "".yellow).rendered should include("Xray".green)
   }
 
-  test("X-Ray header should still be rendered green") {
-    XrayReportRenderingTests.createReport(description = "X-Ray").rendered should include("X-Ray".green)
+  test("Xray header should still be rendered green") {
+    XrayReportRenderingTests.createReport(description = "Xray").rendered should include("Xray".green)
   }
 
   test(s"The header should contain the string '${XrayReportRenderingTests.description}' if description is nonempty") {

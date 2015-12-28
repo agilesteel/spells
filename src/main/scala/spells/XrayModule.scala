@@ -158,7 +158,7 @@ trait XrayModule {
 
   object Xray {
     object Defaults {
-      final val Description: XrayModule#Description = new Description("X-Ray")
+      final val Description: XrayModule#Description = new Description("Xray")
     }
   }
 
@@ -269,7 +269,7 @@ trait XrayModule {
 
       val centeredHeader = {
         val headerStyleFromConfig: AnsiModule#AnsiStyle = SpellsConfig.xray.report.styles.Description
-        val header = if (AnsiStyle.removed(description).isEmpty) styled("X-Ray")(headerStyleFromConfig) else styled(description)(headerStyleFromConfig)
+        val header = if (AnsiStyle.removed(description).isEmpty) styled(Xray.Defaults.Description)(headerStyleFromConfig) else styled(description)(headerStyleFromConfig)
         val emptySpace = hyphens.size - AnsiStyle.removed(header).size
         val leftPadding = " " * (emptySpace / 2)
 
