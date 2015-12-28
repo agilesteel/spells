@@ -11,18 +11,8 @@
 [![Join the chat at https://gitter.im/agilesteel/spells](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/agilesteel/spells?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Stories in Ready](https://badge.waffle.io/agilesteel/spells.png?label=ready&title=Ready)](https://waffle.io/agilesteel/spells)
 
-## Features:
 
-For the full list of features, please refer to the [wiki](https://github.com/agilesteel/spells/wiki).
-
-### Requirements
-
-* [Java 8] or greater
-* [SBT 0.13.9] or greater if you want to build from source
-
-### Dependencies
-
-**Releases:** add these lines to your SBT build file:
+### Releases
 
 ```scala
 resolvers += Resolver.sonatypeRepo("releases") // optional, but quicker
@@ -30,10 +20,19 @@ resolvers += Resolver.sonatypeRepo("releases") // optional, but quicker
 libraryDependencies += "com.github.agilesteel" %% "spells" % "1.6.1"
 ```
 
-**Snapshots:** add these lines to your SBT build file:
+### Snapshots
 
 ```scala
 resolvers += Resolver.sonatypeRepo("snapshots")
 
 libraryDependencies += "com.github.agilesteel" %% "spells" % "2.0.0-SNAPSHOT"
 ```
+
+### Requirements
+
+* [Java 8] or greater
+* [SBT 0.13.9] or greater if you want to build from source
+
+## Features:
+
+For the full list of features, please refer to the [wiki](https://github.com/agilesteel/spells/wiki).
