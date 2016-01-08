@@ -126,7 +126,7 @@ object Dependencies {
   val config = "com.typesafe" % "config" % "1.3.0"
 
   val pegdown = "org.pegdown" % "pegdown" % "1.6.0" % "test"
-  val scalaTest = "org.scalatest" %% "scalatest" % "2.2.5" % "test"
+  val scalaTest = "org.scalatest" %% "scalatest" % "2.2.6" % "test"
 
   def all(scalaVersion: String) = Seq(`scala-reflect`(scalaVersion), config, pegdown, scalaTest)
 }
