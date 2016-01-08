@@ -267,19 +267,36 @@ trait XrayModule {
           availableWidthInCharacters
         )
 
+      val headerStyleFromConfig: AnsiModule#AnsiStyle = SpellsConfig.xray.report.styles.Description
+      val header = if (AnsiStyle.removed(description).isEmpty) styled(Xray.Defaults.Description)(headerStyleFromConfig) else styled(description)(headerStyleFromConfig)
+      val headerWithoutStyles = AnsiStyle.removed(header)
+
       val numberOfCharsInTheLongestLine =
-        table.map(AnsiStyle.removed).flatMap(_ split "\n").maxBy(_.size).size
+        table.map(AnsiStyle.removed).flatMap(_ split "\n").maxBy(_.size).size max headerWithoutStyles.size
 
       lazy val hyphens = "-" * (numberOfCharsInTheLongestLine min availableWidthInCharacters)
 
-      val centeredHeader = {
-        val headerStyleFromConfig: AnsiModule#AnsiStyle = SpellsConfig.xray.report.styles.Description
-        val header = if (AnsiStyle.removed(description).isEmpty) styled(Xray.Defaults.Description)(headerStyleFromConfig) else styled(description)(headerStyleFromConfig)
-        val emptySpace = hyphens.size - AnsiStyle.removed(header).size
+      def center(in: String): String = {
+        val emptySpace = hyphens.size - AnsiStyle.removed(in).size
         val leftPadding = " " * (emptySpace / 2)
 
-        leftPadding + header
+        leftPadding + in
       }
+
+      def wrapOnSpacesAndCenterLastLine(in: String): String = {
+        val wrappedLines = in.wrappedOnSpaces(availableWidthInCharacters).split("\n").toList
+
+        val linesReversed = wrappedLines.reverse
+        val centeredLastLine = center(linesReversed.head)
+
+        (centeredLastLine :: linesReversed.tail).reverse.mkString("\n")
+      }
+
+      val centeredHeader =
+        if (headerWithoutStyles.size > availableWidthInCharacters)
+          wrapOnSpacesAndCenterLastLine(header)
+        else
+          center(header)
 
       val metaContentPartOfTable = table.dropRight(1)
       val valuePartOfTable = if (metaContentPartOfTable.isEmpty) Vector(table.last) else Vector(hyphens, table.last)
