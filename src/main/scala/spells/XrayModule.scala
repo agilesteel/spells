@@ -283,20 +283,12 @@ trait XrayModule {
         leftPadding + in
       }
 
-      def wrapOnSpacesAndCenterLastLine(in: String): String = {
-        val wrappedLines = in.wrappedOnSpaces(availableWidthInCharacters).split("\n").toList
-
-        val linesReversed = wrappedLines.reverse
-        val centeredLastLine = center(linesReversed.head)
-
-        (centeredLastLine :: linesReversed.tail).reverse.mkString("\n")
-      }
-
       val centeredHeader =
-        if (headerWithoutStyles.size > availableWidthInCharacters)
-          wrapOnSpacesAndCenterLastLine(header)
-        else
-          center(header)
+        header.wrappedOnSpaces(availableWidthInCharacters)
+          .split("\n")
+          .toList
+          .map(center)
+          .mkString("\n")
 
       val metaContentPartOfTable = table.dropRight(1)
       val valuePartOfTable = if (metaContentPartOfTable.isEmpty) Vector(table.last) else Vector(hyphens, table.last)

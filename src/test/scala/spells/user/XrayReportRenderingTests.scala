@@ -21,6 +21,37 @@ class XrayReportRenderingTests extends spells.UnitTestConfiguration {
     XrayReportRenderingTests.createReport(description = "Xray").rendered should include("Xray".green)
   }
 
+  test("The size of the description should be involved into the size calculation of the Xray table") {
+    val maxWidth = SpellsConfig.terminal.WidthInCharacters.value
+    XrayReportRenderingTests.createReport(description = "x" * maxWidth).rendered should include("-" * maxWidth)
+  }
+
+  test("The size of the description should be involved into the size calculation of the Xray table, but it should not cause it to grow over its limits") {
+    val maxWidth = SpellsConfig.terminal.WidthInCharacters.value
+    XrayReportRenderingTests.createReport(description = "x" * maxWidth + 1).rendered should include("-" * maxWidth)
+  }
+
+  test("The description should be wrapped and centered") {
+    val maxWidth = SpellsConfig.terminal.WidthInCharacters.value
+    val actual = ("x" * maxWidth) + " " + "y"
+    val expected = ("x" * maxWidth) + "\n" + (" " * ((maxWidth - 1) / 2)) + "y"
+
+    XrayReportRenderingTests.createReport(description = actual).rendered should include(expected)
+  }
+
+  test("Multiline description should be centered") {
+    val maxWidth = SpellsConfig.terminal.WidthInCharacters.value
+    val actual = "hello\nworld"
+    val report = XrayReportRenderingTests.createReport(description = actual).rendered
+    val expected = {
+      val tableWidth = report.split("\n").find(_.forall(_ == '-')).fold(maxWidth)(_.size)
+
+      (" " * ((tableWidth - "hello".size) / 2)) + s"${Green.value}hello" + "\n" + (" " * ((tableWidth - "world".size) / 2)) + "world"
+    }
+
+    report should include(expected)
+  }
+
   test(s"The header should contain the string '${XrayReportRenderingTests.description}' if description is nonempty") {
     XrayReportRenderingTests.createReport().rendered should include(XrayReportRenderingTests.description)
   }
