@@ -11,6 +11,7 @@ trait FunctionNOpsModule {
       typeTag.tpe.toString.withDecodedScalaSymbols
   }
 
+  implicit final class Function0OpsFromSpells[R, F[_]](value: F[R])(implicit typeTag: TypeTag[F[R]], evidence: F[R] <:< Function0[R]) extends TypeTagBasedCustomRendering(typeTag)
   implicit final class Function1OpsFromSpells[T1, R, F[_, _]](value: F[T1, R])(implicit typeTag: TypeTag[F[T1, R]], evidence: F[T1, R] <:< Function1[T1, R]) extends TypeTagBasedCustomRendering(typeTag)
   implicit final class Function2OpsFromSpells[T1, T2, R, F[_, _, _]](value: F[T1, T2, R])(implicit typeTag: TypeTag[F[T1, T2, R]], evidence: F[T1, T2, R] <:< Function2[T1, T2, R]) extends TypeTagBasedCustomRendering(typeTag)
   implicit final class Function3OpsFromSpells[T1, T2, T3, R, F[_, _, _, _]](value: F[T1, T2, T3, R])(implicit typeTag: TypeTag[F[T1, T2, T3, R]], evidence: F[T1, T2, T3, R] <:< Function3[T1, T2, T3, R]) extends TypeTagBasedCustomRendering(typeTag)

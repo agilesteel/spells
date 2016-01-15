@@ -2,7 +2,7 @@ package spells
 
 /** Provides utility methods for `Tuple2[Key, Value]`. */
 trait Tuple2OpsModule {
-  this: CustomRenderingModule with StringOpsModule with SpellsConfigModule =>
+  this: CustomRenderingModule with SpellsConfigModule with StringOpsModule =>
 
   implicit final def Tuple2OpsFromSpells[Key, Value](tuple: (Key, Value))(implicit keyRendering: Key => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any, valueRendering: Value => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any): CustomRenderingModule#CustomRendering = new CustomRendering {
     val (key, value) = tuple
