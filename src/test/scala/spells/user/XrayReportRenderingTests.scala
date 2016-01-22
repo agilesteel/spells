@@ -52,6 +52,17 @@ class XrayReportRenderingTests extends spells.UnitTestConfiguration {
     report should include(expected)
   }
 
+  test("Multiline description should be centered but not padded if it happens to be the longest line") {
+    val maxWidth = SpellsConfig.terminal.WidthInCharacters.value
+    def createReportOnSameLine(description: String = "") = XrayReportRenderingTests.createReport(description = description)
+    val report = createReportOnSameLine().rendered
+    val tableWidth = report.split("\n").maxBy(_.size).size
+    tableWidth should be < maxWidth
+    val description = ("x" * (tableWidth + 10)) + "\n" + ("y" * (tableWidth + 10))
+    val hyphens = createReportOnSameLine(description).rendered.split("\n").find(_.forall(_ == '-')).map(_.size).get
+    hyphens should be(description.split("\n").head.size)
+  }
+
   test(s"The header should contain the string '${XrayReportRenderingTests.description}' if description is nonempty") {
     XrayReportRenderingTests.createReport().rendered should include(XrayReportRenderingTests.description)
   }

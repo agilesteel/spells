@@ -268,11 +268,17 @@ trait XrayModule {
         )
 
       val headerStyleFromConfig: AnsiModule#AnsiStyle = SpellsConfig.xray.report.styles.Description
-      val header = if (AnsiStyle.removed(description).isEmpty) styled(Xray.Defaults.Description)(headerStyleFromConfig) else styled(description)(headerStyleFromConfig)
+      val header =
+        if (AnsiStyle.removed(description).isEmpty)
+          styled(Xray.Defaults.Description)(headerStyleFromConfig)
+        else styled(description)(headerStyleFromConfig)
       val headerWithoutStyles = AnsiStyle.removed(header)
 
-      val numberOfCharsInTheLongestLine =
-        table.map(AnsiStyle.removed).flatMap(_ split "\n").maxBy(_.size).size max headerWithoutStyles.size
+      val numberOfCharsInTheLongestLine = {
+        val longestLineInHeaderWithoutStyles = headerWithoutStyles.split("\n").maxBy(_.size).size
+
+        table.map(AnsiStyle.removed).flatMap(_ split "\n").maxBy(_.size).size max longestLineInHeaderWithoutStyles
+      }
 
       lazy val hyphens = "-" * (numberOfCharsInTheLongestLine min availableWidthInCharacters)
 
