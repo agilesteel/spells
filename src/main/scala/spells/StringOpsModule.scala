@@ -35,7 +35,7 @@ trait StringOpsModule {
     final def wrappedOnSpaces(availableWidthInCharacters: StringOpsModule#AvailableWidthInCharacters = SpellsConfig.terminal.WidthInCharacters.value): String = {
       val separator = " "
 
-      def wrapped(in: String): String = {
+      def wrapped(in: String): String =
         in.split(separator).toList match {
           case head :: tail =>
             val (result, lastLine) =
@@ -51,12 +51,10 @@ trait StringOpsModule {
 
           case _ => in
         }
-      }
 
-      def wouldOverflow(line: String, atom: String): Boolean = {
+      def wouldOverflow(line: String, atom: String): Boolean =
         if (atom.isEmpty) AnsiStyle.removed(line).size > availableWidthInCharacters
         else AnsiStyle.removed(line + separator + atom).size > availableWidthInCharacters
-      }
 
       def brokenCurrentLineWithAtomCarriedOverToNextLine(result: String, line: String, atom: String): (String, String) =
         (result + line + "\n") -> atom
