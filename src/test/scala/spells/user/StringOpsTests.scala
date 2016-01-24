@@ -36,7 +36,7 @@ class StringOpsTests extends spells.UnitTestConfiguration {
     "Saturday, March 7, 2015 11:06:53 AM CET".wrappedOnSpaces(160) should be("Saturday, March 7, 2015 11:06:53 AM CET")
   }
 
-  test("Wrapping with multispace should preserve spaces in the end, but ignore them when calculating the length of the line") {
+  test("Wrapping with multispace should preserve spaces in the end, but test them when calculating the length of the line") {
     "x  y".wrappedOnSpaces(1) should be("x \ny")
   }
 
@@ -65,5 +65,16 @@ class StringOpsTests extends spells.UnitTestConfiguration {
 
     input.wrappedOnSpaces(10) should be(output)
     input.wrappedOnSpaces(11) should be(input)
+  }
+
+  test("""Last "\n" should be preserved""") {
+    val input = "fivecfivecfiv c\n" * 2
+
+    input.wrappedOnSpaces(13) should be {
+      "fivecfivecfiv" + "\n" +
+        "c" + "\n" +
+        "fivecfivecfiv" + "\n" +
+        "c\n"
+    }
   }
 }

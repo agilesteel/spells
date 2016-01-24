@@ -64,15 +64,20 @@ trait StringOpsModule {
 
       input.split("\n").toList.map(wrapped) match {
         case head :: tail =>
-          tail.foldLeft(head) {
-            case (result, currentPart) =>
-              val current = if (currentPart.isEmpty) "\n" else currentPart
+          val assembledResult =
+            tail.foldLeft(head) {
+              case (result, currentPart) =>
+                val current = if (currentPart.isEmpty) "\n" else currentPart
+                if (result.endsWith("\n"))
+                  result + current
+                else
+                  result + "\n" + current
+            }
 
-              if (result.endsWith("\n"))
-                result + current
-              else
-                result + "\n" + current
-          }
+          val trailingLineBreaks =
+            AnsiStyle.removed(input).reverse.takeWhile(_ == '\n')
+
+          assembledResult + trailingLineBreaks
         case _ => input
       }
     }
