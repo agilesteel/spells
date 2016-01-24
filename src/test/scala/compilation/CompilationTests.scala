@@ -29,5 +29,7 @@ class CompilationTests extends spells.UnitTestConfiguration {
     object CR extends CustomRendering {
       override final def rendered(implicit availableWidthInCharacters: spells.StringOpsModule#AvailableWidthInCharacters = SpellsConfig.terminal.WidthInCharacters.value): String = ???
     }
+
+    "".wrappedOnSpaces
   }
 }

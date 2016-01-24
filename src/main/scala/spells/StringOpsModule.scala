@@ -32,7 +32,7 @@ trait StringOpsModule {
       * @param availableWidthInCharacters the maximum length
       * @return
       */
-    final def wrappedOnSpaces(availableWidthInCharacters: StringOpsModule#AvailableWidthInCharacters = SpellsConfig.terminal.WidthInCharacters.value): String = {
+    final def wrappedOnSpaces(implicit availableWidthInCharacters: StringOpsModule#AvailableWidthInCharacters = SpellsConfig.terminal.WidthInCharacters.value): String = {
       val separator = " "
 
       def wrapped(in: String): String =
