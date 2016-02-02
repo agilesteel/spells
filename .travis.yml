@@ -11,6 +11,7 @@ branches:
   only:
     - master
 jdk:
+  - oraclejdk7
   - oraclejdk8
 env:
   - CODACY_PROJECT_TOKEN=a5c89dcf2b304b2ea4c8f72b4f593823

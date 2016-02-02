@@ -123,7 +123,7 @@ object SpellsBuild extends Build {
 
 object Dependencies {
   def `scala-reflect`(scalaVersion: String) = "org.scala-lang" % "scala-reflect" % scalaVersion
-  val config = "com.typesafe" % "config" % "1.3.0"
+  val config = "com.typesafe" % "config" % "1.2.1"
 
   val pegdown = "org.pegdown" % "pegdown" % "1.6.0" % "test"
   val scalaTest = "org.scalatest" %% "scalatest" % "2.2.6" % "test"

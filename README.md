@@ -1,4 +1,4 @@
-[Java 8]:         http://java.com/en/download/index.jsp
+[Java 7]:         http://java.com/en/download/index.jsp
 [SBT 0.13.9]:     http://www.scala-sbt.org/
 
 # spells: devtime utilities for Scala
@@ -29,7 +29,7 @@ libraryDependencies += "com.github.agilesteel" %% "spells" % "2.0.0-SNAPSHOT"
 
 ### Requirements
 
-* [Java 8] or greater
+* [Java 7] or greater
 * [SBT 0.13.9] or greater if you want to build from source
 
 ### Features
