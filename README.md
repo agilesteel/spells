@@ -1,6 +1,3 @@
-[Java 7]:         http://java.com/en/download/index.jsp
-[SBT 0.13.9]:     http://www.scala-sbt.org/
-
 # spells: devtime utilities for Scala
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.agilesteel/spells_2.11/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.agilesteel/spells_2.11)
@@ -14,8 +11,6 @@
 ### Releases
 
 ```scala
-resolvers += Resolver.sonatypeRepo("releases") // optional, but quicker
-
 libraryDependencies += "com.github.agilesteel" %% "spells" % "1.6.1"
 ```
 
@@ -29,8 +24,9 @@ libraryDependencies += "com.github.agilesteel" %% "spells" % "2.0.0-SNAPSHOT"
 
 ### Requirements
 
-* [Java 7] or greater
-* [SBT 0.13.9] or greater if you want to build from source
+* [Java 7](http://java.com/en/download/index.jsp) or greater
+* [Scala 2.10](http://www.scala-lang.org/) or greater
+* [SBT 0.13.9](http://www.scala-sbt.org/) or greater if you want to build from source
 
 ### Features
 
