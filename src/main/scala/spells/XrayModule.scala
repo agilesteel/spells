@@ -202,7 +202,7 @@ trait XrayModule {
     override final def rendered(implicit availableWidthInCharacters: StringOpsModule#AvailableWidthInCharacters = SpellsConfig.terminal.WidthInCharacters.value): String = {
       def lines(availableWidthInCharacters: Int): Seq[(String, String)] = {
         def ifNotIgnored(key: String, value: String): Option[(String, String)] =
-          if (SpellsConfig.xray.report.IgnoredContentKeys.contains(String.valueOf(key)))
+          if (SpellsConfig.xray.report.IgnoredContentKeys.value.contains(String.valueOf(key)))
             None
           else
             Some(String.valueOf(key) -> String.valueOf(value))
@@ -226,8 +226,8 @@ trait XrayModule {
             typeTag.fold(Vector(classTuple)) { tag =>
               val decodedTypeName = tag.tpe.toString.withDecodedScalaSymbols
               val typeTuple = ifNotIgnored("Type", decodedTypeName)
-              val shouldNotIgnoreClass = !SpellsConfig.xray.report.IgnoredContentKeys.contains("Class")
-              val shouldIgnoreType = SpellsConfig.xray.report.IgnoredContentKeys.contains("Type")
+              val shouldNotIgnoreClass = !SpellsConfig.xray.report.IgnoredContentKeys.value.contains("Class")
+              val shouldIgnoreType = SpellsConfig.xray.report.IgnoredContentKeys.value.contains("Type")
 
               if (shouldIgnoreType && shouldNotIgnoreClass) Vector(classTuple)
               else if (decodedClassName == decodedTypeName) Vector(typeTuple)
@@ -255,19 +255,19 @@ trait XrayModule {
         XrayReport.customRenderedTableForXray(
           lines,
           styles = Map[String, AnsiModule#AnsiStyle](
-          "DateTime" -> SpellsConfig.xray.report.styles.DateTime,
-          "Duration" -> SpellsConfig.xray.report.styles.Duration,
-          "Location" -> SpellsConfig.xray.report.styles.Location,
-          "HashCode" -> SpellsConfig.xray.report.styles.HashCode,
-          "Thread" -> SpellsConfig.xray.report.styles.Thread,
-          "Class" -> SpellsConfig.xray.report.styles.Class,
-          "Type" -> SpellsConfig.xray.report.styles.Type,
-          "Value" -> SpellsConfig.xray.report.styles.Value
+          "DateTime" -> SpellsConfig.xray.report.styles.DateTime.value,
+          "Duration" -> SpellsConfig.xray.report.styles.Duration.value,
+          "Location" -> SpellsConfig.xray.report.styles.Location.value,
+          "HashCode" -> SpellsConfig.xray.report.styles.HashCode.value,
+          "Thread" -> SpellsConfig.xray.report.styles.Thread.value,
+          "Class" -> SpellsConfig.xray.report.styles.Class.value,
+          "Type" -> SpellsConfig.xray.report.styles.Type.value,
+          "Value" -> SpellsConfig.xray.report.styles.Value.value
         ) withDefaultValue AnsiStyle.Reset,
           availableWidthInCharacters
         )
 
-      val headerStyleFromConfig: AnsiModule#AnsiStyle = SpellsConfig.xray.report.styles.Description
+      val headerStyleFromConfig: AnsiModule#AnsiStyle = SpellsConfig.xray.report.styles.Description.value
       val header =
         if (AnsiStyle.removed(description).isEmpty)
           styled(Xray.Defaults.Description)(headerStyleFromConfig)

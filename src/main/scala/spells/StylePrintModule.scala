@@ -47,7 +47,7 @@ trait StylePrintModule {
   final def styled(input: Any)(implicit style: AnsiModule#AnsiStyle = AnsiStyle.Reset): String = {
     val rawValue = String valueOf input
 
-    if (!SpellsConfig.terminal.display.Styles || style == AnsiStyle.Reset) rawValue
+    if (!SpellsConfig.terminal.display.Styles.value || style == AnsiStyle.Reset) rawValue
     else restyle(rawValue, style)
   }
 

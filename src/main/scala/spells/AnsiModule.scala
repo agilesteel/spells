@@ -64,7 +64,7 @@ trait AnsiModule {
     final def in(style: AnsiModule#AnsiStyle): String = {
       val rawValue = String valueOf input
 
-      if (SpellsConfig.terminal.display.Styles)
+      if (SpellsConfig.terminal.display.Styles.value)
         style.value + AnsiStyle.removed(rawValue) + AnsiStyle.Reset.value
       else rawValue
     }

@@ -21,7 +21,7 @@ trait StackTraceElementModule {
           "(Native Method)"
         else fileNameOrUnknownSourceWithLineNumber
 
-      if (SpellsConfig.`custom-rendering`.display.ShortStackTraceElements)
+      if (SpellsConfig.`custom-rendering`.display.ShortStackTraceElements.value)
         fileNameOrUnknownSourceWithLineNumberOrNativeMethod
       else value.getClassName + "." + value.getMethodName + fileNameOrUnknownSourceWithLineNumberOrNativeMethod
     }
