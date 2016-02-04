@@ -11,15 +11,7 @@
 ### Releases
 
 ```scala
-libraryDependencies += "com.github.agilesteel" %% "spells" % "1.6.1"
-```
-
-### Snapshots
-
-```scala
-resolvers += Resolver.sonatypeRepo("snapshots")
-
-libraryDependencies += "com.github.agilesteel" %% "spells" % "2.0.0-SNAPSHOT"
+libraryDependencies += "com.github.agilesteel" %% "spells" % "2.0.0"
 ```
 
 ### Requirements

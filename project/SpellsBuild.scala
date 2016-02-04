@@ -11,7 +11,7 @@ object SpellsBuild extends Build {
   lazy val buildSettings = Seq(
     name := projectName,
     organization := "com.github.agilesteel",
-    version := "2.0.0-SNAPSHOT",
+    version := "2.0.0",
     scalaVersion := "2.11.7",
     crossScalaVersions := Seq("2.10.6", "2.11.7"),
     homepage := Some(url("http://agilesteel.github.com/spells")),
@@ -118,7 +118,8 @@ object SpellsBuild extends Build {
 
   lazy val aliasSettings =
     addCommandAlias("deploySnapshot", "; +clean; +test; +publish") ++
-    addCommandAlias("pluginUpdates", "; reload plugins; dependencyUpdates; reload return")
+    addCommandAlias("deploy",         "; +clean; +test; +publishSigned; sonatypeReleaseAll") ++
+    addCommandAlias("pluginUpdates",  "; reload plugins; dependencyUpdates; reload return")
 }
 
 object Dependencies {

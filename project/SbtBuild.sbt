@@ -3,6 +3,8 @@ resolvers ++= Seq(
   "Typesafe Repository" at "https://repo.typesafe.com/typesafe/releases/"
 )
 
+addSbtPlugin("com.codacy" % "sbt-codacy-coverage" % "1.2.1")
+
 addSbtPlugin("com.timushev.sbt" % "sbt-updates" % "0.1.9")
 
 addSbtPlugin("com.typesafe.sbt" % "sbt-pgp" % "0.8.1")
@@ -13,9 +15,9 @@ addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.0.4")
 
 addSbtPlugin("org.scoverage" %% "sbt-coveralls" % "1.0.0")
 
-addSbtPlugin("com.codacy" % "sbt-codacy-coverage" % "1.2.1")
+addSbtPlugin("org.xerial.sbt" % "sbt-sonatype" % "1.1")
 
-libraryDependencies += "com.github.agilesteel" %% "spells" % "1.5.1"
+libraryDependencies += "com.github.agilesteel" %% "spells" % "2.0.0-BOOTSTRAP"
 
 scalacOptions ++= Seq(
   "-encoding", "UTF-8",
