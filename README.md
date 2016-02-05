@@ -11,7 +11,7 @@
 ### Releases
 
 ```scala
-libraryDependencies += "com.github.agilesteel" %% "spells" % "2.0.0"
+libraryDependencies += "com.github.agilesteel" %% "spells" % "2.0.1"
 ```
 
 ### Requirements

@@ -17,7 +17,7 @@ addSbtPlugin("org.scoverage" %% "sbt-coveralls" % "1.0.0")
 
 addSbtPlugin("org.xerial.sbt" % "sbt-sonatype" % "1.1")
 
-libraryDependencies += "com.github.agilesteel" %% "spells" % "2.0.0-BOOTSTRAP"
+libraryDependencies += "com.github.agilesteel" %% "spells" % "1.6.1"
 
 scalacOptions ++= Seq(
   "-encoding", "UTF-8",
