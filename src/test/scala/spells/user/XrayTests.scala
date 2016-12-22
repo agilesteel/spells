@@ -1,8 +1,5 @@
 package spells.user
 
-import java.text.SimpleDateFormat
-import java.util.Calendar
-
 import AnsiStyle._
 
 class XrayTests extends spells.UnitTestConfiguration {
