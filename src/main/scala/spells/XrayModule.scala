@@ -36,7 +36,7 @@ trait XrayModule {
 
     val (value, duration) = measureExecutionTime(expression)
 
-    val stackTraceElement = currentLineStackTraceElement(3)
+    val stackTraceElement = currentLineStackTraceElement(4)
 
     new XrayReport(value, duration, stackTraceElement, now, description.toString, Thread.currentThread, style, rendering, Some(typeTag))
   }
@@ -55,7 +55,7 @@ trait XrayModule {
 
     val (value, duration) = measureExecutionTime(expression)
 
-    val stackTraceElement = currentLineStackTraceElement(3)
+    val stackTraceElement = currentLineStackTraceElement(4)
 
     new XrayReport(value, duration, stackTraceElement, now, description.toString, Thread.currentThread, style, CustomRendering.Defaults.Any, typeTag = None)
   }
@@ -65,7 +65,7 @@ trait XrayModule {
     * @return an instance of `StackTraceElement` at current line.
     */
   final def currentLineStackTraceElement(implicit increaseStackTraceDepthBy: XrayModule#IncreaseStackTraceDepthBy = 0): StackTraceElement =
-    Thread.currentThread.getStackTrace apply increaseStackTraceDepthBy.value + 3
+    Thread.currentThread.getStackTrace apply increaseStackTraceDepthBy.value + 4
 
   /** Implicit conversion from `T` to `XrayFromSpells`, which contains methods like `xray` and `xrayIf`.
     * @param expression the expression to be evaluated
