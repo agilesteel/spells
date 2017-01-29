@@ -36,7 +36,7 @@ trait XrayModule {
 
     val (value, duration) = measureExecutionTime(expression)
 
-    val stackTraceElement = currentLineStackTraceElement(4)
+    val stackTraceElement = currentLineStackTraceElement(Xray.Defaults.StackTraceDepthOffset)
 
     new XrayReport(value, duration, stackTraceElement, now, description.toString, Thread.currentThread, style, rendering, Some(typeTag))
   }
@@ -55,7 +55,7 @@ trait XrayModule {
 
     val (value, duration) = measureExecutionTime(expression)
 
-    val stackTraceElement = currentLineStackTraceElement(4)
+    val stackTraceElement = currentLineStackTraceElement(Xray.Defaults.StackTraceDepthOffset)
 
     new XrayReport(value, duration, stackTraceElement, now, description.toString, Thread.currentThread, style, CustomRendering.Defaults.Any, typeTag = None)
   }
@@ -65,7 +65,7 @@ trait XrayModule {
     * @return an instance of `StackTraceElement` at current line.
     */
   final def currentLineStackTraceElement(implicit increaseStackTraceDepthBy: XrayModule#IncreaseStackTraceDepthBy = 0): StackTraceElement =
-    Thread.currentThread.getStackTrace apply increaseStackTraceDepthBy.value + 4
+    Thread.currentThread.getStackTrace apply increaseStackTraceDepthBy.value + Xray.Defaults.StackTraceDepthOffset
 
   /** Implicit conversion from `T` to `XrayFromSpells`, which contains methods like `xray` and `xrayIf`.
     * @param expression the expression to be evaluated
@@ -164,6 +164,23 @@ trait XrayModule {
   object Xray {
     object Defaults {
       final val Description: XrayModule#Description = new Description("Xray")
+
+      private[spells] final val StackTraceDepthOffset: Int = {
+        // $COVERAGE-OFF$
+        if (`isScalaVersionSmallerThan 2.12`) 3 else 4
+        // $COVERAGE-ON$
+      }
+
+      private def `isScalaVersionSmallerThan 2.12`: Boolean =
+        SemVer.major == 2 && SemVer.minor < 12
+
+      private object SemVer {
+        private val version = SpellsBuildInfo.scalaVersion.split("\\.")
+
+        val major = version.head.toInt
+        val minor = version.tail.head.toInt
+        val patch = version.tail.tail.head.toInt
+      }
     }
   }
 

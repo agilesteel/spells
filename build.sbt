@@ -21,8 +21,16 @@ lazy val root = (project in file("."))
   .settings(aliasSettings: _*)
   .configs(Build)
   .settings(inConfig(Build)(configScalariformSettings): _*)
+  .enablePlugins(BuildInfoPlugin)
+  .settings(buildInfoSettings: _*)
 
 lazy val Build = config("build") extend Compile
+
+lazy val buildInfoSettings = Seq(
+  buildInfoKeys := Seq[BuildInfoKey](scalaVersion),
+  buildInfoPackage := "spells",
+  buildInfoObject := "SpellsBuildInfo"
+)
 
 lazy val scalariformSettingsFromSpells = {
   import scalariform.formatter.preferences._
@@ -110,13 +118,32 @@ lazy val aliasSettings =
   addCommandAlias("pluginUpdates",  "; reload plugins; dependencyUpdates; reload return")
 
 def Dependencies(scalaVersion: String) = {
-  def `scala-reflect`(scalaVersion: String) = "org.scala-lang" % "scala-reflect" % scalaVersion
-  val config = "com.typesafe" % "config" % "1.2.1"
+  object SemVer {
+    val version = scalaVersion.split("\\.")
+
+    val major = version.head.toInt
+    val minor = version.tail.head.toInt
+    val patch = version.tail.tail.head.toInt
+  }
+
+  val `scala-reflect` = "org.scala-lang" % "scala-reflect" % scalaVersion
+
+  val config = {
+    val configVersion: String = {
+      val `isScalaVersionSmallerThan 2.12`: Boolean =
+        SemVer.major == 2 && SemVer.minor < 12
+
+      if (`isScalaVersionSmallerThan 2.12`) "1.2.1" else "1.3.1"
+    }
+
+
+    "com.typesafe" % "config" % configVersion
+  }
 
   val pegdown = "org.pegdown" % "pegdown" % "1.6.0" % "test"
   val scalaTest = "org.scalatest" %% "scalatest" % "3.0.1" % "test"
 
-  Seq(`scala-reflect`(scalaVersion), config, pegdown, scalaTest)
+  Seq(`scala-reflect`, config, pegdown, scalaTest)
 }
 
 lazy val UserConfigFileManager = new {

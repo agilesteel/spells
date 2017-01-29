@@ -5,14 +5,13 @@
 sudo: false
 language: scala
 scala:
-  # - 2.10.6
-  # - 2.11.8
+  - 2.10.6
+  - 2.11.8
   - 2.12.1
 branches:
   only:
     - master
 jdk:
-  # - oraclejdk7
   - oraclejdk8
 env:
   - CODACY_PROJECT_TOKEN=a5c89dcf2b304b2ea4c8f72b4f593823
