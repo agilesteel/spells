@@ -50,10 +50,10 @@ lazy val spellsSettings = Seq(
   },
   scalacOptions in (Compile, console) := nonDestructiveCompilerFlags,
   scalacOptions ++= nonDestructiveCompilerFlags ++ {
-    if(scalaVersion.value.startsWith("2.11"))
-      Seq("-Ywarn-dead-code", "-Ywarn-unused-import")
-    else
+    if (`isScalaVersionSmallerThan 2.11`(SemVer(scalaVersion.value)))
       Seq.empty[String]
+    else
+      Seq("-Ywarn-dead-code", "-Ywarn-unused-import")
   }
 )
 
@@ -117,25 +117,34 @@ lazy val aliasSettings =
   addCommandAlias("deploy",         "; +clean; +test; +publishSigned; sonatypeReleaseAll") ++
   addCommandAlias("pluginUpdates",  "; reload plugins; dependencyUpdates; reload return")
 
+def SemVer(scalaVersion: String): (Int, Int, Int) = {
+  val version = scalaVersion.split("\\.")
+
+  val major = version.head.toInt
+  val minor = version.tail.head.toInt
+  val patch = version.tail.tail.head.toInt
+
+  (major, minor, patch)
+}
+
+def `isScalaVersionSmallerThan 2.11`(semVer: (Int, Int, Int)): Boolean = {
+  val (major, minor, patch) = semVer
+
+  major == 2 && minor < 11
+}
+
+def `isScalaVersionSmallerThan 2.12`(semVer: (Int, Int, Int)): Boolean = {
+  val (major, minor, patch) = semVer
+
+  major == 2 && minor < 12
+}
+
 def Dependencies(scalaVersion: String) = {
-  object SemVer {
-    val version = scalaVersion.split("\\.")
-
-    val major = version.head.toInt
-    val minor = version.tail.head.toInt
-    val patch = version.tail.tail.head.toInt
-  }
-
   val `scala-reflect` = "org.scala-lang" % "scala-reflect" % scalaVersion
 
   val config = {
-    val configVersion: String = {
-      val `isScalaVersionSmallerThan 2.12`: Boolean =
-        SemVer.major == 2 && SemVer.minor < 12
-
-      if (`isScalaVersionSmallerThan 2.12`) "1.2.1" else "1.3.1"
-    }
-
+    val configVersion: String = 
+      if (`isScalaVersionSmallerThan 2.12`(SemVer(scalaVersion))) "1.2.1" else "1.3.1"
 
     "com.typesafe" % "config" % configVersion
   }
