@@ -1,0 +1,8 @@
+title: spells
+description: devtime utilities for Scala
+google_analytics: UA-54135241-1
+show_downloads: true
+theme: jekyll-theme-midnight
+
+gems:
+  - jekyll-mentions
