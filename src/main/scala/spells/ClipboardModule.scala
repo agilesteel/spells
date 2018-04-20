@@ -18,10 +18,11 @@ trait ClipboardModule {
       "java.awt.mixing",
       "sun.awt",
       "sun.awt.windows",
-      "sun.awt.X11") foreach disableLogging
+      "sun.awt.X11"
+    ) foreach disableLogging
 
     private def disableLogging(loggerName: String): Unit = {
-      java.util.logging.Logger getLogger "" setLevel Level.OFF
+      java.util.logging.Logger getLogger loggerName setLevel Level.OFF
     }
 
     private lazy val clipboard = Toolkit.getDefaultToolkit.getSystemClipboard

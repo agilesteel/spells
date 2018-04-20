@@ -21,17 +21,17 @@ trait AnsiModule {
       * @return an instance of `AnsiStyle`
       */
     final def toAnsiStyle: AnsiModule#AnsiStyle = style match {
-      case "Black" => AnsiStyle.Black
-      case "Blue" => AnsiStyle.Blue
-      case "Cyan" => AnsiStyle.Cyan
-      case "Green" => AnsiStyle.Green
-      case "Magenta" => AnsiStyle.Magenta
-      case "Random" => AnsiStyle.Random
-      case "Red" => AnsiStyle.Red
+      case "Black"     => AnsiStyle.Black
+      case "Blue"      => AnsiStyle.Blue
+      case "Cyan"      => AnsiStyle.Cyan
+      case "Green"     => AnsiStyle.Green
+      case "Magenta"   => AnsiStyle.Magenta
+      case "Random"    => AnsiStyle.Random
+      case "Red"       => AnsiStyle.Red
       case "Untouched" => AnsiStyle.Reset
-      case "White" => AnsiStyle.White
-      case "Yellow" => AnsiStyle.Yellow
-      case _ => new AnsiStyle(Option(style).fold("")(_.replace("\\033", "\u001b")))
+      case "White"     => AnsiStyle.White
+      case "Yellow"    => AnsiStyle.Yellow
+      case _           => new AnsiStyle(Option(style).fold("")(_.replace("\\033", "\u001b")))
     }
   }
 
@@ -40,15 +40,15 @@ trait AnsiModule {
     */
   final class AnsiStyle private[spells] (val value: String) {
     override final def toString: String = value match {
-      case AnsiStyle.Black.value => "Black" in this
-      case AnsiStyle.Blue.value => "Blue" in this
-      case AnsiStyle.Cyan.value => "Cyan" in this
-      case AnsiStyle.Green.value => "Green" in this
+      case AnsiStyle.Black.value   => "Black" in this
+      case AnsiStyle.Blue.value    => "Blue" in this
+      case AnsiStyle.Cyan.value    => "Cyan" in this
+      case AnsiStyle.Green.value   => "Green" in this
       case AnsiStyle.Magenta.value => "Magenta" in this
-      case AnsiStyle.Red.value => "Red" in this
-      case AnsiStyle.White.value => "White" in this
-      case AnsiStyle.Yellow.value => "Yellow" in this
-      case _ => AnsiStyle.Sample in this
+      case AnsiStyle.Red.value     => "Red" in this
+      case AnsiStyle.White.value   => "White" in this
+      case AnsiStyle.Yellow.value  => "Yellow" in this
+      case _                       => AnsiStyle.Sample in this
     }
   }
 
@@ -112,6 +112,7 @@ trait AnsiModule {
         Magenta,
         Red,
         White,
-        Yellow)
+        Yellow
+      )
   }
 }

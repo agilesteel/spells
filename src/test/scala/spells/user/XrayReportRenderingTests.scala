@@ -218,7 +218,7 @@ class XrayReportRenderingTests extends spells.UnitTestConfiguration {
   }
 
   test("The customRenderedTableForXray helper method should yield an empty Seq when given an empty input") {
-    XrayReport.customRenderedTableForXray(_ => Seq.empty, styles = Map.empty, availableWidthInCharacters = util.Random.nextInt) should be(Vector.empty[String])
+    XrayReport.customRenderedTableForXray(_ => Seq.empty, styles                     = Map.empty, availableWidthInCharacters = util.Random.nextInt) should be(Vector.empty[String])
   }
 
   test("CustomRendering style loss test #infinity") {
@@ -278,24 +278,26 @@ class XrayReportRenderingTests extends spells.UnitTestConfiguration {
 
 object XrayReportRenderingTests {
   private def createReport[T: TypeTag](
-    reportValue: T = reportValue,
-    duration: Duration = duration,
-    stackTraceElement: StackTraceElement = stackTraceElement,
-    timestamp: Calendar = timestamp,
-    description: String = description,
-    rendering: T => spells.CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any,
-    typeTag: Option[TypeTag[T]] = theTypeTag,
-    additionalContent: immutable.Seq[(String, String)] = immutable.Seq.empty): XrayReport[T] =
+      reportValue: T = reportValue,
+      duration: Duration = duration,
+      stackTraceElement: StackTraceElement = stackTraceElement,
+      timestamp: Calendar = timestamp,
+      description: String = description,
+      rendering: T => spells.CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any,
+      typeTag: Option[TypeTag[T]] = theTypeTag,
+      additionalContent: immutable.Seq[(String, String)] = immutable.Seq.empty
+  ): XrayReport[T] =
     new XrayReport[T](
-      value = reportValue,
-      duration = duration,
+      value             = reportValue,
+      duration          = duration,
       stackTraceElement = stackTraceElement,
-      timestamp = timestamp,
-      description = description,
-      thread = Thread.currentThread,
-      rendering = rendering,
-      typeTag = typeTag,
-      additionalContent = additionalContent)
+      timestamp         = timestamp,
+      description       = description,
+      thread            = Thread.currentThread,
+      rendering         = rendering,
+      typeTag           = typeTag,
+      additionalContent = additionalContent
+    )
 
   private lazy val reportValue = new `Encoded + Whatever`
   private lazy val duration = 62.seconds

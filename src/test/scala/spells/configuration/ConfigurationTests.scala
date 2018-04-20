@@ -50,22 +50,24 @@ class ConfigurationTests extends UnitTestConfiguration {
 
       object StolenFromXrayReportRenderingTests {
         def createReport[T](
-          value: T = reportValue,
-          duration: Duration = duration,
-          stackTraceElement: StackTraceElement = stackTraceElement,
-          timestamp: Calendar = timestamp,
-          description: String = description,
-          rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any,
-          typeTag: Option[TypeTag[T]] = theTypeTag): XrayReport[T] =
+            value: T = reportValue,
+            duration: Duration = duration,
+            stackTraceElement: StackTraceElement = stackTraceElement,
+            timestamp: Calendar = timestamp,
+            description: String = description,
+            rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any,
+            typeTag: Option[TypeTag[T]] = theTypeTag
+        ): XrayReport[T] =
           new XrayReport[T](
-            value = value,
-            duration = duration,
+            value             = value,
+            duration          = duration,
             stackTraceElement = stackTraceElement,
-            timestamp = timestamp,
-            description = description,
-            thread = thread,
-            rendering = rendering,
-            typeTag = typeTag)
+            timestamp         = timestamp,
+            description       = description,
+            thread            = thread,
+            rendering         = rendering,
+            typeTag           = typeTag
+          )
 
         lazy val reportValue = 10
         lazy val duration = 62.seconds
@@ -113,22 +115,24 @@ class ConfigurationTests extends UnitTestConfiguration {
 
       object StolenFromXrayReportRenderingTests {
         def createReport[T](
-          value: T = reportValue,
-          duration: Duration = duration,
-          stackTraceElement: StackTraceElement = stackTraceElement,
-          timestamp: Calendar = timestamp,
-          description: String = description,
-          rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any,
-          typeTag: Option[TypeTag[T]] = theTypeTag): XrayReport[T] =
+            value: T = reportValue,
+            duration: Duration = duration,
+            stackTraceElement: StackTraceElement = stackTraceElement,
+            timestamp: Calendar = timestamp,
+            description: String = description,
+            rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any,
+            typeTag: Option[TypeTag[T]] = theTypeTag
+        ): XrayReport[T] =
           new XrayReport[T](
-            value = value,
-            duration = duration,
+            value             = value,
+            duration          = duration,
             stackTraceElement = stackTraceElement,
-            timestamp = timestamp,
-            description = description,
-            thread = thread,
-            rendering = rendering,
-            typeTag = typeTag)
+            timestamp         = timestamp,
+            description       = description,
+            thread            = thread,
+            rendering         = rendering,
+            typeTag           = typeTag
+          )
 
         lazy val reportValue = 10
         lazy val duration = 62.seconds
@@ -154,7 +158,7 @@ class ConfigurationTests extends UnitTestConfiguration {
 
       val maxWidthInCharacters: Int = SpellsConfig.terminal.WidthInCharacters
 
-      val largeReport = createReport(value = ("V" * (maxWidthInCharacters + 20)), typeTag = Some(typeTag[String]))
+      val largeReport = createReport(value   = ("V" * (maxWidthInCharacters + 20)), typeTag = Some(typeTag[String]))
       val largeLines = largeReport.rendered split "\n"
       val hyphenLines = largeLines.filter(_.forall(_ == '-'))
 
@@ -179,22 +183,24 @@ class ConfigurationTests extends UnitTestConfiguration {
 
       object StolenFromXrayReportRenderingTests {
         def createReport[T](
-          value: T = reportValue,
-          duration: Duration = duration,
-          stackTraceElement: StackTraceElement = stackTraceElement,
-          timestamp: Calendar = timestamp,
-          description: String = description,
-          rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any,
-          typeTag: Option[TypeTag[T]] = theTypeTag): XrayReport[T] =
+            value: T = reportValue,
+            duration: Duration = duration,
+            stackTraceElement: StackTraceElement = stackTraceElement,
+            timestamp: Calendar = timestamp,
+            description: String = description,
+            rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any,
+            typeTag: Option[TypeTag[T]] = theTypeTag
+        ): XrayReport[T] =
           new XrayReport[T](
-            value = value,
-            duration = duration,
+            value             = value,
+            duration          = duration,
             stackTraceElement = stackTraceElement,
-            timestamp = timestamp,
-            description = description,
-            thread = thread,
-            rendering = rendering,
-            typeTag = typeTag)
+            timestamp         = timestamp,
+            description       = description,
+            thread            = thread,
+            rendering         = rendering,
+            typeTag           = typeTag
+          )
 
         lazy val reportValue = "10"
         lazy val duration = 62.seconds
@@ -317,22 +323,24 @@ class ConfigurationTests extends UnitTestConfiguration {
 
       object StolenFromXrayReportRenderingTests {
         def createReport[T](
-          value: T = reportValue,
-          duration: Duration = duration,
-          stackTraceElement: StackTraceElement = stackTraceElement,
-          timestamp: Calendar = timestamp,
-          description: String = description,
-          rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any,
-          typeTag: Option[TypeTag[T]] = theTypeTag): XrayReport[T] =
+            value: T = reportValue,
+            duration: Duration = duration,
+            stackTraceElement: StackTraceElement = stackTraceElement,
+            timestamp: Calendar = timestamp,
+            description: String = description,
+            rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any,
+            typeTag: Option[TypeTag[T]] = theTypeTag
+        ): XrayReport[T] =
           new XrayReport[T](
-            value = value,
-            duration = duration,
+            value             = value,
+            duration          = duration,
             stackTraceElement = stackTraceElement,
-            timestamp = timestamp,
-            description = description,
-            thread = thread,
-            rendering = rendering,
-            typeTag = typeTag)
+            timestamp         = timestamp,
+            description       = description,
+            thread            = thread,
+            rendering         = rendering,
+            typeTag           = typeTag
+          )
 
         lazy val reportValue = 10
         lazy val duration = 62.seconds
@@ -366,22 +374,24 @@ class ConfigurationTests extends UnitTestConfiguration {
 
       object StolenFromXrayReportRenderingTests {
         def createReport[T](
-          value: T = reportValue,
-          duration: Duration = duration,
-          stackTraceElement: StackTraceElement = stackTraceElement,
-          timestamp: Calendar = timestamp,
-          description: String = description,
-          rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any,
-          typeTag: Option[TypeTag[T]] = theTypeTag): XrayReport[T] =
+            value: T = reportValue,
+            duration: Duration = duration,
+            stackTraceElement: StackTraceElement = stackTraceElement,
+            timestamp: Calendar = timestamp,
+            description: String = description,
+            rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any,
+            typeTag: Option[TypeTag[T]] = theTypeTag
+        ): XrayReport[T] =
           new XrayReport[T](
-            value = value,
-            duration = duration,
+            value             = value,
+            duration          = duration,
             stackTraceElement = stackTraceElement,
-            timestamp = timestamp,
-            description = description,
-            thread = thread,
-            rendering = rendering,
-            typeTag = typeTag)
+            timestamp         = timestamp,
+            description       = description,
+            thread            = thread,
+            rendering         = rendering,
+            typeTag           = typeTag
+          )
 
         lazy val reportValue = 10
         lazy val duration = 62.seconds
@@ -397,7 +407,8 @@ class ConfigurationTests extends UnitTestConfiguration {
         StolenFromXrayReportRenderingTests.createReport() withAdditionalContent Vector(
           "Key1" -> "Value1",
           "Key2" -> "Value2",
-          "Key3" -> "Value3")
+          "Key3" -> "Value3"
+        )
 
       // format: OFF
       report.rendered should not include("Key1     | Value1")

@@ -6,5 +6,6 @@ private[user] object TestSamples {
       "week default",
       null,
       "green".green,
-      styled(s"""yellow${"cyan".cyan}yellow""")(AnsiStyle.Yellow))
+      styled(s"""yellow${"cyan".cyan}yellow""")(AnsiStyle.Yellow)
+    )
 }

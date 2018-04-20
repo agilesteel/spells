@@ -65,7 +65,8 @@ class AnsiTests extends spells.UnitTestConfiguration {
         Blue,
         Magenta,
         Cyan,
-        White)
+        White
+      )
 
     val factories =
       Vector[Any => String](
@@ -76,7 +77,8 @@ class AnsiTests extends spells.UnitTestConfiguration {
         _.blue,
         _.magenta,
         _.cyan,
-        _.white)
+        _.white
+      )
 
     forEvery(styles zip factories) {
       case (style, factory) =>
