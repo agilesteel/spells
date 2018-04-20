@@ -15,7 +15,7 @@ libraryDependencies += "com.github.agilesteel" %% "spells" % "2.0.1"
 
 * [Java 7](http://java.com/en/download/index.jsp) or greater
 * [Scala 2.10](http://www.scala-lang.org/) or greater (Scala 2.12 requires Java 8)
-* [SBT 0.13.9](http://www.scala-sbt.org/) or greater if you want to build from source
+* [SBT 1.1.4](http://www.scala-sbt.org/) or greater if you want to build from source
 
 ### Features
 
