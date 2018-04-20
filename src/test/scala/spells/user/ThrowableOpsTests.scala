@@ -12,9 +12,7 @@ class ThrowableOpsTests extends spells.UnitTestConfiguration {
     val io =
       new IOException(
         new RuntimeException(
-          new FileNotFoundException
-        )
-      )
+          new FileNotFoundException))
 
     io.getRootCause.isInstanceOf[FileNotFoundException] should be(true)
   }

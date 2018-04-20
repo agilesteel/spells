@@ -112,7 +112,6 @@ trait AnsiModule {
         Magenta,
         Red,
         White,
-        Yellow
-      )
+        Yellow)
   }
 }

@@ -63,16 +63,15 @@ trait HumanRenderingModule {
   private[spells] final val Year: String = "year"
 
   private case class Duration(
-      years: Long = 0,
-      months: Long = 0,
-      weeks: Long = 0,
-      days: Long = 0,
-      hours: Long = 0,
-      minutes: Long = 0,
-      seconds: Long = 0,
-      milliseconds: Long = 0,
-      nanoseconds: Long = 0
-  ) {
+    years: Long = 0,
+    months: Long = 0,
+    weeks: Long = 0,
+    days: Long = 0,
+    hours: Long = 0,
+    minutes: Long = 0,
+    seconds: Long = 0,
+    milliseconds: Long = 0,
+    nanoseconds: Long = 0) {
     override val toString = if (isPositiveOrZero) calculated else recalculated
 
     private final lazy val isPositiveOrZero: Boolean =
@@ -87,8 +86,7 @@ trait HumanRenderingModule {
         render(
           wholeDuration = copy(years = quotient, months = 0),
           remainder = remainder,
-          renderedRemainder = remainder.render.duration.just.months
-        )
+          renderedRemainder = remainder.render.duration.just.months)
       } else if (weeks != 0)
         weeks.render.duration.just.weeks
 
@@ -98,48 +96,42 @@ trait HumanRenderingModule {
         render(
           wholeDuration = copy(weeks = quotient, days = 0),
           remainder = remainder,
-          renderedRemainder = remainder.render.duration.just.days
-        )
+          renderedRemainder = remainder.render.duration.just.days)
       } else if (hours != 0) {
         val (quotient, remainder) = division(hours, 24)
 
         render(
           wholeDuration = copy(days = quotient, hours = 0),
           remainder = remainder,
-          renderedRemainder = remainder.render.duration.just.hours
-        )
+          renderedRemainder = remainder.render.duration.just.hours)
       } else if (minutes != 0) {
         val (quotient, remainder) = division(minutes, 60)
 
         render(
           wholeDuration = copy(hours = quotient, minutes = 0),
           remainder = remainder,
-          renderedRemainder = remainder.render.duration.just.minutes
-        )
+          renderedRemainder = remainder.render.duration.just.minutes)
       } else if (seconds != 0) {
         val (quotient, remainder) = division(seconds, 60)
 
         render(
           wholeDuration = copy(minutes = quotient, seconds = 0),
           remainder = remainder,
-          renderedRemainder = remainder.render.duration.just.seconds
-        )
+          renderedRemainder = remainder.render.duration.just.seconds)
       } else if (milliseconds != 0) {
         val (quotient, remainder) = division(milliseconds, 1000)
 
         render(
           wholeDuration = copy(seconds = quotient, milliseconds = 0),
           remainder = remainder,
-          renderedRemainder = remainder.render.duration.just.milliseconds
-        )
+          renderedRemainder = remainder.render.duration.just.milliseconds)
       } else if (nanoseconds != 0) {
         val (quotient, remainder) = division(nanoseconds, 1000000)
 
         render(
           wholeDuration = copy(milliseconds = quotient, nanoseconds = 0),
           remainder = remainder,
-          renderedRemainder = remainder.render.duration.just.nanoseconds
-        )
+          renderedRemainder = remainder.render.duration.just.nanoseconds)
       } else ""
     }
 

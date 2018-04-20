@@ -285,8 +285,7 @@ object XrayReportRenderingTests {
     description: String = description,
     rendering: T => spells.CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any,
     typeTag: Option[TypeTag[T]] = theTypeTag,
-    additionalContent: immutable.Seq[(String, String)] = immutable.Seq.empty
-  ): XrayReport[T] =
+    additionalContent: immutable.Seq[(String, String)] = immutable.Seq.empty): XrayReport[T] =
     new XrayReport[T](
       value = reportValue,
       duration = duration,
@@ -296,8 +295,7 @@ object XrayReportRenderingTests {
       thread = Thread.currentThread,
       rendering = rendering,
       typeTag = typeTag,
-      additionalContent = additionalContent
-    )
+      additionalContent = additionalContent)
 
   private lazy val reportValue = new `Encoded + Whatever`
   private lazy val duration = 62.seconds

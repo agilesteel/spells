@@ -56,8 +56,7 @@ class ConfigurationTests extends UnitTestConfiguration {
           timestamp: Calendar = timestamp,
           description: String = description,
           rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any,
-          typeTag: Option[TypeTag[T]] = theTypeTag
-        ): XrayReport[T] =
+          typeTag: Option[TypeTag[T]] = theTypeTag): XrayReport[T] =
           new XrayReport[T](
             value = value,
             duration = duration,
@@ -66,8 +65,7 @@ class ConfigurationTests extends UnitTestConfiguration {
             description = description,
             thread = thread,
             rendering = rendering,
-            typeTag = typeTag
-          )
+            typeTag = typeTag)
 
         lazy val reportValue = 10
         lazy val duration = 62.seconds
@@ -121,8 +119,7 @@ class ConfigurationTests extends UnitTestConfiguration {
           timestamp: Calendar = timestamp,
           description: String = description,
           rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any,
-          typeTag: Option[TypeTag[T]] = theTypeTag
-        ): XrayReport[T] =
+          typeTag: Option[TypeTag[T]] = theTypeTag): XrayReport[T] =
           new XrayReport[T](
             value = value,
             duration = duration,
@@ -131,8 +128,7 @@ class ConfigurationTests extends UnitTestConfiguration {
             description = description,
             thread = thread,
             rendering = rendering,
-            typeTag = typeTag
-          )
+            typeTag = typeTag)
 
         lazy val reportValue = 10
         lazy val duration = 62.seconds
@@ -189,8 +185,7 @@ class ConfigurationTests extends UnitTestConfiguration {
           timestamp: Calendar = timestamp,
           description: String = description,
           rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any,
-          typeTag: Option[TypeTag[T]] = theTypeTag
-        ): XrayReport[T] =
+          typeTag: Option[TypeTag[T]] = theTypeTag): XrayReport[T] =
           new XrayReport[T](
             value = value,
             duration = duration,
@@ -199,8 +194,7 @@ class ConfigurationTests extends UnitTestConfiguration {
             description = description,
             thread = thread,
             rendering = rendering,
-            typeTag = typeTag
-          )
+            typeTag = typeTag)
 
         lazy val reportValue = "10"
         lazy val duration = 62.seconds
@@ -329,8 +323,7 @@ class ConfigurationTests extends UnitTestConfiguration {
           timestamp: Calendar = timestamp,
           description: String = description,
           rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any,
-          typeTag: Option[TypeTag[T]] = theTypeTag
-        ): XrayReport[T] =
+          typeTag: Option[TypeTag[T]] = theTypeTag): XrayReport[T] =
           new XrayReport[T](
             value = value,
             duration = duration,
@@ -339,8 +332,7 @@ class ConfigurationTests extends UnitTestConfiguration {
             description = description,
             thread = thread,
             rendering = rendering,
-            typeTag = typeTag
-          )
+            typeTag = typeTag)
 
         lazy val reportValue = 10
         lazy val duration = 62.seconds
@@ -380,8 +372,7 @@ class ConfigurationTests extends UnitTestConfiguration {
           timestamp: Calendar = timestamp,
           description: String = description,
           rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any,
-          typeTag: Option[TypeTag[T]] = theTypeTag
-        ): XrayReport[T] =
+          typeTag: Option[TypeTag[T]] = theTypeTag): XrayReport[T] =
           new XrayReport[T](
             value = value,
             duration = duration,
@@ -390,8 +381,7 @@ class ConfigurationTests extends UnitTestConfiguration {
             description = description,
             thread = thread,
             rendering = rendering,
-            typeTag = typeTag
-          )
+            typeTag = typeTag)
 
         lazy val reportValue = 10
         lazy val duration = 62.seconds
@@ -407,8 +397,7 @@ class ConfigurationTests extends UnitTestConfiguration {
         StolenFromXrayReportRenderingTests.createReport() withAdditionalContent Vector(
           "Key1" -> "Value1",
           "Key2" -> "Value2",
-          "Key3" -> "Value3"
-        )
+          "Key3" -> "Value3")
 
       // format: OFF
       report.rendered should not include("Key1     | Value1")

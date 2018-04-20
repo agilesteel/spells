@@ -200,17 +200,16 @@ trait XrayModule {
     * @tparam T
     */
   final class XrayReport[+T](
-      final val value: T,
-      final val duration: Duration,
-      final val stackTraceElement: StackTraceElement,
-      final val timestamp: Calendar,
-      final val description: String,
-      final val thread: Thread,
-      final val style: AnsiModule#AnsiStyle = AnsiStyle.Reset,
-      rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any,
-      typeTag: Option[TypeTag[T]],
-      final val additionalContent: immutable.Seq[(String, String)] = immutable.Seq.empty
-  ) extends CustomRendering {
+    final val value: T,
+    final val duration: Duration,
+    final val stackTraceElement: StackTraceElement,
+    final val timestamp: Calendar,
+    final val description: String,
+    final val thread: Thread,
+    final val style: AnsiModule#AnsiStyle = AnsiStyle.Reset,
+    rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any,
+    typeTag: Option[TypeTag[T]],
+    final val additionalContent: immutable.Seq[(String, String)] = immutable.Seq.empty) extends CustomRendering {
     private lazy val safeAdditionalContent: immutable.Seq[(String, String)] = Option(additionalContent).getOrElse(immutable.Seq.empty)
 
     final def withAdditionalContent(content: immutable.Seq[(String, String)]): XrayModule#XrayReport[T] =
@@ -227,14 +226,12 @@ trait XrayModule {
         val contentLines = {
           val metaContent = Vector(
             ifNotIgnored("DateTime", timestamp.rendered),
-            ifNotIgnored("Duration", duration.rendered)
-          )
+            ifNotIgnored("Duration", duration.rendered))
 
           val valueRelatedContent = Vector(
             ifNotIgnored("Location", stackTraceElement.rendered),
             { if (value == null) None else ifNotIgnored("HashCode", value.hashCode.toString) },
-            ifNotIgnored("Thread", thread.toString)
-          )
+            ifNotIgnored("Thread", thread.toString))
 
           val classOrTypeOrBoth = {
             val decodedClassName = value.decodedClassName
@@ -272,17 +269,15 @@ trait XrayModule {
         XrayReport.customRenderedTableForXray(
           lines,
           styles = Map[String, AnsiModule#AnsiStyle](
-          "DateTime" -> SpellsConfig.xray.report.styles.DateTime.value,
-          "Duration" -> SpellsConfig.xray.report.styles.Duration.value,
-          "Location" -> SpellsConfig.xray.report.styles.Location.value,
-          "HashCode" -> SpellsConfig.xray.report.styles.HashCode.value,
-          "Thread" -> SpellsConfig.xray.report.styles.Thread.value,
-          "Class" -> SpellsConfig.xray.report.styles.Class.value,
-          "Type" -> SpellsConfig.xray.report.styles.Type.value,
-          "Value" -> SpellsConfig.xray.report.styles.Value.value
-        ) withDefaultValue AnsiStyle.Reset,
-          availableWidthInCharacters
-        )
+            "DateTime" -> SpellsConfig.xray.report.styles.DateTime.value,
+            "Duration" -> SpellsConfig.xray.report.styles.Duration.value,
+            "Location" -> SpellsConfig.xray.report.styles.Location.value,
+            "HashCode" -> SpellsConfig.xray.report.styles.HashCode.value,
+            "Thread" -> SpellsConfig.xray.report.styles.Thread.value,
+            "Class" -> SpellsConfig.xray.report.styles.Class.value,
+            "Type" -> SpellsConfig.xray.report.styles.Type.value,
+            "Value" -> SpellsConfig.xray.report.styles.Value.value) withDefaultValue AnsiStyle.Reset,
+          availableWidthInCharacters)
 
       val headerStyleFromConfig: AnsiModule#AnsiStyle = SpellsConfig.xray.report.styles.Description.value
       val header =

@@ -10,8 +10,7 @@ class StackTraceElementTests extends spells.UnitTestConfiguration {
       new StackTraceElement("declaringClass", "methodName", "fileName", nativeMethod),
       new StackTraceElement("declaringClass", "methodName", null, 0),
       new StackTraceElement("declaringClass", "methodName", null, -1),
-      new StackTraceElement("declaringClass", "methodName", null, nativeMethod)
-    )
+      new StackTraceElement("declaringClass", "methodName", null, nativeMethod))
 
     forEvery(elements)(renderedShouldBeToString)
   }

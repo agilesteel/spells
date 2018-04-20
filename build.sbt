@@ -1,6 +1,3 @@
-import com.typesafe.sbt.SbtScalariform._
-import com.typesafe.sbt.SbtScalariform.ScalariformKeys._
-
 lazy val root = (project in file("."))
   .settings(
     name := "spells",
@@ -20,7 +17,6 @@ lazy val root = (project in file("."))
   .settings(scalariformSettingsFromSpells: _*)
   .settings(aliasSettings: _*)
   .configs(Build)
-  .settings(inConfig(Build)(configScalariformSettings): _*)
   .enablePlugins(BuildInfoPlugin)
   .settings(buildInfoSettings: _*)
 
@@ -35,13 +31,15 @@ lazy val buildInfoSettings = Seq(
 lazy val scalariformSettingsFromSpells = {
   import scalariform.formatter.preferences._
 
-  ScalariformKeys.preferences := ScalariformKeys.preferences.value
-    .setPreference(MultilineScaladocCommentsStartOnFirstLine, true)
-    .setPreference(PlaceScaladocAsterisksBeneathSecondAsterisk, true)
+  Seq(
+    scalariformWithBaseDirectory := true,
+    scalariformPreferences := scalariformPreferences.value
+      .setPreference(MultilineScaladocCommentsStartOnFirstLine, true)
+      .setPreference(PlaceScaladocAsterisksBeneathSecondAsterisk, true)
+  )
 }
 
 lazy val spellsSettings = Seq(
-  incOptions := incOptions.value.withNameHashing(true),
   initialCommands in console := "object user extends spells.Spells;import user._;import scala.concurrent.duration._",
   libraryDependencies ++= Dependencies(scalaVersion.value.toString),
   onLoad in Global := {
@@ -74,9 +72,6 @@ lazy val testAndLayoutSettings = Seq(
   testOptions in Test += Tests.Setup(UserConfigFileManager.createSpellsConfigFileForCurrentUser),
   testOptions in Test += Tests.Cleanup(UserConfigFileManager.deleteSpellsConfigFileForCurrentUser),
   scalaSource in Build := baseDirectory.value / "project",
-
-  // This one doesn't work yet, but we can already do 'build:scalariformFormat' manually
-  compileInputs in (Build, compile) := (compileInputs in (Build, compile)).dependsOn(ScalariformKeys.format in Build).value
 )
 
 lazy val pureScalaProjectSettings = Seq(
@@ -113,6 +108,7 @@ lazy val publishSettings = Seq(
 )
 
 lazy val aliasSettings =
+  addCommandAlias("testWithCoverage", "; clean; coverage; test; coverageReport") ++
   addCommandAlias("deploySnapshot", "; +clean; +test; +publish") ++
   addCommandAlias("deploy",         "; +clean; +test; +publishSigned; sonatypeReleaseAll") ++
   addCommandAlias("pluginUpdates",  "; reload plugins; dependencyUpdates; reload return")
