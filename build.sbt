@@ -5,9 +5,9 @@ lazy val root = (project in file("."))
   .settings(
     name := "spells",
     organization := "com.github.agilesteel",
-    version := "2.0.1",
-    scalaVersion := "2.12.1",
-    crossScalaVersions := Seq("2.10.6", "2.11.8", "2.12.1"),
+    version := "2.1.0-SNAPSHOT",
+    scalaVersion := "2.12.5",
+    crossScalaVersions := Seq("2.10.7", "2.11.12", "2.12.5"),
     homepage := Some(url("http://agilesteel.github.com/spells")),
     startYear := some(2012),
     description := """This is a small scala "util" library, which will hopefully grow over time.""",
@@ -50,10 +50,14 @@ lazy val spellsSettings = Seq(
   },
   scalacOptions in (Compile, console) := nonDestructiveCompilerFlags,
   scalacOptions ++= nonDestructiveCompilerFlags ++ {
-    if (`isScalaVersionSmallerThan 2.11`(SemVer(scalaVersion.value)))
+    if (`isScalaVersionSmallerThan 2.12`(SemVer(scalaVersion.value)))
       Seq.empty[String]
     else
-      Seq("-Ywarn-dead-code", "-Ywarn-unused-import")
+      Seq(
+        "-Xlint:-unused,_",
+        "-Ywarn-dead-code",
+        "-Ywarn-unused-import"
+      )
   }
 )
 
@@ -62,11 +66,7 @@ lazy val nonDestructiveCompilerFlags = Seq(
   "-deprecation",
   "-feature",
   "-language:_",
-  "-unchecked",
-  "-Xlint",
-  "-Ywarn-adapted-args",
-  "-Ywarn-inaccessible"
-  // "-Ywarn-value-discard"
+  "-unchecked"
 )
 
 lazy val testAndLayoutSettings = Seq(
@@ -127,12 +127,6 @@ def SemVer(scalaVersion: String): (Int, Int, Int) = {
   (major, minor, patch)
 }
 
-def `isScalaVersionSmallerThan 2.11`(semVer: (Int, Int, Int)): Boolean = {
-  val (major, minor, patch) = semVer
-
-  major == 2 && minor < 11
-}
-
 def `isScalaVersionSmallerThan 2.12`(semVer: (Int, Int, Int)): Boolean = {
   val (major, minor, patch) = semVer
 
@@ -143,14 +137,14 @@ def Dependencies(scalaVersion: String) = {
   val `scala-reflect` = "org.scala-lang" % "scala-reflect" % scalaVersion
 
   val config = {
-    val configVersion: String = 
-      if (`isScalaVersionSmallerThan 2.12`(SemVer(scalaVersion))) "1.2.1" else "1.3.1"
+    val configVersion: String =
+      if (`isScalaVersionSmallerThan 2.12`(SemVer(scalaVersion))) "1.2.1" else "1.3.3"
 
     "com.typesafe" % "config" % configVersion
   }
 
   val pegdown = "org.pegdown" % "pegdown" % "1.6.0" % "test"
-  val scalaTest = "org.scalatest" %% "scalatest" % "3.0.1" % "test"
+  val scalaTest = "org.scalatest" %% "scalatest" % "3.0.5" % "test"
 
   Seq(`scala-reflect`, config, pegdown, scalaTest)
 }
