@@ -18,6 +18,7 @@ trait Spells
   with MiscModule
   with SpellsConfigModule
   with StackTraceElementModule
+  with StreamOpsModule
   with StringOpsModule
   with StylePrintModule
   with ThrowableOpsModule
