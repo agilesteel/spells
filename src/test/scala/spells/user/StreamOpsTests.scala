@@ -1,7 +1,7 @@
 package spells.user
 
 class StreamOpsTests extends spells.UnitTestConfiguration {
-  test("The arguments to the Stream factory from should be evaluated only on demand") {
+  test("The arguments to the Stream factory from spells should be evaluated only on demand") {
     var is2Evaluated = false
 
     lazy val `1` = 1
