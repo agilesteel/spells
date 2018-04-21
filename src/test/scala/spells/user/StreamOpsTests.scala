@@ -1,7 +1,7 @@
 package spells.user
 
 class StreamOpsTests extends spells.UnitTestConfiguration {
-  test("The arguments to the Stream apply factory should be evaluated only on demand") {
+  test("The arguments to the Stream factory from should be evaluated only on demand") {
     var is2Evaluated = false
 
     lazy val `1` = 1
@@ -11,9 +11,17 @@ class StreamOpsTests extends spells.UnitTestConfiguration {
       2
     }
 
-    Stream(`1`, `2`)
+    MakeStream(`1`, `2`)
 
     is2Evaluated should be(false)
+  }
+
+  test("The Stream produced by the factory from spells should equal the Stream produced by the standard library") {
+    MakeStream(1, 2) should be(scala.collection.immutable.Stream(1, 2))
+  }
+
+  test("The Stream factory from spells should not shadow Stream's companion object") {
+    Stream.Empty should be(scala.collection.immutable.Stream.Empty)
   }
 
   test("Values should only be implicitly converted to StreamOpsModule.Function0Wrapper but not to Function0") {

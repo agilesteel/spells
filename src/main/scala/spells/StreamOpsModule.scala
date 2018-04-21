@@ -6,7 +6,7 @@ trait StreamOpsModule {
   implicit def byNameToFunction0Wrapper[E](byName: => E): Function0Wrapper[E] =
     new Function0Wrapper(() => byName)
 
-  def Stream[E](elements: Function0Wrapper[E]*): Stream[E] =
+  def MakeStream[E](elements: Function0Wrapper[E]*): Stream[E] =
     scala.collection.immutable.Stream[Function0Wrapper[E]](elements: _*).map(_.function0())
 }
 
