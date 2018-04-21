@@ -16,11 +16,8 @@ lazy val root = (project in file("."))
   .settings(publishSettings: _*)
   .settings(scalariformSettingsFromSpells: _*)
   .settings(aliasSettings: _*)
-  .configs(Build)
   .enablePlugins(BuildInfoPlugin)
   .settings(buildInfoSettings: _*)
-
-lazy val Build = config("build") extend Compile
 
 lazy val buildInfoSettings = Seq(
   buildInfoKeys := Seq[BuildInfoKey](scalaVersion),
@@ -78,8 +75,7 @@ lazy val nonDestructiveCompilerFlags = Seq(
 lazy val testAndLayoutSettings = Seq(
   testOptions in Test += Tests.Argument(TestFrameworks.ScalaTest, "-oSD", "-h", "target/scalatest-reports"),
   testOptions in Test += Tests.Setup(UserConfigFileManager.createSpellsConfigFileForCurrentUser),
-  testOptions in Test += Tests.Cleanup(UserConfigFileManager.deleteSpellsConfigFileForCurrentUser),
-  scalaSource in Build := baseDirectory.value / "project",
+  testOptions in Test += Tests.Cleanup(UserConfigFileManager.deleteSpellsConfigFileForCurrentUser)
 )
 
 lazy val pureScalaProjectSettings = Seq(
