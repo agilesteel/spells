@@ -17,7 +17,7 @@ addSbtPlugin("org.scoverage" % "sbt-coveralls" % "1.2.4")
 
 addSbtPlugin("org.xerial.sbt" % "sbt-sonatype" % "2.3")
 
-addSbtPlugin("com.eed3si9n" % "sbt-buildinfo" % "0.7.0")
+addSbtPlugin("com.eed3si9n" % "sbt-buildinfo" % "0.9.0")
 
 libraryDependencies += "com.github.agilesteel" %% "spells" % "2.0.1"
 
