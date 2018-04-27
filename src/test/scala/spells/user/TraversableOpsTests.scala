@@ -31,7 +31,7 @@ class TraversableOpsTests extends spells.UnitTestConfiguration {
 
   test("A traversable with 1 element should contain the type") {
     Traversable(1).rendered should include("[Int]")
-    Traversable("").rendered should include(s"[$stringBasedOnScalaVersion]")
+    Traversable("").rendered should include("[java.lang.String]")
   }
 
   test("A traversable heaeder should contain the class of the traversable parameterised with the type of its elements as well the number of elements the traversable contains") {
@@ -47,7 +47,7 @@ class TraversableOpsTests extends spells.UnitTestConfiguration {
 
     // format: OFF
     val expected =
-     s"Seq[$stringBasedOnScalaVersion] with 3 elements:" + "\n" +
+      "Seq[java.lang.String] with 3 elements:" + "\n" +
       "" + "\n" +
       "0 | I" + "\n" +
       "1 | II" + "\n" +
@@ -63,19 +63,19 @@ class TraversableOpsTests extends spells.UnitTestConfiguration {
 
     // format: OFF
     val expected =
-     s"List[Seq[$stringBasedOnScalaVersion]] with 3 elements:" + "\n" +
+     "List[Seq[java.lang.String]] with 3 elements:" + "\n" +
       "" + "\n" +
-     s"0 | Seq[$stringBasedOnScalaVersion] with 3 elements:" + "\n" +
+      "0 | Seq[java.lang.String] with 3 elements:" + "\n" +
       "  | " + "\n" +
       "  | 0 | I" + "\n" +
       "  | 1 | II" + "\n" +
       "  | 2 | III" + "\n" +
-     s"1 | Seq[$stringBasedOnScalaVersion] with 3 elements:" + "\n" +
+      "1 | Seq[java.lang.String] with 3 elements:" + "\n" +
       "  | " + "\n" +
       "  | 0 | I" + "\n" +
       "  | 1 | II" + "\n" +
       "  | 2 | III" + "\n" +
-     s"2 | Seq[$stringBasedOnScalaVersion] with 3 elements:" + "\n" +
+      "2 | Seq[java.lang.String] with 3 elements:" + "\n" +
       "  | " + "\n" +
       "  | 0 | I" + "\n" +
       "  | 1 | II" + "\n" +
@@ -98,9 +98,9 @@ class TraversableOpsTests extends spells.UnitTestConfiguration {
 
     // format: OFF
     val expected =
-     s"List[Seq[$stringBasedOnScalaVersion]] with 3 elements:" + "\n" +
+      "List[Seq[java.lang.String]] with 3 elements:" + "\n" +
       "" + "\n" +
-     s"0 | Seq[$stringBasedOnScalaVersion] with 3 elements:" + "\n" +
+      "0 | Seq[java.lang.String] with 3 elements:" + "\n" +
       "  | " + "\n" +
       "  | 0 | " + xs + "\n" +
       "  |   | " + xs + "\n" +
@@ -108,7 +108,7 @@ class TraversableOpsTests extends spells.UnitTestConfiguration {
       "  |   | " + ys + "\n" +
       "  | 2 | " + zs + "\n" +
       "  |   | " + zs + "\n" +
-     s"1 | Seq[$stringBasedOnScalaVersion] with 3 elements:" + "\n" +
+      "1 | Seq[java.lang.String] with 3 elements:" + "\n" +
       "  | " + "\n" +
       "  | 0 | " + xs + "\n" +
       "  |   | " + xs + "\n" +
@@ -116,7 +116,7 @@ class TraversableOpsTests extends spells.UnitTestConfiguration {
       "  |   | " + ys + "\n" +
       "  | 2 | " + zs + "\n" +
       "  |   | " + zs + "\n" +
-     s"2 | Seq[$stringBasedOnScalaVersion] with 3 elements:" + "\n" +
+      "2 | Seq[java.lang.String] with 3 elements:" + "\n" +
       "  | " + "\n" +
       "  | 0 | " + xs + "\n" +
       "  |   | " + xs + "\n" +
@@ -134,7 +134,7 @@ class TraversableOpsTests extends spells.UnitTestConfiguration {
 
     // format: OFF
     val expected =
-      s"scala.collection.immutable.Map[Int,$stringBasedOnScalaVersion] with 3 elements:" + "\n" +
+      "scala.collection.immutable.Map[Int,java.lang.String] with 3 elements:" + "\n" +
       "" + "\n" +
       "0 | 1 -> I" + "\n" +
       "1 | 2 -> II" + "\n" +
@@ -228,7 +228,4 @@ class TraversableOpsTests extends spells.UnitTestConfiguration {
   test("The renderedTable helper method should yield an empty Seq when given an empty input") {
     renderedTable(_ => Seq.empty, availableWidthInCharacters = util.Random.nextInt) should be(Vector.empty[String])
   }
-
-  private val stringBasedOnScalaVersion: String =
-    typeBasedOnScalaVersion("java.lang.String")
 }
