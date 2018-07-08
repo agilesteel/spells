@@ -8,7 +8,7 @@ class ThrowableOpsTests extends spells.UnitTestConfiguration {
     (runtime: Throwable).getRootCause.isInstanceOf[RuntimeException] should be(true)
   }
 
-  test("The getRootCause method should decend to the end") {
+  test("The getRootCause method should descend to the end") {
     val io =
       new IOException(
         new RuntimeException(
