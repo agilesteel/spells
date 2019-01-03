@@ -31,7 +31,7 @@ class TraversableOpsTests extends spells.UnitTestConfiguration {
 
   test("A traversable with 1 element should contain the type") {
     Traversable(1).rendered should include("[Int]")
-    Traversable("").rendered should include("[java.lang.String]")
+    Traversable("").rendered should include regex "[.*String]"
   }
 
   test("A traversable heaeder should contain the class of the traversable parameterised with the type of its elements as well the number of elements the traversable contains") {
@@ -47,14 +47,14 @@ class TraversableOpsTests extends spells.UnitTestConfiguration {
 
     // format: OFF
     val expected =
-      "Seq[java.lang.String] with 3 elements:" + "\n" +
+      "Seq[*.String] with 3 elements:" + "\n" +
       "" + "\n" +
       "0 | I" + "\n" +
       "1 | II" + "\n" +
       "2 | III"
     // format: ON
 
-    actual should be(expected)
+    actual should include regex expected
   }
 
   test("This is how recursive renderng for traversables should work") {
@@ -63,26 +63,26 @@ class TraversableOpsTests extends spells.UnitTestConfiguration {
 
     // format: OFF
     val expected =
-     "List[Seq[java.lang.String]] with 3 elements:" + "\n" +
+     "List[Seq[*.String]] with 3 elements:" + "\n" +
       "" + "\n" +
-      "0 | Seq[java.lang.String] with 3 elements:" + "\n" +
+      "0 | Seq[*.String] with 3 elements:" + "\n" +
       "  | " + "\n" +
       "  | 0 | I" + "\n" +
       "  | 1 | II" + "\n" +
       "  | 2 | III" + "\n" +
-      "1 | Seq[java.lang.String] with 3 elements:" + "\n" +
+      "1 | Seq[*.String] with 3 elements:" + "\n" +
       "  | " + "\n" +
       "  | 0 | I" + "\n" +
       "  | 1 | II" + "\n" +
       "  | 2 | III" + "\n" +
-      "2 | Seq[java.lang.String] with 3 elements:" + "\n" +
+      "2 | Seq[*.String] with 3 elements:" + "\n" +
       "  | " + "\n" +
       "  | 0 | I" + "\n" +
       "  | 1 | II" + "\n" +
       "  | 2 | III"
     // format: ON
 
-    actual should be(expected)
+    actual should include regex expected
   }
 
   test("Recursive renderng for traversables should include recursive line wrapping") {
@@ -98,9 +98,9 @@ class TraversableOpsTests extends spells.UnitTestConfiguration {
 
     // format: OFF
     val expected =
-      "List[Seq[java.lang.String]] with 3 elements:" + "\n" +
+      "List[Seq[*.String]] with 3 elements:" + "\n" +
       "" + "\n" +
-      "0 | Seq[java.lang.String] with 3 elements:" + "\n" +
+      "0 | Seq[*.String] with 3 elements:" + "\n" +
       "  | " + "\n" +
       "  | 0 | " + xs + "\n" +
       "  |   | " + xs + "\n" +
@@ -108,7 +108,7 @@ class TraversableOpsTests extends spells.UnitTestConfiguration {
       "  |   | " + ys + "\n" +
       "  | 2 | " + zs + "\n" +
       "  |   | " + zs + "\n" +
-      "1 | Seq[java.lang.String] with 3 elements:" + "\n" +
+      "1 | Seq[*.String] with 3 elements:" + "\n" +
       "  | " + "\n" +
       "  | 0 | " + xs + "\n" +
       "  |   | " + xs + "\n" +
@@ -116,7 +116,7 @@ class TraversableOpsTests extends spells.UnitTestConfiguration {
       "  |   | " + ys + "\n" +
       "  | 2 | " + zs + "\n" +
       "  |   | " + zs + "\n" +
-      "2 | Seq[java.lang.String] with 3 elements:" + "\n" +
+      "2 | Seq[*.String] with 3 elements:" + "\n" +
       "  | " + "\n" +
       "  | 0 | " + xs + "\n" +
       "  |   | " + xs + "\n" +
@@ -126,7 +126,7 @@ class TraversableOpsTests extends spells.UnitTestConfiguration {
       "  |   | " + zs
     // format: ON
 
-    actual should be(expected)
+    actual should include regex expected
   }
 
   test("This is how maps should be rendered") {
@@ -134,14 +134,14 @@ class TraversableOpsTests extends spells.UnitTestConfiguration {
 
     // format: OFF
     val expected =
-      "scala.collection.immutable.Map[Int,java.lang.String] with 3 elements:" + "\n" +
+      "scala.collection.immutable.Map[Int,.*String] with 3 elements:" + "\n" +
       "" + "\n" +
       "0 | 1 -> I" + "\n" +
       "1 | 2 -> II" + "\n" +
       "2 | 3 -> III"
     // format: ON
 
-    actual should be(expected)
+    actual should include regex expected
   }
 
   test("Recursive rendering should work out of the box") {
