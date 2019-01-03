@@ -56,6 +56,6 @@ trait ClearPrintModule {
     styled(ClearPrint.Clear.value + s"\r$input" + AnsiStyle.Reset.value)(style)
 
   object ClearPrint {
-    final val Clear: AnsiModule#AnsiStyle = "\u001b[2K".toAnsiStyle
+    val Clear: AnsiModule#AnsiStyle = "\u001b[2K".toAnsiStyle
   }
 }

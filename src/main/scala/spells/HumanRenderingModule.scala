@@ -52,15 +52,15 @@ trait HumanRenderingModule {
     }
   }
 
-  private[spells] final val Nanosecond: String = "nanosecond"
-  private[spells] final val Millisecond: String = "millisecond"
-  private[spells] final val Second: String = "second"
-  private[spells] final val Minute: String = "minute"
-  private[spells] final val Hour: String = "hour"
-  private[spells] final val Day: String = "day"
-  private[spells] final val Week: String = "week"
-  private[spells] final val Month: String = "month"
-  private[spells] final val Year: String = "year"
+  private final val Nanosecond: String = "nanosecond"
+  private final val Millisecond: String = "millisecond"
+  private final val Second: String = "second"
+  private final val Minute: String = "minute"
+  private final val Hour: String = "hour"
+  private final val Day: String = "day"
+  private final val Week: String = "week"
+  private final val Month: String = "month"
+  private final val Year: String = "year"
 
   private case class Duration(
       years: Long = 0,

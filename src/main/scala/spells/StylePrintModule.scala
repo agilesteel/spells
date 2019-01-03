@@ -57,8 +57,8 @@ trait StylePrintModule {
   }
 
   object StylePrint {
-    private[spells] val Anything: String = """.*?"""
-    private[spells] val Multiline: String = """?s"""
+    private val Anything: String = """.*?"""
+    private val Multiline: String = """?s"""
 
     val ResetOnly: String = """\033\[0m"""
     val StyleOnly: String = """\033\[\d{2}m"""

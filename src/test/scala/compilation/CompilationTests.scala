@@ -31,5 +31,11 @@ class CompilationTests extends spells.UnitTestConfiguration {
     }
 
     "".wrappedOnSpaces
+
+    {
+      import java.time._
+      val year: Year = Year.now
+      val month: Month = Month.JANUARY
+    }
   }
 }
