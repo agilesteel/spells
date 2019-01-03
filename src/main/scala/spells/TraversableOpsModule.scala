@@ -125,7 +125,7 @@ trait TraversableOpsModule {
         case (key, _) => AnsiStyle.removed(key).size
       } max
 
-      val separator = " | "
+      val separator = " │ "
 
       val maxWidthInCharacters =
         availableWidthInCharacters - separator.size - sizeOfTheBiggestKey
