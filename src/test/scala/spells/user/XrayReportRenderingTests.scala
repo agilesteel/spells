@@ -56,12 +56,18 @@ class XrayReportRenderingTests extends spells.UnitTestConfiguration {
 
   test("Multiline description should be centered but not padded if it happens to be the longest line") {
     val maxWidth = SpellsConfig.terminal.WidthInCharacters.value
-    def createReportOnSameLine(description: String = "") = createReport(description = description)
+
+    def createReportOnSameLine(description: String = "") =
+      createReport(
+        description = description
+      )
+
     val report = createReportOnSameLine().rendered
     val tableWidth = report.split("\n").maxBy(_.size).size
     tableWidth should be < maxWidth
+
     val description = ("x" * (tableWidth + 10)) + "\n" + ("y" * (tableWidth + 10))
-    val hyphens = createReportOnSameLine(description).rendered.split("\n").find(_.forall(_ == '─')).map(_.size).get
+    val hyphens = createReportOnSameLine(description).rendered.split("\n").find(_.forall(hyphensAndOtherSeparators)).map(_.size).get
     hyphens should be(description.split("\n").head.size)
   }
 
@@ -144,7 +150,7 @@ class XrayReportRenderingTests extends spells.UnitTestConfiguration {
     createReport(reportValue = null).rendered should include(s"Value    │ ${"null".magenta}")
   }
 
-  test(s"Rendered report should contain maximum ${SpellsConfig.terminal.WidthInCharacters} hyphens") {
+  test(s"Rendered report should contain maximum ${SpellsConfig.terminal.WidthInCharacters} hyphens (or other separator characters)") {
     val maxWidthInCharacters: Int = SpellsConfig.terminal.WidthInCharacters
 
     forAll(createReport().rendered split "\n") { line =>
@@ -159,10 +165,49 @@ class XrayReportRenderingTests extends spells.UnitTestConfiguration {
         )
 
     val largeLines = largeReport.rendered split "\n"
-    val hyphenLines = largeLines.filter(_.forall(_ == '─'))
 
-    forAll(hyphenLines) { hyphenLine =>
-      hyphenLine should have size maxWidthInCharacters
+    val hyphensOrOtherSeparatorsLines = largeLines.filter(_.forall(hyphensAndOtherSeparators))
+
+    forAll(hyphensOrOtherSeparatorsLines) { line =>
+      line.size shouldBe maxWidthInCharacters
+    }
+  }
+
+  test("Rendered report should contain exactly 4 lines with hyphens (or other separators)") {
+    val maxWidthInCharacters: Int = SpellsConfig.terminal.WidthInCharacters
+
+    val largeReport =
+      createReport(
+        reportValue = ("V" * (maxWidthInCharacters + 20)),
+        typeTag     = Some(typeTag[String])
+      )
+
+    val largeLines = largeReport.rendered split "\n"
+
+    val separatorLines = largeLines.filter(_.forall(hyphensAndOtherSeparators))
+    separatorLines.size shouldBe 4
+
+    val hyphenLines = largeLines.filter(_.forall(_ == '─'))
+    hyphenLines.size shouldBe 1
+
+    val linesWhichContainAHalfCrossDown = largeLines.filter(_ contains '┬')
+    linesWhichContainAHalfCrossDown.size shouldBe 1
+
+    val linesWhichContainACross = largeLines.filter(_ contains '┼')
+    linesWhichContainACross.size shouldBe 1
+
+    val linesWhichContainAHalfCrossUp = largeLines.filter(_ contains '┴')
+    linesWhichContainAHalfCrossUp.size shouldBe 1
+  }
+
+  test("Rendered report should contain one of each of these characters ┬ ┼ ┴") {
+    val renderedReport = createReport().rendered
+    val lines = renderedReport split "\n"
+
+    forAll(Set('┬', '┼', '┴')) { character =>
+      renderedReport should include(s"$character")
+      val lineWithCharacter = lines.filter(_ contains character).head
+      lineWithCharacter(crossIndex) shouldBe character
     }
   }
 
@@ -184,16 +229,6 @@ class XrayReportRenderingTests extends spells.UnitTestConfiguration {
     val date: Date = calendar.getTime
 
     date.rendered should be(calendar.rendered)
-  }
-
-  test(s"Rendered report should contain exactly 4 lines with hyphens") {
-    val maxWidthInCharacters: Int = SpellsConfig.terminal.WidthInCharacters
-
-    val largeReport = createReport(reportValue = ("V" * (maxWidthInCharacters + 20)), typeTag = Some(typeTag[String]))
-    val largeLines = largeReport.rendered split "\n"
-    val hyphenLines = largeLines.filter(_.forall(_ == '─'))
-
-    hyphenLines.size should be(4)
   }
 
   test("Custom rendering for java.util.Calendar") {
@@ -225,8 +260,15 @@ class XrayReportRenderingTests extends spells.UnitTestConfiguration {
     }
   }
 
-  test("The customRenderedTableForXray helper method should yield an empty Seq when given an empty input") {
-    XrayReport.customRenderedTableForXray(_ => Seq.empty, styles                     = Map.empty, availableWidthInCharacters = util.Random.nextInt) should be(Vector.empty[String])
+  test("The customRenderedTableForXray helper method should throw a RuntimeException when given an empty input") {
+    a[RuntimeException] shouldBe thrownBy {
+      XrayReport
+        .customRenderedTableForXray(
+          in = _ => Seq.empty,
+          styles                     = Map.empty,
+          availableWidthInCharacters = util.Random.nextInt
+        )
+    }
   }
 
   test("CustomRendering style loss test #infinity") {
@@ -314,4 +356,10 @@ object XrayReportRenderingTests {
   private lazy val timestamp = Calendar.getInstance
   private lazy val description = "description"
   private lazy val theTypeTag = Some(typeTag[`Encoded + Whatever`])
+
+  private lazy val hyphensAndOtherSeparators =
+    Set('─', '┬', '┼', '┴')
+
+  private lazy val crossIndex =
+    9 // keys.maxBy(_.size) /*8*/ + space /*1*/ = 9
 }

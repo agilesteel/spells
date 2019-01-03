@@ -162,7 +162,7 @@ class ConfigurationTests extends UnitTestConfiguration {
       val largeLines = largeReport.rendered split "\n"
       val hyphenLines = largeLines.filter(_.forall(_ == '─'))
 
-      hyphenLines.size should be(3)
+      hyphenLines.size should be(1)
     }
   }
 

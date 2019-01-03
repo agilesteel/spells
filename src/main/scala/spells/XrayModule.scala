@@ -268,7 +268,7 @@ trait XrayModule {
         }
       }
 
-      val table =
+      val (table, zeroBasedIndexOfHyphenToReplace) =
         XrayReport.customRenderedTableForXray(
           lines,
           styles = Map[String, AnsiModule#AnsiStyle](
@@ -297,10 +297,11 @@ trait XrayModule {
         table.map(AnsiStyle.removed).flatMap(_ split "\n").maxBy(_.size).size max longestLineInHeaderWithoutStyles
       }
 
-      lazy val hyphens = "─" * (numberOfCharsInTheLongestLine min availableWidthInCharacters)
+      lazy val hyphens = "─" * numberOfCharsInTheLongestLine.min(availableWidthInCharacters)
+      lazy val hyphensSize = hyphens.size
 
       def center(in: String): String = {
-        val emptySpace = hyphens.size - AnsiStyle.removed(in).size
+        val emptySpace = hyphensSize - AnsiStyle.removed(in).size
         val leftPadding = " " * (emptySpace / 2)
 
         leftPadding + in
@@ -313,29 +314,67 @@ trait XrayModule {
           .map(center)
           .mkString("\n")
 
-      val metaContentPartOfTable = table.dropRight(1)
-      val valuePartOfTable = if (metaContentPartOfTable.isEmpty) Vector(table.last) else Vector(hyphens, table.last)
+      val metaContentPartOfTable =
+        table.dropRight(1)
 
-      val resultingLines = Vector(hyphens, centeredHeader, hyphens) ++ metaContentPartOfTable ++ valuePartOfTable :+ hyphens
+      val valuePartOfTable = {
+        val last = table.last
+
+        if (metaContentPartOfTable.isEmpty)
+          Vector(last)
+        else {
+          val hyphensWithCross =
+            XrayReport.hyphensWithOneReplacement(
+              hyphensSize    = hyphensSize,
+              zeroBasedIndex = zeroBasedIndexOfHyphenToReplace,
+              replacement    = '┼'
+            )
+
+          Vector(hyphensWithCross, last)
+        }
+      }
+
+      val resultingLines = {
+        val hyphensWithHalfCrossDown =
+          XrayReport.hyphensWithOneReplacement(
+            hyphensSize    = hyphensSize,
+            zeroBasedIndex = zeroBasedIndexOfHyphenToReplace,
+            replacement    = '┬'
+          )
+
+        val hyphensWithHalfCrossUp =
+          XrayReport.hyphensWithOneReplacement(
+            hyphensSize    = hyphensSize,
+            zeroBasedIndex = zeroBasedIndexOfHyphenToReplace,
+            replacement    = '┴'
+          )
+
+        Vector(
+          hyphens,
+          centeredHeader,
+          hyphensWithHalfCrossDown
+        ) ++ metaContentPartOfTable ++ valuePartOfTable :+ hyphensWithHalfCrossUp
+      }
 
       styled(resultingLines mkString "\n")(style)
     }
   }
 
   private[spells] object XrayReport {
-    private[spells] final def customRenderedTableForXray(in: Int => Seq[(String, String)], styles: Map[String, AnsiModule#AnsiStyle] = Map.empty withDefaultValue AnsiStyle.Reset, availableWidthInCharacters: Int): Seq[String] = {
-      if (in(0).isEmpty) Seq.empty
-      else {
-        val sizeOfTheBiggestKey = in(0) map {
-          case (key, _) => AnsiStyle.removed(key).size
-        } max
+    private[spells] final def customRenderedTableForXray(in: Int => Seq[(String, String)], styles: Map[String, AnsiModule#AnsiStyle] = Map.empty withDefaultValue AnsiStyle.Reset, availableWidthInCharacters: Int): (Seq[String], Int) = {
+      val sizeOfTheBiggestKey =
+        calculateSizeOfTheBiggestKey(in)
 
-        val spaces = (" " * sizeOfTheBiggestKey)
-        val separator = " │ "
+      val spaces =
+        " " * sizeOfTheBiggestKey
 
-        val maxWidthInCharacters =
-          availableWidthInCharacters - separator.size - sizeOfTheBiggestKey
+      val separator =
+        " │ "
 
+      val maxWidthInCharacters =
+        availableWidthInCharacters - separator.size - sizeOfTheBiggestKey
+
+      val table =
         in(maxWidthInCharacters).foldLeft(Vector.empty[String]) {
           case (result, (key, value)) =>
             val keyPaddedWithSpaces = key.padTo(sizeOfTheBiggestKey, ' ')
@@ -366,8 +405,22 @@ trait XrayModule {
 
             result :+ line
         }
-      }
+
+      table -> (sizeOfTheBiggestKey + 1)
     }
+
+    private[spells] final def hyphensWithOneReplacement(hyphensSize: Int, zeroBasedIndex: Int, replacement: Char): String =
+      (0 until hyphensSize)
+        .map {
+          case `zeroBasedIndex` => replacement
+          case _                => '─'
+        }
+        .mkString
+
+    private[spells] final def calculateSizeOfTheBiggestKey(in: Int => Seq[(String, String)]) =
+      in(0) map {
+        case (key, _) => AnsiStyle.removed(key).size
+      } max
 
     private[spells] final def fetchLastStyleBasedOnRegex(line: String, regex: Regex): AnsiModule#AnsiStyle = {
       var style = ""
