@@ -297,7 +297,7 @@ trait XrayModule {
         table.map(AnsiStyle.removed).flatMap(_ split "\n").maxBy(_.size).size max longestLineInHeaderWithoutStyles
       }
 
-      lazy val hyphens = "-" * (numberOfCharsInTheLongestLine min availableWidthInCharacters)
+      lazy val hyphens = "─" * (numberOfCharsInTheLongestLine min availableWidthInCharacters)
 
       def center(in: String): String = {
         val emptySpace = hyphens.size - AnsiStyle.removed(in).size
@@ -331,7 +331,7 @@ trait XrayModule {
         } max
 
         val spaces = (" " * sizeOfTheBiggestKey)
-        val separator = " | "
+        val separator = " │ "
 
         val maxWidthInCharacters =
           availableWidthInCharacters - separator.size - sizeOfTheBiggestKey

@@ -23,12 +23,12 @@ class XrayReportRenderingTests extends spells.UnitTestConfiguration {
 
   test("The size of the description should be involved into the size calculation of the Xray table") {
     val maxWidth = SpellsConfig.terminal.WidthInCharacters.value
-    XrayReportRenderingTests.createReport(description = "x" * maxWidth).rendered should include("-" * maxWidth)
+    XrayReportRenderingTests.createReport(description = "x" * maxWidth).rendered should include("─" * maxWidth)
   }
 
   test("The size of the description should be involved into the size calculation of the Xray table, but it should not cause it to grow over its limits") {
     val maxWidth = SpellsConfig.terminal.WidthInCharacters.value
-    XrayReportRenderingTests.createReport(description = "x" * maxWidth + 1).rendered should include("-" * maxWidth)
+    XrayReportRenderingTests.createReport(description = "x" * maxWidth + 1).rendered should include("─" * maxWidth)
   }
 
   test("The description should be wrapped and centered") {
@@ -44,7 +44,7 @@ class XrayReportRenderingTests extends spells.UnitTestConfiguration {
     val actual = "hello\nworld"
     val report = XrayReportRenderingTests.createReport(description = actual).rendered
     val expected = {
-      val tableWidth = report.split("\n").find(_.forall(_ == '-')).fold(maxWidth)(_.size)
+      val tableWidth = report.split("\n").find(_.forall(_ == '─')).fold(maxWidth)(_.size)
 
       (" " * ((tableWidth - "hello".size) / 2)) + s"${Green.value}hello" + "\n" + (" " * ((tableWidth - "world".size) / 2)) + "world"
     }
@@ -59,7 +59,7 @@ class XrayReportRenderingTests extends spells.UnitTestConfiguration {
     val tableWidth = report.split("\n").maxBy(_.size).size
     tableWidth should be < maxWidth
     val description = ("x" * (tableWidth + 10)) + "\n" + ("y" * (tableWidth + 10))
-    val hyphens = createReportOnSameLine(description).rendered.split("\n").find(_.forall(_ == '-')).map(_.size).get
+    val hyphens = createReportOnSameLine(description).rendered.split("\n").find(_.forall(_ == '─')).map(_.size).get
     hyphens should be(description.split("\n").head.size)
   }
 
@@ -82,64 +82,64 @@ class XrayReportRenderingTests extends spells.UnitTestConfiguration {
   }
 
   test("The datetime should be rendered in full format") {
-    XrayReportRenderingTests.createReport().rendered should include(s"""DateTime | ${new SimpleDateFormat(DateOpsFromSpells.Defaults.Format) format XrayReportRenderingTests.timestamp.getTime}""")
+    XrayReportRenderingTests.createReport().rendered should include(s"""DateTime │ ${new SimpleDateFormat(DateOpsFromSpells.Defaults.Format) format XrayReportRenderingTests.timestamp.getTime}""")
   }
 
   test("The duration should be readable by humans") {
-    XrayReportRenderingTests.createReport().rendered should include(s"Duration | 1 minute 2 seconds")
+    XrayReportRenderingTests.createReport().rendered should include(s"Duration │ 1 minute 2 seconds")
   }
 
   test("Location should be equal to the toString implementation of the StackTraceElement") {
-    XrayReportRenderingTests.createReport().rendered should include(s"Location | ${XrayReportRenderingTests.stackTraceElement}")
+    XrayReportRenderingTests.createReport().rendered should include(s"Location │ ${XrayReportRenderingTests.stackTraceElement}")
   }
 
   test("HashCode should be equal to the toString implementation of the hashCode method") {
-    XrayReportRenderingTests.createReport().rendered should include(s"HashCode | ${XrayReportRenderingTests.reportValue.hashCode}")
+    XrayReportRenderingTests.createReport().rendered should include(s"HashCode │ ${XrayReportRenderingTests.reportValue.hashCode}")
   }
 
   test("HashCode should not be included in xray report") {
-    XrayReportRenderingTests.createReport(reportValue = null).rendered should not include (s"HashCode | ${XrayReportRenderingTests.reportValue.hashCode}")
+    XrayReportRenderingTests.createReport(reportValue = null).rendered should not include (s"HashCode │ ${XrayReportRenderingTests.reportValue.hashCode}")
   }
 
   test("If type and class are equal the class should not be rendered") {
-    XrayReportRenderingTests.createReport().rendered should not include s"Class    | spells.Encoded + Whatever"
+    XrayReportRenderingTests.createReport().rendered should not include s"Class    │ spells.Encoded + Whatever"
   }
 
   test("If type and class are different they should both be rendered") {
     val typedReport = XrayReportRenderingTests.createReport(reportValue = List(1, 2, 3), typeTag = Some(typeTag[scala.collection.immutable.List[Int]])).rendered
 
-    typedReport should include(s"Class    | scala.collection.immutable.::")
-    typedReport should include(s"Type     | List[Int]")
+    typedReport should include(s"Class    │ scala.collection.immutable.::")
+    typedReport should include(s"Type     │ List[Int]")
   }
 
   test("Simple values should be rendered in magenta") {
-    XrayReportRenderingTests.createReport().rendered should include(s"Value    | ${"encoded".magenta}")
+    XrayReportRenderingTests.createReport().rendered should include(s"Value    │ ${"encoded".magenta}")
   }
 
   test("""If value conains '\n' it should be rendered on the new line""") {
     val newReportString = XrayReportRenderingTests.createReport(reportValue = "firstX\nsecond", typeTag = Some(typeTag[String])).rendered
 
-    newReportString should include(s"Value    | ${"firstX".magenta}")
-    newReportString should include(s"         | ${"second".magenta}")
+    newReportString should include(s"Value    │ ${"firstX".magenta}")
+    newReportString should include(s"         │ ${"second".magenta}")
   }
 
   test("Simple values should be deeply (other styles should not be lost) rendered in magenta") {
     val withStyle = s"enc${"o".green}ded"
     val reportWithStyle = XrayReportRenderingTests.createReport(reportValue = withStyle, typeTag = Some(typeTag[String]))
 
-    reportWithStyle.rendered should include(s"Value    | ${styled(withStyle)(Magenta)}")
+    reportWithStyle.rendered should include(s"Value    │ ${styled(withStyle)(Magenta)}")
   }
 
   test("Styled values should be deeply (other styles should not be lost) rendered in magenta") {
     val startsWithStyleAndThereforeEndsWithReset = styled("first\nsecond")(Red)
     val newReportString = XrayReportRenderingTests.createReport(reportValue = startsWithStyleAndThereforeEndsWithReset, typeTag = Some(typeTag[String])).rendered
 
-    newReportString should include(s"Value    | ${Magenta.value}${"first".red}")
-    newReportString should include(s"         | ${"second".red}")
+    newReportString should include(s"Value    │ ${Magenta.value}${"first".red}")
+    newReportString should include(s"         │ ${"second".red}")
   }
 
   test("Nulls should be rendered as values and thus not throw exceptions") {
-    XrayReportRenderingTests.createReport(reportValue = null).rendered should include(s"Value    | ${"null".magenta}")
+    XrayReportRenderingTests.createReport(reportValue = null).rendered should include(s"Value    │ ${"null".magenta}")
   }
 
   test(s"Rendered report should contain maximum ${SpellsConfig.terminal.WidthInCharacters} hyphens") {
@@ -151,7 +151,7 @@ class XrayReportRenderingTests extends spells.UnitTestConfiguration {
 
     val largeReport = XrayReportRenderingTests.createReport(reportValue = ("V" * (maxWidthInCharacters + 20)), typeTag = Some(typeTag[String]))
     val largeLines = largeReport.rendered split "\n"
-    val hyphenLines = largeLines.filter(_.forall(_ == '-'))
+    val hyphenLines = largeLines.filter(_.forall(_ == '─'))
 
     forAll(hyphenLines) { hyphenLine =>
       hyphenLine should have size maxWidthInCharacters
@@ -183,7 +183,7 @@ class XrayReportRenderingTests extends spells.UnitTestConfiguration {
 
     val largeReport = XrayReportRenderingTests.createReport(reportValue = ("V" * (maxWidthInCharacters + 20)), typeTag = Some(typeTag[String]))
     val largeLines = largeReport.rendered split "\n"
-    val hyphenLines = largeLines.filter(_.forall(_ == '-'))
+    val hyphenLines = largeLines.filter(_.forall(_ == '─'))
 
     hyphenLines.size should be(4)
   }
@@ -201,11 +201,11 @@ class XrayReportRenderingTests extends spells.UnitTestConfiguration {
   test("Multiline rendering should not cause any style loss") {
     // format: OFF
     val expected =
-      "Value    | " + "scala.collection.immutable.::[java.lang.String] with 3 elements:".magenta + "\n" +
-      "         | " + "" + "\n" +
-      "         | " + "0 | I".magenta + "\n" +
-      "         | " + "1 | II".magenta + "\n" +
-      "         | " + "2 | III".magenta
+      "Value    │ " + "scala.collection.immutable.::[java.lang.String] with 3 elements:".magenta + "\n" +
+      "         │ " + "" + "\n" +
+      "         │ " + "0 │ I".magenta + "\n" +
+      "         │ " + "1 │ II".magenta + "\n" +
+      "         │ " + "2 │ III".magenta
     // format: ON
 
     SilentOutputStream out {
@@ -226,8 +226,8 @@ class XrayReportRenderingTests extends spells.UnitTestConfiguration {
     val inner = xrayed(value)
     val outer = xrayed(inner)
 
-    outer.rendered should include(s"         | ${Magenta.value}Value    | ${Reset.value}${Magenta.value}${Red.value}first")
-    outer.rendered should include(s"         | ${Magenta.value}         | ${Reset.value}${Red.value}second")
+    outer.rendered should include(s"         │ ${Magenta.value}Value    │ ${Reset.value}${Magenta.value}${Red.value}first")
+    outer.rendered should include(s"         │ ${Magenta.value}         │ ${Reset.value}${Red.value}second")
   }
 
   test("CustomRendering style loss test #infinity+1") {
@@ -235,9 +235,9 @@ class XrayReportRenderingTests extends spells.UnitTestConfiguration {
     val inner = xrayed(value)
     val outer = xrayed(inner)
 
-    outer.rendered should include(s"         | ${Magenta.value}Value    | ${Reset.value}${Magenta.value}${Red.value}first")
-    outer.rendered should include(s"         | ${Magenta.value}         | ${Reset.value}${Red.value}second")
-    outer.rendered should include(s"         | ${Magenta.value}         | ${Reset.value}${Red.value}third")
+    outer.rendered should include(s"         │ ${Magenta.value}Value    │ ${Reset.value}${Magenta.value}${Red.value}first")
+    outer.rendered should include(s"         │ ${Magenta.value}         │ ${Reset.value}${Red.value}second")
+    outer.rendered should include(s"         │ ${Magenta.value}         │ ${Reset.value}${Red.value}third")
   }
 
   test("Explicit CustomRendering should be picked up") {
@@ -246,18 +246,18 @@ class XrayReportRenderingTests extends spells.UnitTestConfiguration {
         "works"
     }
 
-    xrayed(OwnSource).rendered should include(s"Value    | ${Magenta.value}works")
+    xrayed(OwnSource).rendered should include(s"Value    │ ${Magenta.value}works")
   }
 
   test("Additional content for the report") {
     val report = XrayReportRenderingTests.createReport()
-    val expected = "Key      | Value"
+    val expected = "Key      │ Value"
 
     report.withAdditionalContent(null).rendered should not include expected
     report.withAdditionalContent(List(null)).rendered should not include expected
-    report.withAdditionalContent(List((null, "Value"))).rendered should include("null     | Value")
-    report.withAdditionalContent(List(("Key", null))).rendered should include("Key      | null")
-    report.withAdditionalContent(List((null, null))).rendered should include("null     | null")
+    report.withAdditionalContent(List((null, "Value"))).rendered should include("null     │ Value")
+    report.withAdditionalContent(List(("Key", null))).rendered should include("Key      │ null")
+    report.withAdditionalContent(List((null, null))).rendered should include("null     │ null")
     report.withAdditionalContent(List("Key" -> "Value")).rendered should include(expected)
 
     val multipleAdditions =
@@ -265,14 +265,14 @@ class XrayReportRenderingTests extends spells.UnitTestConfiguration {
         .withAdditionalContent(List("Key2" -> "Value2"))
         .rendered
 
-    multipleAdditions should include("Key1     | Value1")
-    multipleAdditions should include("Key2     | Value2")
+    multipleAdditions should include("Key1     │ Value1")
+    multipleAdditions should include("Key2     │ Value2")
   }
 
   test("Manually passed in additional content") {
     XrayReportRenderingTests.createReport(additionalContent = null)
       .withAdditionalContent(List("Key" -> "Value"))
-      .rendered should include("Key      | Value")
+      .rendered should include("Key      │ Value")
   }
 }
 

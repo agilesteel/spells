@@ -160,7 +160,7 @@ class ConfigurationTests extends UnitTestConfiguration {
 
       val largeReport = createReport(value   = ("V" * (maxWidthInCharacters + 20)), typeTag = Some(typeTag[String]))
       val largeLines = largeReport.rendered split "\n"
-      val hyphenLines = largeLines.filter(_.forall(_ == '-'))
+      val hyphenLines = largeLines.filter(_.forall(_ == '─'))
 
       hyphenLines.size should be(3)
     }
@@ -217,8 +217,8 @@ class ConfigurationTests extends UnitTestConfiguration {
       import StolenFromXrayReportRenderingTests._
       val renderedReport = createReport().rendered
 
-      renderedReport should include("Class    | " + `class`)
-      renderedReport should not include ("Type     | " + `type`)
+      renderedReport should include("Class    │ " + `class`)
+      renderedReport should not include ("Type     │ " + `type`)
     }
   }
 
@@ -411,9 +411,9 @@ class ConfigurationTests extends UnitTestConfiguration {
         )
 
       // format: OFF
-      report.rendered should not include("Key1     | Value1")
-      report.rendered should     include("Key2     | Value2")
-      report.rendered should not include("Key3     | Value3")
+      report.rendered should not include("Key1     │ Value1")
+      report.rendered should     include("Key2     │ Value2")
+      report.rendered should not include("Key3     │ Value3")
       // format: ON
     }
   }
