@@ -9,26 +9,28 @@ import scala.reflect.runtime.universe._
 import AnsiStyle._
 
 class XrayReportRenderingTests extends spells.UnitTestConfiguration {
+  import XrayReportRenderingTests._
+
   test("The header should contain the string 'Xray' if description is empty") {
-    XrayReportRenderingTests.createReport(description = "").rendered should include("Xray".green)
+    createReport(description = "").rendered should include("Xray".green)
   }
 
   test("Empty styled header should result in the default one") {
-    XrayReportRenderingTests.createReport(description = "".yellow).rendered should include("Xray".green)
+    createReport(description = "".yellow).rendered should include("Xray".green)
   }
 
   test("Xray header should still be rendered green") {
-    XrayReportRenderingTests.createReport(description = "Xray").rendered should include("Xray".green)
+    createReport(description = "Xray").rendered should include("Xray".green)
   }
 
   test("The size of the description should be involved into the size calculation of the Xray table") {
     val maxWidth = SpellsConfig.terminal.WidthInCharacters.value
-    XrayReportRenderingTests.createReport(description = "x" * maxWidth).rendered should include("─" * maxWidth)
+    createReport(description = "x" * maxWidth).rendered should include("─" * maxWidth)
   }
 
   test("The size of the description should be involved into the size calculation of the Xray table, but it should not cause it to grow over its limits") {
     val maxWidth = SpellsConfig.terminal.WidthInCharacters.value
-    XrayReportRenderingTests.createReport(description = "x" * maxWidth + 1).rendered should include("─" * maxWidth)
+    createReport(description = "x" * maxWidth + 1).rendered should include("─" * maxWidth)
   }
 
   test("The description should be wrapped and centered") {
@@ -36,13 +38,13 @@ class XrayReportRenderingTests extends spells.UnitTestConfiguration {
     val actual = ("x" * maxWidth) + " " + "y"
     val expected = ("x" * maxWidth) + "\n" + (" " * ((maxWidth - 1) / 2)) + "y"
 
-    XrayReportRenderingTests.createReport(description = actual).rendered should include(expected)
+    createReport(description = actual).rendered should include(expected)
   }
 
   test("Multiline description should be centered") {
     val maxWidth = SpellsConfig.terminal.WidthInCharacters.value
     val actual = "hello\nworld"
-    val report = XrayReportRenderingTests.createReport(description = actual).rendered
+    val report = createReport(description = actual).rendered
     val expected = {
       val tableWidth = report.split("\n").find(_.forall(_ == '─')).fold(maxWidth)(_.size)
 
@@ -54,7 +56,7 @@ class XrayReportRenderingTests extends spells.UnitTestConfiguration {
 
   test("Multiline description should be centered but not padded if it happens to be the longest line") {
     val maxWidth = SpellsConfig.terminal.WidthInCharacters.value
-    def createReportOnSameLine(description: String = "") = XrayReportRenderingTests.createReport(description = description)
+    def createReportOnSameLine(description: String = "") = createReport(description = description)
     val report = createReportOnSameLine().rendered
     val tableWidth = report.split("\n").maxBy(_.size).size
     tableWidth should be < maxWidth
@@ -63,15 +65,15 @@ class XrayReportRenderingTests extends spells.UnitTestConfiguration {
     hyphens should be(description.split("\n").head.size)
   }
 
-  test(s"The header should contain the string '${XrayReportRenderingTests.description}' if description is nonempty") {
-    XrayReportRenderingTests.createReport().rendered should include(XrayReportRenderingTests.description)
+  test(s"The header should contain the string '${description}' if description is nonempty") {
+    createReport().rendered should include(description)
   }
 
   test("If the description contains styles the header should still be centered properly") {
     val descriptionValue = "desc"
 
     def headerWithDescription(newDescription: String): String =
-      XrayReportRenderingTests.createReport(description = newDescription).rendered.split("\n").tail.head
+      createReport(description = newDescription).rendered.split("\n").tail.head
 
     val headerWithoutStyle = headerWithDescription(descriptionValue)
     val headerWithStyle = headerWithDescription(descriptionValue.yellow)
@@ -82,42 +84,42 @@ class XrayReportRenderingTests extends spells.UnitTestConfiguration {
   }
 
   test("The datetime should be rendered in full format") {
-    XrayReportRenderingTests.createReport().rendered should include(s"""DateTime │ ${new SimpleDateFormat(DateOpsFromSpells.Defaults.Format) format XrayReportRenderingTests.timestamp.getTime}""")
+    createReport().rendered should include(s"""DateTime │ ${new SimpleDateFormat(DateOpsFromSpells.Defaults.Format) format timestamp.getTime}""")
   }
 
   test("The duration should be readable by humans") {
-    XrayReportRenderingTests.createReport().rendered should include(s"Duration │ 1 minute 2 seconds")
+    createReport().rendered should include(s"Duration │ 1 minute 2 seconds")
   }
 
   test("Location should be equal to the toString implementation of the StackTraceElement") {
-    XrayReportRenderingTests.createReport().rendered should include(s"Location │ ${XrayReportRenderingTests.stackTraceElement}")
+    createReport().rendered should include(s"Location │ ${stackTraceElement}")
   }
 
   test("HashCode should be equal to the toString implementation of the hashCode method") {
-    XrayReportRenderingTests.createReport().rendered should include(s"HashCode │ ${XrayReportRenderingTests.reportValue.hashCode}")
+    createReport().rendered should include(s"HashCode │ ${reportValue.hashCode}")
   }
 
   test("HashCode should not be included in xray report") {
-    XrayReportRenderingTests.createReport(reportValue = null).rendered should not include (s"HashCode │ ${XrayReportRenderingTests.reportValue.hashCode}")
+    createReport(reportValue = null).rendered should not include (s"HashCode │ ${reportValue.hashCode}")
   }
 
   test("If type and class are equal the class should not be rendered") {
-    XrayReportRenderingTests.createReport().rendered should not include s"Class    │ spells.Encoded + Whatever"
+    createReport().rendered should not include s"Class    │ spells.Encoded + Whatever"
   }
 
   test("If type and class are different they should both be rendered") {
-    val typedReport = XrayReportRenderingTests.createReport(reportValue = List(1, 2, 3), typeTag = Some(typeTag[scala.collection.immutable.List[Int]])).rendered
+    val typedReport = createReport(reportValue = List(1, 2, 3), typeTag = Some(typeTag[scala.collection.immutable.List[Int]])).rendered
 
     typedReport should include(s"Class    │ scala.collection.immutable.::")
     typedReport should include(s"Type     │ List[Int]")
   }
 
   test("Simple values should be rendered in magenta") {
-    XrayReportRenderingTests.createReport().rendered should include(s"Value    │ ${"encoded".magenta}")
+    createReport().rendered should include(s"Value    │ ${"encoded".magenta}")
   }
 
   test("""If value conains '\n' it should be rendered on the new line""") {
-    val newReportString = XrayReportRenderingTests.createReport(reportValue = "firstX\nsecond", typeTag = Some(typeTag[String])).rendered
+    val newReportString = createReport(reportValue = "firstX\nsecond", typeTag = Some(typeTag[String])).rendered
 
     newReportString should include(s"Value    │ ${"firstX".magenta}")
     newReportString should include(s"         │ ${"second".magenta}")
@@ -125,31 +127,37 @@ class XrayReportRenderingTests extends spells.UnitTestConfiguration {
 
   test("Simple values should be deeply (other styles should not be lost) rendered in magenta") {
     val withStyle = s"enc${"o".green}ded"
-    val reportWithStyle = XrayReportRenderingTests.createReport(reportValue = withStyle, typeTag = Some(typeTag[String]))
+    val reportWithStyle = createReport(reportValue = withStyle, typeTag = Some(typeTag[String]))
 
     reportWithStyle.rendered should include(s"Value    │ ${styled(withStyle)(Magenta)}")
   }
 
   test("Styled values should be deeply (other styles should not be lost) rendered in magenta") {
     val startsWithStyleAndThereforeEndsWithReset = styled("first\nsecond")(Red)
-    val newReportString = XrayReportRenderingTests.createReport(reportValue = startsWithStyleAndThereforeEndsWithReset, typeTag = Some(typeTag[String])).rendered
+    val newReportString = createReport(reportValue = startsWithStyleAndThereforeEndsWithReset, typeTag = Some(typeTag[String])).rendered
 
     newReportString should include(s"Value    │ ${Magenta.value}${"first".red}")
     newReportString should include(s"         │ ${"second".red}")
   }
 
   test("Nulls should be rendered as values and thus not throw exceptions") {
-    XrayReportRenderingTests.createReport(reportValue = null).rendered should include(s"Value    │ ${"null".magenta}")
+    createReport(reportValue = null).rendered should include(s"Value    │ ${"null".magenta}")
   }
 
   test(s"Rendered report should contain maximum ${SpellsConfig.terminal.WidthInCharacters} hyphens") {
     val maxWidthInCharacters: Int = SpellsConfig.terminal.WidthInCharacters
 
-    forAll(XrayReportRenderingTests.createReport().rendered split "\n") { line =>
+    forAll(createReport().rendered split "\n") { line =>
       line.size should be <= maxWidthInCharacters
     }
 
-    val largeReport = XrayReportRenderingTests.createReport(reportValue = ("V" * (maxWidthInCharacters + 20)), typeTag = Some(typeTag[String]))
+    val largeReport =
+      XrayReportRenderingTests
+        .createReport(
+          reportValue = ("V" * (maxWidthInCharacters + 20)),
+          typeTag     = Some(typeTag[String])
+        )
+
     val largeLines = largeReport.rendered split "\n"
     val hyphenLines = largeLines.filter(_.forall(_ == '─'))
 
@@ -181,7 +189,7 @@ class XrayReportRenderingTests extends spells.UnitTestConfiguration {
   test(s"Rendered report should contain exactly 4 lines with hyphens") {
     val maxWidthInCharacters: Int = SpellsConfig.terminal.WidthInCharacters
 
-    val largeReport = XrayReportRenderingTests.createReport(reportValue = ("V" * (maxWidthInCharacters + 20)), typeTag = Some(typeTag[String]))
+    val largeReport = createReport(reportValue = ("V" * (maxWidthInCharacters + 20)), typeTag = Some(typeTag[String]))
     val largeLines = largeReport.rendered split "\n"
     val hyphenLines = largeLines.filter(_.forall(_ == '─'))
 
@@ -191,7 +199,7 @@ class XrayReportRenderingTests extends spells.UnitTestConfiguration {
   test("Custom rendering for java.util.Calendar") {
     val now = Calendar.getInstance
 
-    assume(now != XrayReportRenderingTests.timestamp)
+    assume(now != timestamp)
 
     xrayed(now).rendered should include {
       new SimpleDateFormat(DateOpsFromSpells.Defaults.Format).format(now.getTime).magenta
@@ -250,7 +258,7 @@ class XrayReportRenderingTests extends spells.UnitTestConfiguration {
   }
 
   test("Additional content for the report") {
-    val report = XrayReportRenderingTests.createReport()
+    val report = createReport()
     val expected = "Key      │ Value"
 
     report.withAdditionalContent(null).rendered should not include expected
@@ -270,7 +278,7 @@ class XrayReportRenderingTests extends spells.UnitTestConfiguration {
   }
 
   test("Manually passed in additional content") {
-    XrayReportRenderingTests.createReport(additionalContent = null)
+    createReport(additionalContent = null)
       .withAdditionalContent(List("Key" -> "Value"))
       .rendered should include("Key      │ Value")
   }
