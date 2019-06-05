@@ -5,7 +5,6 @@
 [![Build Status](https://travis-ci.org/agilesteel/spells.svg?branch=master)](https://travis-ci.org/agilesteel/spells)
 [![Coverage Status](https://img.shields.io/coveralls/agilesteel/spells.svg)](https://coveralls.io/r/agilesteel/spells)
 [![Codacy Badge](https://api.codacy.com/project/badge/grade/aeb5e73b4a0e4ad98888505a544f3e7c)](https://www.codacy.com/app/agilesteel/spells)
-[![Join the chat at https://gitter.im/agilesteel/spells](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/agilesteel/spells?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ### Releases
 
