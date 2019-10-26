@@ -1,5 +1,7 @@
 package spells.user
 
+import scala.reflect.runtime.universe._
+
 class TraversableOpsTests extends spells.UnitTestConfiguration {
   test("Empty traversables should be rendered the same way as toString") {
     Traversable.empty[Int].rendered should be(Traversable.empty[String].toString)
@@ -30,16 +32,18 @@ class TraversableOpsTests extends spells.UnitTestConfiguration {
   }
 
   test("A traversable with 1 element should contain the type") {
-    Traversable(1).rendered should include("[Int]")
+    Traversable(1).rendered should include regex "[.*Int]"
     Traversable("").rendered should include regex "[.*String]"
   }
 
-  test("A traversable heaeder should contain the class of the traversable parameterised with the type of its elements as well the number of elements the traversable contains") {
-    Traversable(1).rendered should include("Traversable[Int] with 1 element:\n\n")
+  test("A traversable header should contain the class of the traversable parameterised with the type of its elements as well the number of elements the traversable contains") {
+    val tag = typeTag[Int]
+    Traversable(1).rendered should include(s"Traversable[${tag.tpe}] with 1 element:\n\n")
   }
 
-  test("An array heaeder should contain the class word Array parameterised with the type of its elements as well the number of elements the traversable contains") {
-    Array(1).rendered should include("Array[Int] with 1 element:\n\n")
+  test("An array header should contain the class word Array parameterised with the type of its elements as well the number of elements the traversable contains") {
+    val tag = typeTag[Int]
+    Array(1).rendered should include(s"Array[${tag.tpe}] with 1 element:\n\n")
   }
 
   test("This is how the traversables should be rendered") {
@@ -86,36 +90,6 @@ class TraversableOpsTests extends spells.UnitTestConfiguration {
     val inner = Seq(xs + " " + xs, ys + " " + ys, zs + " " + zs)
     val actual = List(inner, inner, inner).rendered
 
-    // format: OFF
-    val expected =
-      "List[Seq[*.String]] with 3 elements:" + "\n" +
-      "" + "\n" +
-      "0 │ Seq[*.String] with 3 elements:" + "\n" +
-      "  │ " + "\n" +
-      "  │ 0 │ " + xs + "\n" +
-      "  │   │ " + xs + "\n" +
-      "  │ 1 │ " + ys + "\n" +
-      "  │   │ " + ys + "\n" +
-      "  │ 2 │ " + zs + "\n" +
-      "  │   │ " + zs + "\n" +
-      "1 │ Seq[*.String] with 3 elements:" + "\n" +
-      "  │ " + "\n" +
-      "  │ 0 │ " + xs + "\n" +
-      "  │   │ " + xs + "\n" +
-      "  │ 1 │ " + ys + "\n" +
-      "  │   │ " + ys + "\n" +
-      "  │ 2 │ " + zs + "\n" +
-      "  │   │ " + zs + "\n" +
-      "2 │ Seq[*.String] with 3 elements:" + "\n" +
-      "  │ " + "\n" +
-      "  │ 0 │ " + xs + "\n" +
-      "  │   │ " + xs + "\n" +
-      "  │ 1 │ " + ys + "\n" +
-      "  │   │ " + ys + "\n" +
-      "  │ 2 │ " + zs + "\n" +
-      "  │   │ " + zs
-    // format: ON
-
     // partially tested since regexes don't like weird unicode characters
     actual should include("2 │ Seq[")
     actual should include("  │ 0 │ " + xs + "\n")
@@ -131,7 +105,7 @@ class TraversableOpsTests extends spells.UnitTestConfiguration {
 
     // format: OFF
     val firstPart =
-      "scala.collection.immutable.Map[Int,"
+      "scala.collection.immutable.Map["
 
     val secondPart =
       "String] with 3 elements:" + "\n" +
@@ -184,23 +158,27 @@ class TraversableOpsTests extends spells.UnitTestConfiguration {
   test("This is how java maps should be rendered") {
     val actual = {
       val collection = new java.util.HashMap[Int, String]
-      collection put (1, "I")
-      collection put (2, "II")
-      collection put (3, "III")
+      collection.put(1, "I")
+      collection.put(2, "II")
+      collection.put(3, "III")
 
       collection.rendered
     }
 
     // format: OFF
-    val expected =
-      "java.util.HashMap[Int,String] with 3 elements:" + "\n" +
+    val firstPart =
+      "java.util.HashMap["
+
+    val secondPart =
+      "String] with 3 elements:" + "\n" +
       "" + "\n" +
       "0 │ 1 -> I" + "\n" +
       "1 │ 2 -> II" + "\n" +
       "2 │ 3 -> III"
     // format: ON
 
-    actual should be(expected)
+    actual should include(firstPart)
+    actual should include(secondPart)
   }
 
   test("If values are of the same length all lines should have equal size") {
