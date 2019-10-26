@@ -17,23 +17,43 @@ private[spells] trait LocationAwareConfigModule {
       load(parseFile(userConfig)).withFallback(load)
     else load
 
-  private final def userConfig = new java.io.File(userConfigLocation)
-  private final def userConfigLocation = s"""${System.getProperty("user.home")}/.spells.conf"""
+  final private def userConfig = new java.io.File(userConfigLocation)
+  final private def userConfigLocation =
+    s"""${System.getProperty("user.home")}/.spells.conf"""
 
-  private[spells] implicit final def locationAwarePropertyToBoolean(property: LocationAwarePropertyModule#LocationAwareProperty[Boolean]): Boolean =
+  final implicit private[spells] def locationAwarePropertyToBoolean(
+      property: LocationAwarePropertyModule#LocationAwareProperty[Boolean]
+    ): Boolean =
     locationAwarePropertyTo(property, spellsConfig getBoolean property.location)
 
-  private[spells] implicit final def locationAwarePropertyToInt(property: LocationAwarePropertyModule#LocationAwareProperty[Int]): Int =
+  final implicit private[spells] def locationAwarePropertyToInt(
+      property: LocationAwarePropertyModule#LocationAwareProperty[Int]
+    ): Int =
     locationAwarePropertyTo(property, spellsConfig getInt property.location)
 
-  private[spells] implicit final def locationAwarePropertyToString(property: LocationAwarePropertyModule#LocationAwareProperty[List[String]]): List[String] =
-    locationAwarePropertyTo(property, spellsConfig.getStringList(property.location).asScala.toList)
+  final implicit private[spells] def locationAwarePropertyToString(
+      property: LocationAwarePropertyModule#LocationAwareProperty[List[String]]
+    ): List[String] =
+    locationAwarePropertyTo(
+      property,
+      spellsConfig.getStringList(property.location).asScala.toList
+    )
 
   // Unresolved compiler bug related to implicit resolution: https://issues.scala-lang.org/browse/SI-5643
-  private[spells] implicit final def locationAwarePropertyToAnsiStyle(property: LocationAwarePropertyModule#LocationAwareProperty[AnsiModule#AnsiStyle]): AnsiModule#AnsiStyle =
-    locationAwarePropertyTo(property, spellsConfig getString property.location toAnsiStyle)
+  final implicit private[spells] def locationAwarePropertyToAnsiStyle(
+      property: LocationAwarePropertyModule#LocationAwareProperty[
+        AnsiModule#AnsiStyle
+      ]
+    ): AnsiModule#AnsiStyle =
+    locationAwarePropertyTo(
+      property,
+      spellsConfig getString property.location toAnsiStyle
+    )
 
-  private[spells] def locationAwarePropertyTo[T](property: LocationAwarePropertyModule#LocationAwareProperty[T], value: T): T = {
+  private[spells] def locationAwarePropertyTo[T](
+      property: LocationAwarePropertyModule#LocationAwareProperty[T],
+      value: T
+    ): T = {
     require(property isValid value, property validationErrorMessage value)
 
     value

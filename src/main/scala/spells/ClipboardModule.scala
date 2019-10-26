@@ -4,7 +4,7 @@ package spells
 trait ClipboardModule {
   this: MiscModule =>
 
-  import java.awt.datatransfer.{ DataFlavor, StringSelection }
+  import java.awt.datatransfer.{DataFlavor, StringSelection}
   import java.awt.Toolkit
   import java.util.logging.Level
   import scala.util.Try
@@ -40,7 +40,10 @@ trait ClipboardModule {
       * @return the `String` content of the operating system's clipboard wrapped in a `Try`
       */
     final def readString: Try[String] = Try {
-      clipboard.getContents(null).getTransferData(DataFlavor.stringFlavor).asInstanceOf[String]
+      clipboard
+        .getContents(null)
+        .getTransferData(DataFlavor.stringFlavor)
+        .asInstanceOf[String]
     }
   }
 }

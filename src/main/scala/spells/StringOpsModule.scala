@@ -4,7 +4,8 @@ package spells
 trait StringOpsModule {
   this: AnsiModule with SpellsConfigModule =>
 
-  implicit final class StringOpsFromSpells(input: String) {
+  final implicit class StringOpsFromSpells(input: String) {
+
     /** Decodes special symbols scalac is using in generated names.
       * {{{
       * class `Encoded + Fancy` {
@@ -32,7 +33,11 @@ trait StringOpsModule {
       * @param availableWidthInCharacters the maximum length
       * @return
       */
-    final def wrappedOnSpaces(implicit availableWidthInCharacters: StringOpsModule#AvailableWidthInCharacters = SpellsConfig.terminal.WidthInCharacters.value): String = {
+    final def wrappedOnSpaces(
+        implicit
+        availableWidthInCharacters: StringOpsModule#AvailableWidthInCharacters =
+          SpellsConfig.terminal.WidthInCharacters.value
+      ): String = {
       val separator = " "
 
       def wrapped(in: String): String =
@@ -42,7 +47,11 @@ trait StringOpsModule {
               tail.foldLeft(("", head)) {
                 case ((result, line), atom) =>
                   if (wouldOverflow(line, atom))
-                    brokenCurrentLineWithAtomCarriedOverToNextLine(result, line, atom)
+                    brokenCurrentLineWithAtomCarriedOverToNextLine(
+                      result,
+                      line,
+                      atom
+                    )
                   else
                     justAtomCarriedOverToNextLine(result, line, atom)
               }
@@ -53,13 +62,25 @@ trait StringOpsModule {
         }
 
       def wouldOverflow(line: String, atom: String): Boolean =
-        if (atom.isEmpty) AnsiStyle.removed(line).size > availableWidthInCharacters
-        else AnsiStyle.removed(line + separator + atom).size > availableWidthInCharacters
+        if (atom.isEmpty)
+          AnsiStyle.removed(line).size > availableWidthInCharacters
+        else
+          AnsiStyle
+            .removed(line + separator + atom)
+            .size > availableWidthInCharacters
 
-      def brokenCurrentLineWithAtomCarriedOverToNextLine(result: String, line: String, atom: String): (String, String) =
+      def brokenCurrentLineWithAtomCarriedOverToNextLine(
+          result: String,
+          line: String,
+          atom: String
+        ): (String, String) =
         (result + line + "\n") -> atom
 
-      def justAtomCarriedOverToNextLine(result: String, line: String, atom: String): (String, String) =
+      def justAtomCarriedOverToNextLine(
+          result: String,
+          line: String,
+          atom: String
+        ): (String, String) =
         result -> (line + separator + atom)
 
       input.split("\n").toList.map(wrapped) match {
@@ -86,13 +107,17 @@ trait StringOpsModule {
   /** A wrapper for `Int`s, provided so that it can be used as an `implicit` parameter, which `Int`s are not ideal for.
     * @param value the `Int` to be wrapped.
     */
-  implicit final def toAvailableWidthInCharacters(value: Int): StringOpsModule#AvailableWidthInCharacters =
+  final implicit def toAvailableWidthInCharacters(
+      value: Int
+    ): StringOpsModule#AvailableWidthInCharacters =
     new AvailableWidthInCharacters(value)
 
   final class AvailableWidthInCharacters(val value: Int) {
-    override final def toString: String = value.toString
+    final override def toString: String = value.toString
   }
 
-  implicit final def availableWidthInCharactersBackToInt(availableWidthInCharacters: StringOpsModule#AvailableWidthInCharacters): Int =
+  final implicit def availableWidthInCharactersBackToInt(
+      availableWidthInCharacters: StringOpsModule#AvailableWidthInCharacters
+    ): Int =
     availableWidthInCharacters.value
 }

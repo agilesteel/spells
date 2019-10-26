@@ -11,7 +11,9 @@ trait StreamOpsModule {
     * In contrast to the Stream factory from the standard library each element is evaluated on demand.
     */
   def MakeStream[E](elements: Function0Wrapper[E]*): Stream[E] =
-    scala.collection.immutable.Stream[Function0Wrapper[E]](elements: _*).map(_.function0())
+    scala.collection.immutable
+      .Stream[Function0Wrapper[E]](elements: _*)
+      .map(_.function0())
 }
 
 object StreamOpsModule {

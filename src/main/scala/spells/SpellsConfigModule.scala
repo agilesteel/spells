@@ -4,7 +4,9 @@ package spells
   * Access values from the config like so: `SpellsConfig.terminal.WidthInCharacters.value`.
   * If Scala can infer the type you might drop the `.value` call, thanks to the respective implicit conversions in scope.
   */
-trait SpellsConfigModule extends LocationAwareConfigModule with LocationAwarePropertyModule {
+trait SpellsConfigModule
+    extends LocationAwareConfigModule
+    with LocationAwarePropertyModule {
   this: StylePrintModule with AnsiModule =>
 
   object SpellsConfig {
@@ -17,7 +19,8 @@ trait SpellsConfigModule extends LocationAwareConfigModule with LocationAwarePro
     object terminal {
       object WidthInCharacters extends LocationAwareProperty[Int] {
         override def isValid(in: Int): Boolean = in >= 0
-        override def customValidationErrorMessage(in: Int): String = s"${location.yellow} must be ${">= 0".yellow}"
+        override def customValidationErrorMessage(in: Int): String =
+          s"${location.yellow} must be ${">= 0".yellow}"
       }
 
       object display {

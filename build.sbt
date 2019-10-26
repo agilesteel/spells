@@ -16,7 +16,6 @@ lazy val spells = (project in file("."))
   .settings(spellsSettings: _*)
   .settings(pureScalaProjectSettings: _*)
   .settings(publishSettings: _*)
-  .settings(scalariformSettingsFromSpells: _*)
   .settings(aliasSettings: _*)
   .enablePlugins(BuildInfoPlugin)
   .settings(buildInfoSettings: _*)
@@ -27,27 +26,11 @@ lazy val buildInfoSettings = Seq(
   buildInfoObject := "SpellsBuildInfo"
 )
 
-lazy val scalariformSettingsFromSpells = {
-  import scalariform.formatter.preferences._
-
-  Seq(
-    scalariformWithBaseDirectory := true,
-    scalariformPreferences := scalariformPreferences.value
-      .setPreference(AlignArguments, true)
-      .setPreference(AlignSingleLineCaseStatements, true)
-      .setPreference(AllowParamGroupsOnNewlines, true)
-      .setPreference(CompactControlReadability, true)
-      .setPreference(DanglingCloseParenthesis, Force)
-      .setPreference(DoubleIndentConstructorArguments, true)
-      .setPreference(DoubleIndentMethodDeclaration, true)
-      .setPreference(MultilineScaladocCommentsStartOnFirstLine, true)
-      .setPreference(NewlineAtEndOfFile, true)
-      .setPreference(PlaceScaladocAsterisksBeneathSecondAsterisk, true)
-  )
-}
-
 lazy val spellsSettings = Seq(
-  initialCommands in console := "object user extends spells.Spells;import user._;import scala.concurrent.duration._",
+  initialCommands in console :=
+  s"""|object user extends spells.Spells
+      |import user._
+      |import scala.concurrent.duration._""".stripMargin,
   libraryDependencies ++= Dependencies(scalaVersion.value.toString),
   onLoad in Global := {
     val checkForDepdendencyUpdates =

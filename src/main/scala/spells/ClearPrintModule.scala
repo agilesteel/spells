@@ -35,7 +35,12 @@ trait ClearPrintModule {
     * @param input the object to print
     * @param style custom `AnsiStyle`
     */
-  final def clearPrintln(input: Any = "")(implicit style: AnsiModule#AnsiStyle = AnsiStyle.Reset): Unit = {
+  final def clearPrintln(
+      input: Any = ""
+    )(
+      implicit
+      style: AnsiModule#AnsiStyle = AnsiStyle.Reset
+    ): Unit = {
     Console println cleared(input)(style)
   }
 
@@ -43,7 +48,12 @@ trait ClearPrintModule {
     * @param input the object to print
     * @param style custom `AnsiStyle`
     */
-  final def clearPrint(input: Any = "")(implicit style: AnsiModule#AnsiStyle = AnsiStyle.Reset): Unit = {
+  final def clearPrint(
+      input: Any = ""
+    )(
+      implicit
+      style: AnsiModule#AnsiStyle = AnsiStyle.Reset
+    ): Unit = {
     Console print cleared(input)(style)
   }
 
@@ -52,7 +62,12 @@ trait ClearPrintModule {
     * @param style custom `AnsiStyle`
     * @return the object, which when printing will begin at the first character in the current line of your terminal.
     */
-  final def cleared(input: Any = "")(implicit style: AnsiModule#AnsiStyle = AnsiStyle.Reset): String =
+  final def cleared(
+      input: Any = ""
+    )(
+      implicit
+      style: AnsiModule#AnsiStyle = AnsiStyle.Reset
+    ): String =
     styled(ClearPrint.Clear.value + s"\r$input" + AnsiStyle.Reset.value)(style)
 
   object ClearPrint {

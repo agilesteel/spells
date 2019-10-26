@@ -4,8 +4,13 @@ package spells
 trait StackTraceElementModule {
   this: CustomRenderingModule with StringOpsModule with SpellsConfigModule =>
 
-  implicit final class StackTraceElementOpsFromSpells(value: StackTraceElement) extends CustomRendering {
-    override final def rendered(implicit availableWidthInCharacters: StringOpsModule#AvailableWidthInCharacters = SpellsConfig.terminal.WidthInCharacters.value): String = {
+  final implicit class StackTraceElementOpsFromSpells(value: StackTraceElement)
+      extends CustomRendering {
+    final override def rendered(
+        implicit
+        availableWidthInCharacters: StringOpsModule#AvailableWidthInCharacters =
+          SpellsConfig.terminal.WidthInCharacters.value
+      ): String = {
       val fileNameOrUnknownSource =
         if (value.getFileName != null)
           "(" + value.getFileName + ")"
@@ -23,7 +28,8 @@ trait StackTraceElementModule {
 
       if (SpellsConfig.`custom-rendering`.display.ShortStackTraceElements.value)
         fileNameOrUnknownSourceWithLineNumberOrNativeMethod
-      else value.getClassName + "." + value.getMethodName + fileNameOrUnknownSourceWithLineNumberOrNativeMethod
+      else
+        value.getClassName + "." + value.getMethodName + fileNameOrUnknownSourceWithLineNumberOrNativeMethod
     }
   }
 }

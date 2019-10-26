@@ -13,7 +13,19 @@ package spells
   * }}}
   */
 trait XrayModule {
-  this: AnsiModule with AnyOpsModule with CalendarOpsModule with CustomRenderingModule with DateOpsModule with DurationOpsModule with HumanRenderingModule with MiscModule with StringOpsModule with StylePrintModule with TraversableOpsModule with SpellsConfigModule with StackTraceElementModule =>
+  this: AnsiModule
+    with AnyOpsModule
+    with CalendarOpsModule
+    with CustomRenderingModule
+    with DateOpsModule
+    with DurationOpsModule
+    with HumanRenderingModule
+    with MiscModule
+    with StringOpsModule
+    with StylePrintModule
+    with TraversableOpsModule
+    with SpellsConfigModule
+    with StackTraceElementModule =>
 
   import java.util.Calendar
   import scala.concurrent.duration._
@@ -31,14 +43,36 @@ trait XrayModule {
     * @tparam T the type, your expression evaluates to
     * @return an instance of `XrayReport`, which can be rendered or written to a database etc etc
     */
-  final def xrayed[T](expression: => T, description: XrayModule#Description = Xray.Defaults.Description, increaseStackTraceDepthBy: Int = 0)(implicit typeTag: TypeTag[T], style: AnsiModule#AnsiStyle = AnsiStyle.Reset, rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any): XrayModule#XrayReport[T] = {
+  final def xrayed[T](
+      expression: => T,
+      description: XrayModule#Description = Xray.Defaults.Description,
+      increaseStackTraceDepthBy: Int = 0
+    )(
+      implicit
+      typeTag: TypeTag[T],
+      style: AnsiModule#AnsiStyle = AnsiStyle.Reset,
+      rendering: T => CustomRenderingModule#CustomRendering =
+        CustomRendering.Defaults.Any
+    ): XrayModule#XrayReport[T] = {
     val now = Calendar.getInstance
 
     val (value, duration) = measureExecutionTime(expression)
 
-    val stackTraceElement = currentLineStackTraceElement(Xray.Defaults.StackTraceDepthOffset)
+    val stackTraceElement = currentLineStackTraceElement(
+      Xray.Defaults.StackTraceDepthOffset
+    )
 
-    new XrayReport(value, duration, stackTraceElement, now, description.toString, Thread.currentThread, style, rendering, Some(typeTag))
+    new XrayReport(
+      value,
+      duration,
+      stackTraceElement,
+      now,
+      description.toString,
+      Thread.currentThread,
+      style,
+      rendering,
+      Some(typeTag)
+    )
   }
 
   /** Creates an instance of `XrayReport`. Primarily useful for library authors.
@@ -50,21 +84,43 @@ trait XrayModule {
     * @tparam T the type, your expression evaluates to
     * @return an instance of `XrayReport`, which can be rendered or written to a database etc etc
     */
-  final def xrayedWeak[T](expression: => T, description: XrayModule#Description = Xray.Defaults.Description, increaseStackTraceDepthBy: Int = 0)(implicit style: AnsiModule#AnsiStyle = AnsiStyle.Reset): XrayModule#XrayReport[T] = {
+  final def xrayedWeak[T](
+      expression: => T,
+      description: XrayModule#Description = Xray.Defaults.Description,
+      increaseStackTraceDepthBy: Int = 0
+    )(
+      implicit
+      style: AnsiModule#AnsiStyle = AnsiStyle.Reset
+    ): XrayModule#XrayReport[T] = {
     val now = Calendar.getInstance
 
     val (value, duration) = measureExecutionTime(expression)
 
-    val stackTraceElement = currentLineStackTraceElement(Xray.Defaults.StackTraceDepthOffset)
+    val stackTraceElement = currentLineStackTraceElement(
+      Xray.Defaults.StackTraceDepthOffset
+    )
 
-    new XrayReport(value, duration, stackTraceElement, now, description.toString, Thread.currentThread, style, CustomRendering.Defaults.Any, typeTag = None)
+    new XrayReport(
+      value,
+      duration,
+      stackTraceElement,
+      now,
+      description.toString,
+      Thread.currentThread,
+      style,
+      CustomRendering.Defaults.Any,
+      typeTag = None
+    )
   }
 
   /** Creates an instance of `StackTraceElement` at current line.
     * @param increaseStackTraceDepthBy adjust if you build a library around it and the line stopps matching
     * @return an instance of `StackTraceElement` at current line.
     */
-  final def currentLineStackTraceElement(implicit increaseStackTraceDepthBy: XrayModule#IncreaseStackTraceDepthBy = 0): StackTraceElement =
+  final def currentLineStackTraceElement(
+      implicit
+      increaseStackTraceDepthBy: XrayModule#IncreaseStackTraceDepthBy = 0
+    ): StackTraceElement =
     Thread.currentThread.getStackTrace apply increaseStackTraceDepthBy.value + Xray.Defaults.StackTraceDepthOffset
 
   /** Implicit conversion from `T` to `XrayFromSpells`, which contains methods like `xray` and `xrayIf`.
@@ -75,7 +131,18 @@ trait XrayModule {
     * @param monitor a monitor, which tracks the side effect (a `println` essentially)
     * @tparam T the type, your expression evaluates to
     */
-  implicit final class XrayFromSpells[T](expression: => T)(implicit typeTag: TypeTag[T], style: AnsiModule#AnsiStyle = AnsiStyle.Reset, rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any, monitor: XrayModule#XrayReport[T] => Unit = (report: XrayModule#XrayReport[T]) => Console.println(report.rendered)) {
+  final implicit class XrayFromSpells[T](
+      expression: => T
+    )(
+      implicit
+      typeTag: TypeTag[T],
+      style: AnsiModule#AnsiStyle = AnsiStyle.Reset,
+      rendering: T => CustomRenderingModule#CustomRendering =
+        CustomRendering.Defaults.Any,
+      monitor: XrayModule#XrayReport[T] => Unit =
+        (report: XrayModule#XrayReport[T]) =>
+          Console.println(report.rendered)) {
+
     /** A DSL for producing `XrayReport`s.
       *
       * Example:
@@ -86,8 +153,15 @@ trait XrayModule {
       * @param description an optional description
       * @return the original value of the expression it is being called on
       */
-    def xray(implicit description: XrayModule#Description = Xray.Defaults.Description): T = {
-      val report = xrayed(expression, description, increaseStackTraceDepthBy = +1)(typeTag, style, rendering)
+    def xray(
+        implicit
+        description: XrayModule#Description = Xray.Defaults.Description
+      ): T = {
+      val report = xrayed(
+        expression,
+        description,
+        increaseStackTraceDepthBy = +1
+      )(typeTag, style, rendering)
 
       monitor(report)
 
@@ -102,8 +176,17 @@ trait XrayModule {
       * @param description an optional description
       * @return the original value of the expression it is being called on
       */
-    def xrayIf(conditionFunction: XrayModule#XrayReport[T] => Boolean)(implicit description: XrayModule#Description = Xray.Defaults.Description): T = {
-      val report = xrayed(expression, description, increaseStackTraceDepthBy = +1)(typeTag, style, rendering)
+    def xrayIf(
+        conditionFunction: XrayModule#XrayReport[T] => Boolean
+      )(
+        implicit
+        description: XrayModule#Description = Xray.Defaults.Description
+      ): T = {
+      val report = xrayed(
+        expression,
+        description,
+        increaseStackTraceDepthBy = +1
+      )(typeTag, style, rendering)
 
       if (conditionFunction(report))
         monitor(report)
@@ -112,7 +195,15 @@ trait XrayModule {
     }
   }
 
-  implicit final class XrayWeakFromSpells[T](expression: => T)(implicit style: AnsiModule#AnsiStyle = AnsiStyle.Reset, monitor: XrayModule#XrayReport[T] => Unit = (report: XrayModule#XrayReport[T]) => Console.println(report.rendered)) {
+  final implicit class XrayWeakFromSpells[T](
+      expression: => T
+    )(
+      implicit
+      style: AnsiModule#AnsiStyle = AnsiStyle.Reset,
+      monitor: XrayModule#XrayReport[T] => Unit =
+        (report: XrayModule#XrayReport[T]) =>
+          Console.println(report.rendered)) {
+
     /** A DSL for producing `XrayReport`s when `xray` does not compile, because of the `TypeTag`.
       *
       * Example:
@@ -122,8 +213,14 @@ trait XrayModule {
       * @param description an optional description
       * @return the original value of the expression it is being called on
       */
-    def xrayWeak(implicit description: XrayModule#Description = Xray.Defaults.Description): T = {
-      val report = xrayedWeak(expression, description, increaseStackTraceDepthBy = +1)(style)
+    def xrayWeak(
+        implicit
+        description: XrayModule#Description = Xray.Defaults.Description
+      ): T = {
+      val report =
+        xrayedWeak(expression, description, increaseStackTraceDepthBy = +1)(
+          style
+        )
 
       monitor(report)
 
@@ -139,8 +236,16 @@ trait XrayModule {
       * @param description an optional description
       * @return the original value of the expression it is being called on
       */
-    def xrayIfWeak(conditionFunction: XrayModule#XrayReport[T] => Boolean)(implicit description: XrayModule#Description = Xray.Defaults.Description): T = {
-      val report = xrayedWeak(expression, description, increaseStackTraceDepthBy = +1)(style)
+    def xrayIfWeak(
+        conditionFunction: XrayModule#XrayReport[T] => Boolean
+      )(
+        implicit
+        description: XrayModule#Description = Xray.Defaults.Description
+      ): T = {
+      val report =
+        xrayedWeak(expression, description, increaseStackTraceDepthBy = +1)(
+          style
+        )
 
       if (conditionFunction(report))
         monitor(report)
@@ -152,20 +257,20 @@ trait XrayModule {
   /** A wrapper for `Int`s, provided so that it can be used as an `implicit` parameter, which `Int`s are not ideal for.
     * @param value the `Int` to be wrapped.
     */
-  implicit final class IncreaseStackTraceDepthBy(val value: Int)
+  final implicit class IncreaseStackTraceDepthBy(val value: Int)
 
   /** A wrapper for `String`s, provided so that it can be used as an `implicit` parameter, which `String`s are not ideal for.
     * @param value the `String` to be wrapped.
     */
-  implicit final class Description(val value: String) {
-    override final def toString: String = value
+  final implicit class Description(val value: String) {
+    final override def toString: String = value
   }
 
   object Xray {
     object Defaults {
       final val Description: XrayModule#Description = new Description("Xray")
 
-      private[spells] final val StackTraceDepthOffset: Int = {
+      final private[spells] val StackTraceDepthOffset: Int = {
         // $COVERAGE-OFF$
         if (`isScalaVersionSmallerThan 2.12`) 3 else 4
         // $COVERAGE-ON$
@@ -207,19 +312,40 @@ trait XrayModule {
       final val description: String,
       final val thread: Thread,
       final val style: AnsiModule#AnsiStyle = AnsiStyle.Reset,
-      rendering: T => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any,
+      rendering: T => CustomRenderingModule#CustomRendering =
+        CustomRendering.Defaults.Any,
       typeTag: Option[TypeTag[T]],
-      final val additionalContent: immutable.Seq[(String, String)] = immutable.Seq.empty
-  ) extends CustomRendering {
-    private lazy val safeAdditionalContent: immutable.Seq[(String, String)] = Option(additionalContent).getOrElse(immutable.Seq.empty)
+      final val additionalContent: immutable.Seq[(String, String)] =
+        immutable.Seq.empty)
+      extends CustomRendering {
+    private lazy val safeAdditionalContent: immutable.Seq[(String, String)] =
+      Option(additionalContent).getOrElse(immutable.Seq.empty)
 
-    final def withAdditionalContent(content: immutable.Seq[(String, String)]): XrayModule#XrayReport[T] =
-      new XrayReport(value, duration, stackTraceElement, timestamp, description, thread, style, rendering, typeTag, safeAdditionalContent ++ Option(content).getOrElse(immutable.Seq.empty))
+    final def withAdditionalContent(
+        content: immutable.Seq[(String, String)]
+      ): XrayModule#XrayReport[T] =
+      new XrayReport(
+        value,
+        duration,
+        stackTraceElement,
+        timestamp,
+        description,
+        thread,
+        style,
+        rendering,
+        typeTag,
+        safeAdditionalContent ++ Option(content).getOrElse(immutable.Seq.empty)
+      )
 
-    override final def rendered(implicit availableWidthInCharacters: StringOpsModule#AvailableWidthInCharacters = SpellsConfig.terminal.WidthInCharacters.value): String = {
+    final override def rendered(
+        implicit
+        availableWidthInCharacters: StringOpsModule#AvailableWidthInCharacters =
+          SpellsConfig.terminal.WidthInCharacters.value
+      ): String = {
       def lines(availableWidthInCharacters: Int): Seq[(String, String)] = {
         def ifNotIgnored(key: String, value: String): Option[(String, String)] =
-          if (SpellsConfig.xray.report.IgnoredContentKeys.value.contains(String.valueOf(key)))
+          if (SpellsConfig.xray.report.IgnoredContentKeys.value
+                .contains(String.valueOf(key)))
             None
           else
             Some(String.valueOf(key) -> String.valueOf(value))
@@ -231,8 +357,10 @@ trait XrayModule {
           )
 
           val valueRelatedContent = Vector(
-            ifNotIgnored("Location", stackTraceElement.rendered),
-            { if (value == null) None else ifNotIgnored("HashCode", value.hashCode.toString) },
+            ifNotIgnored("Location", stackTraceElement.rendered), {
+              if (value == null) None
+              else ifNotIgnored("HashCode", value.hashCode.toString)
+            },
             ifNotIgnored("Thread", thread.toString)
           )
 
@@ -243,8 +371,12 @@ trait XrayModule {
             typeTag.fold(Vector(classTuple)) { tag =>
               val decodedTypeName = tag.tpe.toString.withDecodedScalaSymbols
               val typeTuple = ifNotIgnored("Type", decodedTypeName)
-              val shouldNotIgnoreClass = !SpellsConfig.xray.report.IgnoredContentKeys.value.contains("Class")
-              val shouldIgnoreType = SpellsConfig.xray.report.IgnoredContentKeys.value.contains("Type")
+              val shouldNotIgnoreClass =
+                !SpellsConfig.xray.report.IgnoredContentKeys.value
+                  .contains("Class")
+              val shouldIgnoreType =
+                SpellsConfig.xray.report.IgnoredContentKeys.value
+                  .contains("Type")
 
               if (shouldIgnoreType && shouldNotIgnoreClass) Vector(classTuple)
               else if (decodedClassName == decodedTypeName) Vector(typeTuple)
@@ -252,7 +384,8 @@ trait XrayModule {
             }
           }
 
-          val liftedAdditionalContentIfNotIgnored: immutable.Seq[Option[(String, String)]] =
+          val liftedAdditionalContentIfNotIgnored
+              : immutable.Seq[Option[(String, String)]] =
             safeAdditionalContent collect {
               case (key, value) => ifNotIgnored(key, value)
             }
@@ -284,7 +417,8 @@ trait XrayModule {
           availableWidthInCharacters
         )
 
-      val headerStyleFromConfig: AnsiModule#AnsiStyle = SpellsConfig.xray.report.styles.Description.value
+      val headerStyleFromConfig: AnsiModule#AnsiStyle =
+        SpellsConfig.xray.report.styles.Description.value
       val header =
         if (AnsiStyle.removed(description).isEmpty)
           styled(Xray.Defaults.Description)(headerStyleFromConfig)
@@ -292,12 +426,19 @@ trait XrayModule {
       val headerWithoutStyles = AnsiStyle.removed(header)
 
       val numberOfCharsInTheLongestLine = {
-        val longestLineInHeaderWithoutStyles = headerWithoutStyles.split("\n").maxBy(_.size).size
+        val longestLineInHeaderWithoutStyles =
+          headerWithoutStyles.split("\n").maxBy(_.size).size
 
-        table.map(AnsiStyle.removed).flatMap(_ split "\n").maxBy(_.size).size max longestLineInHeaderWithoutStyles
+        table
+          .map(AnsiStyle.removed)
+          .flatMap(_ split "\n")
+          .maxBy(_.size)
+          .size max longestLineInHeaderWithoutStyles
       }
 
-      lazy val hyphens = "─" * numberOfCharsInTheLongestLine.min(availableWidthInCharacters)
+      lazy val hyphens = "─" * numberOfCharsInTheLongestLine.min(
+        availableWidthInCharacters
+      )
       lazy val hyphensSize = hyphens.size
 
       def center(in: String): String = {
@@ -308,7 +449,8 @@ trait XrayModule {
       }
 
       val centeredHeader =
-        header.wrappedOnSpaces(availableWidthInCharacters)
+        header
+          .wrappedOnSpaces(availableWidthInCharacters)
           .split("\n")
           .toList
           .map(center)
@@ -325,9 +467,9 @@ trait XrayModule {
         else {
           val hyphensWithCross =
             XrayReport.hyphensWithOneReplacement(
-              hyphensSize    = hyphensSize,
+              hyphensSize = hyphensSize,
               zeroBasedIndex = zeroBasedIndexOfHyphenToReplace,
-              replacement    = '┼'
+              replacement = '┼'
             )
 
           Vector(hyphensWithCross, last)
@@ -337,16 +479,16 @@ trait XrayModule {
       val resultingLines = {
         val hyphensWithHalfCrossDown =
           XrayReport.hyphensWithOneReplacement(
-            hyphensSize    = hyphensSize,
+            hyphensSize = hyphensSize,
             zeroBasedIndex = zeroBasedIndexOfHyphenToReplace,
-            replacement    = '┬'
+            replacement = '┬'
           )
 
         val hyphensWithHalfCrossUp =
           XrayReport.hyphensWithOneReplacement(
-            hyphensSize    = hyphensSize,
+            hyphensSize = hyphensSize,
             zeroBasedIndex = zeroBasedIndexOfHyphenToReplace,
-            replacement    = '┴'
+            replacement = '┴'
           )
 
         Vector(
@@ -361,7 +503,11 @@ trait XrayModule {
   }
 
   private[spells] object XrayReport {
-    private[spells] final def customRenderedTableForXray(in: Int => Seq[(String, String)], styles: Map[String, AnsiModule#AnsiStyle] = Map.empty withDefaultValue AnsiStyle.Reset, availableWidthInCharacters: Int): (Seq[String], Int) = {
+    final private[spells] def customRenderedTableForXray(
+        in: Int => Seq[(String, String)],
+        styles: Map[String, AnsiModule#AnsiStyle] = Map.empty withDefaultValue AnsiStyle.Reset,
+        availableWidthInCharacters: Int
+      ): (Seq[String], Int) = {
       val sizeOfTheBiggestKey =
         calculateSizeOfTheBiggestKey(in)
 
@@ -382,24 +528,32 @@ trait XrayModule {
               val actualValue = value wrappedOnSpaces maxWidthInCharacters
 
               if (!(actualValue contains "\n"))
-                keyPaddedWithSpaces + separator + styled(actualValue)(styles(key))
+                keyPaddedWithSpaces + separator + styled(actualValue)(
+                  styles(key)
+                )
               else {
                 val sublines = actualValue.split("\n").toList
 
                 var previousSublineStyle = "".toAnsiStyle
 
-                sublines.map { subline =>
-                  val styledSubline =
-                    if (previousSublineStyle.value.nonEmpty)
-                      styled(subline)(previousSublineStyle)
-                    else
-                      styled(subline)(styles(key))
+                sublines
+                  .map { subline =>
+                    val styledSubline =
+                      if (previousSublineStyle.value.nonEmpty)
+                        styled(subline)(previousSublineStyle)
+                      else
+                        styled(subline)(styles(key))
 
-                  if (previousSublineStyle.value.isEmpty)
-                    previousSublineStyle = fetchLastStyleBasedOnRegex(styledSubline, StylePrint.StyleOnly.r)
+                    if (previousSublineStyle.value.isEmpty)
+                      previousSublineStyle = fetchLastStyleBasedOnRegex(
+                        styledSubline,
+                        StylePrint.StyleOnly.r
+                      )
 
-                  spaces + separator + styledSubline
-                }.mkString("\n").replaceFirst(spaces, keyPaddedWithSpaces)
+                    spaces + separator + styledSubline
+                  }
+                  .mkString("\n")
+                  .replaceFirst(spaces, keyPaddedWithSpaces)
               }
             }
 
@@ -409,20 +563,27 @@ trait XrayModule {
       table -> (sizeOfTheBiggestKey + 1)
     }
 
-    private[spells] final def hyphensWithOneReplacement(hyphensSize: Int, zeroBasedIndex: Int, replacement: Char): String =
-      (0 until hyphensSize)
-        .map {
-          case `zeroBasedIndex` => replacement
-          case _                => '─'
-        }
-        .mkString
+    final private[spells] def hyphensWithOneReplacement(
+        hyphensSize: Int,
+        zeroBasedIndex: Int,
+        replacement: Char
+      ): String =
+      (0 until hyphensSize).map {
+        case `zeroBasedIndex` => replacement
+        case _                => '─'
+      }.mkString
 
-    private[spells] final def calculateSizeOfTheBiggestKey(in: Int => Seq[(String, String)]) =
+    final private[spells] def calculateSizeOfTheBiggestKey(
+        in: Int => Seq[(String, String)]
+      ) =
       in(0) map {
         case (key, _) => AnsiStyle.removed(key).size
       } max
 
-    private[spells] final def fetchLastStyleBasedOnRegex(line: String, regex: Regex): AnsiModule#AnsiStyle = {
+    final private[spells] def fetchLastStyleBasedOnRegex(
+        line: String,
+        regex: Regex
+      ): AnsiModule#AnsiStyle = {
       var style = ""
       var takenSoFar = ""
 

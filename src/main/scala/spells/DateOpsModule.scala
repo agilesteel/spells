@@ -7,8 +7,12 @@ trait DateOpsModule {
   import java.text.SimpleDateFormat
   import java.util.Date
 
-  implicit final class DateOpsFromSpells(value: Date) extends CustomRendering {
-    override final def rendered(implicit availableWidthInCharacters: StringOpsModule#AvailableWidthInCharacters = SpellsConfig.terminal.WidthInCharacters.value): String =
+  final implicit class DateOpsFromSpells(value: Date) extends CustomRendering {
+    final override def rendered(
+        implicit
+        availableWidthInCharacters: StringOpsModule#AvailableWidthInCharacters =
+          SpellsConfig.terminal.WidthInCharacters.value
+      ): String =
       new SimpleDateFormat(DateOpsFromSpells.Defaults.Format) format value
   }
 

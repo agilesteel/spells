@@ -13,7 +13,8 @@ package spells
 trait AnyOpsModule {
   this: StringOpsModule =>
 
-  implicit final class AnyOpsFromSpells(input: Any) {
+  final implicit class AnyOpsFromSpells(input: Any) {
+
     /** Decodes class names.
       * @return decoded class names.
       */
@@ -24,7 +25,9 @@ trait AnyOpsModule {
       * @return decoded class names.
       */
     final def decodedSimpleClassName: String =
-      try Option(input).fold(Null)(_.getClass.getSimpleName.withDecodedScalaSymbols)
+      try Option(input).fold(Null)(
+        _.getClass.getSimpleName.withDecodedScalaSymbols
+      )
       catch {
         // https://issues.scala-lang.org/browse/SI-2034
         // $COVERAGE-OFF$
@@ -32,6 +35,6 @@ trait AnyOpsModule {
         // $COVERAGE-ON$
       }
 
-    private final val Null: String = "Null"
+    final private val Null: String = "Null"
   }
 }

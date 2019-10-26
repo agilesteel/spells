@@ -2,123 +2,268 @@ package spells
 
 /** Provides utilities for all kinds of `Traversable`s including Java collections and `Array`s. */
 trait TraversableOpsModule {
-  this: AnsiModule with AnyOpsModule with CalendarOpsModule with CustomRenderingModule with DurationOpsModule with HumanRenderingModule with SpellsConfigModule with StringOpsModule with StylePrintModule with Tuple2OpsModule =>
+  this: AnsiModule
+    with AnyOpsModule
+    with CalendarOpsModule
+    with CustomRenderingModule
+    with DurationOpsModule
+    with HumanRenderingModule
+    with SpellsConfigModule
+    with StringOpsModule
+    with StylePrintModule
+    with Tuple2OpsModule =>
 
   import scala.reflect.runtime.universe._
 
-  implicit final def TraversableOpsFromSpells[A, T[A] <: Traversable[A]](value: T[A])(implicit typeTag: TypeTag[T[A]], rendering: A => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any): CustomRendering = new CustomRendering {
-    override final def rendered(implicit availableWidthInCharacters: StringOpsModule#AvailableWidthInCharacters = SpellsConfig.terminal.WidthInCharacters.value): String = {
+  final implicit def TraversableOpsFromSpells[A, T[A] <: Traversable[A]](
+      value: T[A]
+    )(
+      implicit
+      typeTag: TypeTag[T[A]],
+      rendering: A => CustomRenderingModule#CustomRendering =
+        CustomRendering.Defaults.Any
+    ): CustomRendering = new CustomRendering {
+    final override def rendered(
+        implicit
+        availableWidthInCharacters: StringOpsModule#AvailableWidthInCharacters =
+          SpellsConfig.terminal.WidthInCharacters.value
+      ): String = {
       lazy val typeName = typeTag.tpe.toString.withDecodedScalaSymbols
 
-      render[T[A]](value, _.isEmpty, _.size, value.toString, typeName, availableWidthInCharacters) { in =>
-        { availableWidthInCharacters =>
-          var result: Vector[(String, String)] = Vector.empty[(String, String)]
-          var index = 0
-          value foreach { element =>
-            result :+= (index.toString -> element.rendered(availableWidthInCharacters))
-            index += 1
-          }
+      render[T[A]](
+        value,
+        _.isEmpty,
+        _.size,
+        value.toString,
+        typeName,
+        availableWidthInCharacters
+      ) {
+        in =>
+          { availableWidthInCharacters =>
+            var result: Vector[(String, String)] =
+              Vector.empty[(String, String)]
+            var index = 0
+            value foreach { element =>
+              result :+= (index.toString -> element.rendered(
+                availableWidthInCharacters
+              ))
+              index += 1
+            }
 
-          result
-        }
+            result
+          }
       }
     }
   }
 
-  implicit final def MapOpsFromSpells[Key, Value, T[Key, Value] <: Map[Key, Value]](value: T[Key, Value])(implicit typeTag: TypeTag[T[Key, Value]], rendering: Tuple2[Key, Value] => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any): CustomRendering = new CustomRendering {
-    override final def rendered(implicit availableWidthInCharacters: StringOpsModule#AvailableWidthInCharacters = SpellsConfig.terminal.WidthInCharacters.value): String = {
+  final implicit def MapOpsFromSpells[
+      Key,
+      Value,
+      T[Key, Value] <: Map[Key, Value]
+    ](
+      value: T[Key, Value]
+    )(
+      implicit
+      typeTag: TypeTag[T[Key, Value]],
+      rendering: Tuple2[Key, Value] => CustomRenderingModule#CustomRendering =
+        CustomRendering.Defaults.Any
+    ): CustomRendering = new CustomRendering {
+    final override def rendered(
+        implicit
+        availableWidthInCharacters: StringOpsModule#AvailableWidthInCharacters =
+          SpellsConfig.terminal.WidthInCharacters.value
+      ): String = {
       lazy val typeName = typeTag.tpe.toString.withDecodedScalaSymbols
 
-      render[T[Key, Value]](value, _.isEmpty, _.size, value.toString, typeName, availableWidthInCharacters) { in =>
-        { availableWidthInCharacters =>
-          var result: Vector[(String, String)] = Vector.empty[(String, String)]
-          var index = 0
-          value foreach { element =>
-            result :+= (index.toString -> element.rendered(availableWidthInCharacters))
-            index += 1
-          }
+      render[T[Key, Value]](
+        value,
+        _.isEmpty,
+        _.size,
+        value.toString,
+        typeName,
+        availableWidthInCharacters
+      ) {
+        in =>
+          { availableWidthInCharacters =>
+            var result: Vector[(String, String)] =
+              Vector.empty[(String, String)]
+            var index = 0
+            value foreach { element =>
+              result :+= (index.toString -> element.rendered(
+                availableWidthInCharacters
+              ))
+              index += 1
+            }
 
-          result
-        }
+            result
+          }
       }
     }
   }
 
-  implicit final def ArrayOpsFromSpells[A, T[A] <: Array[A]](value: T[A])(implicit typeTag: TypeTag[T[A]], rendering: A => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any): CustomRendering = new CustomRendering {
-    override final def rendered(implicit availableWidthInCharacters: StringOpsModule#AvailableWidthInCharacters = SpellsConfig.terminal.WidthInCharacters.value): String = {
+  final implicit def ArrayOpsFromSpells[A, T[A] <: Array[A]](
+      value: T[A]
+    )(
+      implicit
+      typeTag: TypeTag[T[A]],
+      rendering: A => CustomRenderingModule#CustomRendering =
+        CustomRendering.Defaults.Any
+    ): CustomRendering = new CustomRendering {
+    final override def rendered(
+        implicit
+        availableWidthInCharacters: StringOpsModule#AvailableWidthInCharacters =
+          SpellsConfig.terminal.WidthInCharacters.value
+      ): String = {
       lazy val typeName = typeTag.tpe.toString.withDecodedScalaSymbols
 
-      render[T[A]](value, _.isEmpty, _.size, s"Array()", typeName, availableWidthInCharacters) { in =>
-        { availableWidthInCharacters =>
-          var result: Vector[(String, String)] = Vector.empty[(String, String)]
-          var index = 0
-          value foreach { element =>
-            result :+= (index.toString -> element.rendered(availableWidthInCharacters))
-            index += 1
-          }
+      render[T[A]](
+        value,
+        _.isEmpty,
+        _.size,
+        s"Array()",
+        typeName,
+        availableWidthInCharacters
+      ) {
+        in =>
+          { availableWidthInCharacters =>
+            var result: Vector[(String, String)] =
+              Vector.empty[(String, String)]
+            var index = 0
+            value foreach { element =>
+              result :+= (index.toString -> element.rendered(
+                availableWidthInCharacters
+              ))
+              index += 1
+            }
 
-          result
-        }
+            result
+          }
       }
     }
   }
 
-  implicit final def CollectionOpsFromSpells[A, T[A] <: java.util.Collection[A]](value: T[A])(implicit typeTag: TypeTag[T[A]], rendering: A => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any): CustomRendering = new CustomRendering {
-    override final def rendered(implicit availableWidthInCharacters: StringOpsModule#AvailableWidthInCharacters = SpellsConfig.terminal.WidthInCharacters.value): String = {
+  final implicit def CollectionOpsFromSpells[
+      A,
+      T[A] <: java.util.Collection[A]
+    ](
+      value: T[A]
+    )(
+      implicit
+      typeTag: TypeTag[T[A]],
+      rendering: A => CustomRenderingModule#CustomRendering =
+        CustomRendering.Defaults.Any
+    ): CustomRendering = new CustomRendering {
+    final override def rendered(
+        implicit
+        availableWidthInCharacters: StringOpsModule#AvailableWidthInCharacters =
+          SpellsConfig.terminal.WidthInCharacters.value
+      ): String = {
       lazy val className = value.decodedClassName
       lazy val typeName = typeTag.tpe.toString.withDecodedScalaSymbols
 
-      render[T[A]](value, _.isEmpty, _.size, s"$className()", typeName, availableWidthInCharacters) { in =>
-        { availableWidthInCharacters =>
-          var result: Vector[(String, String)] = Vector.empty[(String, String)]
-          var index = 0
-          val iterator = value.iterator
-          while (iterator.hasNext) {
-            val element = iterator.next
-            result :+= (index.toString -> element.rendered(availableWidthInCharacters))
-            index += 1
-          }
+      render[T[A]](
+        value,
+        _.isEmpty,
+        _.size,
+        s"$className()",
+        typeName,
+        availableWidthInCharacters
+      ) {
+        in =>
+          { availableWidthInCharacters =>
+            var result: Vector[(String, String)] =
+              Vector.empty[(String, String)]
+            var index = 0
+            val iterator = value.iterator
+            while (iterator.hasNext) {
+              val element = iterator.next
+              result :+= (index.toString -> element.rendered(
+                availableWidthInCharacters
+              ))
+              index += 1
+            }
 
-          result
-        }
+            result
+          }
       }
     }
   }
 
-  implicit final def JavaMapOpsFromSpells[Key, Value, T[Key, Value] <: java.util.Map[Key, Value]](value: T[Key, Value])(implicit typeTag: TypeTag[T[Key, Value]], rendering: java.util.Map.Entry[Key, Value] => CustomRenderingModule#CustomRendering = CustomRendering.Defaults.Any): CustomRendering = new CustomRendering {
-    override final def rendered(implicit availableWidthInCharacters: StringOpsModule#AvailableWidthInCharacters = SpellsConfig.terminal.WidthInCharacters.value): String = {
+  final implicit def JavaMapOpsFromSpells[
+      Key,
+      Value,
+      T[Key, Value] <: java.util.Map[Key, Value]
+    ](
+      value: T[Key, Value]
+    )(
+      implicit
+      typeTag: TypeTag[T[Key, Value]],
+      rendering: java.util.Map.Entry[Key, Value] => CustomRenderingModule#CustomRendering =
+        CustomRendering.Defaults.Any
+    ): CustomRendering = new CustomRendering {
+    final override def rendered(
+        implicit
+        availableWidthInCharacters: StringOpsModule#AvailableWidthInCharacters =
+          SpellsConfig.terminal.WidthInCharacters.value
+      ): String = {
       lazy val className = value.decodedClassName
       lazy val typeName = typeTag.tpe.toString.withDecodedScalaSymbols
 
-      render[java.util.Map[Key, Value]](value, _.isEmpty, _.size, s"$className()", typeName, availableWidthInCharacters) { in =>
-        { availableWidthInCharacters =>
-          var result: Vector[(String, String)] = Vector.empty[(String, String)]
-          var index = 0
-          val iterator = in.entrySet.iterator
-          while (iterator.hasNext) {
-            val element = iterator.next
-            result :+= (index.toString -> element.rendered(availableWidthInCharacters))
-            index += 1
-          }
+      render[java.util.Map[Key, Value]](
+        value,
+        _.isEmpty,
+        _.size,
+        s"$className()",
+        typeName,
+        availableWidthInCharacters
+      ) {
+        in =>
+          { availableWidthInCharacters =>
+            var result: Vector[(String, String)] =
+              Vector.empty[(String, String)]
+            var index = 0
+            val iterator = in.entrySet.iterator
+            while (iterator.hasNext) {
+              val element = iterator.next
+              result :+= (index.toString -> element.rendered(
+                availableWidthInCharacters
+              ))
+              index += 1
+            }
 
-          result
-        }
+            result
+          }
       }
     }
   }
 
-  private final def render[T](value: => T, isEmpty: T => Boolean, getSize: T => Int, emptyRendered: => String, typeName: => String, availableWidthInCharacters: Int)(pairs: T => Int => Seq[(String, String)]): String = {
+  final private def render[T](
+      value: => T,
+      isEmpty: T => Boolean,
+      getSize: T => Int,
+      emptyRendered: => String,
+      typeName: => String,
+      availableWidthInCharacters: Int
+    )(
+      pairs: T => Int => Seq[(String, String)]
+    ): String = {
     def nonEmptyRendered: String = {
       val size = getSize(value)
       val sizeString = if (size == 1) "1 element" else s"$size elements"
 
-      s"$typeName with $sizeString" + ":\n\n" + renderedTable(pairs(value), availableWidthInCharacters).mkString("\n")
+      s"$typeName with $sizeString" + ":\n\n" + renderedTable(
+        pairs(value),
+        availableWidthInCharacters
+      ).mkString("\n")
     }
 
     if (isEmpty(value)) emptyRendered else nonEmptyRendered
   }
 
-  private[spells] final def renderedTable(in: Int => Seq[(String, String)], availableWidthInCharacters: Int): Seq[String] = {
+  final private[spells] def renderedTable(
+      in: Int => Seq[(String, String)],
+      availableWidthInCharacters: Int
+    ): Seq[String] = {
     if (in(0).isEmpty) Seq.empty
     else {
       val sizeOfTheBiggestKey = in(0) map {
@@ -141,7 +286,9 @@ trait TraversableOpsModule {
             else {
               val subLines = wrappedValue.split("\n").toList
               val head = keyWithPadding + separator + subLines.head
-              (head :: subLines.tail.map(subLine => (" " * keyWithPadding.size) + separator + subLine)).mkString("\n")
+              (head :: subLines.tail.map(
+                subLine => (" " * keyWithPadding.size) + separator + subLine
+              )).mkString("\n")
             }
           }
 

@@ -14,7 +14,8 @@ trait AnsiModule {
     * @see https://en.wikipedia.org/wiki/ANSI_escape_code
     * @param style the `String` to convert
     */
-  implicit final class AnsiStyleBuilder(style: String) {
+  final implicit class AnsiStyleBuilder(style: String) {
+
     /** Converts ansi codes to `AnsiStyle`.
       * Understands human readable styles like "Green" or "Random".
       * @see https://en.wikipedia.org/wiki/ANSI_escape_code
@@ -31,7 +32,8 @@ trait AnsiModule {
       case "Untouched" => AnsiStyle.Reset
       case "White"     => AnsiStyle.White
       case "Yellow"    => AnsiStyle.Yellow
-      case _           => new AnsiStyle(Option(style).fold("")(_.replace("\\033", "\u001b")))
+      case _ =>
+        new AnsiStyle(Option(style).fold("")(_.replace("\\033", "\u001b")))
     }
   }
 
@@ -39,7 +41,7 @@ trait AnsiModule {
     * @param value the style to encode
     */
   final class AnsiStyle private[spells] (val value: String) {
-    override final def toString: String = value match {
+    final override def toString: String = value match {
       case AnsiStyle.Black.value   => "Black" in this
       case AnsiStyle.Blue.value    => "Blue" in this
       case AnsiStyle.Cyan.value    => "Cyan" in this
@@ -56,7 +58,8 @@ trait AnsiModule {
     * Also provides convenience methods like `green`, `yellow` etc.
     * @param input
     */
-  implicit final class AnsiString(val input: Any) {
+  final implicit class AnsiString(val input: Any) {
+
     /** Converts `Any` to `String` `in` `AnsiStyle`.
       * @param style the style to convert to
       * @return an Ansi encoded String.
@@ -82,13 +85,14 @@ trait AnsiModule {
   /** Provides out-of-the-box `AnsiStyle`s as well as a utility method to remove them.
     */
   object AnsiStyle {
-    private[spells] final val Sample: String = "sample"
+    final private[spells] val Sample: String = "sample"
 
     /** Removes `AnsiStyle`s from `String`s
       * @param input the `String` to remove `AnsiStyle` from
       * @return the `String` with the `removed` `AnsiStyle`
       */
-    final def removed(input: String): String = input.replaceAll(StylePrint.StyleOrReset, "")
+    final def removed(input: String): String =
+      input.replaceAll(StylePrint.StyleOrReset, "")
 
     final def Random: AnsiModule#AnsiStyle = All(util.Random.nextInt(All.size))
     final val Black: AnsiModule#AnsiStyle = Console.BLACK.toAnsiStyle

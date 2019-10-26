@@ -11,7 +11,12 @@ trait StylePrintModule {
     * @param input the object to print
     * @param style the style for the object to be printed in
     */
-  final def println(input: Any = "")(implicit style: AnsiModule#AnsiStyle = AnsiStyle.Reset): Unit = {
+  final def println(
+      input: Any = ""
+    )(
+      implicit
+      style: AnsiModule#AnsiStyle = AnsiStyle.Reset
+    ): Unit = {
     Console println styled(input)(style)
   }
 
@@ -19,7 +24,12 @@ trait StylePrintModule {
     * @param input the object to print; may be null
     * @param style the style for the object to be printed in
     */
-  final def print(input: Any = "")(implicit style: AnsiModule#AnsiStyle = AnsiStyle.Reset): Unit = {
+  final def print(
+      input: Any = ""
+    )(
+      implicit
+      style: AnsiModule#AnsiStyle = AnsiStyle.Reset
+    ): Unit = {
     Console print styled(input)(style)
   }
 
@@ -44,16 +54,27 @@ trait StylePrintModule {
     * @param style the style for the object to be printed in
     * @return the styled object as `String`
     */
-  final def styled(input: Any)(implicit style: AnsiModule#AnsiStyle = AnsiStyle.Reset): String = {
+  final def styled(
+      input: Any
+    )(
+      implicit
+      style: AnsiModule#AnsiStyle = AnsiStyle.Reset
+    ): String = {
     val rawValue = String valueOf input
 
-    if (!SpellsConfig.terminal.display.Styles.value || style == AnsiStyle.Reset) rawValue
+    if (!SpellsConfig.terminal.display.Styles.value || style == AnsiStyle.Reset)
+      rawValue
     else restyle(rawValue, style)
   }
 
-  private final def restyle(input: String, style: AnsiModule#AnsiStyle): String = input match {
-    case StylePrint.AnsiPattern(before, alreadyStyled, after) => restyle(before, style) + alreadyStyled + restyle(after, style)
-    case _ => if (input.isEmpty) input else style.value + input + AnsiStyle.Reset.value
+  final private def restyle(
+      input: String,
+      style: AnsiModule#AnsiStyle
+    ): String = input match {
+    case StylePrint.AnsiPattern(before, alreadyStyled, after) =>
+      restyle(before, style) + alreadyStyled + restyle(after, style)
+    case _ =>
+      if (input.isEmpty) input else style.value + input + AnsiStyle.Reset.value
   }
 
   object StylePrint {
@@ -64,6 +85,7 @@ trait StylePrintModule {
     val StyleOnly: String = """\033\[\d{2}m"""
     val StyleOrReset: String = """\033\[\d{1,2}m"""
 
-    val AnsiPattern: Regex = s"""($Multiline)($Anything)($StyleOnly$Anything$ResetOnly)($Anything)""".r
+    val AnsiPattern: Regex =
+      s"""($Multiline)($Anything)($StyleOnly$Anything$ResetOnly)($Anything)""".r
   }
 }
