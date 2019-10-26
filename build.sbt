@@ -19,17 +19,20 @@ lazy val spells = (project in file("."))
           |import scala.concurrent.duration._""".stripMargin,
     libraryDependencies ++= Dependencies(scalaVersion.value.toString),
     Compile / scalacOptions ++= {
-      if (`isScalaVersionSmallerThan 2.12`(SemVer(scalaVersion.value)))
-        Seq.empty[String]
-      else
-        Seq(
-          "-deprecation",
-          "-feature",
-          "-language:_",
-          "-Ypartial-unification",
-          "-Ywarn-unused:_",
-          "-Xfatal-warnings"
-        )
+      Seq(
+        "-deprecation",
+        "-feature",
+        "-language:_"
+      ) ++ {
+        if (`isScalaVersionSmallerThan 2.12`(SemVer(scalaVersion.value)))
+          Seq.empty
+        else
+          Seq(
+            "-Ypartial-unification",
+            "-Ywarn-unused:_",
+            "-Xfatal-warnings"
+          )
+      }
     },
     Test / scalacOptions --= Seq(
       "-Ywarn-unused:_",

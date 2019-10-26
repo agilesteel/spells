@@ -576,9 +576,9 @@ trait XrayModule {
     final private[spells] def calculateSizeOfTheBiggestKey(
         in: Int => Seq[(String, String)]
       ) =
-      in(0) map {
+      in(0).map {
         case (key, _) => AnsiStyle.removed(key).size
-      } max
+      }.max
 
     final private[spells] def fetchLastStyleBasedOnRegex(
         line: String,

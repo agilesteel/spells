@@ -9,7 +9,7 @@ object Dependencies extends (String => Seq[ModuleID]) {
     val config = {
       val configVersion: String =
         if (`isScalaVersionSmallerThan 2.12`(SemVer(scalaVersion))) "1.2.1"
-        else "1.3.3"
+        else "1.4.0"
 
       "com.typesafe" % "config" % configVersion
     }
@@ -19,7 +19,7 @@ object Dependencies extends (String => Seq[ModuleID]) {
         "org.pegdown" % "pegdown" % "1.6.0"
 
       val scalatest =
-        "org.scalatest" %% "scalatest" % "3.0.5"
+        "org.scalatest" %% "scalatest" % "3.0.8"
     }
 
     Seq(
