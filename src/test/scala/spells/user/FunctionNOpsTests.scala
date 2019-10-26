@@ -11,19 +11,278 @@ class FunctionNTests extends spells.UnitTestConfiguration {
     ((_: Int, _: Int, _: Int, _: Int, _: Int, _: Int) => "").rendered should include regex """\(.*Int, .*Int, .*Int, .*Int, .*Int, .*Int\) => .*String"""
     ((_: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int) => "").rendered should include regex """\(.*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int\) => .*String"""
     ((_: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int) => "").rendered should include regex """\(.*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int\) => .*String"""
-    ((_: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int) => "").rendered should include regex """\(.*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int\) => .*String"""
-    ((_: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int) => "").rendered should include regex """\(.*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int\) => .*String"""
-    ((_: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int) => "").rendered should include regex """\(.*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int\) => .*String"""
-    ((_: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int) => "").rendered should include regex """\(.*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int\) => .*String"""
-    ((_: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int) => "").rendered should include regex """\(.*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int\) => .*String"""
-    ((_: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int) => "").rendered should include regex """\(.*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int\) => .*String"""
-    ((_: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int) => "").rendered should include regex """\(.*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int\) => .*String"""
-    ((_: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int) => "").rendered should include regex """\(.*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int\) => .*String"""
-    ((_: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int) => "").rendered should include regex """\(.*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int\) => .*String"""
-    ((_: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int) => "").rendered should include regex """\(.*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int\) => .*String"""
-    ((_: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int) => "").rendered should include regex """\(.*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int\) => .*String"""
-    ((_: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int) => "").rendered should include regex """\(.*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int\) => .*String"""
-    ((_: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int) => "").rendered should include regex """\(.*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int\) => .*String"""
-    ((_: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int) => "").rendered should include regex """\(.*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int\) => .*String"""
+    (
+        (
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int
+        ) => ""
+    ).rendered should include regex """\(.*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int\) => .*String"""
+    (
+        (
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int
+        ) => ""
+    ).rendered should include regex """\(.*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int\) => .*String"""
+    (
+        (
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int
+        ) => ""
+    ).rendered should include regex """\(.*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int\) => .*String"""
+    (
+        (
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int
+        ) => ""
+    ).rendered should include regex """\(.*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int\) => .*String"""
+    (
+        (
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int
+        ) => ""
+    ).rendered should include regex """\(.*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int\) => .*String"""
+    (
+        (
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int
+        ) => ""
+    ).rendered should include regex """\(.*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int\) => .*String"""
+    (
+        (
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int
+        ) => ""
+    ).rendered should include regex """\(.*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int\) => .*String"""
+    (
+        (
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int
+        ) => ""
+    ).rendered should include regex """\(.*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int\) => .*String"""
+    (
+        (
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int
+        ) => ""
+    ).rendered should include regex """\(.*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int\) => .*String"""
+    (
+        (
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int
+        ) => ""
+    ).rendered should include regex """\(.*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int\) => .*String"""
+    (
+        (
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int
+        ) => ""
+    ).rendered should include regex """\(.*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int\) => .*String"""
+    (
+        (
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int
+        ) => ""
+    ).rendered should include regex """\(.*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int\) => .*String"""
+    (
+        (
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int
+        ) => ""
+    ).rendered should include regex """\(.*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int\) => .*String"""
+    (
+        (
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int,
+            _: Int
+        ) => ""
+    ).rendered should include regex """\(.*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int, .*Int\) => .*String"""
   }
 }

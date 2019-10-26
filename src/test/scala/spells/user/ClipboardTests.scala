@@ -10,6 +10,7 @@ class ClipboardTests extends spells.UnitTestConfiguration {
 
   private def isolated(code: => Unit): Unit = {
     val currentClipboardContent = Clipboard.readString
-    try code finally currentClipboardContent foreach Clipboard.writeString
+    try code
+    finally currentClipboardContent foreach Clipboard.writeString
   }
 }

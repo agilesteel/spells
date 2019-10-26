@@ -44,7 +44,9 @@ class XrayTests extends spells.UnitTestConfiguration {
   }
 
   private def assert(sample: String) =
-    xrayed(sample).stackTraceElement should be(currentLineStackTraceElement(increaseStackTraceDepthBy = 1)) // dodgy
+    xrayed(sample).stackTraceElement should be(
+      currentLineStackTraceElement(increaseStackTraceDepthBy = 1)
+    ) // dodgy
 
   test("""It should be possible to implicitly pass in styles to xrayed""") {
     implicit val color = Yellow
@@ -63,13 +65,17 @@ class XrayTests extends spells.UnitTestConfiguration {
     }
   }
 
-  test("It should not be possible to implicitly pass in descriptions of type String to xrayed") {
+  test(
+    "It should not be possible to implicitly pass in descriptions of type String to xrayed"
+  ) {
     implicit val description: String = "description"
 
     xrayed("value").description should be(Xray.Defaults.Description.toString)
   }
 
-  test("It should not be possible to implicitly pass in descriptions of type String to xrat") {
+  test(
+    "It should not be possible to implicitly pass in descriptions of type String to xrat"
+  ) {
     implicit val description: String = "description"
 
     SilentOutputStream out {
@@ -80,13 +86,17 @@ class XrayTests extends spells.UnitTestConfiguration {
     }
   }
 
-  test("It should be possible to explicitly pass in descriptions of type String to xrayed") {
+  test(
+    "It should be possible to explicitly pass in descriptions of type String to xrayed"
+  ) {
     val description: String = "description"
 
     xrayed("value", description).description should be(description)
   }
 
-  test("It should be possible to explicitly pass in descriptions of type String to xray") {
+  test(
+    "It should be possible to explicitly pass in descriptions of type String to xray"
+  ) {
     val description: String = "description"
 
     SilentOutputStream out {
@@ -97,14 +107,18 @@ class XrayTests extends spells.UnitTestConfiguration {
     }
   }
 
-  test("It should be possible to mix explicitly specified descriptions with implicitly specified styles for xrayed") {
+  test(
+    "It should be possible to mix explicitly specified descriptions with implicitly specified styles for xrayed"
+  ) {
     implicit val color = Cyan
     val description: String = "description"
 
     xrayed("value", description).description should be(description)
   }
 
-  test("It should be possible to mix explicitly specified descriptions with implicitly specified styles for xray") {
+  test(
+    "It should be possible to mix explicitly specified descriptions with implicitly specified styles for xray"
+  ) {
     implicit val color = Cyan
     val description: String = "description"
 
@@ -122,6 +136,6 @@ class XrayTests extends spells.UnitTestConfiguration {
 trait MonitoringEnvironement {
   val input = 4711
   var wasMonitorCalled = false
-  implicit def monitor[T](report: spells.XrayModule#XrayReport[T]): Unit = wasMonitorCalled = true
+  implicit def monitor[T](report: spells.XrayModule#XrayReport[T]): Unit =
+    wasMonitorCalled = true
 }
-

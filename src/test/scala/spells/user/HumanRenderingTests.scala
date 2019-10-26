@@ -1,7 +1,9 @@
 package spells.user
 
 class HumanRenderingTests extends spells.UnitTestConfiguration {
-  test("""It should be possible to call render on a byte, short, int, long, and scala.concurrent.duration""") {
+  test(
+    """It should be possible to call render on a byte, short, int, long, and scala.concurrent.duration"""
+  ) {
     (1: Byte).render should be(Rendering(1))
     (1: Short).render should be(Rendering(1))
     1.render should be(Rendering(1))
@@ -69,7 +71,9 @@ class HumanRenderingTests extends spells.UnitTestConfiguration {
     -2.render.duration.just.years should be("-2 years")
   }
 
-  test("""It should be possible to render human readble durations from months""") {
+  test(
+    """It should be possible to render human readble durations from months"""
+  ) {
     0.render.duration.months should be("0 months")
     1.render.duration.months should be("1 month")
     -1.render.duration.months should be("-1 months")
@@ -123,7 +127,9 @@ class HumanRenderingTests extends spells.UnitTestConfiguration {
     over(upperBound * 2).render.duration.hours should be("2 days 1 hour")
   }
 
-  test("""It should be possible to render human readble durations from minutes""") {
+  test(
+    """It should be possible to render human readble durations from minutes"""
+  ) {
     0.render.duration.minutes should be("0 minutes")
     1.render.duration.minutes should be("1 minute")
 
@@ -144,10 +150,14 @@ class HumanRenderingTests extends spells.UnitTestConfiguration {
 
     under(upperBoundPower).render.duration.minutes should be("1 day 59 minutes")
     upperBoundPower.render.duration.minutes should be("1 day 1 hour")
-    over(upperBoundPower).render.duration.minutes should be("1 day 1 hour 1 minute")
+    over(upperBoundPower).render.duration.minutes should be(
+      "1 day 1 hour 1 minute"
+    )
   }
 
-  test("""It should be possible to render human readble durations from seconds""") {
+  test(
+    """It should be possible to render human readble durations from seconds"""
+  ) {
     0.render.duration.seconds should be("0 seconds")
     1.render.duration.seconds should be("1 second")
 
@@ -159,57 +169,105 @@ class HumanRenderingTests extends spells.UnitTestConfiguration {
     upperBound.render.duration.seconds should be("1 minute")
     over(upperBound).render.duration.seconds should be("1 minute 1 second")
 
-    under(upperBound * 2).render.duration.seconds should be("1 minute 59 seconds")
+    under(upperBound * 2).render.duration.seconds should be(
+      "1 minute 59 seconds"
+    )
     (upperBound * 2).render.duration.seconds should be("2 minutes")
     over(upperBound * 2).render.duration.seconds should be("2 minutes 1 second")
 
     val previousUpperBound = 60
     val upperBoundPower = upperBound * previousUpperBound + upperBound
 
-    under(upperBoundPower).render.duration.seconds should be("1 hour 59 seconds")
+    under(upperBoundPower).render.duration.seconds should be(
+      "1 hour 59 seconds"
+    )
     upperBoundPower.render.duration.seconds should be("1 hour 1 minute")
-    over(upperBoundPower).render.duration.seconds should be("1 hour 1 minute 1 second")
+    over(upperBoundPower).render.duration.seconds should be(
+      "1 hour 1 minute 1 second"
+    )
 
     val previousUpperBoundPower = 24
     val upperBoundPowerPower = upperBound * previousUpperBound * previousUpperBoundPower + upperBoundPower
 
-    under(upperBoundPowerPower).render.duration.seconds should be("1 day 1 hour 59 seconds")
-    upperBoundPowerPower.render.duration.seconds should be("1 day 1 hour 1 minute")
-    over(upperBoundPowerPower).render.duration.seconds should be("1 day 1 hour 1 minute 1 second")
+    under(upperBoundPowerPower).render.duration.seconds should be(
+      "1 day 1 hour 59 seconds"
+    )
+    upperBoundPowerPower.render.duration.seconds should be(
+      "1 day 1 hour 1 minute"
+    )
+    over(upperBoundPowerPower).render.duration.seconds should be(
+      "1 day 1 hour 1 minute 1 second"
+    )
   }
 
-  test("""It should be possible to render human readble durations from nanoseconds""") {
+  test(
+    """It should be possible to render human readble durations from nanoseconds"""
+  ) {
     0.render.duration.nanoseconds should be("0 nanoseconds")
     1.render.duration.nanoseconds should be("1 nanosecond")
 
     val upperBound = 1000000
 
-    (-under(upperBound)).render.duration.nanoseconds should be("-999999 nanoseconds")
-    (-over(upperBound)).render.duration.nanoseconds should be("-1 milliseconds 1 nanosecond")
-    under(upperBound).render.duration.nanoseconds should be("999999 nanoseconds")
+    (-under(upperBound)).render.duration.nanoseconds should be(
+      "-999999 nanoseconds"
+    )
+    (-over(upperBound)).render.duration.nanoseconds should be(
+      "-1 milliseconds 1 nanosecond"
+    )
+    under(upperBound).render.duration.nanoseconds should be(
+      "999999 nanoseconds"
+    )
     upperBound.render.duration.nanoseconds should be("1 millisecond")
-    over(upperBound).render.duration.nanoseconds should be("1 millisecond 1 nanosecond")
+    over(upperBound).render.duration.nanoseconds should be(
+      "1 millisecond 1 nanosecond"
+    )
 
-    under(upperBound * 2).render.duration.nanoseconds should be("1 millisecond 999999 nanoseconds")
+    under(upperBound * 2).render.duration.nanoseconds should be(
+      "1 millisecond 999999 nanoseconds"
+    )
     (upperBound * 2).render.duration.nanoseconds should be("2 milliseconds")
-    over(upperBound * 2).render.duration.nanoseconds should be("2 milliseconds 1 nanosecond")
+    over(upperBound * 2).render.duration.nanoseconds should be(
+      "2 milliseconds 1 nanosecond"
+    )
 
     val previousUpperBound = 1000
     val upperBoundPower = upperBound * previousUpperBound + upperBound
 
-    under(upperBoundPower).render.duration.nanoseconds should be("1 second 999999 nanoseconds")
-    upperBoundPower.render.duration.nanoseconds should be("1 second 1 millisecond")
-    over(upperBoundPower).render.duration.nanoseconds should be("1 second 1 millisecond 1 nanosecond")
+    under(upperBoundPower).render.duration.nanoseconds should be(
+      "1 second 999999 nanoseconds"
+    )
+    upperBoundPower.render.duration.nanoseconds should be(
+      "1 second 1 millisecond"
+    )
+    over(upperBoundPower).render.duration.nanoseconds should be(
+      "1 second 1 millisecond 1 nanosecond"
+    )
   }
 
-  test("""Long.MinValue should not cause any problems when rendering durations""") {
-    Long.MinValue.render.duration.months should be("-768614336404564650 years 8 months")
-    Long.MinValue.render.duration.days should be("-1317624576693539401 weeks 1 day")
-    Long.MinValue.render.duration.hours should be("-54901024028897475 weeks 8 hours")
-    Long.MinValue.render.duration.minutes should be("-915017067148291 weeks 1 day 18 hours 8 minutes")
-    Long.MinValue.render.duration.seconds should be("-15250284452471 weeks 3 days 15 hours 30 minutes 8 seconds")
-    Long.MinValue.render.duration.milliseconds should be("-15250284452 weeks 3 days 7 hours 12 minutes 55 seconds 808 milliseconds")
-    Long.MinValue.render.duration.nanoseconds should be("-15250 weeks 1 day 23 hours 47 minutes 16 seconds 854 milliseconds 775808 nanoseconds")
+  test(
+    """Long.MinValue should not cause any problems when rendering durations"""
+  ) {
+    Long.MinValue.render.duration.months should be(
+      "-768614336404564650 years 8 months"
+    )
+    Long.MinValue.render.duration.days should be(
+      "-1317624576693539401 weeks 1 day"
+    )
+    Long.MinValue.render.duration.hours should be(
+      "-54901024028897475 weeks 8 hours"
+    )
+    Long.MinValue.render.duration.minutes should be(
+      "-915017067148291 weeks 1 day 18 hours 8 minutes"
+    )
+    Long.MinValue.render.duration.seconds should be(
+      "-15250284452471 weeks 3 days 15 hours 30 minutes 8 seconds"
+    )
+    Long.MinValue.render.duration.milliseconds should be(
+      "-15250284452 weeks 3 days 7 hours 12 minutes 55 seconds 808 milliseconds"
+    )
+    Long.MinValue.render.duration.nanoseconds should be(
+      "-15250 weeks 1 day 23 hours 47 minutes 16 seconds 854 milliseconds 775808 nanoseconds"
+    )
   }
 
   private def under(bound: Long): Long = bound - 1

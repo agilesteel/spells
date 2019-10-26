@@ -22,7 +22,7 @@ trait StringOpsModule {
       try scala.reflect.NameTransformer decode input
       catch {
         // $COVERAGE-OFF$
-        case bug: Exception => input
+        case _: Exception => input
         // $COVERAGE-ON$
       }
 

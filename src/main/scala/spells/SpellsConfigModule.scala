@@ -18,9 +18,9 @@ trait SpellsConfigModule
 
     object terminal {
       object WidthInCharacters extends LocationAwareProperty[Int] {
-        override def isValid(in: Int): Boolean = in >= 0
-        override def customValidationErrorMessage(in: Int): String =
-          s"${location.yellow} must be ${">= 0".yellow}"
+        final override val isValid: Int => Boolean = _ >= 0
+        final override val customValidationErrorMessage: Int => String =
+          _ => s"${location.yellow} must be ${">= 0".yellow}"
       }
 
       object display {

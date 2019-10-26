@@ -38,7 +38,7 @@ trait TraversableOpsModule {
         typeName,
         availableWidthInCharacters
       ) {
-        in =>
+        _ =>
           { availableWidthInCharacters =>
             var result: Vector[(String, String)] =
               Vector.empty[(String, String)]
@@ -83,7 +83,7 @@ trait TraversableOpsModule {
         typeName,
         availableWidthInCharacters
       ) {
-        in =>
+        _ =>
           { availableWidthInCharacters =>
             var result: Vector[(String, String)] =
               Vector.empty[(String, String)]
@@ -124,7 +124,7 @@ trait TraversableOpsModule {
         typeName,
         availableWidthInCharacters
       ) {
-        in =>
+        _ =>
           { availableWidthInCharacters =>
             var result: Vector[(String, String)] =
               Vector.empty[(String, String)]
@@ -169,7 +169,7 @@ trait TraversableOpsModule {
         typeName,
         availableWidthInCharacters
       ) {
-        in =>
+        _ =>
           { availableWidthInCharacters =>
             var result: Vector[(String, String)] =
               Vector.empty[(String, String)]

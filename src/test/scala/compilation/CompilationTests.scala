@@ -27,7 +27,11 @@ class CompilationTests extends spells.UnitTestConfiguration {
     new java.util.HashMap[Any, Any].rendered
 
     object CR extends CustomRendering {
-      override final def rendered(implicit availableWidthInCharacters: spells.StringOpsModule#AvailableWidthInCharacters = SpellsConfig.terminal.WidthInCharacters.value): String = ???
+      final override def rendered(
+          implicit
+          availableWidthInCharacters: spells.StringOpsModule#AvailableWidthInCharacters =
+            SpellsConfig.terminal.WidthInCharacters.value
+        ): String = ???
     }
 
     "".wrappedOnSpaces

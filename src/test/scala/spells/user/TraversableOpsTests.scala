@@ -4,18 +4,26 @@ import scala.reflect.runtime.universe._
 
 class TraversableOpsTests extends spells.UnitTestConfiguration {
   test("Empty traversables should be rendered the same way as toString") {
-    Traversable.empty[Int].rendered should be(Traversable.empty[String].toString)
+    Traversable.empty[Int].rendered should be(
+      Traversable.empty[String].toString
+    )
   }
 
-  test("Empty arrays should be rendered the same way as empty scala collections") {
+  test(
+    "Empty arrays should be rendered the same way as empty scala collections"
+  ) {
     Array.empty[Int].rendered should be("Array()")
   }
 
-  test("Empty java collections should be rendered the same way as scala collections, but prefixed with a full class name") {
+  test(
+    "Empty java collections should be rendered the same way as scala collections, but prefixed with a full class name"
+  ) {
     new java.util.HashSet[String].rendered should be("java.util.HashSet()")
   }
 
-  test("Empty java maps should be rendered the same way as scala collections, but prefixed with a full class name") {
+  test(
+    "Empty java maps should be rendered the same way as scala collections, but prefixed with a full class name"
+  ) {
     new java.util.HashMap[String, Int].rendered should be("java.util.HashMap()")
   }
 
@@ -27,7 +35,9 @@ class TraversableOpsTests extends spells.UnitTestConfiguration {
     Traversable(1).rendered should not include "elements"
   }
 
-  test("A traversable with multiple elements should contain the word 'elements'") {
+  test(
+    "A traversable with multiple elements should contain the word 'elements'"
+  ) {
     Traversable(1, 2).rendered should include("elements")
   }
 
@@ -36,12 +46,18 @@ class TraversableOpsTests extends spells.UnitTestConfiguration {
     Traversable("").rendered should include regex "[.*String]"
   }
 
-  test("A traversable header should contain the class of the traversable parameterised with the type of its elements as well the number of elements the traversable contains") {
+  test(
+    "A traversable header should contain the class of the traversable parameterised with the type of its elements as well the number of elements the traversable contains"
+  ) {
     val tag = typeTag[Int]
-    Traversable(1).rendered should include(s"Traversable[${tag.tpe}] with 1 element:\n\n")
+    Traversable(1).rendered should include(
+      s"Traversable[${tag.tpe}] with 1 element:\n\n"
+    )
   }
 
-  test("An array header should contain the class word Array parameterised with the type of its elements as well the number of elements the traversable contains") {
+  test(
+    "An array header should contain the class word Array parameterised with the type of its elements as well the number of elements the traversable contains"
+  ) {
     val tag = typeTag[Int]
     Array(1).rendered should include(s"Array[${tag.tpe}] with 1 element:\n\n")
   }
@@ -76,8 +92,11 @@ class TraversableOpsTests extends spells.UnitTestConfiguration {
     actual should include("  │ 2 │ III" + "\n")
   }
 
-  test("Recursive renderng for traversables should include recursive line wrapping") {
-    val availableWidthInCharacters = SpellsConfig.terminal.WidthInCharacters.value
+  test(
+    "Recursive renderng for traversables should include recursive line wrapping"
+  ) {
+    val availableWidthInCharacters =
+      SpellsConfig.terminal.WidthInCharacters.value
     val sizeOfKeyWithSeparator = 8
 
     def atom(c: Char): String =
@@ -182,21 +201,27 @@ class TraversableOpsTests extends spells.UnitTestConfiguration {
   }
 
   test("If values are of the same length all lines should have equal size") {
-    val table = renderedTable(_ => Seq("I" -> "foo", "II" -> "bar"), availableWidthInCharacters = Int.MaxValue)
+    val table = renderedTable(
+      _ => Seq("I" -> "foo", "II" -> "bar"),
+      availableWidthInCharacters = Int.MaxValue
+    )
     val sizes = table.map(_.size)
     sizes.forall(_ == sizes.head) should be(true)
   }
 
   test("Lines should be wrapped") {
-    val availableWidthInCharacters = SpellsConfig.terminal.WidthInCharacters.value
+    val availableWidthInCharacters =
+      SpellsConfig.terminal.WidthInCharacters.value
     val sizeOfKeyWithSeparator = 4
-    def atom(c: Char) = c.toString * (availableWidthInCharacters - sizeOfKeyWithSeparator)
+    def atom(c: Char) =
+      c.toString * (availableWidthInCharacters - sizeOfKeyWithSeparator)
     val toBeSpliced = atom('x') + " " + atom('y')
-    val table = renderedTable(_ => Seq("I" -> toBeSpliced), availableWidthInCharacters)
+    val table =
+      renderedTable(_ => Seq("I" -> toBeSpliced), availableWidthInCharacters)
 
     table should be {
       Vector(
-      // format: OFF
+        // format: OFF
         "I │ " + atom('x') + "\n" +
         "  │ " + atom('y')
       // format: ON
@@ -204,7 +229,12 @@ class TraversableOpsTests extends spells.UnitTestConfiguration {
     }
   }
 
-  test("The renderedTable helper method should yield an empty Seq when given an empty input") {
-    renderedTable(_ => Seq.empty, availableWidthInCharacters = util.Random.nextInt) should be(Vector.empty[String])
+  test(
+    "The renderedTable helper method should yield an empty Seq when given an empty input"
+  ) {
+    renderedTable(
+      _ => Seq.empty,
+      availableWidthInCharacters = util.Random.nextInt
+    ) should be(Vector.empty[String])
   }
 }

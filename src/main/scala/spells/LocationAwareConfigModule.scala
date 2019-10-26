@@ -24,12 +24,15 @@ private[spells] trait LocationAwareConfigModule {
   final implicit private[spells] def locationAwarePropertyToBoolean(
       property: LocationAwarePropertyModule#LocationAwareProperty[Boolean]
     ): Boolean =
-    locationAwarePropertyTo(property, spellsConfig getBoolean property.location)
+    locationAwarePropertyTo(
+      property,
+      spellsConfig.getBoolean(property.location)
+    )
 
   final implicit private[spells] def locationAwarePropertyToInt(
       property: LocationAwarePropertyModule#LocationAwareProperty[Int]
     ): Int =
-    locationAwarePropertyTo(property, spellsConfig getInt property.location)
+    locationAwarePropertyTo(property, spellsConfig.getInt(property.location))
 
   final implicit private[spells] def locationAwarePropertyToString(
       property: LocationAwarePropertyModule#LocationAwareProperty[List[String]]
@@ -47,7 +50,7 @@ private[spells] trait LocationAwareConfigModule {
     ): AnsiModule#AnsiStyle =
     locationAwarePropertyTo(
       property,
-      spellsConfig getString property.location toAnsiStyle
+      spellsConfig.getString(property.location).toAnsiStyle
     )
 
   private[spells] def locationAwarePropertyTo[T](

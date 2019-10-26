@@ -11,7 +11,8 @@ class Tuple2OpsTests extends spells.UnitTestConfiguration {
   }
 
   test("Do not fiddle with anything if simple rendering fits into one line") {
-    val availableWidthInCharacters = SpellsConfig.terminal.WidthInCharacters.value
+    val availableWidthInCharacters =
+      SpellsConfig.terminal.WidthInCharacters.value
     val separatorWithSpacesWidthInCharacters = 4
     val equalSize = (availableWidthInCharacters / 2) - (separatorWithSpacesWidthInCharacters / 2)
     val key = "x" * equalSize
@@ -20,7 +21,9 @@ class Tuple2OpsTests extends spells.UnitTestConfiguration {
     (key.cyan -> value.blue).rendered should be(s"${key.cyan} -> ${value.blue}")
   }
 
-  test("Multiline value should cause the value to start on the next line after the key. The separator should always stay on the last line of the key. Value is padded with 2 white spaces") {
+  test(
+    "Multiline value should cause the value to start on the next line after the key. The separator should always stay on the last line of the key. Value is padded with 2 white spaces"
+  ) {
     val key = "key"
     val value = "first\nsecond"
 
@@ -31,8 +34,11 @@ class Tuple2OpsTests extends spells.UnitTestConfiguration {
     }
   }
 
-  test("Multiline value should cause the value to start on the next line after the key. The separator should always stay on the last line of the key even if the key has to be rewrapped. Value is padded with 2 white spaces") {
-    val availableWidthInCharacters = SpellsConfig.terminal.WidthInCharacters.value
+  test(
+    "Multiline value should cause the value to start on the next line after the key. The separator should always stay on the last line of the key even if the key has to be rewrapped. Value is padded with 2 white spaces"
+  ) {
+    val availableWidthInCharacters =
+      SpellsConfig.terminal.WidthInCharacters.value
     val separatorWidthIfItIsOnLastLine = 3
     val firstHalf = "x " * (availableWidthInCharacters / 2)
     val secondHalf = "y " * (availableWidthInCharacters / 2)
@@ -48,7 +54,9 @@ class Tuple2OpsTests extends spells.UnitTestConfiguration {
     }
   }
 
-  test("Singleline value should be added to the same line as the last line of key if it fits") {
+  test(
+    "Singleline value should be added to the same line as the last line of key if it fits"
+  ) {
     val availableWidthInCharacters = 15
     val key = "first\nsecond"
     val value = "value"
@@ -58,7 +66,9 @@ class Tuple2OpsTests extends spells.UnitTestConfiguration {
     }
   }
 
-  test("Singleline value should be treated as multiline if it does not fir into the last line of the key") {
+  test(
+    "Singleline value should be treated as multiline if it does not fir into the last line of the key"
+  ) {
     val availableWidthInCharacters = 15
     val key = "first\nsecond"
     val value = "valueTOOMUCH"

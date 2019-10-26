@@ -15,12 +15,16 @@ class AnsiTests extends spells.UnitTestConfiguration {
     (null: String).toAnsiStyle.value should be(new AnsiStyle("").value)
   }
 
-  test(""""green" in customStyle should be(customStyle.value + "green" + Reset.value)""") {
+  test(
+    """"green" in customStyle should be(customStyle.value + "green" + Reset.value)"""
+  ) {
     val customStyle = "style".toAnsiStyle
     "green" in customStyle should be(customStyle.value + "green" + Reset.value)
   }
 
-  test("""The toAnsiStyle method should handle human capitalised readable colors""") {
+  test(
+    """The toAnsiStyle method should handle human capitalised readable colors"""
+  ) {
     "Untouched".toAnsiStyle.value should be(Reset.value)
     "Black".toAnsiStyle.value should be(Black.value)
     "Red".toAnsiStyle.value should be(Red.value)

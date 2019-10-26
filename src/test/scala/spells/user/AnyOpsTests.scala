@@ -1,15 +1,23 @@
 package spells.user
 
 class AnyOpsTests extends spells.UnitTestConfiguration {
-  test("sample.decodedSimpleClassName should be(sample.getClass.getSimpleName.withDecodedScalaSymbols)") {
+  test(
+    "sample.decodedSimpleClassName should be(sample.getClass.getSimpleName.withDecodedScalaSymbols)"
+  ) {
     forEvery(samples) { sample =>
-      sample.decodedSimpleClassName should be(sample.getClass.getSimpleName.withDecodedScalaSymbols)
+      sample.decodedSimpleClassName should be(
+        sample.getClass.getSimpleName.withDecodedScalaSymbols
+      )
     }
   }
 
-  test("sample.decodedClassName should be(sample.getClass.getName.withDecodedScalaSymbols)") {
+  test(
+    "sample.decodedClassName should be(sample.getClass.getName.withDecodedScalaSymbols)"
+  ) {
     forEvery(samples) { sample =>
-      sample.decodedClassName should be(sample.getClass.getName.withDecodedScalaSymbols)
+      sample.decodedClassName should be(
+        sample.getClass.getName.withDecodedScalaSymbols
+      )
     }
   }
 

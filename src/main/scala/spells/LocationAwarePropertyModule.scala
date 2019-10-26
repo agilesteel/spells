@@ -8,7 +8,7 @@ private[spells] trait LocationAwarePropertyModule {
       materialised: (LocationAwareProperty[T] => T)) {
     final lazy val value: T = materialised(this)
 
-    def isValid(in: T): Boolean = true
+    def isValid: T => Boolean = _ => true
     def validationErrorMessage(in: T): String =
       styled {
         val errorMessage =
@@ -19,7 +19,7 @@ private[spells] trait LocationAwarePropertyModule {
         else errorMessage + ": " + customErrorMessage
       }(AnsiStyle.Red)
 
-    def customValidationErrorMessage(in: T): String = ""
+    def customValidationErrorMessage: T => String = _ => ""
 
     final lazy val location: String =
       scala.reflect.NameTransformer

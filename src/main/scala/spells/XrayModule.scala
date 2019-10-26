@@ -46,7 +46,7 @@ trait XrayModule {
   final def xrayed[T](
       expression: => T,
       description: XrayModule#Description = Xray.Defaults.Description,
-      increaseStackTraceDepthBy: Int = 0
+      increaseStackTraceDepthBy: Int = Xray.Defaults.StackTraceDepthOffset
     )(
       implicit
       typeTag: TypeTag[T],
@@ -59,7 +59,7 @@ trait XrayModule {
     val (value, duration) = measureExecutionTime(expression)
 
     val stackTraceElement = currentLineStackTraceElement(
-      Xray.Defaults.StackTraceDepthOffset
+      increaseStackTraceDepthBy
     )
 
     new XrayReport(
@@ -87,7 +87,7 @@ trait XrayModule {
   final def xrayedWeak[T](
       expression: => T,
       description: XrayModule#Description = Xray.Defaults.Description,
-      increaseStackTraceDepthBy: Int = 0
+      increaseStackTraceDepthBy: Int = Xray.Defaults.StackTraceDepthOffset
     )(
       implicit
       style: AnsiModule#AnsiStyle = AnsiStyle.Reset
@@ -97,7 +97,7 @@ trait XrayModule {
     val (value, duration) = measureExecutionTime(expression)
 
     val stackTraceElement = currentLineStackTraceElement(
-      Xray.Defaults.StackTraceDepthOffset
+      increaseStackTraceDepthBy
     )
 
     new XrayReport(
