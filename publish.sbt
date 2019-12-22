@@ -21,16 +21,18 @@ publishTo := {
   }
 }.value
 
-pomExtra := {
-  <scm>
-      <url>git@github.com:agilesteel/spells.git</url>
-      <connection>scm:git:git@github.com:agilesteel/spells.git</connection>
-    </scm>
-    <developers>
-      <developer>
-        <id>agilesteel</id>
-        <name>Vladyslav Pekker</name>
-        <url>https://devinsideyou.com</url>
-      </developer>
-    </developers>
-}
+scmInfo := Some(
+  ScmInfo(
+    url("https://github.com/agilesteel/spells"),
+    "scm:git:git@github.com:agilesteel/spells.git"
+  )
+)
+
+developers := List(
+  Developer(
+    id = "agilesteel",
+    name = "Vladyslav Pekker",
+    email = "agilesteel@gmail.com",
+    url = url("http://about.me/agilesteel")
+  )
+)

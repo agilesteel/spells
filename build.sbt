@@ -6,7 +6,7 @@ lazy val spells =
     .settings(
       name := "spells",
       organization := "com.github.agilesteel",
-      version := "2.2.0",
+      version := "2.2.1",
       scalaVersion := "2.13.1",
       homepage := Some(url("https://agilesteel.github.io/spells/")),
       startYear := some(2012),
