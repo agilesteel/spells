@@ -1,4 +1,4 @@
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.agilesteel/spells_2.12/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.agilesteel/spells_2.12)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.agilesteel/spells_2.13/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.agilesteel/spells_2.13)
 [![License](http://img.shields.io/:license-Apache%202-brightgreen.svg)](http://www.apache.org/licenses/LICENSE-2.0.txt)
 [![Build Status](https://travis-ci.org/agilesteel/spells.svg?branch=master)](https://travis-ci.org/agilesteel/spells)
 [![Coverage Status](https://img.shields.io/coveralls/agilesteel/spells.svg)](https://coveralls.io/r/agilesteel/spells)
@@ -7,6 +7,9 @@
 ### Releases
 
 ```scala
+libraryDependencies += "com.github.agilesteel" %% "spells" % "2.2.1"
+
+ // for Scala version below 2.13 use:
 libraryDependencies += "com.github.agilesteel" %% "spells" % "2.2.0"
 ```
 
