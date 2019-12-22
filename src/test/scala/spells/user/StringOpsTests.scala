@@ -19,7 +19,7 @@ class StringOpsTests extends spells.UnitTestConfiguration {
   }
 
   test("Dodgy strings should not cause any trouble") {
-    "".wrappedOnSpaces(Limit) should be('empty)
+    "".wrappedOnSpaces(Limit).isEmpty shouldBe true
     " ".wrappedOnSpaces(Limit) should be(" ")
     "\n".wrappedOnSpaces(Limit) should be("\n")
   }

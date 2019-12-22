@@ -6,6 +6,9 @@ object Dependencies extends (String => Seq[ModuleID]) {
   def apply(scalaVersion: String): Seq[ModuleID] = {
     val `scala-reflect` = "org.scala-lang" % "scala-reflect" % scalaVersion
 
+    val `scala-collection-compat` =
+      "org.scala-lang.modules" %% "scala-collection-compat" % "2.1.2"
+
     val config = {
       val configVersion: String =
         if (`isScalaVersionSmallerThan 2.12`(SemVer(scalaVersion))) "1.2.1"
@@ -23,6 +26,7 @@ object Dependencies extends (String => Seq[ModuleID]) {
     }
 
     Seq(
+      `scala-collection-compat`,
       `scala-reflect`,
       config,
       Test.pegdown % sbt.Test,

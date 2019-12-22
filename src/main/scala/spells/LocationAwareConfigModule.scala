@@ -3,7 +3,7 @@ package spells
 private[spells] trait LocationAwareConfigModule {
   this: AnsiModule =>
 
-  import scala.collection.JavaConverters._
+  import scala.jdk.CollectionConverters._
 
   import com.typesafe.config.Config
   import com.typesafe.config.ConfigFactory._

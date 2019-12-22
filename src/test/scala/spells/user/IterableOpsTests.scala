@@ -2,10 +2,10 @@ package spells.user
 
 import scala.reflect.runtime.universe._
 
-class TraversableOpsTests extends spells.UnitTestConfiguration {
-  test("Empty traversables should be rendered the same way as toString") {
-    Traversable.empty[Int].rendered should be(
-      Traversable.empty[String].toString
+class IterableOpsTests extends spells.UnitTestConfiguration {
+  test("Empty iterables should be rendered the same way as toString") {
+    Iterable.empty[Int].rendered should be(
+      Iterable.empty[String].toString
     )
   }
 
@@ -27,42 +27,42 @@ class TraversableOpsTests extends spells.UnitTestConfiguration {
     new java.util.HashMap[String, Int].rendered should be("java.util.HashMap()")
   }
 
-  test("A traversable with 1 element should contain the word 'element'") {
-    Traversable(1).rendered should include("element")
+  test("A iterable with 1 element should contain the word 'element'") {
+    Iterable(1).rendered should include("element")
   }
 
-  test("A traversable with 1 element should not contain the word 'elements'") {
-    Traversable(1).rendered should not include "elements"
+  test("A iterable with 1 element should not contain the word 'elements'") {
+    Iterable(1).rendered should not include "elements"
   }
 
   test(
-    "A traversable with multiple elements should contain the word 'elements'"
+    "A iterable with multiple elements should contain the word 'elements'"
   ) {
-    Traversable(1, 2).rendered should include("elements")
+    Iterable(1, 2).rendered should include("elements")
   }
 
-  test("A traversable with 1 element should contain the type") {
-    Traversable(1).rendered should include regex "[.*Int]"
-    Traversable("").rendered should include regex "[.*String]"
+  test("A iterable with 1 element should contain the type") {
+    Iterable(1).rendered should include regex "[.*Int]"
+    Iterable("").rendered should include regex "[.*String]"
   }
 
   test(
-    "A traversable header should contain the class of the traversable parameterised with the type of its elements as well the number of elements the traversable contains"
+    "A iterable header should contain the class of the iterable parameterised with the type of its elements as well the number of elements the iterable contains"
   ) {
     val tag = typeTag[Int]
-    Traversable(1).rendered should include(
-      s"Traversable[${tag.tpe}] with 1 element:\n\n"
+    Iterable(1).rendered should include(
+      s"Iterable[${tag.tpe}] with 1 element:\n\n"
     )
   }
 
   test(
-    "An array header should contain the class word Array parameterised with the type of its elements as well the number of elements the traversable contains"
+    "An array header should contain the class word Array parameterised with the type of its elements as well the number of elements the iterable contains"
   ) {
     val tag = typeTag[Int]
     Array(1).rendered should include(s"Array[${tag.tpe}] with 1 element:\n\n")
   }
 
-  test("This is how the traversables should be rendered") {
+  test("This is how the iterables should be rendered") {
     val actual = Seq("I", "II", "III").rendered
 
     // format: OFF
@@ -81,7 +81,7 @@ class TraversableOpsTests extends spells.UnitTestConfiguration {
     actual should include(secondPart)
   }
 
-  test("This is how recursive renderng for traversables should work") {
+  test("This is how recursive renderng for iterables should work") {
     val inner = Seq("I", "II", "III")
     val actual = List(inner, inner, inner).rendered
 
@@ -93,7 +93,7 @@ class TraversableOpsTests extends spells.UnitTestConfiguration {
   }
 
   test(
-    "Recursive renderng for traversables should include recursive line wrapping"
+    "Recursive renderng for iterables should include recursive line wrapping"
   ) {
     val availableWidthInCharacters =
       SpellsConfig.terminal.WidthInCharacters.value

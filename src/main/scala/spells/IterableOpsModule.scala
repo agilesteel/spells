@@ -1,7 +1,7 @@
 package spells
 
-/** Provides utilities for all kinds of `Traversable`s including Java collections and `Array`s. */
-trait TraversableOpsModule {
+/** Provides utilities for all kinds of `Iterable`s including Java collections and `Array`s. */
+trait IterableOpsModule {
   this: AnsiModule
     with AnyOpsModule
     with CalendarOpsModule
@@ -15,7 +15,7 @@ trait TraversableOpsModule {
 
   import scala.reflect.runtime.universe._
 
-  final implicit def TraversableOpsFromSpells[A, T[A] <: Traversable[A]](
+  final implicit def IterableOpsFromSpells[A, T[A] <: Iterable[A]](
       value: T[A]
     )(
       implicit
@@ -286,8 +286,8 @@ trait TraversableOpsModule {
             else {
               val subLines = wrappedValue.split("\n").toList
               val head = keyWithPadding + separator + subLines.head
-              (head :: subLines.tail.map(
-                subLine => (" " * keyWithPadding.size) + separator + subLine
+              (head :: subLines.tail.map(subLine =>
+                (" " * keyWithPadding.size) + separator + subLine
               )).mkString("\n")
             }
           }

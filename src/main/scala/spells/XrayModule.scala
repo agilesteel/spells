@@ -20,12 +20,12 @@ trait XrayModule {
     with DateOpsModule
     with DurationOpsModule
     with HumanRenderingModule
+    with IterableOpsModule
     with MiscModule
-    with StringOpsModule
-    with StylePrintModule
-    with TraversableOpsModule
     with SpellsConfigModule
-    with StackTraceElementModule =>
+    with StackTraceElementModule
+    with StringOpsModule
+    with StylePrintModule =>
 
   import java.util.Calendar
   import scala.concurrent.duration._

@@ -15,13 +15,13 @@ trait Spells
     with DurationOpsModule
     with FunctionNOpsModule
     with HumanRenderingModule
+    with IterableOpsModule
+    with LazyListOpsModule
     with MiscModule
     with SpellsConfigModule
     with StackTraceElementModule
-    with StreamOpsModule
     with StringOpsModule
     with StylePrintModule
     with ThrowableOpsModule
-    with TraversableOpsModule
     with Tuple2OpsModule
     with XrayModule

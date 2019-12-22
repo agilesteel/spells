@@ -23,13 +23,14 @@ trait FunctionNOpsModule {
       typeTag: TypeTag[F[R]],
       evidence: F[R] <:< Function0[R])
       extends TypeTagBasedCustomRendering(typeTag)
-  final implicit class Function1OpsFromSpells[T1, R, F[_, _]](
-      value: F[T1, R]
-    )(
-      implicit
-      typeTag: TypeTag[F[T1, R]],
-      evidence: F[T1, R] <:< Function1[T1, R])
-      extends TypeTagBasedCustomRendering(typeTag)
+
+  // final implicit class Function1OpsFromSpells[T1, R](
+  //     value: Function1[T1, R]
+  //   )(
+  //     implicit
+  //     typeTag: TypeTag[Function1[T1, R]])
+  //     extends TypeTagBasedCustomRendering(typeTag)
+
   final implicit class Function2OpsFromSpells[T1, T2, R, F[_, _, _]](
       value: F[T1, T2, R]
     )(

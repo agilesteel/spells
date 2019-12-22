@@ -2,7 +2,7 @@ package spells.user
 
 import java.text.SimpleDateFormat
 import java.util.{Date, Calendar}
-import scala.collection._
+
 import scala.concurrent.duration._
 import scala.reflect.runtime.universe._
 
@@ -424,7 +424,7 @@ object XrayReportRenderingTests {
       rendering: T => spells.CustomRenderingModule#CustomRendering =
         CustomRendering.Defaults.Any,
       typeTag: Option[TypeTag[T]] = theTypeTag,
-      additionalContent: immutable.Seq[(String, String)] = immutable.Seq.empty
+      additionalContent: Seq[(String, String)] = Seq.empty
     ): XrayReport[T] =
     new XrayReport[T](
       value = reportValue,
