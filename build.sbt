@@ -8,7 +8,6 @@ lazy val spells =
       organization := "com.github.agilesteel",
       version := "2.2.0",
       scalaVersion := "2.13.1",
-      crossScalaVersions := Seq("2.10.7", "2.11.12", "2.12.10", "2.13.1"),
       homepage := Some(url("https://agilesteel.github.io/spells/")),
       startYear := some(2012),
       description := """This is a small scala "util" library, which will hopefully grow over time.""",
