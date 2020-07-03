@@ -1,0 +1,4 @@
+[0m[[0m[0minfo[0m] [0m[0m[32mThrowableOpsTests:[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- The getRootCause method should fall back to itself if there is no cause (7 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- The getRootCause method should descend to the end (1 millisecond)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- The getFullStackTraceString should write what printStackTrace produces into a string (3 milliseconds)[0m[0m

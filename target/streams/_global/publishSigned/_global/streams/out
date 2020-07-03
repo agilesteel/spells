@@ -1,0 +1,16 @@
+[0m[[0m[0mdebug[0m] [0m[0mCLIENT ERROR: Bad Request url=https://oss.sonatype.org/service/local/staging/deploy/maven2/com/github/agilesteel/spells_2.13/2.2.2/spells_2.13-2.2.2.pom[0m
+[0m[[0m[0minfo[0m] [0m[0m	published spells_2.13 to https://oss.sonatype.org/service/local/staging/deploy/maven2/com/github/agilesteel/spells_2.13/2.2.2/spells_2.13-2.2.2.pom[0m
+[0m[[0m[0mdebug[0m] [0m[0mCLIENT ERROR: Not Found url=https://oss.sonatype.org/service/local/staging/deploy/maven2/com/github/agilesteel/spells_2.13/2.2.2/spells_2.13-2.2.2.pom.asc[0m
+[0m[[0m[0minfo[0m] [0m[0m	published spells_2.13 to https://oss.sonatype.org/service/local/staging/deploy/maven2/com/github/agilesteel/spells_2.13/2.2.2/spells_2.13-2.2.2.pom.asc[0m
+[0m[[0m[0mdebug[0m] [0m[0mCLIENT ERROR: Not Found url=https://oss.sonatype.org/service/local/staging/deploy/maven2/com/github/agilesteel/spells_2.13/2.2.2/spells_2.13-2.2.2-sources.jar.asc[0m
+[0m[[0m[0minfo[0m] [0m[0m	published spells_2.13 to https://oss.sonatype.org/service/local/staging/deploy/maven2/com/github/agilesteel/spells_2.13/2.2.2/spells_2.13-2.2.2-sources.jar.asc[0m
+[0m[[0m[0mdebug[0m] [0m[0mCLIENT ERROR: Not Found url=https://oss.sonatype.org/service/local/staging/deploy/maven2/com/github/agilesteel/spells_2.13/2.2.2/spells_2.13-2.2.2.jar.asc[0m
+[0m[[0m[0minfo[0m] [0m[0m	published spells_2.13 to https://oss.sonatype.org/service/local/staging/deploy/maven2/com/github/agilesteel/spells_2.13/2.2.2/spells_2.13-2.2.2.jar.asc[0m
+[0m[[0m[0mdebug[0m] [0m[0mCLIENT ERROR: Not Found url=https://oss.sonatype.org/service/local/staging/deploy/maven2/com/github/agilesteel/spells_2.13/2.2.2/spells_2.13-2.2.2-javadoc.jar.asc[0m
+[0m[[0m[0minfo[0m] [0m[0m	published spells_2.13 to https://oss.sonatype.org/service/local/staging/deploy/maven2/com/github/agilesteel/spells_2.13/2.2.2/spells_2.13-2.2.2-javadoc.jar.asc[0m
+[0m[[0m[0mdebug[0m] [0m[0mCLIENT ERROR: Not Found url=https://oss.sonatype.org/service/local/staging/deploy/maven2/com/github/agilesteel/spells_2.13/2.2.2/spells_2.13-2.2.2-javadoc.jar[0m
+[0m[[0m[0minfo[0m] [0m[0m	published spells_2.13 to https://oss.sonatype.org/service/local/staging/deploy/maven2/com/github/agilesteel/spells_2.13/2.2.2/spells_2.13-2.2.2-javadoc.jar[0m
+[0m[[0m[0mdebug[0m] [0m[0mCLIENT ERROR: Not Found url=https://oss.sonatype.org/service/local/staging/deploy/maven2/com/github/agilesteel/spells_2.13/2.2.2/spells_2.13-2.2.2.jar[0m
+[0m[[0m[0minfo[0m] [0m[0m	published spells_2.13 to https://oss.sonatype.org/service/local/staging/deploy/maven2/com/github/agilesteel/spells_2.13/2.2.2/spells_2.13-2.2.2.jar[0m
+[0m[[0m[0mdebug[0m] [0m[0mCLIENT ERROR: Not Found url=https://oss.sonatype.org/service/local/staging/deploy/maven2/com/github/agilesteel/spells_2.13/2.2.2/spells_2.13-2.2.2-sources.jar[0m
+[0m[[0m[0minfo[0m] [0m[0m	published spells_2.13 to https://oss.sonatype.org/service/local/staging/deploy/maven2/com/github/agilesteel/spells_2.13/2.2.2/spells_2.13-2.2.2-sources.jar[0m

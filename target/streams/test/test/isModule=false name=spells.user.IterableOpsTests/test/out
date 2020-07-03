@@ -1,0 +1,21 @@
+[0m[[0m[0minfo[0m] [0m[0m[32mIterableOpsTests:[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Empty iterables should be rendered the same way as toString (1 millisecond)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Empty arrays should be rendered the same way as empty scala collections (1 millisecond)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Empty java collections should be rendered the same way as scala collections, but prefixed with a full class name (0 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Empty java maps should be rendered the same way as scala collections, but prefixed with a full class name (1 millisecond)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- A iterable with 1 element should contain the word 'element' (5 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- A iterable with 1 element should not contain the word 'elements' (1 millisecond)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- A iterable with multiple elements should contain the word 'elements' (1 millisecond)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- A iterable with 1 element should contain the type (1 millisecond)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- A iterable header should contain the class of the iterable parameterised with the type of its elements as well the number of elements the iterable contains (1 millisecond)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- An array header should contain the class word Array parameterised with the type of its elements as well the number of elements the iterable contains (3 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- This is how the iterables should be rendered (2 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- This is how recursive renderng for iterables should work (5 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Recursive renderng for iterables should include recursive line wrapping (9 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- This is how maps should be rendered (4 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Recursive rendering should work out of the box (2 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- This is how java collections should be rendered (2 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- This is how java maps should be rendered (11 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- If values are of the same length all lines should have equal size (2 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Lines should be wrapped (1 millisecond)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- The renderedTable helper method should yield an empty Seq when given an empty input (0 milliseconds)[0m[0m

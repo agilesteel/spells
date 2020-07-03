@@ -1,0 +1,9 @@
+[0m[[0m[0minfo[0m] [0m[0m[32mTuple2OpsTests:[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Tuple2 should always be rendered with an arrow (42 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Recursive rendering should work out of the box (3 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Do not fiddle with anything if simple rendering fits into one line (3 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Multiline value should cause the value to start on the next line after the key. The separator should always stay on the last line of the key. Value is padded with 2 white spaces (2 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Multiline value should cause the value to start on the next line after the key. The separator should always stay on the last line of the key even if the key has to be rewrapped. Value is padded with 2 white spaces (3 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Singleline value should be added to the same line as the last line of key if it fits (1 millisecond)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Singleline value should be treated as multiline if it does not fir into the last line of the key (1 millisecond)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Value should be rewrapped in case of complex rendering (0 milliseconds)[0m[0m

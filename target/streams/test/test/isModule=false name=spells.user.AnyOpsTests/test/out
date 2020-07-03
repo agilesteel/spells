@@ -1,0 +1,4 @@
+[0m[[0m[0minfo[0m] [0m[0m[32mAnyOpsTests:[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- sample.decodedSimpleClassName should be(sample.getClass.getSimpleName.withDecodedScalaSymbols) (2 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- sample.decodedClassName should be(sample.getClass.getName.withDecodedScalaSymbols) (1 millisecond)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Null should not be an issue when decoding classes (0 milliseconds)[0m[0m

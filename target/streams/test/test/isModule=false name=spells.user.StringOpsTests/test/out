@@ -1,0 +1,15 @@
+[0m[[0m[0minfo[0m] [0m[0m[32mStringOpsTests:[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- The withDecodedScalaSymbols method should delegate to scala.reflect.NameTransformer.decode (1 millisecond)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Worst case scenario: the word is longer than the limit: the word should NOT be broken (1 millisecond)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Dodgy strings should not cause any trouble (1 millisecond)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- A line should be broken at the breakCharacter before the Limit (1 millisecond)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- A line should be broken at the latest breakCharacter possible (1 millisecond)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Worst case scenario 2: the word that's longer than the limit is followed by another word (0 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Multiple spaces (0 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Wrapping with multispace should preserve spaces in the end, but test them when calculating the length of the line (0 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Wrap on a 'per line' basis (0 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Wrap on a 'per line' basis2 (0 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Wrap should preserve empty lines (0 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Wrap should preserve empty lines2 (0 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Size calculations should take car of ANSI escape codes (0 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Last "\n" should be preserved (0 milliseconds)[0m[0m

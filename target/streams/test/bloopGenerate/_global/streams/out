@@ -1,0 +1,6 @@
+[debug] [spells-test] Classpath dependencies List()
+[debug] [spells-test] Dependencies from configurations List(spells)
+[info] Skipped test option 'Setup(sbt.Tests$$$Lambda$3702/364259098@692e6d64)' as it can only be used within sbt
+[info] Skipped test option 'Cleanup(sbt.Tests$$$Lambda$3701/422238554@73eea1b8)' as it can only be used within sbt
+[debug] Bloop wrote the configuration of project 'spells-test' to '/home/vlad/dev/github/agilesteel/spells/.bloop/spells-test.json'
+[success] Generated .bloop/spells-test.json

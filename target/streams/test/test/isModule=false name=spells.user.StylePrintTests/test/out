@@ -1,0 +1,20 @@
+[0m[[0m[0minfo[0m] [0m[0m[32mStylePrintTests:[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- styled("white") should be("white") (0 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- styled("yellow")(Yellow) should startWith(Yellow.value) (0 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- styled("green")(Green) should be("green".green) (0 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- styled(null) should be("null") (0 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- styled((null: String).red) should be("null".red) (1 millisecond)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- styled("green".green) should be("green".green) (0 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- styled("magenta".magenta)(Green) should be("magenta".magenta) (0 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- styled("yellow".yellow + "green".green + "yellow".yellow)(Yellow) should be("yellow".yellow + "green".green + "yellow".yellow) (0 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- styled("yellow" + "green".green)(Yellow) should be("yellow".yellow + "green".green) (1 millisecond)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- styled("yellow".yellow + "green")(Green) should be("yellow".yellow + "green".green) (0 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- styled("yellow" + "green".green + "yellow")(Yellow) should be("yellow".yellow + "green".green + "yellow".yellow) (0 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- styled("yellow".yellow + "green" + "yellow".yellow)(Green) should be("yellow".yellow + "green".green + "yellow".yellow) (0 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- styled("yellow" + "green".green + "yellow".yellow)(Yellow) should be("yellow".yellow + "green".green + "yellow".yellow) (0 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- styled("yellow".yellow + "green".green + "yellow")(Yellow) should be("yellow".yellow + "green".green + "yellow".yellow) (0 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- styled("yellow" + "red".red + "yellow" + "green".green + "yellow")(Yellow) should be("yellow".yellow + "red".red + "yellow".yellow + "green".green + "yellow".yellow) (0 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Line breaks of any kind should not cause any trouble (0 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- styled("green\ngreen".green + "yellow")(Yellow) should be("green\ngreen".green + "yellow".yellow) (0 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- styled("yellow" + "red".red + "yellow" + "green".green + "yellow") should be("yellow".yellow + "red".red + "yellow".yellow + "green".green + "yellow".yellow) (0 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Scoverage should be happy (1 millisecond)[0m[0m

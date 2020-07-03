@@ -1,0 +1,23 @@
+#Successful Tests
+#Fri Jul 03 08:59:11 BRT 2020
+spells.user.ClearPrintTests=1593777550880
+spells.user.XrayReportRenderingTests=1593777547156
+compilation.CompilationTests=1593777546759
+spells.user.ErrorPrintTests=1593777550854
+spells.user.HumanRenderingTests=1593777550969
+spells.user.MiscTests=1593777551040
+spells.user.AnsiTests=1593777546791
+spells.user.ThrowableOpsTests=1593777546683
+spells.user.AnyOpsTests=1593777546653
+spells.user.StackTraceElementTests=1593777547341
+spells.user.LazyListOpsTests=1593777551012
+spells.user.IterableOpsTests=1593777547236
+spells.user.StylePrintTests=1593777547275
+spells.user.FunctionNTests=1593777550842
+spells.user.ClipboardTests=1593777546469
+spells.user.Tuple2OpsTests=1593777545740
+spells.user.XrayTests=1593777550935
+spells.user.DoubleEntryConfigKeeping=1593777550983
+spells.user.CustomRenderingTests=1593777547328
+spells.configuration.ConfigurationTests=1593777546635
+spells.user.StringOpsTests=1593777547309

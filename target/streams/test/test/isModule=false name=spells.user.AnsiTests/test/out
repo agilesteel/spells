@@ -1,0 +1,10 @@
+[0m[[0m[0minfo[0m] [0m[0m[32mAnsiTests:[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- 73.green should be(Green.value + "73" + Reset.value) (1 millisecond)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- "style".toAnsiStyle.value should be(AnsiStyle("style").value) (0 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- The null.toAnsiStyle call should yield an empty AnsiStyle  (0 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- "green" in customStyle should be(customStyle.value + "green" + Reset.value) (0 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- The toAnsiStyle method should handle human capitalised readable colors (2 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- "green".green should be(Green.value + "green" + Reset.value) (0 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- "green".yellow.red.green should be("green".green) (0 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Green.toString should be("sample" in Green) (1 millisecond)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Scoverage should be happy (3 milliseconds)[0m[0m

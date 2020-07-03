@@ -1,0 +1,4 @@
+[debug] [spells] Classpath dependencies List()
+[debug] [spells] Dependencies from configurations List()
+[debug] Bloop wrote the configuration of project 'spells' to '/home/vlad/dev/github/agilesteel/spells/.bloop/spells.json'
+[success] Generated .bloop/spells.json

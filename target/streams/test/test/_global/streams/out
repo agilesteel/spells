@@ -1,0 +1,48 @@
+[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(spells.user.Tuple2OpsTests, org.scalatest.tools.Framework$$anon$1@78c71104, false, [SuiteSelector])[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(spells.user.ClipboardTests, org.scalatest.tools.Framework$$anon$1@78c71104, false, [SuiteSelector])[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(spells.configuration.ConfigurationTests, org.scalatest.tools.Framework$$anon$1@78c71104, false, [SuiteSelector])[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(spells.user.AnyOpsTests, org.scalatest.tools.Framework$$anon$1@78c71104, false, [SuiteSelector])[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(spells.user.ThrowableOpsTests, org.scalatest.tools.Framework$$anon$1@78c71104, false, [SuiteSelector])[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(compilation.CompilationTests, org.scalatest.tools.Framework$$anon$1@78c71104, false, [SuiteSelector])[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(spells.user.AnsiTests, org.scalatest.tools.Framework$$anon$1@78c71104, false, [SuiteSelector])[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(spells.user.XrayReportRenderingTests, org.scalatest.tools.Framework$$anon$1@78c71104, false, [SuiteSelector])[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(spells.user.IterableOpsTests, org.scalatest.tools.Framework$$anon$1@78c71104, false, [SuiteSelector])[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(spells.user.StylePrintTests, org.scalatest.tools.Framework$$anon$1@78c71104, false, [SuiteSelector])[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(spells.user.StringOpsTests, org.scalatest.tools.Framework$$anon$1@78c71104, false, [SuiteSelector])[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(spells.user.CustomRenderingTests, org.scalatest.tools.Framework$$anon$1@78c71104, false, [SuiteSelector])[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(spells.user.StackTraceElementTests, org.scalatest.tools.Framework$$anon$1@78c71104, false, [SuiteSelector])[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(spells.user.FunctionNTests, org.scalatest.tools.Framework$$anon$1@78c71104, false, [SuiteSelector])[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(spells.user.ErrorPrintTests, org.scalatest.tools.Framework$$anon$1@78c71104, false, [SuiteSelector])[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(spells.user.ClearPrintTests, org.scalatest.tools.Framework$$anon$1@78c71104, false, [SuiteSelector])[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(spells.user.XrayTests, org.scalatest.tools.Framework$$anon$1@78c71104, false, [SuiteSelector])[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(spells.user.HumanRenderingTests, org.scalatest.tools.Framework$$anon$1@78c71104, false, [SuiteSelector])[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(spells.user.DoubleEntryConfigKeeping, org.scalatest.tools.Framework$$anon$1@78c71104, false, [SuiteSelector])[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(spells.user.LazyListOpsTests, org.scalatest.tools.Framework$$anon$1@78c71104, false, [SuiteSelector])[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(spells.user.MiscTests, org.scalatest.tools.Framework$$anon$1@78c71104, false, [SuiteSelector])[0m
+[0m[[0m[0minfo[0m] [0m[0m[36mRun completed in 5 seconds, 531 milliseconds.[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[36mTotal number of tests run: 161[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[36mSuites: completed 21, aborted 0[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[36mTests: succeeded 161, failed 0, canceled 0, ignored 0, pending 0[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mAll tests passed.[0m[0m
+[0m[[0m[0mdebug[0m] [0m[0mPassed tests:[0m
+[0m[[0m[0mdebug[0m] [0m[0m	spells.user.Tuple2OpsTests[0m
+[0m[[0m[0mdebug[0m] [0m[0m	spells.user.ClipboardTests[0m
+[0m[[0m[0mdebug[0m] [0m[0m	spells.configuration.ConfigurationTests[0m
+[0m[[0m[0mdebug[0m] [0m[0m	spells.user.AnyOpsTests[0m
+[0m[[0m[0mdebug[0m] [0m[0m	spells.user.ThrowableOpsTests[0m
+[0m[[0m[0mdebug[0m] [0m[0m	compilation.CompilationTests[0m
+[0m[[0m[0mdebug[0m] [0m[0m	spells.user.AnsiTests[0m
+[0m[[0m[0mdebug[0m] [0m[0m	spells.user.XrayReportRenderingTests[0m
+[0m[[0m[0mdebug[0m] [0m[0m	spells.user.IterableOpsTests[0m
+[0m[[0m[0mdebug[0m] [0m[0m	spells.user.StylePrintTests[0m
+[0m[[0m[0mdebug[0m] [0m[0m	spells.user.StringOpsTests[0m
+[0m[[0m[0mdebug[0m] [0m[0m	spells.user.CustomRenderingTests[0m
+[0m[[0m[0mdebug[0m] [0m[0m	spells.user.StackTraceElementTests[0m
+[0m[[0m[0mdebug[0m] [0m[0m	spells.user.FunctionNTests[0m
+[0m[[0m[0mdebug[0m] [0m[0m	spells.user.ErrorPrintTests[0m
+[0m[[0m[0mdebug[0m] [0m[0m	spells.user.ClearPrintTests[0m
+[0m[[0m[0mdebug[0m] [0m[0m	spells.user.XrayTests[0m
+[0m[[0m[0mdebug[0m] [0m[0m	spells.user.HumanRenderingTests[0m
+[0m[[0m[0mdebug[0m] [0m[0m	spells.user.DoubleEntryConfigKeeping[0m
+[0m[[0m[0mdebug[0m] [0m[0m	spells.user.LazyListOpsTests[0m
+[0m[[0m[0mdebug[0m] [0m[0m	spells.user.MiscTests[0m

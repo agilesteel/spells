@@ -1,0 +1,11 @@
+[0m[[0m[0minfo[0m] [0m[0m[32mHumanRenderingTests:[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- It should be possible to call render on a byte, short, int, long, and scala.concurrent.duration (1 millisecond)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- It should be possible to render a single duration (1 millisecond)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- It should be possible to render multiple durations (1 millisecond)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- It should be possible to render human readble durations from months (2 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- It should be possible to render human readble durations from days (1 millisecond)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- It should be possible to render human readble durations from hours (2 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- It should be possible to render human readble durations from minutes (2 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- It should be possible to render human readble durations from seconds (2 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- It should be possible to render human readble durations from nanoseconds (1 millisecond)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Long.MinValue should not cause any problems when rendering durations (2 milliseconds)[0m[0m

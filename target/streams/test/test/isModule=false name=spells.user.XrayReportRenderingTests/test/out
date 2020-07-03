@@ -1,0 +1,36 @@
+[0m[[0m[0minfo[0m] [0m[0m[32mXrayReportRenderingTests:[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- The header should contain the string 'Xray' if description is empty (121 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Empty styled header should result in the default one (3 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Xray header should still be rendered green (3 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- The size of the description should be involved into the size calculation of the Xray table (2 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- The size of the description should be involved into the size calculation of the Xray table, but it should not cause it to grow over its limits (3 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- The description should be wrapped and centered (3 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Multiline description should be centered (4 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Multiline description should be centered but not padded if it happens to be the longest line (6 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- The header should contain the string 'description' if description is nonempty (3 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- If the description contains styles the header should still be centered properly (5 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- The datetime should be rendered in full format (3 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- The duration should be readable by humans (2 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Location should be equal to the toString implementation of the StackTraceElement (2 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- HashCode should be equal to the toString implementation of the hashCode method (2 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- HashCode should not be included in xray report (2 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- If type and class are equal the class should not be rendered (3 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- If type and class are different they should both be rendered (13 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Simple values should be rendered in magenta (2 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- If value conains '\n' it should be rendered on the new line (4 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Simple values should be deeply (other styles should not be lost) rendered in magenta (2 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Styled values should be deeply (other styles should not be lost) rendered in magenta (3 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Nulls should be rendered as values and thus not throw exceptions (2 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Rendered report should contain maximum 160 hyphens (or other separator characters) (6 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Rendered report should contain exactly 4 lines with hyphens (or other separators) (5 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Rendered report should contain one of each of these characters ┬ ┼ ┴ (3 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Calendards should be rendered as Dates (1 millisecond)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Dates should be rendered as Calendars (0 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Custom rendering for java.util.Calendar (5 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Multiline rendering should not cause any style loss (7 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- The customRenderedTableForXray helper method should throw a RuntimeException when given an empty input (1 millisecond)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- CustomRendering style loss test #infinity (36 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- CustomRendering style loss test #infinity+1 (26 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Explicit CustomRendering should be picked up (7 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Additional content for the report (16 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Manually passed in additional content (3 milliseconds)[0m[0m

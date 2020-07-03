@@ -1,0 +1,14 @@
+[0m[[0m[0minfo[0m] [0m[0m[32mXrayTests:[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- The expression inside of xray should be evaluated only once (3 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Monitor should always be called for xray (3 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Monitor should only be called for xrayIf if the condition yields true (3 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Monitor should not be called for xrayIf if the condition yields false (2 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Stacktrace test (3 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- It should be possible to implicitly pass in styles to xrayed (3 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- It should be possible to implicitly pass in styles to xray (3 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- It should not be possible to implicitly pass in descriptions of type String to xrayed (2 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- It should not be possible to implicitly pass in descriptions of type String to xrat (3 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- It should be possible to explicitly pass in descriptions of type String to xrayed (1 millisecond)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- It should be possible to explicitly pass in descriptions of type String to xray (3 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- It should be possible to mix explicitly specified descriptions with implicitly specified styles for xrayed (1 millisecond)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- It should be possible to mix explicitly specified descriptions with implicitly specified styles for xray (4 milliseconds)[0m[0m

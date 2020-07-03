@@ -7,7 +7,7 @@
 ### Releases
 
 ```scala
-libraryDependencies += "com.github.agilesteel" %% "spells" % "2.2.1"
+libraryDependencies += "com.github.agilesteel" %% "spells" % "2.2.2"
 
  // for Scala version below 2.13 use:
 libraryDependencies += "com.github.agilesteel" %% "spells" % "2.2.0"

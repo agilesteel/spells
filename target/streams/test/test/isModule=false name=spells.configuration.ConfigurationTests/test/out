@@ -1,0 +1,11 @@
+[0m[[0m[0minfo[0m] [0m[0m[32mConfigurationTests:[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- This is how config injection should work (3 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- XrayReport default rendering should use styles from config (49 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- XrayReport default rendering should be tweak-able from the config (34 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- XrayReport default rendering should be tweak-able from the config (the "class == value" case) (10 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Config validaiton tests (4 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Config validaiton error message tests (5 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Config validaiton custom error message tests (3 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Turning off styles (2 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Short StackTraceElements (10 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- IgnoredAdditionalContentKeys (11 milliseconds)[0m[0m

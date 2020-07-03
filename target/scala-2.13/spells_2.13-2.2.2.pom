@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.github.agilesteel</groupId>
+    <artifactId>spells_2.13</artifactId>
+    <packaging>jar</packaging>
+    <description>This is a small scala &quot;util&quot; library, which will hopefully grow over time.</description>
+    <url>https://agilesteel.github.io/spells/</url>
+    <version>2.2.2</version>
+    <licenses>
+        <license>
+            <name>Apache 2</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    <name>spells</name>
+    <inceptionYear>2012</inceptionYear>
+    <organization>
+        <name>com.github.agilesteel</name>
+        <url>https://agilesteel.github.io/spells/</url>
+    </organization>
+    <scm>
+        <url>https://github.com/agilesteel/spells</url>
+        <connection>scm:git:git@github.com:agilesteel/spells.git</connection>
+    </scm>
+    <developers>
+        <developer>
+            <id>agilesteel</id>
+            <name>Vladyslav Pekker</name>
+            <url>http://about.me/agilesteel</url>
+            <email>agilesteel@gmail.com</email>
+        </developer>
+    </developers>
+    <dependencies>
+        <dependency>
+            <groupId>org.scala-lang</groupId>
+            <artifactId>scala-library</artifactId>
+            <version>2.13.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.scala-lang.modules</groupId>
+            <artifactId>scala-collection-compat_2.13</artifactId>
+            <version>2.1.6</version>
+        </dependency>
+        <dependency>
+            <groupId>org.scala-lang</groupId>
+            <artifactId>scala-reflect</artifactId>
+            <version>2.13.3</version>
+        </dependency>
+        <dependency>
+            <groupId>com.typesafe</groupId>
+            <artifactId>config</artifactId>
+            <version>1.4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.scalatest</groupId>
+            <artifactId>scalatest_2.13</artifactId>
+            <version>3.2.0</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>

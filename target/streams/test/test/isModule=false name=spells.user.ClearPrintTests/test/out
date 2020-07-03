@@ -1,0 +1,3 @@
+[0m[[0m[0minfo[0m] [0m[0m[32mClearPrintTests:[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- cleared(sample)(Blue) should be(styled(ClearPrint.Clear.value + s"\r$sample" + Reset.value)(Blue)) (7 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Scoverage should be happy (0 milliseconds)[0m[0m

@@ -1,0 +1,5 @@
+[0m[[0m[0minfo[0m] [0m[0m[32mLazyListOpsTests:[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- The arguments to the LazyList factory from spells should be evaluated only on demand (2 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- The LazyList produced by the factory from spells should equal the LazyList produced by the standard library (0 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- The LazyList factory from spells should not shadow LazyList's companion object (0 milliseconds)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Values should only be implicitly converted to StreamOpsModule.Function0Wrapper but not to Function0 (2 milliseconds)[0m[0m
