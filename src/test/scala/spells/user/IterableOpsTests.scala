@@ -234,7 +234,7 @@ class IterableOpsTests extends spells.UnitTestConfiguration {
   ) {
     renderedTable(
       _ => Seq.empty,
-      availableWidthInCharacters = util.Random.nextInt
+      availableWidthInCharacters = util.Random.nextInt()
     ) should be(Vector.empty[String])
   }
 }

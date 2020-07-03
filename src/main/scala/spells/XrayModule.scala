@@ -47,8 +47,7 @@ trait XrayModule {
       expression: => T,
       description: XrayModule#Description = Xray.Defaults.Description,
       increaseStackTraceDepthBy: Int = Xray.Defaults.StackTraceDepthOffset
-    )(
-      implicit
+    )(implicit
       typeTag: TypeTag[T],
       style: AnsiModule#AnsiStyle = AnsiStyle.Reset,
       rendering: T => CustomRenderingModule#CustomRendering =
@@ -88,8 +87,7 @@ trait XrayModule {
       expression: => T,
       description: XrayModule#Description = Xray.Defaults.Description,
       increaseStackTraceDepthBy: Int = Xray.Defaults.StackTraceDepthOffset
-    )(
-      implicit
+    )(implicit
       style: AnsiModule#AnsiStyle = AnsiStyle.Reset
     ): XrayModule#XrayReport[T] = {
     val now = Calendar.getInstance
@@ -121,7 +119,11 @@ trait XrayModule {
       implicit
       increaseStackTraceDepthBy: XrayModule#IncreaseStackTraceDepthBy = 0
     ): StackTraceElement =
-    Thread.currentThread.getStackTrace apply increaseStackTraceDepthBy.value + Xray.Defaults.StackTraceDepthOffset
+    Thread
+      .currentThread
+      .getStackTrace apply increaseStackTraceDepthBy.value + Xray
+      .Defaults
+      .StackTraceDepthOffset
 
   /** Implicit conversion from `T` to `XrayFromSpells`, which contains methods like `xray` and `xrayIf`.
     * @param expression the expression to be evaluated
@@ -133,15 +135,14 @@ trait XrayModule {
     */
   final implicit class XrayFromSpells[T](
       expression: => T
-    )(
-      implicit
+    )(implicit
       typeTag: TypeTag[T],
       style: AnsiModule#AnsiStyle = AnsiStyle.Reset,
       rendering: T => CustomRenderingModule#CustomRendering =
         CustomRendering.Defaults.Any,
       monitor: XrayModule#XrayReport[T] => Unit =
-        (report: XrayModule#XrayReport[T]) =>
-          Console.println(report.rendered)) {
+        (report: XrayModule#XrayReport[T]) => Console.println(report.rendered)
+    ) {
 
     /** A DSL for producing `XrayReport`s.
       *
@@ -178,8 +179,7 @@ trait XrayModule {
       */
     def xrayIf(
         conditionFunction: XrayModule#XrayReport[T] => Boolean
-      )(
-        implicit
+      )(implicit
         description: XrayModule#Description = Xray.Defaults.Description
       ): T = {
       val report = xrayed(
@@ -197,12 +197,11 @@ trait XrayModule {
 
   final implicit class XrayWeakFromSpells[T](
       expression: => T
-    )(
-      implicit
+    )(implicit
       style: AnsiModule#AnsiStyle = AnsiStyle.Reset,
       monitor: XrayModule#XrayReport[T] => Unit =
-        (report: XrayModule#XrayReport[T]) =>
-          Console.println(report.rendered)) {
+        (report: XrayModule#XrayReport[T]) => Console.println(report.rendered)
+    ) {
 
     /** A DSL for producing `XrayReport`s when `xray` does not compile, because of the `TypeTag`.
       *
@@ -238,8 +237,7 @@ trait XrayModule {
       */
     def xrayIfWeak(
         conditionFunction: XrayModule#XrayReport[T] => Boolean
-      )(
-        implicit
+      )(implicit
         description: XrayModule#Description = Xray.Defaults.Description
       ): T = {
       val report =
@@ -272,7 +270,7 @@ trait XrayModule {
 
       final private[spells] val StackTraceDepthOffset: Int = {
         // $COVERAGE-OFF$
-        if (`isScalaVersionSmallerThan 2.12`) 3 else 4
+        if (`isScalaVersionSmallerThan 2.12`) 3 else 7
         // $COVERAGE-ON$
       }
 
@@ -316,8 +314,8 @@ trait XrayModule {
         CustomRendering.Defaults.Any,
       typeTag: Option[TypeTag[T]],
       final val additionalContent: immutable.Seq[(String, String)] =
-        immutable.Seq.empty)
-      extends CustomRendering {
+        immutable.Seq.empty
+    ) extends CustomRendering {
     private lazy val safeAdditionalContent: immutable.Seq[(String, String)] =
       Option(additionalContent).getOrElse(immutable.Seq.empty)
 
@@ -344,8 +342,14 @@ trait XrayModule {
       ): String = {
       def lines(availableWidthInCharacters: Int): Seq[(String, String)] = {
         def ifNotIgnored(key: String, value: String): Option[(String, String)] =
-          if (SpellsConfig.xray.report.IgnoredContentKeys.value
-                .contains(String.valueOf(key)))
+          if (
+            SpellsConfig
+              .xray
+              .report
+              .IgnoredContentKeys
+              .value
+              .contains(String.valueOf(key))
+          )
             None
           else
             Some(String.valueOf(key) -> String.valueOf(value))
@@ -357,10 +361,9 @@ trait XrayModule {
           )
 
           val valueRelatedContent = Vector(
-            ifNotIgnored("Location", stackTraceElement.rendered), {
-              if (value == null) None
-              else ifNotIgnored("HashCode", value.hashCode.toString)
-            },
+            ifNotIgnored("Location", stackTraceElement.rendered),
+            if (value == null) None
+            else ifNotIgnored("HashCode", value.hashCode.toString),
             ifNotIgnored("Thread", thread.toString)
           )
 
@@ -372,10 +375,18 @@ trait XrayModule {
               val decodedTypeName = tag.tpe.toString.withDecodedScalaSymbols
               val typeTuple = ifNotIgnored("Type", decodedTypeName)
               val shouldNotIgnoreClass =
-                !SpellsConfig.xray.report.IgnoredContentKeys.value
+                !SpellsConfig
+                  .xray
+                  .report
+                  .IgnoredContentKeys
+                  .value
                   .contains("Class")
               val shouldIgnoreType =
-                SpellsConfig.xray.report.IgnoredContentKeys.value
+                SpellsConfig
+                  .xray
+                  .report
+                  .IgnoredContentKeys
+                  .value
                   .contains("Type")
 
               if (shouldIgnoreType && shouldNotIgnoreClass) Vector(classTuple)
@@ -505,7 +516,8 @@ trait XrayModule {
   private[spells] object XrayReport {
     final private[spells] def customRenderedTableForXray(
         in: Int => Seq[(String, String)],
-        styles: Map[String, AnsiModule#AnsiStyle] = Map.empty withDefaultValue AnsiStyle.Reset,
+        styles: Map[String, AnsiModule#AnsiStyle] =
+          Map.empty withDefaultValue AnsiStyle.Reset,
         availableWidthInCharacters: Int
       ): (Seq[String], Int) = {
       val sizeOfTheBiggestKey =

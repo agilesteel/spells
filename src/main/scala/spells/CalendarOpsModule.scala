@@ -17,6 +17,8 @@ trait CalendarOpsModule {
         availableWidthInCharacters: StringOpsModule#AvailableWidthInCharacters =
           SpellsConfig.terminal.WidthInCharacters.value
       ): String =
-      new SimpleDateFormat(DateOpsFromSpells.Defaults.Format) format value.getTime
+      new SimpleDateFormat(
+        DateOpsFromSpells.Defaults.Format
+      ) format value.getTime
   }
 }

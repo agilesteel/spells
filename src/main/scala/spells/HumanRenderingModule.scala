@@ -89,7 +89,8 @@ trait HumanRenderingModule {
       minutes: Long = 0,
       seconds: Long = 0,
       milliseconds: Long = 0,
-      nanoseconds: Long = 0) {
+      nanoseconds: Long = 0
+    ) {
     override val toString = if (isPositiveOrZero) calculated else recalculated
 
     final private lazy val isPositiveOrZero: Boolean =
@@ -116,7 +117,8 @@ trait HumanRenderingModule {
           remainder = remainder,
           renderedRemainder = remainder.render.duration.just.months
         )
-      } else if (weeks != 0)
+      }
+      else if (weeks != 0)
         weeks.render.duration.just.weeks
       else if (days != 0) {
         val (quotient, remainder) = division(days, 7)
@@ -126,7 +128,8 @@ trait HumanRenderingModule {
           remainder = remainder,
           renderedRemainder = remainder.render.duration.just.days
         )
-      } else if (hours != 0) {
+      }
+      else if (hours != 0) {
         val (quotient, remainder) = division(hours, 24)
 
         render(
@@ -134,7 +137,8 @@ trait HumanRenderingModule {
           remainder = remainder,
           renderedRemainder = remainder.render.duration.just.hours
         )
-      } else if (minutes != 0) {
+      }
+      else if (minutes != 0) {
         val (quotient, remainder) = division(minutes, 60)
 
         render(
@@ -142,7 +146,8 @@ trait HumanRenderingModule {
           remainder = remainder,
           renderedRemainder = remainder.render.duration.just.minutes
         )
-      } else if (seconds != 0) {
+      }
+      else if (seconds != 0) {
         val (quotient, remainder) = division(seconds, 60)
 
         render(
@@ -150,7 +155,8 @@ trait HumanRenderingModule {
           remainder = remainder,
           renderedRemainder = remainder.render.duration.just.seconds
         )
-      } else if (milliseconds != 0) {
+      }
+      else if (milliseconds != 0) {
         val (quotient, remainder) = division(milliseconds, 1000)
 
         render(
@@ -158,7 +164,8 @@ trait HumanRenderingModule {
           remainder = remainder,
           renderedRemainder = remainder.render.duration.just.milliseconds
         )
-      } else if (nanoseconds != 0) {
+      }
+      else if (nanoseconds != 0) {
         val (quotient, remainder) = division(nanoseconds, 1000000)
 
         render(
@@ -166,7 +173,8 @@ trait HumanRenderingModule {
           remainder = remainder,
           renderedRemainder = remainder.render.duration.just.nanoseconds
         )
-      } else ""
+      }
+      else ""
     }
 
     final private def division(dividend: Long, divisor: Long): (Long, Long) = {

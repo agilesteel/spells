@@ -10,43 +10,42 @@ trait Tuple2OpsModule {
 
   final implicit def Tuple2OpsFromSpells[Key, Value](
       tuple: (Key, Value)
-    )(
-      implicit
+    )(implicit
       keyRendering: Key => CustomRenderingModule#CustomRendering =
         CustomRendering.Defaults.Any,
       valueRendering: Value => CustomRenderingModule#CustomRendering =
         CustomRendering.Defaults.Any
-    ): CustomRenderingModule#CustomRendering = new CustomRendering {
-    val (key, value) = tuple
+    ): CustomRenderingModule#CustomRendering =
+    new CustomRendering {
+      val (key, value) = tuple
 
-    final override def rendered(
-        implicit
-        availableWidthInCharacters: StringOpsModule#AvailableWidthInCharacters =
-          SpellsConfig.terminal.WidthInCharacters.value
-      ): String = {
-      render(key.rendered, value.rendered, availableWidthInCharacters)
+      final override def rendered(
+          implicit
+          availableWidthInCharacters: StringOpsModule#AvailableWidthInCharacters =
+            SpellsConfig.terminal.WidthInCharacters.value
+        ): String =
+        render(key.rendered, value.rendered, availableWidthInCharacters)
     }
-  }
 
   final implicit def MapEntryOpsFromSpells[Key, Value](
       entry: java.util.Map.Entry[Key, Value]
-    )(
-      implicit
+    )(implicit
       keyRendering: Key => CustomRenderingModule#CustomRendering =
         CustomRendering.Defaults.Any,
       valueRendering: Value => CustomRenderingModule#CustomRendering =
         CustomRendering.Defaults.Any
-    ): CustomRenderingModule#CustomRendering = new CustomRendering {
-    val key = entry.getKey
-    val value = entry.getValue
+    ): CustomRenderingModule#CustomRendering =
+    new CustomRendering {
+      val key = entry.getKey
+      val value = entry.getValue
 
-    final override def rendered(
-        implicit
-        availableWidthInCharacters: StringOpsModule#AvailableWidthInCharacters =
-          SpellsConfig.terminal.WidthInCharacters.value
-      ): String =
-      render(key.rendered, value.rendered, availableWidthInCharacters)
-  }
+      final override def rendered(
+          implicit
+          availableWidthInCharacters: StringOpsModule#AvailableWidthInCharacters =
+            SpellsConfig.terminal.WidthInCharacters.value
+        ): String =
+        render(key.rendered, value.rendered, availableWidthInCharacters)
+    }
 
   private def render(
       renderedKey: String,
@@ -75,17 +74,21 @@ trait Tuple2OpsModule {
           .map(leftPadding + _)
           .mkString("\n")
 
-    if (!simpleRendering.contains("\n") && AnsiStyle
-          .removed(simpleRendering)
-          .size <= availableWidthInCharacters)
+    if (
+      !simpleRendering.contains("\n") && AnsiStyle
+        .removed(simpleRendering)
+        .size <= availableWidthInCharacters
+    )
       simpleRendering
     else if (renderedAndWrappedValue.contains("\n"))
       complexRendering
-    else if (AnsiStyle
-               .removed(renderedAndWrappedValue)
-               .size <= (availableWidthInCharacters - AnsiStyle
-               .removed(renderedAndWrappedKey.split("\n").last)
-               .size - separator.size))
+    else if (
+      AnsiStyle
+        .removed(renderedAndWrappedValue)
+        .size <= (availableWidthInCharacters - AnsiStyle
+        .removed(renderedAndWrappedKey.split("\n").last)
+        .size - separator.size)
+    )
       simpleRendering
     else
       complexRendering

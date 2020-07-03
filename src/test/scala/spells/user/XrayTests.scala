@@ -5,10 +5,11 @@ import AnsiStyle._
 class XrayTests extends spells.UnitTestConfiguration {
   test("The expression inside of xray should be evaluated only once") {
     var timesEvaluated = 0
-    def expression() = timesEvaluated += 1
+    def expression(): Unit =
+      timesEvaluated += 1
 
     SilentOutputStream out {
-      expression.xray
+      expression().xray
     }
 
     timesEvaluated should be(1)
@@ -21,7 +22,9 @@ class XrayTests extends spells.UnitTestConfiguration {
     }
   }
 
-  test("Monitor should only be called for xrayIf if the condition yields true") {
+  test(
+    "Monitor should only be called for xrayIf if the condition yields true"
+  ) {
     new MonitoringEnvironement {
       val condition: spells.XrayModule#XrayReport[Int] => Boolean = _ => true
 
@@ -30,7 +33,9 @@ class XrayTests extends spells.UnitTestConfiguration {
     }
   }
 
-  test("Monitor should not be called for xrayIf if the condition yields false") {
+  test(
+    "Monitor should not be called for xrayIf if the condition yields false"
+  ) {
     new MonitoringEnvironement {
       val condition: spells.XrayModule#XrayReport[Int] => Boolean = _ => false
 
@@ -45,7 +50,7 @@ class XrayTests extends spells.UnitTestConfiguration {
 
   private def assert(sample: String) =
     xrayed(sample).stackTraceElement should be(
-      currentLineStackTraceElement(increaseStackTraceDepthBy = 1)
+      currentLineStackTraceElement(increaseStackTraceDepthBy = 4)
     ) // dodgy
 
   test("""It should be possible to implicitly pass in styles to xrayed""") {

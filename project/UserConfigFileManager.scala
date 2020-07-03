@@ -1,4 +1,4 @@
-import java.nio.file.{Files, Paths}
+import java.nio.file.{ Files, Paths }
 import java.nio.file.StandardCopyOption._
 import java.nio.file.LinkOption._
 
@@ -7,7 +7,8 @@ object UserConfigFileManager {
     s"""${System.getProperty("user.home")}/.spells.conf"""
 
   private[this] val userConfigLocation = Paths get userConfigLocationValue
-  private[this] val userConfigBackupLocation = Paths get (userConfigLocationValue + "_backup")
+  private[this] val userConfigBackupLocation =
+    Paths get (userConfigLocationValue + "_backup")
 
   val createSpellsConfigFileForCurrentUser: () => Unit = () => {
     backup()
@@ -19,7 +20,7 @@ object UserConfigFileManager {
     restore()
   }
 
-  private[this] def backup(): Unit = {
+  private[this] def backup(): Unit =
     if (Files exists userConfigLocation)
       Files.move(
         userConfigLocation,
@@ -28,7 +29,6 @@ object UserConfigFileManager {
         REPLACE_EXISTING,
         NOFOLLOW_LINKS
       )
-  }
 
   private[this] def create(): Unit = {
     val userConfigContent =
@@ -41,11 +41,10 @@ object UserConfigFileManager {
     Files.write(userConfigLocation, userConfigContent.getBytes)
   }
 
-  private[this] def delete(): Unit = {
+  private[this] def delete(): Unit =
     Files.delete(userConfigLocation)
-  }
 
-  private[this] def restore(): Unit = {
+  private[this] def restore(): Unit =
     if (Files exists userConfigBackupLocation)
       Files.move(
         userConfigBackupLocation,
@@ -54,5 +53,4 @@ object UserConfigFileManager {
         REPLACE_EXISTING,
         NOFOLLOW_LINKS
       )
-  }
 }

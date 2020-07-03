@@ -1,9 +1,11 @@
 package spells
 
 import org.scalatest._
+import org.scalatest.funsuite.AnyFunSuite
+import org.scalatest.matchers.should
 
 trait UnitTestConfiguration
-    extends FunSuite
-    with Matchers
-    with BeforeAndAfterEach
-    with Inspectors
+    extends AnyFunSuite
+       with should.Matchers
+       with BeforeAndAfterEach
+       with Inspectors

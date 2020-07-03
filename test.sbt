@@ -7,11 +7,3 @@ Test / testOptions +=
 
 Test / testOptions +=
   Tests.Cleanup(UserConfigFileManager.deleteSpellsConfigFileForCurrentUser)
-
-Test / testOptions +=
-  Tests.Argument(
-    TestFrameworks.ScalaTest,
-    "-oSD",
-    "-h",
-    "target/scalatest-reports"
-  )

@@ -14,7 +14,8 @@ class Tuple2OpsTests extends spells.UnitTestConfiguration {
     val availableWidthInCharacters =
       SpellsConfig.terminal.WidthInCharacters.value
     val separatorWithSpacesWidthInCharacters = 4
-    val equalSize = (availableWidthInCharacters / 2) - (separatorWithSpacesWidthInCharacters / 2)
+    val equalSize =
+      (availableWidthInCharacters / 2) - (separatorWithSpacesWidthInCharacters / 2)
     val key = "x" * equalSize
     val value = "y" * equalSize
 

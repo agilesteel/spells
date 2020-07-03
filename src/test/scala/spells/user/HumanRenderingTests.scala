@@ -91,7 +91,9 @@ class HumanRenderingTests extends spells.UnitTestConfiguration {
     over(upperBound * 2).render.duration.months should be("2 years 1 month")
   }
 
-  test("""It should be possible to render human readble durations from days""") {
+  test(
+    """It should be possible to render human readble durations from days"""
+  ) {
     0.render.duration.days should be("0 days")
     1.render.duration.days should be("1 day")
     -1.render.duration.days should be("-1 days")
@@ -109,7 +111,9 @@ class HumanRenderingTests extends spells.UnitTestConfiguration {
     over(upperBound * 2).render.duration.days should be("2 weeks 1 day")
   }
 
-  test("""It should be possible to render human readble durations from hours""") {
+  test(
+    """It should be possible to render human readble durations from hours"""
+  ) {
     0.render.duration.hours should be("0 hours")
     1.render.duration.hours should be("1 hour")
     -1.render.duration.hours should be("-1 hours")
@@ -187,7 +191,8 @@ class HumanRenderingTests extends spells.UnitTestConfiguration {
     )
 
     val previousUpperBoundPower = 24
-    val upperBoundPowerPower = upperBound * previousUpperBound * previousUpperBoundPower + upperBoundPower
+    val upperBoundPowerPower =
+      upperBound * previousUpperBound * previousUpperBoundPower + upperBoundPower
 
     under(upperBoundPowerPower).render.duration.seconds should be(
       "1 day 1 hour 59 seconds"

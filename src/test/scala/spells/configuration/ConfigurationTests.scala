@@ -5,7 +5,7 @@ import scala.concurrent.duration._
 import scala.reflect.runtime.universe._
 import spells._
 
-import com.typesafe.config.{Config, ConfigFactory}
+import com.typesafe.config.{ Config, ConfigFactory }
 
 class ConfigurationTests extends UnitTestConfiguration {
   test("This is how config injection should work") {
@@ -346,7 +346,12 @@ class ConfigurationTests extends UnitTestConfiguration {
         new StackTraceElement("declaringClass", "methodName", "fileName", 0)
 
       basic.rendered should be("(fileName:0)")
-      new StackTraceElement("declaringClass", "methodName", "fileName", -1).rendered should be(
+      new StackTraceElement(
+        "declaringClass",
+        "methodName",
+        "fileName",
+        -1
+      ).rendered should be(
         "(fileName)"
       )
       new StackTraceElement(
@@ -355,13 +360,28 @@ class ConfigurationTests extends UnitTestConfiguration {
         "fileName",
         nativeMethod
       ).rendered should be("(Native Method)")
-      new StackTraceElement("declaringClass", "methodName", null, 0).rendered should be(
+      new StackTraceElement(
+        "declaringClass",
+        "methodName",
+        null,
+        0
+      ).rendered should be(
         "(Unknown Source)"
       )
-      new StackTraceElement("declaringClass", "methodName", null, -1).rendered should be(
+      new StackTraceElement(
+        "declaringClass",
+        "methodName",
+        null,
+        -1
+      ).rendered should be(
         "(Unknown Source)"
       )
-      new StackTraceElement("declaringClass", "methodName", null, nativeMethod).rendered should be(
+      new StackTraceElement(
+        "declaringClass",
+        "methodName",
+        null,
+        nativeMethod
+      ).rendered should be(
         "(Native Method)"
       )
 

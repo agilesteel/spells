@@ -9,7 +9,7 @@ trait ThrowableOpsModule {
     with StringOpsModule
     with StylePrintModule =>
 
-  import java.io.{PrintWriter, StringWriter}
+  import java.io.{ PrintWriter, StringWriter }
 
   final implicit class ThrowableOpsFromSpells(value: Throwable)
       extends CustomRendering {
@@ -24,7 +24,8 @@ trait ThrowableOpsModule {
       val writer = new StringWriter
       val autoFlush = true
       value.printStackTrace(new PrintWriter(writer, autoFlush))
-      writer.getBuffer
+      writer
+        .getBuffer
         .deleteCharAt(writer.getBuffer.length - 1)
         .toString
         .replace("\t", "     ")

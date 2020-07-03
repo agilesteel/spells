@@ -5,7 +5,8 @@ private[spells] trait LocationAwarePropertyModule {
 
   abstract class LocationAwareProperty[T](
       implicit
-      materialised: (LocationAwareProperty[T] => T)) {
+      materialised: (LocationAwareProperty[T] => T)
+    ) {
     final lazy val value: T = materialised(this)
 
     def isValid: T => Boolean = _ => true
@@ -22,7 +23,9 @@ private[spells] trait LocationAwarePropertyModule {
     def customValidationErrorMessage: T => String = _ => ""
 
     final lazy val location: String =
-      scala.reflect.NameTransformer
+      scala
+        .reflect
+        .NameTransformer
         .decode(getClass.getName)
         .replace("SpellsConfigModule$SpellsConfig$", "")
         .split('$')

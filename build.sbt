@@ -6,8 +6,8 @@ lazy val spells =
     .settings(
       name := "spells",
       organization := "com.github.agilesteel",
-      version := "2.2.1",
-      scalaVersion := "2.13.1",
+      version := "2.2.2",
+      scalaVersion := "2.13.3",
       homepage := Some(url("https://agilesteel.github.io/spells/")),
       startYear := some(2012),
       description := """This is a small scala "util" library, which will hopefully grow over time.""",
@@ -36,6 +36,10 @@ lazy val spells =
         }
       },
       Test / scalacOptions --= Seq(
+        "-Ywarn-unused:_",
+        "-Xfatal-warnings"
+      ),
+      Compile / doc / scalacOptions --= Seq(
         "-Ywarn-unused:_",
         "-Xfatal-warnings"
       ),

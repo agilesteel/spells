@@ -11,7 +11,9 @@ trait LazyListOpsModule {
     * In contrast to the LazyList factory from the standard library each element is evaluated on demand.
     */
   def MakeLazyList[E](elements: Function0Wrapper[E]*): LazyList[E] =
-    scala.collection.immutable
+    scala
+      .collection
+      .immutable
       .LazyList[Function0Wrapper[E]](elements: _*)
       .map(_.function0())
 }

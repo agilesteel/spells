@@ -1,7 +1,7 @@
 package spells.user
 
 import java.text.SimpleDateFormat
-import java.util.{Date, Calendar}
+import java.util.{ Calendar, Date }
 
 import scala.concurrent.duration._
 import scala.reflect.runtime.universe._
@@ -77,8 +77,10 @@ class XrayReportRenderingTests extends spells.UnitTestConfiguration {
     val tableWidth = report.split("\n").maxBy(_.size).size
     tableWidth should be < maxWidth
 
-    val description = ("x" * (tableWidth + 10)) + "\n" + ("y" * (tableWidth + 10))
-    val hyphens = createReportOnSameLine(description).rendered
+    val description =
+      ("x" * (tableWidth + 10)) + "\n" + ("y" * (tableWidth + 10))
+    val hyphens = createReportOnSameLine(description)
+      .rendered
       .split("\n")
       .find(_.forall(hyphensAndOtherSeparators))
       .map(_.size)
@@ -138,7 +140,9 @@ class XrayReportRenderingTests extends spells.UnitTestConfiguration {
   }
 
   test("HashCode should not be included in xray report") {
-    createReport(reportValue = null).rendered should not include (s"HashCode │ ${reportValue.hashCode}")
+    createReport(reportValue =
+      null
+    ).rendered should not include (s"HashCode │ ${reportValue.hashCode}")
   }
 
   test("If type and class are equal the class should not be rendered") {
@@ -311,9 +315,8 @@ class XrayReportRenderingTests extends spells.UnitTestConfiguration {
     // format: ON
 
     SilentOutputStream out {
-      implicit def monitor(report: XrayReport[Any]): Unit = {
+      implicit def monitor(report: XrayReport[Any]): Unit =
         report.rendered should include(expected)
-      }
 
       Seq("I", "II", "III").xray
     }
@@ -327,7 +330,7 @@ class XrayReportRenderingTests extends spells.UnitTestConfiguration {
         .customRenderedTableForXray(
           in = _ => Seq.empty,
           styles = Map.empty,
-          availableWidthInCharacters = util.Random.nextInt
+          availableWidthInCharacters = util.Random.nextInt()
         )
     }
   }

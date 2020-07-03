@@ -21,37 +21,39 @@ trait AnsiModule {
       * @see https://en.wikipedia.org/wiki/ANSI_escape_code
       * @return an instance of `AnsiStyle`
       */
-    final def toAnsiStyle: AnsiModule#AnsiStyle = style match {
-      case "Black"     => AnsiStyle.Black
-      case "Blue"      => AnsiStyle.Blue
-      case "Cyan"      => AnsiStyle.Cyan
-      case "Green"     => AnsiStyle.Green
-      case "Magenta"   => AnsiStyle.Magenta
-      case "Random"    => AnsiStyle.Random
-      case "Red"       => AnsiStyle.Red
-      case "Untouched" => AnsiStyle.Reset
-      case "White"     => AnsiStyle.White
-      case "Yellow"    => AnsiStyle.Yellow
-      case _ =>
-        new AnsiStyle(Option(style).fold("")(_.replace("\\033", "\u001b")))
-    }
+    final def toAnsiStyle: AnsiModule#AnsiStyle =
+      style match {
+        case "Black"     => AnsiStyle.Black
+        case "Blue"      => AnsiStyle.Blue
+        case "Cyan"      => AnsiStyle.Cyan
+        case "Green"     => AnsiStyle.Green
+        case "Magenta"   => AnsiStyle.Magenta
+        case "Random"    => AnsiStyle.Random
+        case "Red"       => AnsiStyle.Red
+        case "Untouched" => AnsiStyle.Reset
+        case "White"     => AnsiStyle.White
+        case "Yellow"    => AnsiStyle.Yellow
+        case _ =>
+          new AnsiStyle(Option(style).fold("")(_.replace("\\033", "\u001b")))
+      }
   }
 
   /** Encoding of `AnsiStyle`s
     * @param value the style to encode
     */
   final class AnsiStyle private[spells] (val value: String) {
-    final override def toString: String = value match {
-      case AnsiStyle.Black.value   => "Black" in this
-      case AnsiStyle.Blue.value    => "Blue" in this
-      case AnsiStyle.Cyan.value    => "Cyan" in this
-      case AnsiStyle.Green.value   => "Green" in this
-      case AnsiStyle.Magenta.value => "Magenta" in this
-      case AnsiStyle.Red.value     => "Red" in this
-      case AnsiStyle.White.value   => "White" in this
-      case AnsiStyle.Yellow.value  => "Yellow" in this
-      case _                       => AnsiStyle.Sample in this
-    }
+    final override def toString: String =
+      value match {
+        case AnsiStyle.Black.value   => "Black" in this
+        case AnsiStyle.Blue.value    => "Blue" in this
+        case AnsiStyle.Cyan.value    => "Cyan" in this
+        case AnsiStyle.Green.value   => "Green" in this
+        case AnsiStyle.Magenta.value => "Magenta" in this
+        case AnsiStyle.Red.value     => "Red" in this
+        case AnsiStyle.White.value   => "White" in this
+        case AnsiStyle.Yellow.value  => "Yellow" in this
+        case _                       => AnsiStyle.Sample in this
+      }
   }
 
   /** Provides the method `in` which converts `Any` to `String` `in` `AnsiStyle`.

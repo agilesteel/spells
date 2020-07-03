@@ -37,12 +37,10 @@ trait ClearPrintModule {
     */
   final def clearPrintln(
       input: Any = ""
-    )(
-      implicit
+    )(implicit
       style: AnsiModule#AnsiStyle = AnsiStyle.Reset
-    ): Unit = {
+    ): Unit =
     Console println cleared(input)(style)
-  }
 
   /** Prints an object to out using its toString method, beginning at the first character in the current line of your terminal.
     * @param input the object to print
@@ -50,12 +48,10 @@ trait ClearPrintModule {
     */
   final def clearPrint(
       input: Any = ""
-    )(
-      implicit
+    )(implicit
       style: AnsiModule#AnsiStyle = AnsiStyle.Reset
-    ): Unit = {
+    ): Unit =
     Console print cleared(input)(style)
-  }
 
   /** Moves the caret to the beginning of the line.
     * @param input the object to be moved to the beginning of the line
@@ -64,8 +60,7 @@ trait ClearPrintModule {
     */
   final def cleared(
       input: Any = ""
-    )(
-      implicit
+    )(implicit
       style: AnsiModule#AnsiStyle = AnsiStyle.Reset
     ): String =
     styled(ClearPrint.Clear.value + s"\r$input" + AnsiStyle.Reset.value)(style)

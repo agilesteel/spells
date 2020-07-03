@@ -4,7 +4,7 @@ package spells
 trait ClipboardModule {
   this: MiscModule =>
 
-  import java.awt.datatransfer.{DataFlavor, StringSelection}
+  import java.awt.datatransfer.{ DataFlavor, StringSelection }
   import java.awt.Toolkit
   import java.util.logging.Level
   import scala.util.Try
@@ -21,9 +21,8 @@ trait ClipboardModule {
       "sun.awt.X11"
     ) foreach disableLogging
 
-    private def disableLogging(loggerName: String): Unit = {
+    private def disableLogging(loggerName: String): Unit =
       java.util.logging.Logger getLogger loggerName setLevel Level.OFF
-    }
 
     private lazy val clipboard = Toolkit.getDefaultToolkit.getSystemClipboard
 
@@ -31,19 +30,24 @@ trait ClipboardModule {
       * @param content the `String` to write
       * @return an instance of `Try[Unit]`
       */
-    final def writeString(content: String): Try[Unit] = Try {
-      val contentAsStringSelection = new StringSelection(content)
-      clipboard.setContents(contentAsStringSelection, contentAsStringSelection)
-    }
+    final def writeString(content: String): Try[Unit] =
+      Try {
+        val contentAsStringSelection = new StringSelection(content)
+        clipboard.setContents(
+          contentAsStringSelection,
+          contentAsStringSelection
+        )
+      }
 
     /** Reads the content of the operating systems' clipboard.
       * @return the `String` content of the operating system's clipboard wrapped in a `Try`
       */
-    final def readString: Try[String] = Try {
-      clipboard
-        .getContents(null)
-        .getTransferData(DataFlavor.stringFlavor)
-        .asInstanceOf[String]
-    }
+    final def readString: Try[String] =
+      Try {
+        clipboard
+          .getContents(null)
+          .getTransferData(DataFlavor.stringFlavor)
+          .asInstanceOf[String]
+      }
   }
 }

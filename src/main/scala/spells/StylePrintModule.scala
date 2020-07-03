@@ -13,12 +13,10 @@ trait StylePrintModule {
     */
   final def println(
       input: Any = ""
-    )(
-      implicit
+    )(implicit
       style: AnsiModule#AnsiStyle = AnsiStyle.Reset
-    ): Unit = {
+    ): Unit =
     Console println styled(input)(style)
-  }
 
   /** Prints an object to out using its toString method.
     * @param input the object to print; may be null
@@ -26,19 +24,16 @@ trait StylePrintModule {
     */
   final def print(
       input: Any = ""
-    )(
-      implicit
+    )(implicit
       style: AnsiModule#AnsiStyle = AnsiStyle.Reset
-    ): Unit = {
+    ): Unit =
     Console print styled(input)(style)
-  }
 
   /** Write to the `err` stream in `AnsiStyle.Red`.
     * @param error which will be written to the stream
     */
-  final def printerr(error: Any): Unit = {
+  final def printerr(error: Any): Unit =
     Console.err println erred(error)
-  }
 
   /** Styles `Any in Red`.
     * @param error which will be styled
@@ -56,8 +51,7 @@ trait StylePrintModule {
     */
   final def styled(
       input: Any
-    )(
-      implicit
+    )(implicit
       style: AnsiModule#AnsiStyle = AnsiStyle.Reset
     ): String = {
     val rawValue = String valueOf input
@@ -70,12 +64,14 @@ trait StylePrintModule {
   final private def restyle(
       input: String,
       style: AnsiModule#AnsiStyle
-    ): String = input match {
-    case StylePrint.AnsiPattern(before, alreadyStyled, after) =>
-      restyle(before, style) + alreadyStyled + restyle(after, style)
-    case _ =>
-      if (input.isEmpty) input else style.value + input + AnsiStyle.Reset.value
-  }
+    ): String =
+    input match {
+      case StylePrint.AnsiPattern(before, alreadyStyled, after) =>
+        restyle(before, style) + alreadyStyled + restyle(after, style)
+      case _ =>
+        if (input.isEmpty) input
+        else style.value + input + AnsiStyle.Reset.value
+    }
 
   object StylePrint {
     private val Anything: String = """.*?"""

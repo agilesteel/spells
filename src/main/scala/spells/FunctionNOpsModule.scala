@@ -18,11 +18,10 @@ trait FunctionNOpsModule {
 
   final implicit class Function0OpsFromSpells[R, F[_]](
       value: F[R]
-    )(
-      implicit
+    )(implicit
       typeTag: TypeTag[F[R]],
-      evidence: F[R] <:< Function0[R])
-      extends TypeTagBasedCustomRendering(typeTag)
+      evidence: F[R] <:< Function0[R]
+    ) extends TypeTagBasedCustomRendering(typeTag)
 
   // final implicit class Function1OpsFromSpells[T1, R](
   //     value: Function1[T1, R]
@@ -33,18 +32,16 @@ trait FunctionNOpsModule {
 
   final implicit class Function2OpsFromSpells[T1, T2, R, F[_, _, _]](
       value: F[T1, T2, R]
-    )(
-      implicit
+    )(implicit
       typeTag: TypeTag[F[T1, T2, R]],
-      evidence: F[T1, T2, R] <:< Function2[T1, T2, R])
-      extends TypeTagBasedCustomRendering(typeTag)
+      evidence: F[T1, T2, R] <:< Function2[T1, T2, R]
+    ) extends TypeTagBasedCustomRendering(typeTag)
   final implicit class Function3OpsFromSpells[T1, T2, T3, R, F[_, _, _, _]](
       value: F[T1, T2, T3, R]
-    )(
-      implicit
+    )(implicit
       typeTag: TypeTag[F[T1, T2, T3, R]],
-      evidence: F[T1, T2, T3, R] <:< Function3[T1, T2, T3, R])
-      extends TypeTagBasedCustomRendering(typeTag)
+      evidence: F[T1, T2, T3, R] <:< Function3[T1, T2, T3, R]
+    ) extends TypeTagBasedCustomRendering(typeTag)
   final implicit class Function4OpsFromSpells[
       T1,
       T2,
@@ -54,11 +51,10 @@ trait FunctionNOpsModule {
       F[_, _, _, _, _]
     ](
       value: F[T1, T2, T3, T4, R]
-    )(
-      implicit
+    )(implicit
       typeTag: TypeTag[F[T1, T2, T3, T4, R]],
-      evidence: F[T1, T2, T3, T4, R] <:< Function4[T1, T2, T3, T4, R])
-      extends TypeTagBasedCustomRendering(typeTag)
+      evidence: F[T1, T2, T3, T4, R] <:< Function4[T1, T2, T3, T4, R]
+    ) extends TypeTagBasedCustomRendering(typeTag)
   final implicit class Function5OpsFromSpells[
       T1,
       T2,
@@ -69,11 +65,10 @@ trait FunctionNOpsModule {
       F[_, _, _, _, _, _]
     ](
       value: F[T1, T2, T3, T4, T5, R]
-    )(
-      implicit
+    )(implicit
       typeTag: TypeTag[F[T1, T2, T3, T4, T5, R]],
-      evidence: F[T1, T2, T3, T4, T5, R] <:< Function5[T1, T2, T3, T4, T5, R])
-      extends TypeTagBasedCustomRendering(typeTag)
+      evidence: F[T1, T2, T3, T4, T5, R] <:< Function5[T1, T2, T3, T4, T5, R]
+    ) extends TypeTagBasedCustomRendering(typeTag)
   final implicit class Function6OpsFromSpells[
       T1,
       T2,
@@ -85,8 +80,7 @@ trait FunctionNOpsModule {
       F[_, _, _, _, _, _, _]
     ](
       value: F[T1, T2, T3, T4, T5, T6, R]
-    )(
-      implicit
+    )(implicit
       typeTag: TypeTag[F[T1, T2, T3, T4, T5, T6, R]],
       evidence: F[T1, T2, T3, T4, T5, T6, R] <:< Function6[
         T1,
@@ -96,8 +90,8 @@ trait FunctionNOpsModule {
         T5,
         T6,
         R
-      ])
-      extends TypeTagBasedCustomRendering(typeTag)
+      ]
+    ) extends TypeTagBasedCustomRendering(typeTag)
   final implicit class Function7OpsFromSpells[
       T1,
       T2,
@@ -110,8 +104,7 @@ trait FunctionNOpsModule {
       F[_, _, _, _, _, _, _, _]
     ](
       value: F[T1, T2, T3, T4, T5, T6, T7, R]
-    )(
-      implicit
+    )(implicit
       typeTag: TypeTag[F[T1, T2, T3, T4, T5, T6, T7, R]],
       evidence: F[T1, T2, T3, T4, T5, T6, T7, R] <:< Function7[
         T1,
@@ -122,8 +115,8 @@ trait FunctionNOpsModule {
         T6,
         T7,
         R
-      ])
-      extends TypeTagBasedCustomRendering(typeTag)
+      ]
+    ) extends TypeTagBasedCustomRendering(typeTag)
   final implicit class Function8OpsFromSpells[
       T1,
       T2,
@@ -137,8 +130,7 @@ trait FunctionNOpsModule {
       F[_, _, _, _, _, _, _, _, _]
     ](
       value: F[T1, T2, T3, T4, T5, T6, T7, T8, R]
-    )(
-      implicit
+    )(implicit
       typeTag: TypeTag[F[T1, T2, T3, T4, T5, T6, T7, T8, R]],
       evidence: F[T1, T2, T3, T4, T5, T6, T7, T8, R] <:< Function8[
         T1,
@@ -150,8 +142,8 @@ trait FunctionNOpsModule {
         T7,
         T8,
         R
-      ])
-      extends TypeTagBasedCustomRendering(typeTag)
+      ]
+    ) extends TypeTagBasedCustomRendering(typeTag)
   final implicit class Function9OpsFromSpells[
       T1,
       T2,
@@ -166,8 +158,7 @@ trait FunctionNOpsModule {
       F[_, _, _, _, _, _, _, _, _, _]
     ](
       value: F[T1, T2, T3, T4, T5, T6, T7, T8, T9, R]
-    )(
-      implicit
+    )(implicit
       typeTag: TypeTag[F[T1, T2, T3, T4, T5, T6, T7, T8, T9, R]],
       evidence: F[T1, T2, T3, T4, T5, T6, T7, T8, T9, R] <:< Function9[
         T1,
@@ -180,8 +171,8 @@ trait FunctionNOpsModule {
         T8,
         T9,
         R
-      ])
-      extends TypeTagBasedCustomRendering(typeTag)
+      ]
+    ) extends TypeTagBasedCustomRendering(typeTag)
   final implicit class Function10OpsFromSpells[
       T1,
       T2,
@@ -197,8 +188,7 @@ trait FunctionNOpsModule {
       F[_, _, _, _, _, _, _, _, _, _, _]
     ](
       value: F[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, R]
-    )(
-      implicit
+    )(implicit
       typeTag: TypeTag[F[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, R]],
       evidence: F[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, R] <:< Function10[
         T1,
@@ -212,8 +202,8 @@ trait FunctionNOpsModule {
         T9,
         T10,
         R
-      ])
-      extends TypeTagBasedCustomRendering(typeTag)
+      ]
+    ) extends TypeTagBasedCustomRendering(typeTag)
   final implicit class Function11OpsFromSpells[
       T1,
       T2,
@@ -230,10 +220,9 @@ trait FunctionNOpsModule {
       F[_, _, _, _, _, _, _, _, _, _, _, _]
     ](
       value: F[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, R]
-    )(
-      implicit
+    )(implicit
       typeTag: TypeTag[F[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, R]],
-      evidence: F[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, R] <:< Function11[
+      evidence: F[
         T1,
         T2,
         T3,
@@ -246,8 +235,21 @@ trait FunctionNOpsModule {
         T10,
         T11,
         R
-      ])
-      extends TypeTagBasedCustomRendering(typeTag)
+      ] <:< Function11[
+        T1,
+        T2,
+        T3,
+        T4,
+        T5,
+        T6,
+        T7,
+        T8,
+        T9,
+        T10,
+        T11,
+        R
+      ]
+    ) extends TypeTagBasedCustomRendering(typeTag)
   final implicit class Function12OpsFromSpells[
       T1,
       T2,
@@ -265,10 +267,9 @@ trait FunctionNOpsModule {
       F[_, _, _, _, _, _, _, _, _, _, _, _, _]
     ](
       value: F[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, R]
-    )(
-      implicit
+    )(implicit
       typeTag: TypeTag[F[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, R]],
-      evidence: F[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, R] <:< Function12[
+      evidence: F[
         T1,
         T2,
         T3,
@@ -282,8 +283,22 @@ trait FunctionNOpsModule {
         T11,
         T12,
         R
-      ])
-      extends TypeTagBasedCustomRendering(typeTag)
+      ] <:< Function12[
+        T1,
+        T2,
+        T3,
+        T4,
+        T5,
+        T6,
+        T7,
+        T8,
+        T9,
+        T10,
+        T11,
+        T12,
+        R
+      ]
+    ) extends TypeTagBasedCustomRendering(typeTag)
   final implicit class Function13OpsFromSpells[
       T1,
       T2,
@@ -302,12 +317,11 @@ trait FunctionNOpsModule {
       F[_, _, _, _, _, _, _, _, _, _, _, _, _, _]
     ](
       value: F[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, R]
-    )(
-      implicit
+    )(implicit
       typeTag: TypeTag[
         F[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, R]
       ],
-      evidence: F[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, R] <:< Function13[
+      evidence: F[
         T1,
         T2,
         T3,
@@ -322,8 +336,23 @@ trait FunctionNOpsModule {
         T12,
         T13,
         R
-      ])
-      extends TypeTagBasedCustomRendering(typeTag)
+      ] <:< Function13[
+        T1,
+        T2,
+        T3,
+        T4,
+        T5,
+        T6,
+        T7,
+        T8,
+        T9,
+        T10,
+        T11,
+        T12,
+        T13,
+        R
+      ]
+    ) extends TypeTagBasedCustomRendering(typeTag)
   final implicit class Function14OpsFromSpells[
       T1,
       T2,
@@ -343,8 +372,7 @@ trait FunctionNOpsModule {
       F[_, _, _, _, _, _, _, _, _, _, _, _, _, _, _]
     ](
       value: F[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, R]
-    )(
-      implicit
+    )(implicit
       typeTag: TypeTag[
         F[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, R]
       ],
@@ -380,8 +408,8 @@ trait FunctionNOpsModule {
         T13,
         T14,
         R
-      ])
-      extends TypeTagBasedCustomRendering(typeTag)
+      ]
+    ) extends TypeTagBasedCustomRendering(typeTag)
   final implicit class Function15OpsFromSpells[
       T1,
       T2,
@@ -419,8 +447,7 @@ trait FunctionNOpsModule {
         T15,
         R
       ]
-    )(
-      implicit
+    )(implicit
       typeTag: TypeTag[
         F[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, R]
       ],
@@ -458,8 +485,8 @@ trait FunctionNOpsModule {
         T14,
         T15,
         R
-      ])
-      extends TypeTagBasedCustomRendering(typeTag)
+      ]
+    ) extends TypeTagBasedCustomRendering(typeTag)
   final implicit class Function16OpsFromSpells[
       T1,
       T2,
@@ -499,8 +526,7 @@ trait FunctionNOpsModule {
         T16,
         R
       ]
-    )(
-      implicit
+    )(implicit
       typeTag: TypeTag[F[
         T1,
         T2,
@@ -556,8 +582,8 @@ trait FunctionNOpsModule {
         T15,
         T16,
         R
-      ])
-      extends TypeTagBasedCustomRendering(typeTag)
+      ]
+    ) extends TypeTagBasedCustomRendering(typeTag)
   final implicit class Function17OpsFromSpells[
       T1,
       T2,
@@ -599,8 +625,7 @@ trait FunctionNOpsModule {
         T17,
         R
       ]
-    )(
-      implicit
+    )(implicit
       typeTag: TypeTag[F[
         T1,
         T2,
@@ -659,8 +684,8 @@ trait FunctionNOpsModule {
         T16,
         T17,
         R
-      ])
-      extends TypeTagBasedCustomRendering(typeTag)
+      ]
+    ) extends TypeTagBasedCustomRendering(typeTag)
   final implicit class Function18OpsFromSpells[
       T1,
       T2,
@@ -704,8 +729,7 @@ trait FunctionNOpsModule {
         T18,
         R
       ]
-    )(
-      implicit
+    )(implicit
       typeTag: TypeTag[F[
         T1,
         T2,
@@ -767,8 +791,8 @@ trait FunctionNOpsModule {
         T17,
         T18,
         R
-      ])
-      extends TypeTagBasedCustomRendering(typeTag)
+      ]
+    ) extends TypeTagBasedCustomRendering(typeTag)
   final implicit class Function19OpsFromSpells[
       T1,
       T2,
@@ -814,8 +838,7 @@ trait FunctionNOpsModule {
         T19,
         R
       ]
-    )(
-      implicit
+    )(implicit
       typeTag: TypeTag[F[
         T1,
         T2,
@@ -880,8 +903,8 @@ trait FunctionNOpsModule {
         T18,
         T19,
         R
-      ])
-      extends TypeTagBasedCustomRendering(typeTag)
+      ]
+    ) extends TypeTagBasedCustomRendering(typeTag)
   final implicit class Function20OpsFromSpells[
       T1,
       T2,
@@ -929,8 +952,7 @@ trait FunctionNOpsModule {
         T20,
         R
       ]
-    )(
-      implicit
+    )(implicit
       typeTag: TypeTag[F[
         T1,
         T2,
@@ -998,8 +1020,8 @@ trait FunctionNOpsModule {
         T19,
         T20,
         R
-      ])
-      extends TypeTagBasedCustomRendering(typeTag)
+      ]
+    ) extends TypeTagBasedCustomRendering(typeTag)
   final implicit class Function21OpsFromSpells[
       T1,
       T2,
@@ -1049,8 +1071,7 @@ trait FunctionNOpsModule {
         T21,
         R
       ]
-    )(
-      implicit
+    )(implicit
       typeTag: TypeTag[F[
         T1,
         T2,
@@ -1121,8 +1142,8 @@ trait FunctionNOpsModule {
         T20,
         T21,
         R
-      ])
-      extends TypeTagBasedCustomRendering(typeTag)
+      ]
+    ) extends TypeTagBasedCustomRendering(typeTag)
   final implicit class Function22OpsFromSpells[
       T1,
       T2,
@@ -1174,8 +1195,7 @@ trait FunctionNOpsModule {
         T22,
         R
       ]
-    )(
-      implicit
+    )(implicit
       typeTag: TypeTag[F[
         T1,
         T2,
@@ -1249,6 +1269,6 @@ trait FunctionNOpsModule {
         T21,
         T22,
         R
-      ])
-      extends TypeTagBasedCustomRendering(typeTag)
+      ]
+    ) extends TypeTagBasedCustomRendering(typeTag)
 }

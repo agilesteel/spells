@@ -90,7 +90,9 @@ class StylePrintTests extends spells.UnitTestConfiguration {
   test(
     """styled("yellow" + "red".red + "yellow" + "green".green + "yellow")(Yellow) should be("yellow".yellow + "red".red + "yellow".yellow + "green".green + "yellow".yellow)"""
   ) {
-    styled("yellow" + "red".red + "yellow" + "green".green + "yellow")(Yellow) should be(
+    styled("yellow" + "red".red + "yellow" + "green".green + "yellow")(
+      Yellow
+    ) should be(
       "yellow".yellow + "red".red + "yellow".yellow + "green".green + "yellow".yellow
     )
   }
@@ -132,7 +134,9 @@ class StylePrintTests extends spells.UnitTestConfiguration {
     """styled("yellow" + "red".red + "yellow" + "green".green + "yellow") should be("yellow".yellow + "red".red + "yellow".yellow + "green".green + "yellow".yellow)"""
   ) {
     implicit val customStyle = Yellow
-    styled("yellow" + "red".red + "yellow" + "green".green + "yellow") should be(
+    styled(
+      "yellow" + "red".red + "yellow" + "green".green + "yellow"
+    ) should be(
       "yellow".yellow + "red".red + "yellow".yellow + "green".green + "yellow".yellow
     )
   }

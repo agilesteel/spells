@@ -6,7 +6,7 @@ package spells
   */
 trait SpellsConfigModule
     extends LocationAwareConfigModule
-    with LocationAwarePropertyModule {
+       with LocationAwarePropertyModule {
   this: StylePrintModule with AnsiModule =>
 
   object SpellsConfig {

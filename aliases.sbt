@@ -12,8 +12,13 @@ addCommandAlias(
 )
 
 addCommandAlias("testWithCoverage", "clean; coverage; test; coverageReport")
-addCommandAlias("deploySnapshot", "+clean; +test; +publish")
-addCommandAlias("deploy", "+clean; +test; +publishSigned; sonatypeReleaseAll")
+addCommandAlias("deploySnapshot", "clean; test; publish")
+addCommandAlias("deploy", "clean; test; publishSigned; sonatypeReleaseAll")
+addCommandAlias("deploySnapshotAll", "+clean; +test; +publish")
+addCommandAlias(
+  "deployAll",
+  "+clean; +test; +publishSigned; sonatypeReleaseAll"
+)
 
 onLoadMessage +=
   s"""|
@@ -29,5 +34,7 @@ onLoadMessage +=
       |${styled("up2date")}          │ dependencyUpdates
       |${styled("deploy")}           │ deploy
       |${styled("deploySnapshot")}   │ deploySnapshot
+      |${styled("deployAll")}        │ deployAll
+      |${styled("deploySnapshotAll")}│ deploySnapshotAll
       |${styled("testWithCoverage")} │ testWithCoverage
       |─────────────────┴──────────────────""".stripMargin
